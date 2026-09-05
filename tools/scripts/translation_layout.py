@@ -24,6 +24,7 @@ from .translation_pack import (
     stable_key,
 )
 
+DIALOGUE_CONTAINERS = frozenset({"10", "31"})
 
 MENU_LAYOUT_FIELDS = (
     "menu",
@@ -187,7 +188,7 @@ def _menu_reference(
 ) -> tuple[int, int]:
     expected = {
         key for key, row in rows.items()
-        if key[0] == "container" and key[1] != "10"
+        if key[0] == "container" and key[1] not in DIALOGUE_CONTAINERS
         and (row.get("original_en") or row.get("original_jp"))
     }
     mapped = {key for keys in layout.values() for key in keys}
@@ -285,11 +286,13 @@ def write_reference_tree(
                 source, staging / "dialogue" / f"scene-{resource:04d}.csv",
                 SCENE_REFERENCE_FIELDS)
 
-        container_10 = original_dir / "containers" / "container-0010.csv"
-        if container_10.is_file():
-            dialogue_rows += _copy_reference_rows(
-                container_10, staging / "dialogue" / "container-0010.csv",
-                CONTAINER_REFERENCE_FIELDS)
+        for resource in sorted(int(item) for item in DIALOGUE_CONTAINERS):
+            source = (original_dir / "containers"
+                      / f"container-{resource:04d}.csv")
+            if source.is_file():
+                dialogue_rows += _copy_reference_rows(
+                    source, staging / "dialogue" / f"container-{resource:04d}.csv",
+                    CONTAINER_REFERENCE_FIELDS)
 
         chapter_rows = _copy_reference_rows(
             original_dir / "chapters.csv", staging / "chapter.csv",

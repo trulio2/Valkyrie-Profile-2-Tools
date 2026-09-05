@@ -2,6 +2,7 @@
 
 import functools
 import struct
+import sys
 
 from . import package_archive
 from . import protected_package
@@ -59,13 +60,25 @@ def find_container_stream(raw):
                 return at, blob
     return None, None
 
-def _pk1_container_section(raw):
-    """Locate one indexed PK1 subresource that expands to an MCPS2 bank."""
+def _mcps2_magic(packed):
+    payload = packed[0x10:]
+    if payload[:3] == b"SLZ":
+        return None
+    try:
+        return decompress(payload, packed[3], 16)[:8] == b"mcps2lib"
+    except (IndexError, ValueError, struct.error):
+        return None
+
+
+def _pk1_sections(raw):
+    """Every PK1 table row that decompresses to an MCPS2 bank."""
     found = []
     for number, (tag, offset, length) in enumerate(parse_pk1(bytes(raw))):
         packed = bytes(raw[offset:offset + length])
         try:
             if packed[:3] == b"SLZ":
+                if _mcps2_magic(packed) is False:
+                    continue
                 blob = decompress(packed)
                 wrapper = "SLZ"
             elif packed[:3] == b"SLE":
@@ -86,13 +99,55 @@ def _pk1_container_section(raw):
                 "blob": blob,
                 "wrapper": wrapper,
             })
+    return found
+
+
+def _pk1_container_section(raw, subresource=None):
+    found = _pk1_sections(raw)
+    if subresource is not None:
+        if isinstance(subresource, str):
+            chosen = [item for item in found if item["tag"] == subresource]
+            what = "tag %s" % subresource
+            if len(chosen) > 1:
+                raise ValueError(
+                    "PK1 holds %d MCPS2 subresources tagged %s: %s"
+                    % (len(chosen), subresource, _describe_sections(chosen)))
+        else:
+            chosen = [item for item in found if item["number"] == subresource]
+            what = "row %s" % subresource
+        if not chosen:
+            raise ValueError(
+                "PK1 %s is not an MCPS2 subresource; it holds %s"
+                % (what, _describe_sections(found) or "none"))
+        return chosen[0]
     if len(found) > 1:
         raise ValueError(
             "PK1 contains %d MCPS2 subresources; the outer resource is "
-            "ambiguous" % len(found))
+            "ambiguous: %s" % (len(found), _describe_sections(found)))
     return found[0] if found else None
 
-def unpack_container_entry(raw, resource):
+
+def _describe_sections(found):
+    """Name each candidate, so an ambiguity says what it is ambiguous between."""
+    return ", ".join(
+        "row %d tag %s (%d bytes)" % (item["number"], item["tag"],
+                                      len(item["blob"]))
+        for item in found)
+
+
+def pk1_container_sections(raw):
+    """Every MCPS2 subresource in a PK1, ambiguous or not."""
+    return _pk1_sections(raw)
+
+
+def pk1_section_tag(raw, subresource=None):
+    try:
+        section = _pk1_container_section(raw, subresource)
+    except ValueError:
+        return None
+    return section["tag"] if section else None
+
+def unpack_container_entry(raw, resource, subresource=None):
     """Return the one structurally reachable MCPS2 container in an entry."""
     if raw[:3] == b"SLZ":
         blob = decompress(raw)
@@ -103,7 +158,7 @@ def unpack_container_entry(raw, resource):
     else:
         blob = None
     if blob is None:
-        section = _pk1_container_section(raw)
+        section = _pk1_container_section(raw, subresource)
         if section is not None:
             blob = section["blob"]
     if blob is None or blob[:8] != b"mcps2lib":
@@ -428,8 +483,18 @@ def _encode_slz_window(full_output, groups, mode):
                 run += 1
         options[position] = matches, run
 
-    @functools.lru_cache(None)
+    memo = {}
+    missing = object()
+
     def solve(position, tokens_left, payload_left):
+        key = (position, tokens_left, payload_left)
+        found = memo.get(key, missing)
+        if found is not missing:
+            return found
+        memo[key] = found = _search(position, tokens_left, payload_left)
+        return found
+
+    def _search(position, tokens_left, payload_left):
         if tokens_left == 0:
             return () if position == end and payload_left == 0 else None
         remaining = end - position
@@ -460,7 +525,14 @@ def _encode_slz_window(full_output, groups, mode):
                 return (("literal", full_output[position], 1),) + rest
         return None
 
-    tokens = solve(start, token_count, payload_budget)
+    limit = sys.getrecursionlimit()
+    try:
+        needed = token_count * 6 + 1000
+        if needed > limit:
+            sys.setrecursionlimit(needed)
+        tokens = solve(start, token_count, payload_budget)
+    finally:
+        sys.setrecursionlimit(limit)
     if tokens is None:
         raise ValueError(
             "changed SLZ groups %d-%d cannot retain their original token and "
@@ -530,10 +602,11 @@ def rewrite_slz_preserving_groups(packed, desired_output):
         "changed_bytes": sum(a != b for a, b in zip(packed, rebuilt)),
     }
 
-def container(handle, table, total, resource):
+def container(handle, table, total, resource, subresource=None):
     """Return the decompressed MCPS2 container of a bare entry."""
     return unpack_container_entry(
-        bytes(read_entry(handle, table, total, resource)), resource)
+        bytes(read_entry(handle, table, total, resource)), resource,
+        subresource)
 
 def _round_up(value, alignment):
     return (value + alignment - 1) // alignment * alignment
@@ -571,7 +644,7 @@ def _compress_container(blob, mode, target_stored=None, exact_stored=False,
         raise ValueError("recompressed container does not round-trip")
     return packed, encoded_stored
 
-def pack_container_entry(raw, blob, resource):
+def pack_container_entry(raw, blob, resource, subresource=None):
     """Put a rebuilt container stream back into its allocated entry."""
     raw = bytes(raw)
     if raw[:8] == b"mcps2lib":
@@ -585,7 +658,7 @@ def pack_container_entry(raw, blob, resource):
             "stored_before": before,
             "stored_after": after,
         }
-    section = _pk1_container_section(raw)
+    section = _pk1_container_section(raw, subresource)
     if section is not None:
         return _pack_pk1_slz(raw, blob, resource, section)
     at = container_stream_offset(raw)
@@ -647,9 +720,10 @@ def _pack_pk1_slz(raw, blob, resource, section):
             raw, section["tag"], rebuilt_packed,
             target_offset=start))
         _, new_offset, new_length = parse_pk1(bytes(rebuilt))[section["number"]]
-    if unpack_container_entry(bytes(rebuilt), resource) != bytes(blob):
-        raise ValueError("resource #%d PK1 container does not read back "
-                         "byte-for-byte" % resource)
+    written = _pk1_container_section(bytes(rebuilt), section["number"])
+    if written is None or written["blob"] != bytes(blob):
+        raise ValueError("resource #%d PK1 row %d does not read back "
+                         "byte-for-byte" % (resource, section["number"]))
     return bytes(rebuilt), {
         "wrapper": "PK1/SLZ",
         "subresource_tag": section["tag"],

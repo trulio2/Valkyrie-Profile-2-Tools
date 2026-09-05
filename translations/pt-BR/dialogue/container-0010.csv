@@ -6,14 +6,23 @@ resource,message_id,translated,notes
 10,4,,
 10,5,,
 10,6,,
-10,7,,
-10,10,,
+10,7,"<8084:01>Carregando dados de configuração.
+<0065>
+Não remova o cartão de memória (8 MB) (para PlayStation<0066>2)
+do slot de cartão de memória <8094:01>",
+10,10,"<8084:01>Selecione o formato da tela:
+<8099:08>16:9<0065><8099:07>4:3
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Pressione <8099:08> para ativar o modo widescreen.
+Configure sua televisão para o modo de exibição adequado.
+Consulte o manual de instruções da sua televisão para obter mais detalhes.",
 10,11,,
 10,90,,
 10,100,Sim,
 10,101,Não,
 10,102,Pular esta sequência?,
-10,1000,,
+10,1000,"<808C:0000A040><8084:01><808A:3333333F9A99593F>Game Test
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Masaki Norimoto",
 10,1001,,
 10,1002,,
 10,1003,,

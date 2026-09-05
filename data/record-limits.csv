@@ -1,4 +1,4 @@
-"resource","scope","max_extent","kind","evidence"
+﻿"resource","scope","max_extent","kind","evidence"
 "10","container","4477","verified","highest extent this bank has been played with; its real limit is unknown."
 "641","container","66937","verified","highest extent this bank has been played with; its real limit is unknown."
 "642","container","18909","verified","highest extent this bank has been played with; its real limit is unknown."
@@ -24,3 +24,4 @@
 "1315","streamed-neighbours","0","verified","allowed to rewrite a neighbour; played and confirmed."
 "61","scene-content","526360","verified","highest extent this scene has been played with."
 "605","scene-content","1323252","verified","highest extent this scene has been played with."
+"97","scene-content","1052092","candidate","under test: whether this scene runs at this extent. Not played yet."

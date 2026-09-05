@@ -45,6 +45,11 @@ each. Its `kind` is `scene`, `container`, or `fontless`. A build only touches
 what this file names, so a pack translating one menu lists one resource and
 finishes in seconds.
 
+A resource may hold more than one bank of text. Where it does, the row's
+`subresource` column names the one it means, and a row that leaves it blank
+takes the resource's only bank. The end-credits roll is the one that needs
+it today.
+
 ## Shared-font slots
 
 Dialogue draws from a scene's own font, and the build cuts whatever glyphs a

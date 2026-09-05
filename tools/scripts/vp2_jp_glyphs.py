@@ -39,30 +39,49 @@ def glyph_pixels(block):
     return rows
 
 
-def resource_font(handle, table, total, resource):
-    """Return ``(expanded, layout)`` for a resource's local font, or ``None``."""
+def resource_fonts(handle, table, total, resource):
+    """Every local font an entry carries; a PK1 may hold more than one bank."""
+    from . import container_archive
     from . import vp2_container_text as ct
     raw = dcms.read_entry(handle, table, total, resource)
+    found, seen = [], set()
+
+    def keep(expanded):
+        layout = subtitles.font_layout(expanded)
+        if not layout["glyph_count"]:
+            return
+        mark = (layout["font_start"], layout["glyph_count"], len(expanded))
+        if mark in seen:
+            return
+        seen.add(mark)
+        found.append((expanded, layout))
+
     try:
         offset, length, _ = subtitles.find_dcms(raw, resource)
         body = raw[offset:offset + length]
-        expanded = bytearray(subtitles.slz.decompress(body)
-                             if body[:3] == b"SLZ" else body)
-        layout = subtitles.font_layout(expanded)
-        if layout["glyph_count"]:
-            return expanded, layout
+        keep(bytearray(subtitles.slz.decompress(body)
+                       if body[:3] == b"SLZ" else body))
     except (ValueError, KeyError, IndexError, struct.error):
         pass
     try:
-        blob = ct.unpack_container_entry(bytes(raw), resource)
+        for section in container_archive.pk1_container_sections(bytes(raw)):
+            keep(section["blob"])
     except (ValueError, KeyError, IndexError, struct.error):
-        return None
-    if not blob.startswith(b"mcps2lib"):
-        return None
-    layout = subtitles.font_layout(blob)
-    if not layout["glyph_count"]:
-        return None
-    return blob, layout
+        pass
+    if not found:
+        try:
+            blob = ct.unpack_container_entry(bytes(raw), resource)
+        except (ValueError, KeyError, IndexError, struct.error):
+            return []
+        if blob.startswith(b"mcps2lib"):
+            keep(blob)
+    return found
+
+
+def resource_font(handle, table, total, resource):
+    """Return ``(expanded, layout)`` for a resource's local font, or ``None``."""
+    found = resource_fonts(handle, table, total, resource)
+    return found[0] if found else None
 
 
 def collect(handle, table, total, resources):
@@ -70,27 +89,25 @@ def collect(handle, table, total, resources):
     glyphs = {}
     for resource in resources:
         try:
-            found = resource_font(handle, table, total, resource)
+            fonts = resource_fonts(handle, table, total, resource)
         except (ValueError, KeyError, IndexError, struct.error):
             continue
-        if found is None:
-            continue
-        expanded, layout = found
-        for slot in range(layout["glyph_count"]):
-            block = subtitles.glyph_bitmap(expanded, layout, slot)
-            if not any(block):
-                continue
-            digest = hashlib.sha1(block).hexdigest()
-            entry = glyphs.get(digest)
-            if entry is None:
-                glyphs[digest] = {
-                    "digest": digest, "block": bytes(block),
-                    "resources": {resource}, "slots": 1,
-                    "first_resource": resource, "first_slot": slot,
-                }
-            else:
-                entry["resources"].add(resource)
-                entry["slots"] += 1
+        for expanded, layout in fonts:
+            for slot in range(layout["glyph_count"]):
+                block = subtitles.glyph_bitmap(expanded, layout, slot)
+                if not any(block):
+                    continue
+                digest = hashlib.sha1(block).hexdigest()
+                entry = glyphs.get(digest)
+                if entry is None:
+                    glyphs[digest] = {
+                        "digest": digest, "block": bytes(block),
+                        "resources": {resource}, "slots": 1,
+                        "first_resource": resource, "first_slot": slot,
+                    }
+                else:
+                    entry["resources"].add(resource)
+                    entry["slots"] += 1
     return glyphs
 
 

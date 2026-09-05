@@ -1,21 +1,37 @@
 resource,message_id,translated,notes
-51,2,,
-51,3,,
-51,4,,
-51,5,,
-51,6,,
-51,7,,
-51,8,,
-51,11,,
-51,13,,
-51,14,,
-51,17,,
-51,18,,
-51,15,,
-51,16,,
+51,2,"Você pode ver claramente a estátua no topo da igreja daqui. É a Donzela de Batalha. <PART>
+---
+Se uma gata como ela é minha escolta, pode me inscrever para o Valhalla! <PART>
+---
+Mas não tem como eu lutar como guerreiro dos deuses depois que eu morrer...",
+51,3,"Eu me pergunto quais critérios eles usam para escolher os einherjar, soldados dos deuses...",
+51,4,Qual é toda essa comoção no cais? Hmm... Parece que o mercado também estava fechado hoje.,
+51,5,Uma luz estranha apareceu na direção de Dipan e assustou meu pobre gatinho!,
+51,6,"Você ouviu aquele boato estranho sobre o Dipan?
+Eles querem se opor aos deuses ou algo assim. <PART>
+---
+Quero dizer, seria incrível para a humanidade se libertar do domínio deles, <PART>
+---
+mas estamos falando dos deuses aqui!
+Estou com um pressentimento ruim sobre isso...",
+51,7,"Se o homem se tornar poderoso demais, em algum momento é certo que haverá punição.",
+51,8,"De utopia a cidade perdida da noite para o dia...  
+O fim de Dipan vai condenar Solde também. <PART>  
+---  
+É por isso que estou me preparando para partir.  
+Tenho que ir agora e escapar da correria...",
+51,11,Há algo no chão.,
+51,13,"D <PART> eusa do tempo gira o fio,
+<PART> R <PART> odando e rodando no tear em espiral.",
+51,14,"Parte de um poema, talvez?",
+51,17,"Junte as palavras e venha mais uma vez, quando o fim chegar.",
+51,18,As palavras mudaram.,
+51,15,"De antigos amigos
+vêm bênçãos divinas.",
+51,16,As palavras mudaram.,
 51,1,Sair,not displayed by the event script
-51,9,,
-51,10,,
-51,12,,
+51,9,Ler,
+51,10,Verificar,
+51,12,Emblema tri-<PART> adquirido,
 51,357,Solde,not displayed by the event script
 51,2760,Habitante,not displayed by the event script

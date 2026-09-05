@@ -301,6 +301,7 @@ def compile_build_workspace(
                 "sheet": os.fspath(build_root / "sheets" / source.name),
                 "flags": profile_row.get("flags") or "",
                 "verify": profile_row.get("verify") or "",
+                "subresource": profile_row.get("subresource") or "",
                 "chapter_title": "",
                 "chapter_title_message": "",
             }
@@ -332,7 +333,7 @@ def compile_build_workspace(
 
         manifest_path = staging / "manifest.csv"
         manifest_fields = [
-            "kind", "resource", "sheet", "flags", "verify",
+            "kind", "resource", "sheet", "flags", "verify", "subresource",
             "chapter_title", "chapter_title_message",
         ]
         _write_csv(manifest_path, manifest_fields, manifest_rows)

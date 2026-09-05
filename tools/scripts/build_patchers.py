@@ -151,6 +151,7 @@ def patch_container_resource_in_memory(iso, row, *, primary_lookup=None):
             accent_tokens=(shared_font.SHARED_EXTENSION_TOKENS
                            if 'shared-font-glyphs' in flags else None),
         )
+    subresource = (row.get('subresource') or '').strip()
     return vp2_container_text.patch_resource_in_memory(
         iso,
         int(row['resource']),
@@ -159,6 +160,7 @@ def patch_container_resource_in_memory(iso, row, *, primary_lookup=None):
         accent_donors_path=None,
         warn_line_width=None,
         keep_region='keep-region' in flags,
+        subresource=int(subresource, 0) if subresource else None,
     )
 
 def patch_fontless_resource_in_memory(iso, row, *, primary_lookup=None):

@@ -5,6 +5,7 @@ import csv
 import io
 import os
 import re
+import hashlib
 import struct
 import sys
 
@@ -67,7 +68,7 @@ from .container_archive import (
     _pack_bare_slz, _pack_inline_slz, _pack_zls_stream, _round_up,
     _slz_groups, _tighten, container, container_stream_offset,
     find_container_stream, pack_container_entry, patch_643_literal_probe,
-    patch_slz_literal_source, resource_10_marked_block,
+    patch_slz_literal_source, pk1_section_tag, resource_10_marked_block,
     rewrite_slz_preserving_groups, trace_slz_origins,
     unpack_container_entry,
 )
@@ -113,6 +114,34 @@ def render_tokens(blob, meta, offset, slots):
             out.append("<%04X>" % token)
     return "".join(out), position - start + 1
 
+def codepage_record_is_local(blob, meta, offset):
+    from . import vp2_cutscene_subtitles as subtitles
+
+    position = meta["text_start"] + offset
+    base = meta.get("glyph_base", 0)
+    count = meta.get("glyph_count", 0)
+    while position < meta["text_end"]:
+        byte = blob[position]
+        if byte == 0:
+            break
+        if byte < 0x80:
+            token, position = byte, position + 1
+        else:
+            if position + 1 >= meta["text_end"]:
+                break
+            token, position = byte | (blob[position + 1] << 8), position + 2
+        if subtitles.token_slot(token, base, count) is not None:
+            continue
+        width = subtitles.RECORD_PARAMETERS.get(token, 0)
+        if width:
+            position += width
+            continue
+        text = dcms.decode_english_tokens([token])
+        if text and text.strip():
+            return False
+    return True
+
+
 def render_codepage(blob, meta, offset, accent_tokens=None, alphabet=None):
     """Decode a container record, returning ``(text, byte length)``."""
     # Imported here rather than at module scope, like the other uses in
@@ -121,6 +150,8 @@ def render_codepage(blob, meta, offset, accent_tokens=None, alphabet=None):
 
     start = meta["text_start"] + offset
     position = start
+    if alphabet and not codepage_record_is_local(blob, meta, offset):
+        alphabet = None
     accents = {token: character for character, token in
                (accent_tokens or {}).items()}
     parts = []
@@ -156,8 +187,116 @@ def render_codepage(blob, meta, offset, accent_tokens=None, alphabet=None):
         parts.append(dcms.decode_english_tokens([token]))
     return "".join(parts), position - start
 
-def encode_codepage(text, label="codepage text", accent_tokens=None):
+RUN_BOUNDARIES = frozenset({0x808E})
+
+
+def codepage_record_runs(blob, meta, offset):
+    """The glyph slots the record at *offset* draws, split into runs."""
+    from . import vp2_cutscene_subtitles as subtitles
+
+    base, count = meta["glyph_base"], meta["glyph_count"]
+    position = meta["text_start"] + offset
+    runs, current = [], []
+    while position < meta["text_end"]:
+        byte = blob[position]
+        if byte == 0:
+            break
+        if byte < 0x80:
+            token, position = byte, position + 1
+        else:
+            token, position = byte | (blob[position + 1] << 8), position + 2
+        slot = subtitles.token_slot(token, base, count)
+        if slot is not None:
+            current.append(slot)
+            continue
+        position += subtitles.RECORD_PARAMETERS.get(token, 0)
+        if token in RUN_BOUNDARIES:
+            runs.append(current)
+            current = []
+    runs.append(current)
+    return runs
+
+
+def codepage_run_tokens(blob, meta, offset, alphabet):
+    """Per-run ``{character: token}`` maps for the record at *offset*."""
+    from . import vp2_cutscene_subtitles as subtitles
+
+    base = meta["glyph_base"]
+    # The same rule `render_codepage` decodes by: a mixed record's local
+    # glyphs came back as <XXXX> tags, which re-encode on their own.
+    local = codepage_record_is_local(blob, meta, offset)
+    runs = []
+    for run in codepage_record_runs(blob, meta, offset):
+        current = {}
+        for slot in (run if local else ()):
+            character = alphabet.get(slot)
+            if character and character not in current:
+                current[character] = subtitles.slot_token(slot, base)
+        runs.append(current)
+    return runs
+
+
+def codepage_font_cuts(blob, meta, alphabet):
+    count = meta["glyph_count"]
+    parent = list(range(count))
+
+    def find(node):
+        while parent[node] != node:
+            parent[node] = parent[parent[node]]
+            node = parent[node]
+        return node
+
+    for _message_id, offset in entries(blob, meta):
+        for run in codepage_record_runs(blob, meta, offset):
+            for slot in run[1:]:
+                first, other = find(run[0]), find(slot)
+                if first != other:
+                    parent[first] = other
+    cut_of_slot = [find(slot) for slot in range(count)]
+    cuts = {}
+    for slot in range(count):
+        character = alphabet.get(slot)
+        if character:
+            cuts.setdefault(cut_of_slot[slot], {}).setdefault(character, slot)
+    return cut_of_slot, cuts
+
+
+def codepage_text_runs(text):
+    """Split authored text into the runs a record will draw it in."""
+    runs, current, position = [], [], 0
+    while position < len(text):
+        tag = CODEPAGE_TAG.match(text, position)
+        if not tag:
+            current.append(text[position])
+            position += 1
+            continue
+        token = int(tag.group()[1:-1].partition(":")[0], 16)
+        position = tag.end()
+        if token in RUN_BOUNDARIES:
+            runs.append("".join(current))
+            current = []
+    runs.append("".join(current))
+    return runs
+
+
+def local_codepage_tokens(alphabet, meta):
+    """``{character: token}`` for encoding into a resource's own font."""
+    from . import vp2_cutscene_subtitles as subtitles
+    base = meta.get("glyph_base", 0)
+    out = {}
+    for slot in sorted(alphabet):
+        character = alphabet[slot]
+        if character and character not in out:
+            out[character] = subtitles.slot_token(slot, base)
+    return out
+
+
+def encode_codepage(text, label="codepage text", accent_tokens=None,
+                    local_tokens=None):
     """Encode proved shared-codepage characters and preserved control tags."""
+    runs = local_tokens or {}
+    runs = list(runs) if isinstance(runs, (list, tuple)) else [runs]
+    run = 0
     output = bytearray()
     position = 0
     while position < len(text):
@@ -175,11 +314,15 @@ def encode_codepage(text, label="codepage text", accent_tokens=None):
                 output.extend(struct.pack("<H", token))
             if payload:
                 output.extend(bytes.fromhex(payload))
+            if token in RUN_BOUNDARIES:
+                run = min(run + 1, len(runs) - 1)
             position = tag.end()
             continue
         character = text[position]
-        token = (accent_tokens or {}).get(
-            character, CODEPAGE_CHARACTERS.get(character))
+        token = runs[run].get(character)
+        if token is None:
+            token = (accent_tokens or {}).get(
+                character, CODEPAGE_CHARACTERS.get(character))
         if token is None:
             raise ValueError(
                 "%s uses unsupported shared-codepage character %r at text "
@@ -194,12 +337,17 @@ def encode_codepage(text, label="codepage text", accent_tokens=None):
     output.append(0)
     return bytes(output)
 
-def codepage_semantic_text(text, accent_tokens=None):
+def codepage_semantic_text(text, accent_tokens=None, local_tokens=None,
+                           meta=None, alphabet=None):
     """Render editable codepage text as it will read back from the game."""
-    payload = encode_codepage(text, accent_tokens=accent_tokens)
+    payload = encode_codepage(text, accent_tokens=accent_tokens,
+                              local_tokens=local_tokens)
+    frame = {"text_start": 0, "text_end": len(payload)}
+    if meta is not None:
+        frame["glyph_base"] = meta.get("glyph_base", 0)
+        frame["glyph_count"] = meta.get("glyph_count", 0)
     rendered, _ = render_codepage(
-        payload, {"text_start": 0, "text_end": len(payload)}, 0,
-        accent_tokens=accent_tokens)
+        payload, frame, 0, accent_tokens=accent_tokens, alphabet=alphabet)
     return rendered
 
 def shared_codepage_advances(archive, accent_tokens=None):
@@ -395,8 +543,149 @@ def check_record_extent(resource, extent, limits=None, warn=None):
         % (resource, extent, extent - ceiling, ceiling))
     (warn or (lambda text: print(text, file=sys.stderr)))(message)
 
+def _append_glyph_slot(blob, meta, resource):
+    from . import vp2_cutscene_subtitles as subtitles
+
+    count = meta["glyph_count"]
+    if meta["text_end"] + count * 2 + 2 > meta["font_start"]:
+        raise ValueError(
+            "resource #%d is out of glyph slots: %d cut and the metric table "
+            "holds %d" % (resource, count,
+                          (meta["font_start"] - meta["text_end"]) // 2))
+    try:
+        subtitles.slot_token(count, meta["glyph_base"])
+    except ValueError:
+        raise ValueError(
+            "resource #%d is out of glyph codes: slot %d at base 0x%X needs a "
+            "code past 0xFF, and no record has been seen to address one"
+            % (resource, count, meta["glyph_base"]))
+    font_end = meta["font_start"] + count * GLYPH_BYTES
+    blob[font_end:font_end] = bytearray(GLYPH_BYTES)
+    struct.pack_into("<I", blob, 0x34, count + 1)
+    struct.pack_into("<I", blob, 0x20, len(blob))
+    meta["glyph_count"] = count + 1
+    return count
+
+
+def _compose_into_cut(blob, meta, cut, character, resource):
+    from . import vp2_cutscene_subtitles as subtitles
+    from . import vp2_glyph_compose as glyph_compose
+
+    recipe = glyph_compose.COMPOSITES.get(character)
+    if recipe is None or recipe[1] not in subtitles.ACCENT_MARKS:
+        raise ValueError(
+            "resource #%d cannot draw %r: the face that would draw it does "
+            "not hold it, and it is not a mark over a letter" %
+            (resource, character))
+    base, donor, _position = recipe
+    base_slot = cut.get(base)
+    if base_slot is None:
+        raise ValueError(
+            "resource #%d cannot draw %r: the face that would draw it has no "
+            "%r to put the %s over" % (resource, character, base, donor))
+    origin = meta["font_start"] + base_slot * GLYPH_BYTES
+    stamp = subtitles.ACCENT_MARKS[donor]
+    block = bytes(glyph_compose.compose_character(
+        bytes(blob[origin:origin + GLYPH_BYTES]), character,
+        glyph_compose.unpack(stamp["pixels"]), stamp["rows"],
+        donor_bottom=stamp.get("donor_bottom")))
+    metric = bytes(blob[meta["text_end"] + base_slot * 2:
+                        meta["text_end"] + base_slot * 2 + 2])
+    return block, metric, "%r mark over the face's own %r" % (donor, base)
+
+
+def grow_codepage_font(blob, meta, alphabet, replacements, resource):
+    from . import vp2_cutscene_subtitles as subtitles
+
+    blob = bytearray(blob)
+    meta = dict(meta)
+    alphabet = dict(alphabet)
+    cut_of, cuts = codepage_font_cuts(blob, meta, alphabet)
+    record_runs = {offset: codepage_record_runs(blob, meta, offset)
+                   for _message_id, offset in entries(blob, meta)}
+
+    def faces(runs):
+        """The cut each run draws from; an empty run inherits the last one."""
+        out, last = [], None
+        for run in runs:
+            last = cut_of[run[0]] if run else last
+            out.append(last)
+        return out
+
+    drawn_locally = {offset: codepage_record_is_local(blob, meta, offset)
+                     for offset in record_runs}
+
+    kept, wanted = set(), {}
+    for offset, runs in sorted(record_runs.items()):
+        if offset not in replacements or not drawn_locally[offset]:
+            for run in runs:
+                kept.update(run)
+            continue
+        text_runs = codepage_text_runs(replacements[offset])
+        if len(text_runs) != len(runs):
+            raise ValueError(
+                "resource #%d record at 0x%X draws %d run(s) and its "
+                "translation has %d: a run-boundary tag was added or lost"
+                % (resource, offset, len(runs), len(text_runs)))
+        for text_run, cut_id in zip(text_runs, faces(runs)):
+            for character in text_run:
+                if character == "\n":
+                    continue
+                if cut_id is None:
+                    raise ValueError(
+                        "resource #%d record at 0x%X draws %r in a run that "
+                        "held no glyph, so nothing says which face to cut it "
+                        "in" % (resource, offset, character))
+                slot = cuts[cut_id].get(character)
+                if slot is None:
+                    wanted.setdefault(cut_id, set()).add(character)
+                else:
+                    kept.add(slot)
+
+    free = {}
+    for slot in range(meta["glyph_count"]):
+        if slot not in kept:
+            free.setdefault(cut_of[slot], []).append(slot)
+
+    recut = []
+    for cut_id in sorted(wanted):
+        for character in sorted(wanted[cut_id]):
+            block, metric, source = _compose_into_cut(
+                blob, meta, cuts[cut_id], character, resource)
+            spare = free.get(cut_id)
+            if spare:
+                slot = spare.pop(0)
+                released = alphabet.get(slot)
+            else:
+                slot = _append_glyph_slot(blob, meta, resource)
+                cut_of.append(cut_id)
+                released = None
+            origin = meta["font_start"] + slot * GLYPH_BYTES
+            blob[origin:origin + GLYPH_BYTES] = block
+            blob[meta["text_end"] + slot * 2:
+                 meta["text_end"] + slot * 2 + 2] = metric
+            alphabet[slot] = character
+            cuts[cut_id][character] = slot
+            recut.append({"character": character, "slot": slot,
+                          "source": source, "released": released})
+
+    base = meta["glyph_base"]
+    runs_by_offset = {}
+    for offset in replacements:
+        if not drawn_locally[offset]:
+            runs_by_offset[offset] = [{} for _run in record_runs[offset]]
+            continue
+        runs_by_offset[offset] = [
+            {} if cut_id is None else
+            {character: subtitles.slot_token(slot, base)
+             for character, slot in cuts[cut_id].items()}
+            for cut_id in faces(record_runs[offset])]
+    return blob, meta, alphabet, runs_by_offset, recut
+
+
 def rebuild_codepage_records(blob, resource, translations,
-                             accent_tokens=None, keep_region=False):
+                             accent_tokens=None, keep_region=False,
+                             alphabet=None):
     """Replace indexed codepage records and relocate the whole text region."""
     if not translations:
         return bytearray(blob), 0
@@ -429,6 +718,18 @@ def rebuild_codepage_records(blob, resource, translations,
                              "their translations differ" % (resource, aliases))
         replacements[offset] = (text, message["byte_length"])
 
+    runs_by_offset, recut = {}, []
+    if alphabet is not None:
+        blob, meta, alphabet, runs_by_offset, recut = grow_codepage_font(
+            blob, meta, alphabet,
+            {offset: text for offset, (text, _length) in replacements.items()},
+            resource)
+        for row in recut:
+            print("  cut %r into resource #%d slot %d, %s%s"
+                  % (row["character"], resource, row["slot"], row["source"],
+                     "" if row["released"] is None
+                     else ", reusing the slot %r had" % row["released"]))
+
     encoded = {
         offset: encode_codepage(
             text,
@@ -436,7 +737,8 @@ def rebuild_codepage_records(blob, resource, translations,
                 resource,
                 ",".join(str(item["message_id"])
                          for item in messages_by_offset[offset])),
-            accent_tokens=accent_tokens)
+            accent_tokens=accent_tokens,
+            local_tokens=runs_by_offset.get(offset))
         for offset, (text, _) in replacements.items()
     }
     if all(len(encoded[offset]) <= old_length
@@ -447,12 +749,15 @@ def rebuild_codepage_records(blob, resource, translations,
             blob[start:start + old_length] = (
                 payload + bytes(old_length - len(payload)))
         _, check = read_messages(
-            bytes(blob), resource, codepage_accents=accent_tokens)
+            bytes(blob), resource, codepage_accents=accent_tokens,
+            alphabet=alphabet)
         check_by_id = {str(message["message_id"]): message for message in check}
         failures = []
         for key, row in translations.items():
             expected = codepage_semantic_text(
-                row["translated"], accent_tokens=accent_tokens)
+                row["translated"], accent_tokens=accent_tokens,
+                local_tokens=runs_by_offset.get(by_id[key]["offset"]),
+                meta=meta, alphabet=alphabet)
             if check_by_id.get(key, {}).get("original_en") != expected:
                 failures.append(key)
         if failures:
@@ -468,12 +773,6 @@ def rebuild_codepage_records(blob, resource, translations,
     if nonzero_end < region_size:
         nonzero_end += 1
     used_end = max(indexed_end, nonzero_end)
-    # What the records will reach once every replacement is applied.  A
-    # shorter translation pays back into it, so this is the net.
-    wanted_extent = used_end + sum(
-        len(encoded[offset]) - old_length
-        for offset, (_text, old_length) in replacements.items())
-    check_record_extent(resource, wanted_extent)
     if keep_region:
         budget = region_size - used_end
         costs = sorted(
@@ -494,25 +793,37 @@ def rebuild_codepage_records(blob, resource, translations,
                   "%d left out to keep the container its original size"
                   % (budget, len(replacements), len(dropped)))
     offsets = sorted(messages_by_offset)
-    moved, rebuilt = {}, bytearray()
-    for index, offset in enumerate(offsets):
-        limit = offsets[index + 1] if index + 1 < len(offsets) else used_end
-        if not offset <= limit <= used_end:
-            raise ValueError("resource #%d has invalid message offsets" % resource)
-        segment = bytes(blob[meta["text_start"] + offset:
-                             meta["text_start"] + limit])
-        moved[offset] = len(rebuilt)
-        replacement = replacements.get(offset)
-        if replacement is not None:
-            text, old_length = replacement
-            if old_length > len(segment):
-                raise ValueError("resource #%d message at 0x%X overlaps the "
-                                 "next record" % (resource, offset))
-            aliases = ",".join(str(item["message_id"])
-                               for item in messages_by_offset[offset])
-            payload = encoded[offset]
-            segment = payload + segment[old_length:]
-        rebuilt += segment
+
+    def _rebuild_region(active):
+        """Rebuild the region, emitting one copy of each repeated record."""
+        moved, rebuilt, emitted, shared = {}, bytearray(), {}, 0
+        for index, offset in enumerate(offsets):
+            limit = offsets[index + 1] if index + 1 < len(offsets) else used_end
+            if not offset <= limit <= used_end:
+                raise ValueError(
+                    "resource #%d has invalid message offsets" % resource)
+            segment = bytes(blob[meta["text_start"] + offset:
+                                 meta["text_start"] + limit])
+            replacement = replacements.get(offset) if offset in active else None
+            if replacement is not None:
+                _text, old_length = replacement
+                if old_length > len(segment):
+                    raise ValueError(
+                        "resource #%d message at 0x%X overlaps the "
+                        "next record" % (resource, offset))
+                segment = encoded[offset] + segment[old_length:]
+                previous = emitted.get(segment)
+                if previous is not None:
+                    moved[offset] = previous
+                    shared += 1
+                    continue
+                emitted[segment] = len(rebuilt)
+            moved[offset] = len(rebuilt)
+            rebuilt += segment
+        return rebuilt, moved, shared
+
+    rebuilt, moved, shared = _rebuild_region(set(replacements))
+    check_record_extent(resource, len(rebuilt))
 
     if len(rebuilt) > region_size and keep_region:
         raise RegionOverflow(len(rebuilt) - region_size)
@@ -540,14 +851,17 @@ def rebuild_codepage_records(blob, resource, translations,
     # A semantic read-back catches an encoder/relocation mismatch before the
     # much larger ISO is copied.  Tags are canonicalised to upper-case.
     _, check = read_messages(
-        bytes(blob), resource, codepage_accents=accent_tokens)
+        bytes(blob), resource, codepage_accents=accent_tokens,
+        alphabet=alphabet)
     check_by_id = {str(message["message_id"]): message for message in check}
     failures = []
     for key, row in translations.items():
         if by_id[key]["offset"] not in replacements:
             continue
         expected = codepage_semantic_text(
-            row["translated"], accent_tokens=accent_tokens)
+            row["translated"], accent_tokens=accent_tokens,
+            local_tokens=runs_by_offset.get(by_id[key]["offset"]),
+            meta=meta, alphabet=alphabet)
         if check_by_id.get(key, {}).get("original_en") != expected:
             failures.append(key)
     if failures:
@@ -582,13 +896,12 @@ def cmd_codepage(args):
         print(path)
     print("%d glyphs; the caption is the codepage byte, and what it draws is "
           "what vp2_dcms.decode_english_tokens should say" % len(rows))
-    # An unknown value renders as the six characters of a <XXXX> tag; testing
-    # for a leading bracket instead would report 0x1D, which is `<` itself.
     mismatch = [row["glyph"] for row in rows
                 if len(dcms.decode_english_tokens([int(row["glyph"], 16)])) != 1]
     print("unnamed codes:", " ".join(mismatch) if mismatch else "none")
 
-def japanese_text(iso_path, resource, glyph_table, names_path=None):
+def japanese_text(iso_path, resource, glyph_table, names_path=None,
+                  subresource=None):
     """Return ``{string message id: Japanese}`` for a Japanese text bank."""
     import hashlib
     from . import vp2_cutscene_subtitles as subs
@@ -599,7 +912,8 @@ def japanese_text(iso_path, resource, glyph_table, names_path=None):
     with open(iso_path, "rb") as handle:
         _, total, table = triace.load_table(handle)
         blob = unpack_container_entry(
-            bytes(read_entry(handle, table, total, resource)), resource)
+            bytes(read_entry(handle, table, total, resource)), resource,
+            subresource)
     meta = layout(blob)
     font = struct.unpack_from("<I", blob, 0x30)[0]
     names = []
@@ -639,7 +953,35 @@ def japanese_text(iso_path, resource, glyph_table, names_path=None):
         out[key] = "".join(pieces)
     return out
 
-def read_messages(blob, resource, slots=None, codepage_accents=None):
+def local_alphabet(blob, meta, resource=None):
+    from . import vp2_cutscene_subtitles as subtitles
+    names, _rejects = subtitles.load_name_corrections()
+    start = meta.get("font_start") or 0
+    count = meta.get("glyph_count") or 0
+    if not start or not count:
+        return {}
+    out = {}
+    for slot in range(count):
+        block = bytes(blob[start + slot * GLYPH_BYTES:
+                           start + (slot + 1) * GLYPH_BYTES])
+        name = names.get(hashlib.sha1(block).hexdigest())
+        if name:
+            out[slot] = name
+    for slot, name in enumerate(SLOT_NAMES.get(resource) or []):
+        if name and slot < count:
+            out[slot] = name
+    return out
+
+
+def resource_alphabet(blob, resource):
+    """The resource's own font names, or ``{}`` when it has no font header."""
+    if len(blob) < 0x54:
+        return {}
+    return local_alphabet(bytearray(blob), layout(bytearray(blob)), resource)
+
+
+def read_messages(blob, resource, slots=None, codepage_accents=None,
+                  alphabet=None):
     """Every message, decoded with whichever record format it uses."""
     meta = layout(blob)
     if slots is None:
@@ -657,7 +999,8 @@ def read_messages(blob, resource, slots=None, codepage_accents=None):
             kind = "token"
         else:
             text, length = render_codepage(
-                blob, meta, offset, accent_tokens=codepage_accents)
+                blob, meta, offset, accent_tokens=codepage_accents,
+                alphabet=alphabet)
             kind = "codepage"
         rows.append({"resource": resource, "message_id": message_id,
                      "offset": offset, "byte_length": length, "kind": kind,
@@ -697,10 +1040,18 @@ def walk_block(blob, meta, slots):
     return out
 
 def cmd_export(args):
+    subresource = getattr(args, "subresource", None)
+    section_tag = None
     with open(args.iso, "rb") as handle:
         _, total, table = triace.load_table(handle)
-        blob = container(handle, table, total, args.resource)
-    meta, rows = read_messages(blob, args.resource)
+        blob = container(handle, table, total, args.resource, subresource)
+        if subresource is not None:
+            section_tag = pk1_section_tag(
+                bytes(read_entry(handle, table, total, args.resource)),
+                subresource)
+    meta, rows = read_messages(
+        blob, args.resource,
+        alphabet=resource_alphabet(blob, args.resource))
     slots = SLOT_NAMES.get(args.resource, [])
     keep = [dict(row, key=str(row["message_id"]))
             for row in rows if row["original_en"].strip()
@@ -721,7 +1072,8 @@ def cmd_export(args):
         japanese = japanese_text(
             args.jp_iso, args.resource,
             getattr(args, "jp_glyphs", None),
-            getattr(args, "jp_names", None))
+            getattr(args, "jp_names", None),
+            section_tag)
     fields = ["resource", "message_id", "kind", "offset", "byte_length",
               "original_en", "original_jp", "translated"]
     keep.sort(key=lambda r: r["offset"])
@@ -843,6 +1195,7 @@ def record_kind(row):
 
 def patch_resource_in_memory(iso, resource, supplied, *,
                              shared_font_glyphs=False,
+                             subresource=None,
                              accent_donors_path=None,
                              warn_line_width=None,
                              keep_region=False):
@@ -886,17 +1239,22 @@ def patch_resource_in_memory(iso, resource, supplied, *,
                   "(limit %d); the game may auto-wrap it: %s" %
                   (resource, message_id, line_number, width,
                    warn_line_width, line))
-    blob = bytearray(unpack_container_entry(bytes(raw), resource))
+    blob = bytearray(unpack_container_entry(bytes(raw), resource,
+                                            subresource))
+
+    codepage_alphabet = resource_alphabet(blob, resource) or None
     if not rows:
         blob, codepage_written = rebuild_codepage_records(
             blob, resource, codepage_rows,
-            accent_tokens=accent_tokens, keep_region=keep_region)
-        raw, details = pack_container_entry(raw, blob, resource)
+            accent_tokens=accent_tokens, keep_region=keep_region,
+            alphabet=codepage_alphabet)
+        raw, details = pack_container_entry(raw, blob, resource,
+                                           subresource)
         iso.write_entry(resource, raw)
         if font_patch and not font_patch[1].get("no_op"):
             iso.write_entry(SHARED_FONT_ENTRY, font_patch[0])
         return _finish_patch(iso, resource, raw, blob, codepage_written,
-                             details, font_patch)
+                             details, font_patch, subresource)
 
     meta = layout(blob)
     slots = SLOT_NAMES.get(resource)
@@ -1076,19 +1434,22 @@ def patch_resource_in_memory(iso, resource, supplied, *,
         raise ValueError("no token records were translated")
     blob, codepage_written = rebuild_codepage_records(
         blob, resource, codepage_rows,
-        accent_tokens=accent_tokens, keep_region=keep_region)
-    raw, details = pack_container_entry(raw, blob, resource)
+        accent_tokens=accent_tokens, keep_region=keep_region,
+        alphabet=resource_alphabet(blob, resource) or None)
+    raw, details = pack_container_entry(raw, blob, resource,
+                                        subresource)
     iso.write_entry(resource, raw)
     if font_patch and not font_patch[1].get("no_op"):
         iso.write_entry(SHARED_FONT_ENTRY, font_patch[0])
     return _finish_patch(iso, resource, raw, blob, written + codepage_written,
-                         details, font_patch)
+                         details, font_patch, subresource)
 
 def _finish_patch(iso, resource, raw, expected_blob, written, details,
-                  font_patch):
+                  font_patch, subresource=None):
     """Verify a write against the buffer and return the patch summary dict."""
     stored = iso.read_entry(resource)
-    check = unpack_container_entry(bytes(stored), resource)
+    check = unpack_container_entry(bytes(stored), resource,
+                                   subresource)
     if check != bytes(expected_blob):
         raise ValueError("output ISO container does not read back byte-for-byte")
     if font_patch and not font_patch[1].get("no_op"):
@@ -1152,6 +1513,14 @@ def cmd_probe_643(args):
     print("verified Party -> Tarty in messages 6, 15 and 23; no recompression")
     print("verified: %s" % args.output_iso)
 
+def _subresource(value):
+    """A PK1 row number, or the table tag that names it on any image."""
+    try:
+        return int(value, 0)
+    except ValueError:
+        return value
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -1160,6 +1529,10 @@ def main():
     export.add_argument("iso")
     export.add_argument("csv")
     export.add_argument("--resource", type=int, default=10)
+    export.add_argument("--subresource", type=_subresource, default=None,
+                        help="PK1 row number or table tag holding the bank, "
+                             "for a resource whose text is not in the first "
+                             "one")
     export.add_argument("--jp-iso", help="Japanese image to read original_jp from")
     export.add_argument("--jp-glyphs", help="the working glyph table holding the bitmaps")
     export.add_argument("--jp-names", help="digest-to-character names for Japanese glyphs")

@@ -243,6 +243,38 @@ def _export_containers(
     return sheets, lines, skipped
 
 
+CONTAINER_SUBRESOURCES = {31: 10}
+
+def _export_container_subresources(
+    usa_image: Path,
+    output: Path,
+    japanese_image: Path | None,
+    japanese_glyphs: Path | None,
+    japanese_names: Path,
+) -> tuple[int, int]:
+    """Export container banks the inventory's classification does not reach."""
+    output.mkdir(parents=True, exist_ok=True)
+    sheets = lines = 0
+    for resource, subresource in sorted(CONTAINER_SUBRESOURCES.items()):
+        target = output / f"container-{resource:04d}.csv"
+        args = SimpleNamespace(
+            iso=os.fspath(usa_image),
+            csv=os.fspath(target),
+            resource=resource,
+            subresource=subresource,
+            jp_iso=os.fspath(japanese_image) if japanese_image else None,
+            jp_glyphs=os.fspath(japanese_glyphs) if japanese_glyphs else None,
+            jp_names=os.fspath(japanese_names),
+        )
+        with contextlib.redirect_stdout(io.StringIO()):
+            vp2_container_text.cmd_export(args)
+        count = _normalize_source_sheet(target, "container")
+        if count:
+            sheets += 1
+            lines += count
+    return sheets, lines
+
+
 def _export_dragon_hall_prompts(
     usa_image: Path,
     output: Path,
@@ -498,6 +530,11 @@ def generate_workspace(
         container_sheets, container_lines, skipped = _export_containers(
             usa, usa_rows, records_dir / "containers", japanese,
             japanese_glyphs, japanese_names)
+        extra_sheets, extra_lines = _export_container_subresources(
+            usa, records_dir / "containers", japanese, japanese_glyphs,
+            japanese_names)
+        container_sheets += extra_sheets
+        container_lines += extra_lines
         dragon_sheets, dragon_lines = _export_dragon_hall_prompts(
             usa, records_dir / "containers", japanese)
         container_sheets += dragon_sheets
