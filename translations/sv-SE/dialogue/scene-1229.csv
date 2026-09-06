@@ -1,16 +1,21 @@
 resource,message_id,translated,notes
-1229,1,,
-1229,10,,
-1229,2,,
-1229,3,,
-1229,4,,
-1229,5,,
-1229,6,,
-1229,7,,
-1229,8,,
-1229,11,,
-1229,12,,
-1229,14,,
+1229,1,"Vad är det för min, kära du?",
+1229,10,"Ni får helt enkelt hålla er stilla en liten stund
+medan vi avslutar vår forskning.",
+1229,2,"Men det är raka vägen till giljotinen
+för er två!",
+1229,3,Du kommer inte att skada henne.,
+1229,4,Backa!,
+1229,5,"Försynens vingar, för mig till säkerheten!",
+1229,6,Vid Odens korp!,
+1229,7,"Det var en teleportationsbesvärjelse.
+Den förrädaren Dallas <PART> ----",
+1229,8,"Dallas sitter ordentligt inlåst
+i fängelsehålan.",
+1229,11,Vad hände?,
+1229,12,Den nye lärlingen!,
+1229,14,"Vem annan än de tre vise skulle kunna
+kasta en sådan besvärjelse?",
 1229,2758,,
 1229,2759,,
 1229,2760,,
@@ -20,27 +25,38 @@ resource,message_id,translated,notes
 1229,2764,,
 1229,2765,,
 1229,2766,,
-1229,139,,
-1229,140,,
-1229,141,,
-1229,142,,
-1229,143,,
-1229,154,,
-1229,144,,
-1229,145,,
-1229,146,,
-1229,147,,
-1229,148,,
-1229,160,,
-1229,149,,
-1229,150,,
-1229,156,,
-1229,155,,
-1229,151,,
-1229,152,,
-1229,153,,
-1229,158,,
-1229,159,,
+1229,139,"Nå, då så.",
+1229,140,"Ja, men jag vet inte hur.",
+1229,141,"Hallå! Sover Silmeria Valkyria
+där uppe!?",
+1229,142,Jag vet inte. Hon svarar mig inte.,
+1229,143,"Kanske kände hon av Hrist och nu
+gömmer hon sig.",
+1229,154,Förföljs vi?,
+1229,144,Dallas.,
+1229,145,Vem är det?,
+1229,146,Om Dallas vore här...,
+1229,147,"Han är en barndomsvän. Jag hörde att han
+har blivit en av de tre vise.",
+1229,148,De tre vise?,
+1229,160,Låt oss gå.,
+1229,149,"Jag hoppas att vi kan hitta dem.
+Håll ihop.",
+1229,150,"Snälla, tala med mig. Jag behöver din hjälp...",
+1229,156,"Innan vi träffar Hans Höghet, var planen väl
+att utvärdera Dipans situation.",
+1229,155,"Vänta, det sa ingen något om det!
+Det här håller på att spåra ur.",
+1229,151,"Ni har väl inte en enda lojal tjänare
+kvar i slottet?",
+1229,152,"Jag är ganska säker på att de tre vises
+laboratorium ligger under jorden.",
+1229,153,"Men det är bara vad jag har hört <PART> ---- <PART> Jag
+har faktiskt aldrig varit där nere.",
+1229,158,"Jag minns underjordiska kammare, men på den tiden
+användes de som fängelsehålor.",
+1229,159,"Tror du att de vet vad Dipan
+har i kikaren?",
 1229,2292,,
 1229,2293,,
 1229,2294,,

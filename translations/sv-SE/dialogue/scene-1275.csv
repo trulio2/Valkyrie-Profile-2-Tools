@@ -1,19 +1,26 @@
 resource,message_id,translated,notes
-1275,1,,
-1275,2,,
-1275,3,,
-1275,4,,
-1275,5,,
-1275,6,,
-1275,7,,
-1275,8,,
-1275,15,,
-1275,10,,
-1275,16,,
-1275,11,,
-1275,12,,
-1275,13,,
-1275,14,,
+1275,1,"Det har förts till Drakheders
+palats.",
+1275,2,...!,
+1275,3,...!,
+1275,4,"Demon som smutskastar denna heliga
+mark <PART> ---- <PART> du finner ingen fristad här!",
+1275,5,Det var något nytt.,
+1275,6,"Hm. En timid liten demon, va?",
+1275,7,"Jag har hört att det i sällsynta fall finns
+tama odöda som föredrar att inte slåss.",
+1275,8,Men jag har aldrig faktiskt sett en förrän nu.,
+1275,15,Glöm det. Låt oss gå.,
+1275,10,"Vad ser du på, min herre?",
+1275,16,Det är ingen liten sak.,
+1275,11,"Underskatta inte de odödas härskare.
+Vår lägre gud räcker kanske inte
+för att stoppa honom.",
+1275,12,Vad ska vi göra då?,
+1275,13,"Jag anser att vi väntar och vakar över dem tills vidare.
+Allt kommer att klarna inom kort.",
+1275,14,"Under tiden kan vi vara glada över att vi har hittat
+en ersättning för klotet.",
 1275,2760,,
 1275,2761,,
 1275,2762,,
