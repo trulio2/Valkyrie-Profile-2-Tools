@@ -1,45 +1,67 @@
 resource,message_id,translated,notes
-1239,33,,
-1239,1,,
-1239,2,,
-1239,41,,
-1239,42,,
-1239,4,,
-1239,5,,
-1239,6,,
-1239,7,,
-1239,8,,
-1239,9,,
-1239,11,,
-1239,12,,
-1239,13,,
-1239,14,,
-1239,15,,
-1239,16,,
-1239,17,,
-1239,18,,
-1239,19,,
-1239,20,,
-1239,25,,
-1239,26,,
-1239,21,,
-1239,22,,
-1239,23,,
-1239,24,,
-1239,31,,
-1239,3,,
-1239,27,,
-1239,28,,
-1239,29,,
-1239,30,,
-1239,32,,
-1239,34,,
-1239,36,,
-1239,35,,
-1239,37,,
-1239,38,,
-1239,39,,
-1239,40,,
+1239,33,Var är vi?,
+1239,1,Kollapsade slottet?,
+1239,2,"Det var en teleportationsbesvärjelse.
+Alicia, Ers Majestät.",
+1239,41,Och du är...?,
+1239,42,Lezard.,
+1239,4,"Jag har hjälpt de tre vise
+med deras forskning som lärling.",
+1239,5,"Ursäkta mig, men varför räddade du oss?",
+1239,6,"Jag tänkte att prinsessan kunde få stopp
+på kungens farliga forskning.",
+1239,7,"Kan du berätta mer om den farliga
+forskningen?",
+1239,8,Kungen...,
+1239,9,"strävar efter att övervinna dödligheten
+genom att skapa en sluten tidslinje.",
+1239,11,"Med andra ord, frihet från gudarna.",
+1239,12,"Det är mer än transcendens. Vad han söker
+är en kraft som bara Odin besitter.",
+1239,13,Är det därför de behöver Drakklotet?,
+1239,14,"Det var deras slutsats... efter
+otaliga misslyckade experiment på alver och
+odöda.",
+1239,15,Fan...,
+1239,16,"Så Dipan ensamt ska bryta sig loss från naturens
+lagar och njuta evigt välstånd...",
+1239,17,Jag tyckte själv att det var absurt...,
+1239,18,Lady Silmeria Valkyria.,
+1239,19,Så du känner till mig.,
+1239,20,Bara det Dallas berättade för mig.,
+1239,25,"Det sägs att Drakklotet har tillräckligt
+med kraft för att sätta hela världen i brand.",
+1239,26,"Även gudar är maktlösa inför det.
+Kungens plan kan vara genomförbar.",
+1239,21,Den ed jag svurit till Dipan gäller fortfarande.,
+1239,22,"Du säger det nu, men kanske tar du
+bara klotet och springer till Odin!",
+1239,23,Jag ska visa er att jag menar allvar!,
+1239,24,"Då lämnar vi skogen och beger oss till
+Coriander innan förföljarna hinner ifatt.",
+1239,31,Det var den sista registrerade viloplatsen för klotet...,
+1239,3,"Ursäkta mig. Jag hade inget val än att
+använda så grova metoder.",
+1239,27,"Du tänker väl inte leta efter klotet
+åt Dipan, va!?",
+1239,28,För Dipan? Nej. För hela Midgård.,
+1239,29,"Jag ska hitta klotet, och Alicia ska bli
+dess väktare.",
+1239,30,"Det skulle göra slut på kungens farliga
+forskning <PART> ---- <PART> eller hur, Lezard?",
+1239,32,Så det är där vi hittar Drakklotet?,
+1239,34,"Ett nytt världsträd som inte har sitt ursprung i
+himmelen, underjorden eller
+de dödligas värld.",
+1239,36,"Om det verkligen är din teori, så följ med
+och hindra det från att hända.",
+1239,35,"Men om du inte menar allvar med att strida
+mot Odin har du ingen chans.",
+1239,37,Jag tror vi är utanför.,
+1239,38,"Lezard Valeth, till er tjänst.",
+1239,39,Du är allt jag hade hoppats att du skulle vara.,
+1239,40,"Vi behöver allas styrka för att klara
+det här. Jag räknar med er alla.",
 1239,2757,,
 1239,2758,,
 1239,2759,,

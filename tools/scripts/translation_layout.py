@@ -24,7 +24,7 @@ from .translation_pack import (
     stable_key,
 )
 
-DIALOGUE_CONTAINERS = frozenset({"10", "31"})
+DIALOGUE_CONTAINERS = frozenset({"10", "31", "2591"})
 
 MENU_LAYOUT_FIELDS = (
     "menu",

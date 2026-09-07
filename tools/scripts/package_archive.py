@@ -238,12 +238,13 @@ def _first_stream_size(package: bytes, steps: tuple[PackageStep, ...]) -> int | 
     return None
 
 
-def pack_container(raw: bytes, blob: bytes) -> tuple[bytes, dict]:
+def pack_container(raw: bytes, blob: bytes, *,
+                   absorb_growth: bool = False) -> tuple[bytes, dict]:
     """Replace the sole nested MCPS2 bank without moving package items."""
     original, path = locate_container(raw)
     root = raw[path.root_offset:path.root_offset + path.root_size]
     rebuilt_root = _replace(root, path.steps, bytes(blob))
-    if len(rebuilt_root) > path.root_size:
+    if len(rebuilt_root) > path.root_size and not absorb_growth:
         raise PackageError(
             "rebuilt p@Ck package needs %d bytes but the entry holds %d; the "
             "growth has to be absorbed by an enclosing compressed item"
@@ -254,12 +255,17 @@ def pack_container(raw: bytes, blob: bytes) -> tuple[bytes, dict]:
     rebuilt = bytearray(raw)
     rebuilt[path.root_offset:path.root_offset + path.root_size] = rebuilt_root
     checked, checked_path = locate_container(bytes(rebuilt))
-    if checked != bytes(blob) or checked_path != path:
+    if checked != bytes(blob):
+        raise PackageError("rebuilt p@Ck package did not read back byte-for-byte")
+    if (checked_path.root_offset != path.root_offset
+            or checked_path.steps != path.steps
+            or (checked_path.root_size != path.root_size
+                and not absorb_growth)):
         raise PackageError("rebuilt p@Ck package did not read back byte-for-byte")
     return bytes(rebuilt), {
         "wrapper": "p@Ck",
         "package_offset": path.root_offset,
-        "package_size": path.root_size,
+        "package_size": len(rebuilt_root),
         "items": [step.item for step in path.steps],
         "stored_before": stored_before if stored_before is not None else len(original),
         "stored_after": stored_after if stored_after is not None else len(blob),

@@ -5,6 +5,7 @@ import struct
 import sys
 
 from . import package_archive
+from . import encrypted_entry
 from . import protected_package
 from .slz import decompress
 from .vp2_dcms import parse_pk1, read_entry
@@ -161,6 +162,11 @@ def unpack_container_entry(raw, resource, subresource=None):
         section = _pk1_container_section(raw, subresource)
         if section is not None:
             blob = section["blob"]
+    if blob is not None and blob[:8] != b"mcps2lib" and blob[:4] == b"p@Ck":
+        try:
+            return package_archive.unpack_container(blob)
+        except package_archive.ContainerNotFound:
+            pass
     if blob is None or blob[:8] != b"mcps2lib":
         _, blob = find_container_stream(bytes(raw))
     if blob is None:
@@ -172,6 +178,11 @@ def unpack_container_entry(raw, resource, subresource=None):
                 blob = package_archive.unpack_container(clear)
             except (protected_package.ProtectedPackageError,
                     package_archive.ContainerNotFound) as protected_exc:
+                if encrypted_entry.is_encrypted(resource):
+                    # Strip the keystream and read it by the ordinary routes.
+                    return unpack_container_entry(
+                        encrypted_entry.decode_entry(raw, resource),
+                        resource, subresource)
                 raise ValueError(
                     "resource #%d is not a readable container (%r)" %
                     (resource, bytes(raw[:4]))) from protected_exc
@@ -662,6 +673,13 @@ def pack_container_entry(raw, blob, resource, subresource=None):
     if section is not None:
         return _pack_pk1_slz(raw, blob, resource, section)
     at = container_stream_offset(raw)
+    if raw[:3] == b"SLZ":
+        try:
+            inner = decompress(raw)
+        except Exception:
+            inner = None
+        if inner is not None and inner[:4] == b"p@Ck":
+            return _pack_packaged_slz(raw, inner, blob, resource)
     if at == 0 and raw[:3] == b"SLZ":
         return _pack_bare_slz(raw, blob, resource)
     if at is not None and at >= 0x10 and raw[at - 0x10:at - 0x10 + 4] == b"ZLS\0" \
@@ -692,6 +710,21 @@ def pack_container_entry(raw, blob, resource, subresource=None):
     except (protected_package.ProtectedPackageError,
             package_archive.ContainerNotFound):
         pass
+    if encrypted_entry.is_encrypted(resource):
+        clear = encrypted_entry.decode_entry(raw, resource)
+        rebuilt_clear, details = pack_container_entry(
+            clear, blob, resource, subresource)
+        if len(rebuilt_clear) != len(raw):
+            raise ValueError(
+                "resource #%d changed length under its keystream: %d to %d"
+                % (resource, len(raw), len(rebuilt_clear)))
+        rebuilt = encrypted_entry.encode_entry(rebuilt_clear, resource)
+        if unpack_container_entry(rebuilt, resource, subresource) != bytes(blob):
+            raise ValueError(
+                "resource #%d encrypted entry does not read back "
+                "byte-for-byte" % resource)
+        return rebuilt, {**details,
+                         "wrapper": "encrypted " + details["wrapper"]}
     raise ValueError(
         "resource #%d keeps its container at %s, neither a bare first "
         "MCPS2/SLZ stream nor an SLZ wrapped in a ZLS header; the packer can "
@@ -796,6 +829,24 @@ def _pack_inline_slz(raw, blob, resource, container_offset):
         raise ValueError("resource #%d packed entry does not read back "
                          "byte-for-byte" % resource)
     return bytes(rebuilt), details
+
+def _pack_packaged_slz(raw, inner, blob, resource):
+    rebuilt_inner, details = package_archive.pack_container(
+        inner, blob, absorb_growth=True)
+    packed, _stored = _compress_container(rebuilt_inner, raw[3])
+    if len(packed) > len(raw):
+        raise ValueError(
+            "resource #%d rebuilt to %d compressed bytes and its entry holds "
+            "%d" % (resource, len(packed), len(raw)))
+    rebuilt = bytearray(len(raw))
+    rebuilt[:len(packed)] = packed
+    return bytes(rebuilt), {
+        **details,
+        "wrapper": "SLZ p@Ck",
+        "compressed_before": len(raw),
+        "compressed_after": len(packed),
+    }
+
 
 def _pack_bare_slz(raw, blob, resource):
     """Rewrite a bare SLZ stream, the entry's first stream."""

@@ -1,11 +1,158 @@
 resource,message_id,translated,notes
-2591,1,,
-2591,2,,
-2591,3,,
-2591,4,,
-2591,5,,
-2591,6,,
-2591,7,,
-2591,8,,
-2591,9,,
+2591,1,"<808E:00008040>Bem-vindo ao tutorial de batalha!<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Movimentação<0066><0065>
+<8085><8089><8087>Todo o grupo pode ser movimentado
+ao mover o direcional analógico esquerdo.
+Posicione o grupo movendo
+o direcional analógico esquerdo.<8098:00><8097:00000000>
+
+Para começar, tente mover o
+direcional analógico esquerdo.<8098:00><8097:00000000><808F>",
+2591,2,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Pontos de Ação (AP)<0066><0065>
+<8085><8089><8087>Observe a barra amarela na
+parte inferior da tela. Ela indica
+a quantidade de Pontos de Ação
+(ou ""AP"") que o grupo
+possui.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Pontos de Ação (AP)<0066><0065>
+<8085><8089><8087>Essa barra de AP representa o
+número de ações que o grupo
+pode realizar.
+A barra diminui sempre que um
+personagem do jogador realiza uma ação.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Pontos de Ação (AP)<0066><0065>
+<8085><8089><8087>Simplesmente se mover recupera
+AP perdido ao longo do tempo.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Pontos de Ação (AP)<0066><0065>
+<8085><8089><8087>Ou pressione <808A:0000803F0000603F><8099:38><808B> para recuperar AP
+quando achar conveniente.
+
+
+Agora, mantenha pressionado <808A:0000803F0000603F><8099:38><808B> para levar
+seu AP ao máximo.<8098:00><8097:00000000><808F>",
+2591,3,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Alcance de Ataque<0066><0065>
+<8085><8089><8087>Observe o chão ao redor
+do grupo.
+O círculo que você vê aqui é o
+alcance de ataque do grupo.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Alcance de Ataque<0066><0065>
+<8085><8089><8087>Se um inimigo-alvo entrar neste
+alcance, ""Target"" aparecerá sobre
+a cabeça dele.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Alcance de Ataque<0066><0065>
+<8085><8089><8087>Com o inimigo-alvo ao alcance,
+pressione <808A:0000803F0000603F><8099:08><8099:06><8099:07><8099:05><808B> para fazer o
+personagem correspondente àquele
+botão atacar. <8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Alcance de Ataque<0066><0065>
+<8085><8089><8087>Agora, aproxime-se do inimigo
+usando o direcional analógico esquerdo e
+ataque com <808A:0000803F0000603F><8099:08><808B> e <808A:0000803F0000603F><8099:06><808B>.
+Você pode trocar o personagem principal
+com <808A:0000803F0000603F><8099:13><8099:14><808B>.<8098:00><8097:00000000><808F>",
+2591,4,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Modo de Ataque<0066><0065>
+<8085><8089><8087>Quando um personagem realiza um ataque, a tela muda para uma visão lateral como
+esta.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Modo de Ataque<0066><0065>
+<8085><8089><8087>Os personagens só podem realizar a quantidade
+de ataques permitida pelas armas
+que estão equipadas.
+As armas equipadas atualmente
+pelo grupo permitem dois ataques.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Modo de Ataque<0066><0065>
+<8085><8089><8087>Agora, ajuste o tempo da ação e
+pressione <808A:0000803F0000603F><8099:08><808B><808A:0000803F0000603F><8099:06><808B> para atacar.<8098:00><8097:00000000><808F>",
+2591,5,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Modo Break<0066><0065>
+<8085><8089><8087>Quando uma parte do inimigo se solta após
+um ataque, o personagem entra
+no Modo Break.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Modo Break<0066><0065>
+<8085><8089><8087>Um personagem no Modo Break pode
+atacar repetidamente por um tempo determinado
+sem custo de AP.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Modo Break<0066><0065>
+<8085><8089><8087>Agora, pressione <808A:0000803F0000603F><8099:08><808B> e <808A:0000803F0000603F><8099:06><808B> para golpear
+o inimigo.<8098:00><8097:00000000><808F>",
+2591,6,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Ataques Inimigos<0066><0065>
+<8085><8089><8087>A área vermelha no chão, junto ao
+inimigo, indica o seu alcance de ataque.
+Você poderá ser atacado pelo inimigo
+se entrar nessa área. A cor da área
+ficará mais escura e, por fim, piscará.<8098:00><8097:00000000><8098:01><8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Ataques Inimigos<0066><0065>
+<8085><8089><8087>Um personagem que entrar no alcance
+de ataque de um inimigo será atacado.<8098:00><8097:00000000><8098:01><8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Ataques Inimigos<0066><0065>
+<8085><8089><8087>Quando a área estiver esmaecida como
+aqui, o inimigo não atacará.<8098:00><8097:00000000><8098:01><8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Ataques Inimigos<0066><0065>
+<8085><8089><8087>É assim que a área aparece quando
+o inimigo está pronto para atacar.<8098:00><8097:00000000><8098:01><8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Ataques Inimigos<0066><0065>
+<8085><8089><8087>Ocasionalmente, um inimigo não percebe
+um personagem em seu alcance de ataque.
+
+Nessa situação, a área do inimigo
+não pisca, como mostrado aqui.<8098:00><8097:00000000><8098:01><8082><8081><808F>",
+2591,7,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Investida<0066><0065>
+<8085><8089><8087>A investida é uma técnica especial para
+se aproximar rapidamente dos inimigos. Todo
+o grupo realizará a investida ao pressionar <808A:0000803F0000603F><8099:39><808B>.
+O tempo que você mantém o botão pressionado
+determina a distância da investida.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Investida<0066><0065>
+<8085><8089><8087>Personagens que realizam a investida
+atravessando o alcance de um inimigo
+não podem ser atacados.
+
+Domine a investida e você ficará
+invulnerável a ataques!
+
+
+Agora, pressione <808A:0000803F0000603F><8099:39><808B> para tentar a investida.<8098:00><8097:00000000><8098:01><8081><8086:00000000><8088:06><8084:01><0065><0066>Investida<0066><0065>
+<8085><8089><8087>Note que você será atacado se
+sua investida terminar dentro do
+alcance de ataque do inimigo.<8082><808F>",
+2591,8,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Retirada<0066><0065>
+<8085><8089><8087>Observe o mapa no canto superior
+direito da tela.
+As áreas exibidas em amarelo indicam
+pontos de fuga.
+Você deve chegar a esses pontos para
+se retirar da batalha.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Retirada<0066><0065>
+<8085><8089><8087>Agora, use o direcional analógico esquerdo
+e mova o grupo até um ponto de fuga.<8098:00><8097:00000000><808F>",
+2591,9,"<808E:00008040><8086:00000000><8088:06><8084:01><0065><0066>Vitória<0066><0065>
+<8085><8089><8087>O grupo inimigo possui um líder.
+O ícone cercado por amarelo no
+mapa indica o líder inimigo.
+
+A vitória é alcançada quando o líder é
+derrotado.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Vitória<0066><0065>
+<8085><8089><8087>No momento da vitória, as marcas
+restantes na barra de extensão
+determinam quantos cristais mágicos
+você recebe.
+Acumule cristais mágicos na batalha para
+obter mais pontos de experiência.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Vitória<0066><0065>
+<8085><8089><8087>A barra de extensão diminui conforme
+o tempo gasto em ações.
+Uma vitória rápida lhe renderá muitos
+cristais mágicos.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Vitória<0066><0065>
+<8085><8089><8087>Além disso, vença com a barra de
+extensão totalmente cheia e você
+receberá um item do líder
+inimigo!
+Lembre-se de mirar diretamente no
+líder para encerrar a batalha rapidamente.<8098:00><8097:00000000><8098:01><8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Táticas Avançadas<0066><0065>
+<8085><8089><8087>Durante o movimento, pressione <808A:0000803F0000603F><8099:11> ou <8099:12><808B>
+para dividir em dois grupos: um time
+vermelho e um time azul.<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Táticas Avançadas<0066><0065>
+<8085><8089><8087>Agora, divida o grupo usando
+<808A:0000803F0000603F><8099:11> ou <8099:12><808B>.
+
+Tente mover cada grupo com o
+direcional analógico esquerdo.
+Alterne o grupo controlado e
+troque de personagem com
+<808A:0000803F0000603F><8099:13><8099:14><808B>.<8098:00><8097:00000000><8098:01><8081><8086:00000000><8088:06><8084:01><0065><0066>Táticas Avançadas<0066><0065>
+<8085><8089><8087>Divida o grupo para atacar os
+inimigos pelas costas e derrotá-los
+rapidamente.
+Combine isso com seus movimentos
+padrão para uma vantagem estratégica!<8082><8081><8086:00000000><8088:06><8084:01><0065><0066>Menu<0066><0065>
+<8085><8089><8087>Use magias e itens pressionando 
+<808A:0000803F0000603F><8099:0F><808B> para abrir o menu.
+
+Note que após uma ação ser
+selecionada no menu, ele não
+poderá ser usado por um tempo.<8082><8081>Assim se encerra o tutorial.
+Agora a batalha é de verdade!
+Derrote o inimigo usando as
+habilidades que acabou de aprender.
+Boa sorte e que os deuses o guiem!<8082><808F>",
 2591,0,,

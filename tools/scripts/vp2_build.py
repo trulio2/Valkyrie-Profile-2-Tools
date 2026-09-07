@@ -121,6 +121,8 @@ def _check_scene_content_ceiling(source_iso, resource, patched, fail):
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser(
         description='Drive a VP2 translation build from a manifest.')
     parser.add_argument('source_iso',

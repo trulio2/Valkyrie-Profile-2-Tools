@@ -476,14 +476,33 @@ def ensure_glyph_pool(
     return pool
 
 
+def runtime_environment(glyph_pool) -> dict:
+    """The environment the runtime subprocess is given."""
+    environment = os.environ.copy()
+    environment["VP2_STATE_ROOT"] = os.fspath(BUILD_DIR)
+    environment["VP2_GLYPH_POOL"] = os.fspath(glyph_pool)
+    environment["PYTHONUNBUFFERED"] = "1"
+    environment["PYTHONIOENCODING"] = "utf-8"
+    return environment
+
+
 def _echo(text):
     """Print one line of child output whatever the console can encode."""
     stream = sys.stdout
     try:
         stream.write(text)
     except UnicodeEncodeError:
+        if getattr(stream, "reconfigure", None) is not None:
+            try:
+                stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+                stream.write(text)
+                stream.flush()
+                return
+            except (ValueError, OSError):
+                pass
         encoding = getattr(stream, "encoding", None) or "ascii"
-        stream.write(text.encode(encoding, "replace").decode(encoding, "replace"))
+        stream.write(text.encode(encoding, "backslashreplace")
+                     .decode(encoding, "replace"))
     stream.flush()
 
 
@@ -529,10 +548,7 @@ def build_iso(
     if no_verify:
         runtime_args.append("--no-verify")
     command = runtime_command(runtime_args)
-    environment = os.environ.copy()
-    environment["VP2_STATE_ROOT"] = os.fspath(BUILD_DIR)
-    environment["VP2_GLYPH_POOL"] = os.fspath(glyph_pool)
-    environment["PYTHONUNBUFFERED"] = "1"
+    environment = runtime_environment(glyph_pool)
     process = subprocess.Popen(
         command, cwd=PROJECT_ROOT, env=environment,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
