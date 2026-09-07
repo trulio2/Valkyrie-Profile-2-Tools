@@ -262,6 +262,17 @@ def compile_build_workspace(
     try:
         profile_rows = _profile_rows(profile_path)
         profile_sheets = {Path(row["sheet"]).name for row in profile_rows}
+        missing = [row for row in profile_rows
+                   if not _input_sheet(records, row).is_file()]
+        if missing:
+            named = ", ".join(
+                "#%s (%s)" % (row["resource"], Path(row["sheet"]).name)
+                for row in missing[:6])
+            raise PackError(
+                f"{profile_path}: {len(missing)} resource(s) the profile "
+                f"builds were not extracted: {named}. The workspace was "
+                f"generated from a disc the extractor could not read them "
+                f"from, or it skipped them as having no readable text")
 
         for source in sorted((records / "scenes").glob("*.csv")) + sorted(
                 (records / "containers").glob("*.csv")):
@@ -280,9 +291,12 @@ def compile_build_workspace(
 
         unmatched = sorted(set(exact) - matched)
         if unmatched:
+            resources = sorted({key[1] for key in unmatched}, key=int)
             raise PackError(
                 f"pack has {len(unmatched)} identity row(s) absent from the "
-                f"generated records: {unmatched[:5]!r}")
+                f"generated records, in resource(s) "
+                f"{', '.join('#' + item for item in resources[:8])}: "
+                f"{unmatched[:5]!r}")
 
         for profile_row in profile_rows:
             source = _input_sheet(records, profile_row)

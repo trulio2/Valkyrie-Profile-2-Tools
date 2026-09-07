@@ -17,6 +17,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from . import disc_identity
+from . import encrypted_entry
 from . import resource_classify
 from . import scene_sheet_export
 from . import triace_ps2_unpack as triace
@@ -78,6 +79,8 @@ def write_inventory(image: Path, target: Path, *, inspect_text: bool) -> list[di
             sectors = table[total + resource]
             allocated = sectors * triace.SECTOR
             raw = bytes(dcms.read_entry(source, table, total, resource))
+            if raw and encrypted_entry.is_encrypted(resource):
+                raw = encrypted_entry.decode_entry(raw, resource)
             kind = _entry_type(raw, allocated) if raw else "empty"
             classification = ""
             message_count = ""
