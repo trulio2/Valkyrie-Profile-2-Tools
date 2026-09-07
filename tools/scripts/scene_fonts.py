@@ -447,6 +447,8 @@ def append_glyph_blocks(expanded, layout, arts):
         bitmap for bitmap, _ in arts)
     struct.pack_into("<I", expanded, 0x20, len(expanded))
     struct.pack_into("<I", expanded, 0x34, layout["glyph_count"] + len(arts))
+    layout["glyph_count"] += len(arts)
+    layout["font_end"] += sum(len(bitmap) for bitmap, _ in arts)
     return slots
 
 def install_required_glyphs_in_slots(expanded, layout, alphabet, needed,
