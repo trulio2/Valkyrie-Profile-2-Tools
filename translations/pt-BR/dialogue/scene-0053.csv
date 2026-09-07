@@ -1,20 +1,54 @@
 resource,message_id,translated,notes
-53,3,,
-53,13,,
-53,14,,
-53,15,,
-53,16,,
-53,17,,
-53,18,,
-53,19,,
-53,20,,
-53,21,,
-53,22,,
+53,3,"Lá está ele de novo <PART> ---- <PART> treinando, treinando,
+e treinando mais um pouco com a espada. <PART>
+---
+Quero que ele sirva bem ao Rei Barbarossa,
+mas estudar também nunca fez mal a ninguém.",
+53,13,"É perigoso sair da cidade à noite.
+Além disso, Dipan é linda depois que escurece!",
+53,14,"Nós, cavaleiros de Dipan, patrulhamos estas ruas,
+tornando-as seguras para viajantes como você. <PART>
+---
+Você não encontrará monstros nem ladrões
+por aqui, então aproveite o passeio.",
+53,15,"Chega de esgrima por hoje.
+Hora de estudar! <PART>
+---
+Você não terá muita utilidade para o rei
+se só souber usar a espada e não a pena!",
+53,16,"Não me atrapalhe durante o treino!
+Estou começando a pegar o jeito. <PART>
+---
+Quando eu crescer, vou ser
+um dos cavaleiros do rei! <PART>
+---
+É por isso que preciso treinar!",
+53,17,"Assim que eu terminar *ofego* o treino de espada...
+Vou começar *ofego* o treino de lança!",
+53,18,"Vamos lá, me deixe praticar mais um pouquinho!
+Eu estudo amanhã! Sério!",
+53,19,"Talvez você não saiba,
+mas eu estudo o tempo todo! <PART>
+---
+Por exemplo, eu sei que, quando você
+ataca um inimigo pelas costas, <PART>
+---
+é mais fácil acertar e você causa mais dano <PART> ---- <PART>
+além disso, você pode evitar contra-ataques!",
+53,20,"Tudo bem estudar táticas,
+mas não é disso que estou falando!",
+53,21,"Quando eu era menino, treinava até o amanhecer,
+esperando um dia me tornar um cavaleiro. <PART>
+---
+Minha mãe não gostava da ideia naquela época,
+mas sorri quando me vê agora.",
+53,22,"A arte da espada é inestimável, mas, nestes tempos de paz,
+seria sensato dedicar-se aos estudos.",
 53,4,Casa,not displayed by the event script
-53,5,,
+53,5,Taberna,
 53,6,Pousada,not displayed by the event script
 53,7,Armaria,not displayed by the event script
-53,8,,
+53,8,Dipan <PART> Rua Merney,
 53,23,Dipan,not displayed by the event script
 53,24,Mãe do Garoto,not displayed by the event script
 53,25,Soldado de Dipan,not displayed by the event script
