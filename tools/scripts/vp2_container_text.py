@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Decode, encode, and patch MCPS2 container text banks."""
 import argparse
+import codecs
 import csv
 import io
 import os
@@ -461,8 +462,11 @@ def record_candidate_extent(resource, scope, extent, path=None, note=None):
     """Write *resource* into the limits table as a candidate."""
     path = path or _RECORD_LIMITS_PATH
     fields = ["resource", "scope", "max_extent", "kind", "evidence"]
-    rows, seen = [], False
+    rows, seen, encoding = [], False, "utf-8"
     if os.path.exists(path):
+        with io.open(path, "rb") as handle:
+            if handle.read(3) == codecs.BOM_UTF8:
+                encoding = "utf-8-sig"
         with io.open(path, encoding="utf-8-sig", newline="") as handle:
             reader = csv.DictReader(handle)
             fields = reader.fieldnames or fields
@@ -486,7 +490,7 @@ def record_candidate_extent(resource, scope, extent, path=None, note=None):
                      "evidence": note or _candidate_note(resource, scope, extent)})
     rows.sort(key=lambda row: (row.get("scope") or "",
                                int(row.get("resource") or 0)))
-    with io.open(path, "w", encoding="utf-8", newline="") as handle:
+    with io.open(path, "w", encoding=encoding, newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields,
                                 lineterminator="\r\n")
         writer.writeheader()

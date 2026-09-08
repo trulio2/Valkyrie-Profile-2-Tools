@@ -1,12 +1,4 @@
 ﻿resource,scope,max_extent,kind,evidence
-53,scene-content,676752,candidate,under test
-61,scene-content,526360,verified,highest extent this scene has been played with.
-97,scene-content,1052092,candidate,under test: whether this scene runs at this extent. Not played yet.
-127,scene-content,1575628,verified,highest extent this scene has been played with.
-133,scene-content,1159736,verified,highest extent this scene has been played with.
-245,scene-content,1407236,verified,highest extent this scene has been played with.
-605,scene-content,1323252,verified,highest extent this scene has been played with.
-1015,scene-content,1324012,verified,highest extent this scene has been played with.
 10,container,4477,verified,highest extent this bank has been played with; its real limit is unknown.
 641,container,66937,verified,highest extent this bank has been played with; its real limit is unknown.
 642,container,18909,verified,highest extent this bank has been played with; its real limit is unknown.
@@ -20,6 +12,13 @@
 650,container,70601,verified,highest extent this bank has been played with; its real limit is unknown.
 651,container,1338,verified,highest extent this bank has been played with; its real limit is unknown.
 652,container,11963,limit,measured cap: records past this point stop the game.
+53,scene-content,676744,candidate,"Recorded by a build, not by a play-test. Resource #53 reached 676744 with scope=scene-content. Play this screen, then change kind to verified if it holds or lower this row if it does not."
+61,scene-content,526360,verified,highest extent this scene has been played with.
+127,scene-content,1575628,verified,highest extent this scene has been played with.
+133,scene-content,1159736,verified,highest extent this scene has been played with.
+245,scene-content,1407236,verified,highest extent this scene has been played with.
+605,scene-content,1323252,verified,highest extent this scene has been played with.
+1015,scene-content,1324012,verified,highest extent this scene has been played with.
 1197,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
 1221,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
 1283,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.

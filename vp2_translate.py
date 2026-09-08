@@ -63,6 +63,12 @@ def _parser() -> argparse.ArgumentParser:
         "--no-verify", action="store_true",
         help="skip read-back verification (faster, less safe)",
     )
+    build.add_argument(
+        "--strict-extents", action="store_true",
+        help="refuse a resource that runs past the furthest extent anyone "
+             "has played, instead of recording it as a candidate and "
+             "carrying on",
+    )
     return parser
 
 
@@ -108,6 +114,7 @@ def main(argv: list[str] | None = None) -> int:
             output = build_iso(
                 args.usa_image, args.language, workspace=args.workspace,
                 output=args.output, no_verify=args.no_verify,
+                strict_extents=args.strict_extents,
             )
             print(f"built {output}")
         else:

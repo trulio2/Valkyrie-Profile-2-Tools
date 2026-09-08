@@ -329,3 +329,58 @@ class ChildOutputTests(unittest.TestCase):
         with mock.patch.object(public_build.sys, "stdout", stream):
             public_build._echo("caf\u00e9 \ufffd\n")
         self.assertEqual("caf\u00e9 \ufffd\n", stream.getvalue())
+
+
+class CandidateExtentWiringTests(unittest.TestCase):
+    """The runtime could record an unmeasured ceiling; nothing asked it to."""
+
+    def _runtime_args(self, **keywords):
+        from unittest import mock
+        from tools.scripts import public_build
+        seen = []
+
+        def stop(arguments):
+            seen.append(list(arguments))
+            raise RuntimeError("far enough")
+
+        with mock.patch.object(public_build, "workspace_is_ready",
+                               return_value=True), \
+                mock.patch.object(
+                    public_build, "compile_build_workspace",
+                    return_value={"locale": "pt-BR", "manifest": "m.csv",
+                                  "sheets": "sheets", "slots": None}), \
+                mock.patch.object(public_build, "ensure_glyph_pool",
+                                  return_value=None), \
+                mock.patch.object(public_build, "runtime_command",
+                                  side_effect=stop):
+            import tempfile
+            with tempfile.TemporaryDirectory() as folder:
+                source = Path(folder) / "disc.iso"
+                source.write_bytes(b"not really an iso")
+                with self.assertRaises(RuntimeError):
+                    public_build.build_iso(
+                        source, "pt-BR",
+                        output=Path(folder) / "out.iso", **keywords)
+        return seen[0]
+
+    def test_an_ordinary_build_asks_the_runtime_to_record_candidates(self):
+        self.assertIn("--record-candidate-extents", self._runtime_args())
+
+    def test_strict_extents_asks_it_to_refuse_instead(self):
+        self.assertNotIn("--record-candidate-extents",
+                         self._runtime_args(strict_extents=True))
+
+    def test_the_command_line_exposes_the_strict_option(self):
+        """A release build needs the refusal the default gives up."""
+        import vp2_translate
+        arguments = vp2_translate._parser().parse_args(
+            ["build", "disc.iso", "pt-BR", "--strict-extents"])
+        self.assertTrue(arguments.strict_extents)
+        self.assertFalse(vp2_translate._parser().parse_args(
+            ["build", "disc.iso"]).strict_extents)
+
+    def test_the_command_line_passes_it_through(self):
+        import inspect
+        import vp2_translate
+        self.assertIn("strict_extents=args.strict_extents",
+                      inspect.getsource(vp2_translate.main))

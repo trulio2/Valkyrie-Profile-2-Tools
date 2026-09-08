@@ -528,11 +528,11 @@ def build_iso(
     output: str | os.PathLike[str] | None = None,
     no_verify: bool = False,
     images: list[str | os.PathLike[str]] | None = None,
+    strict_extents: bool = False,
 ) -> Path:
     """Compile the pack and run the patcher in a clean subprocess.
 
-    Reads the workspace out of the disc first when it is not there yet.
-    """
+    Reads the workspace out of the disc first when it is not there yet."""
     source = Path(source_iso).expanduser().resolve()
     if not source.is_file():
         raise PackError(f"USA image does not exist: {source}")
@@ -561,6 +561,8 @@ def build_iso(
                          os.fspath(compiled["slots"])]
     if no_verify:
         runtime_args.append("--no-verify")
+    if not strict_extents:
+        runtime_args.append("--record-candidate-extents")
     command = runtime_command(runtime_args)
     environment = runtime_environment(glyph_pool)
     process = subprocess.Popen(
