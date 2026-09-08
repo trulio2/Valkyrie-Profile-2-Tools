@@ -457,6 +457,50 @@ class StreamedNeighbourReclaimed(ValueError):
     """A streamed scene rewrote a neighbour without a recorded play-test."""
 
 
+def record_candidate_extent(resource, scope, extent, path=None, note=None):
+    """Write *resource* into the limits table as a candidate."""
+    path = path or _RECORD_LIMITS_PATH
+    fields = ["resource", "scope", "max_extent", "kind", "evidence"]
+    rows, seen = [], False
+    if os.path.exists(path):
+        with io.open(path, encoding="utf-8-sig", newline="") as handle:
+            reader = csv.DictReader(handle)
+            fields = reader.fieldnames or fields
+            rows = list(reader)
+    for row in rows:
+        if (row.get("resource") or "").strip() != str(resource):
+            continue
+        if (row.get("scope") or "").strip() != scope:
+            continue
+        seen = True
+        if (row.get("kind") or "").strip() == "verified":
+            return False
+        if int(row.get("max_extent") or 0) >= extent:
+            return False
+        row["max_extent"] = str(extent)
+        row["kind"] = "candidate"
+        row["evidence"] = note or _candidate_note(resource, scope, extent)
+    if not seen:
+        rows.append({"resource": str(resource), "scope": scope,
+                     "max_extent": str(extent), "kind": "candidate",
+                     "evidence": note or _candidate_note(resource, scope, extent)})
+    rows.sort(key=lambda row: (row.get("scope") or "",
+                               int(row.get("resource") or 0)))
+    with io.open(path, "w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields,
+                                lineterminator="\r\n")
+        writer.writeheader()
+        writer.writerows(rows)
+    return True
+
+
+def _candidate_note(resource, scope, extent):
+    return ("Recorded by a build, not by a play-test. Resource #%d reached "
+            "%d with scope=%s. Play this screen, then change kind to "
+            "verified if it holds or lower this row if it does not."
+            % (resource, extent, scope))
+
+
 def check_streamed_neighbours(resource, reclaimed, exceptions=None,
                               warn=None):
     """Refuse an unvouched-for neighbour rewrite; note a vouched-for one."""

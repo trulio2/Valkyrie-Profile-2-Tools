@@ -205,12 +205,12 @@ DONOR_BASE = {
     "å": "a",
 }
 
-MARK_VERTICAL_SHIFTS = {"ã": -2, "õ": -2,
+MARK_VERTICAL_SHIFTS = {"ã": -1, "õ": -1,
                         "á": -1, "é": -1, "ó": -1, "ú": -1,
                         "à": -1}
 
 MARK_HORIZONTAL_SHIFTS = {"á": 2, "é": 2, "ó": 2, "ú": 2, "à": -1.5,
-                          "ã": 0.5, "õ": 0.5}
+                          "ã": -0.5, "õ": -0.5}
 
 
 LOWERCASE_EXTRA_OVERLAP = 1

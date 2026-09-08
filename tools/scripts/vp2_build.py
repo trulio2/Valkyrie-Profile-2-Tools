@@ -106,7 +106,10 @@ def _copy_source_image(source_iso, partial):
 
     iso_buffer.copy_image(str(source_iso), str(partial), progress=report)
 
-def _check_scene_content_ceiling(source_iso, resource, patched, fail):
+CANDIDATE_EXTENTS = []
+
+def _check_scene_content_ceiling(source_iso, resource, patched, fail,
+                                 record_candidates=False):
     """Refuse a plain scene whose content ends past its measured budget."""
     _table, _entries, content_end, _tail_start, tail =         iso_space._parse_archive(patched)
     if tail:
@@ -117,7 +120,29 @@ def _check_scene_content_ceiling(source_iso, resource, patched, fail):
         container_text.check_scene_content_extent(
             resource, content_end, allocation)
     except container_text.SceneContentCeilingExceeded as exc:
-        fail(str(exc))
+        if not record_candidates:
+            fail(str(exc))
+            return
+        if container_text.record_candidate_extent(
+                resource, "scene-content", content_end):
+            CANDIDATE_EXTENTS.append((resource, content_end))
+            print("CANDIDATE: recorded resource #%d at %d in the limits "
+                  "table so this build could finish. %s"
+                  % (resource, content_end, exc), file=sys.stderr)
+
+
+def _report_candidate_extents():
+    """Say what a build is resting on that nobody has played."""
+    if not CANDIDATE_EXTENTS:
+        return
+    print("", file=sys.stderr)
+    print("%d resource(s) ran past a ceiling nobody has played:"
+          % len(CANDIDATE_EXTENTS), file=sys.stderr)
+    for resource, extent in CANDIDATE_EXTENTS:
+        print("  #%-6d ends at %d" % (resource, extent), file=sys.stderr)
+    print("Each is written to the limits table as kind=candidate. This "
+          "image is for testing those screens, not for release: play each "
+          "one, then mark its row verified -- or lower it.", file=sys.stderr)
 
 
 def main():
@@ -177,6 +202,13 @@ def main():
     parser.add_argument('--shared-font-slots',
                         help='Character-to-token map for the shared font '
                              '(default: the packaged table).')
+    parser.add_argument('--record-candidate-extents', action='store_true',
+                        help='When a resource ends past its recorded ceiling, '
+                             'record the extent it reached as kind=candidate '
+                             'and carry on instead of refusing. The build is '
+                             'then for testing those screens, not for '
+                             'release: play each one and mark its row '
+                             'verified, or lower it.')
     parser.add_argument('--lint', action='store_true',
                         help='Static checks only: load the manifest, run '
                              'every '
@@ -338,6 +370,7 @@ def main():
             iso.commit(str(working_iso))
             print(f"working ISO retained: {working_iso}")
         total = time.time() - started
+        _report_candidate_extents()
         print(f"done. {len(rows)} resources in {total:.1f}s -> {output_iso}")
         if args.keep_working_iso:
             print(f"working ISO retained: {working_iso}")
@@ -409,7 +442,8 @@ def main():
 
             if kind == 'scene' and details.get('patched') is not None:
                 _check_scene_content_ceiling(
-                    source_iso, int(resource), details['patched'], _fail)
+                    source_iso, int(resource), details['patched'], _fail,
+                    record_candidates=args.record_candidate_extents)
 
             if (details.get('grown_sectors')
                     or details.get('relocated_offset') is not None):
@@ -482,6 +516,7 @@ def main():
     print(f"wrote output: {output_iso}")
 
     total = time.time() - started
+    _report_candidate_extents()
     print(f"done. {len(rows)} resources in {total:.1f}s -> {output_iso}")
 
 if __name__ == '__main__':
