@@ -271,23 +271,60 @@ No entanto, além do poder da criação, ela também detém o poder da destruiç
 651,81,,
 651,84,,
 652,2,,
-652,3,,
-652,4,,
-652,5,,
-652,6,,
-652,7,,
-652,8,,
-652,9,,
-652,10,,
-652,11,,
-652,12,,
+652,3,"<8084:01>Verificando o cartão de memória
+(8MB)(para PlayStation<0065>2) no slot <8094:1F><CONT>.
+Não remova o cartão de memória
+(8MB)(para PlayStation<0065>2), o controle,
+nem desligue o console.",
+652,4,"<8084:01>Erro no cartão de memória (8MB)(para PlayStation<0065>2)!
+Verifique o cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT> e tente novamente.<8082>",
+652,5,"<8084:01>Nenhum cartão de memória (8MB)(para PlayStation<0065>2)
+inserido no slot <8094:1F><CONT>. <8082>",
+652,6,"<8084:01>O cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT> não está formatado.<808E:00008041>
+<808F>Formatar o cartão de memória (8MB)(para PlayStation<0065>2)?",
+652,7,"<8084:01>Formatando o cartão de memória
+(8MB)(para PlayStation<0065>2) no slot <8094:1F><CONT>.<808E:00008041>
+<808F> Não remova o cartão de memória
+(8MB)(para PlayStation<0065>2), o controle,
+nem desligue o console.",
+652,8,"<8084:01>Falha na formatação!
+Verifique o cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT> e tente novamente.<8082>",
+652,9,"<8084:01>O cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT>
+foi formatado com sucesso.<8082>",
+652,10,"<8084:01>Espaço livre insuficiente no
+cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT>.<808E:00008041>
+<808F>
+Valkyrie Profile<0065>2 requer 67 KB de
+espaço livre para salvar.<8082>",
+652,11,"<8084:01>Nenhum dado de Valkyrie Profile<0065>2 encontrado no
+cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT>.<8082>",
+652,12,"<8084:01>Os dados serão salvos no arquivo número <8094:1E><CONT>.<808E:00008041>
+<808F>Deseja salvar?",
 652,13,,
-652,14,,
-652,15,,
-652,16,,
-652,17,,
-652,18,,
-652,19,,
+652,14,"<8084:01>Salvando os dados.<808E:00008041>
+<808F>Não remova o cartão de memória
+(8MB)(para PlayStation<0065>2) do slot <8094:1F><CONT>,
+o controle, nem desligue o console.",
+652,15,"<8084:01>Falha ao salvar! Verifique o cartão de memória
+(8MB)(para PlayStation<0065>2) no slot <8094:1F><CONT>
+e tente novamente.<8082>",
+652,16,"<8084:01>Os dados foram salvos no
+cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT>.<8082>",
+652,17,"<8084:01>Os dados serão carregados do arquivo número <8094:1E><CONT>.<808E:00008041>
+<808F>Deseja carregar?",
+652,18,"<8084:01>Os dados foram carregados do
+cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT>.<8082>",
+652,19,"<8084:01>Falha ao carregar! O arquivo pode estar corrompido. <808E:00008041>
+<808F>Verifique o cartão de memória (8MB)(para PlayStation<0065>2)
+no slot <8094:1F><CONT> e tente novamente.<8082>",
 652,20,,
 652,21,,
 652,22,,
@@ -307,7 +344,9 @@ No entanto, além do poder da criação, ela também detém o poder da destruiç
 866,7,,
 866,8,Mapa geral,
 866,10,,
-866,11,,
+866,11,"Restaurar este selo custará
+<8094:18><CONT> cristais mágicos.
+Restaurar o selo à raiz da terra?",
 866,18,,
 866,21,,
 866,23,,

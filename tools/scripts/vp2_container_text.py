@@ -26,6 +26,7 @@ SUBTITLE_CUT_FIRST_SLOT = 49
 CODEPAGE_SHIFT = 0x1F
 CODEPAGE_SPACE = 0x0E
 CODEPAGE_TAG = re.compile(r"<[0-9A-Fa-f]{4}(?::[0-9A-Fa-f]+)?>")
+CONTINUATION_MARKER = "<CONT>"
 
 CODEPAGE_CHARACTERS = {
     character: token for token, character in dcms.ENGLISH_CONTROLS.items()
@@ -300,6 +301,10 @@ def encode_codepage(text, label="codepage text", accent_tokens=None,
     output = bytearray()
     position = 0
     while position < len(text):
+        if text.startswith(CONTINUATION_MARKER, position):
+            output.append(0)
+            position += len(CONTINUATION_MARKER)
+            continue
         tag = CODEPAGE_TAG.match(text, position)
         if tag:
             body = tag.group()[1:-1]
@@ -346,9 +351,16 @@ def codepage_semantic_text(text, accent_tokens=None, local_tokens=None,
     if meta is not None:
         frame["glyph_base"] = meta.get("glyph_base", 0)
         frame["glyph_count"] = meta.get("glyph_count", 0)
-    rendered, _ = render_codepage(
-        payload, frame, 0, accent_tokens=accent_tokens, alphabet=alphabet)
-    return rendered
+    parts, offset = [], 0
+    while offset < len(payload):
+        rendered, length = render_codepage(
+            payload, frame, offset, accent_tokens=accent_tokens,
+            alphabet=alphabet)
+        parts.append(rendered)
+        if not length:
+            break
+        offset += length
+    return CONTINUATION_MARKER.join(parts)
 
 def shared_codepage_advances(archive, accent_tokens=None):
     """Return the rendered pixel advance for each mapped shared-font glyph."""
@@ -716,6 +728,13 @@ def rebuild_codepage_records(blob, resource, translations,
                                 for item in messages_by_offset[offset])
             raise ValueError("resource #%d messages %s share one record but "
                              "their translations differ" % (resource, aliases))
+        wanted = message["original_en"].count(CONTINUATION_MARKER)
+        written = text.count(CONTINUATION_MARKER)
+        if written != wanted:
+            raise ValueError(
+                "resource #%d message %s needs %d %s to match the record it "
+                "replaces and has %d; the source shows where each one goes"
+                % (resource, key, wanted, CONTINUATION_MARKER, written))
         replacements[offset] = (text, message["byte_length"])
 
     runs_by_offset, recut = {}, []
@@ -1005,7 +1024,33 @@ def read_messages(blob, resource, slots=None, codepage_accents=None,
         rows.append({"resource": resource, "message_id": message_id,
                      "offset": offset, "byte_length": length, "kind": kind,
                      "original_en": text})
-    return meta, rows
+    return meta, _join_continuations(blob, meta, rows, codepage_accents,
+                                     alphabet)
+
+
+def _join_continuations(blob, meta, rows, accent_tokens, alphabet):
+    """Extend each codepage record over the unindexed records behind it."""
+    region = meta["text_end"] - meta["text_start"]
+    starts = sorted({row["offset"] for row in rows})
+    for row in rows:
+        if row["kind"] != "codepage":
+            continue
+        limit = next((start for start in starts if start > row["offset"]),
+                     region)
+        end = row["offset"] + row["byte_length"]
+        while end < limit:
+            body = blob[meta["text_start"] + end:meta["text_start"] + limit]
+            if not any(body):
+                break
+            text, length = render_codepage(
+                blob, meta, end, accent_tokens=accent_tokens,
+                alphabet=alphabet)
+            if not length:
+                break
+            row["original_en"] += CONTINUATION_MARKER + text
+            row["byte_length"] += length
+            end += length
+    return rows
 
 def walk_block(blob, meta, slots):
     """Every token record in the block, continuations included."""

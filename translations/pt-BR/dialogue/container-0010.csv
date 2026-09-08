@@ -3,13 +3,28 @@ resource,message_id,translated,notes
 10,0,,
 10,2,,
 10,3,,
-10,4,,
-10,5,,
-10,6,,
+10,4,"<8084:01>Nenhum cartão de memória (8MB)(para PlayStation<0066>2) inserido
+no slot 1 ou no slot 2.
+Valkyrie Profile<0066>2 requer <8094:00><CONT> KB de espaço livre para salvar.
+ 
+Deseja continuar mesmo assim?
+",
+10,5,"<8084:01>Espaço livre insuficiente no
+cartão de memória (8MB)(para PlayStation<0066>2) no
+slot <8094:01><CONT>. Valkyrie Profile<0066>2
+requer <8094:00><CONT> KB de espaço livre para salvar.<8082> 
+Deseja continuar mesmo assim?
+",
+10,6,"<8084:01>Espaço livre insuficiente nos
+cartões de memória (8MB)(para PlayStation<0066>2) nos
+slots 1 e 2.
+ Valkyrie Profile<0066>2 requer <8094:00><CONT> KB de espaço livre para salvar.<8082> 
+Deseja continuar mesmo assim?
+",
 10,7,"<8084:01>Carregando dados de configuração.
 <0065>
-Não remova o cartão de memória (8 MB) (para PlayStation<0066>2)
-do slot de cartão de memória <8094:01>",
+Não remova o cartão de memória (8MB)(para PlayStation<0066>2)
+do slot <8094:01><CONT>.",
 10,10,"<8084:01>Selecione o formato da tela:
 <8099:08>16:9<0065><8099:07>4:3
 <0065>
