@@ -36,6 +36,26 @@ def ink_columns(grid, rows):
     return (min(columns), max(columns)) if columns else (0, 0)
 
 
+BODY_INK_FLOOR = 2
+
+
+def body_top(grid):
+    """First row of ``grid`` drawing the letter rather than its antialiasing."""
+    for y in range(HEIGHT):
+        if max(grid[y]) >= BODY_INK_FLOOR:
+            return y
+    raise ValueError("the base letter has no ink above the floor")
+
+
+def ink_centre(grid):
+    """The column the letter's ink balances on."""
+    total = sum(sum(row) for row in grid)
+    if not total:
+        raise ValueError("the base letter has no ink")
+    return sum(x * grid[y][x]
+               for y in range(HEIGHT) for x in range(WIDTH)) / total
+
+
 def _added_ink(plain, accented, y):
     return sum(max(0, accented[y][x] - plain[y][x]) for x in range(WIDTH))
 
@@ -78,17 +98,19 @@ def isolate_mark_below(plain, accented):
     return sorted(rows)
 
 
-def _place(body_block, mark_grid, mark_rows, dy_for, dx_shift=0):
+def _place(body_block, mark_grid, mark_rows, dy_for, dx_shift=0,
+           over_ink=False):
     body = unpack(body_block)
     rows = ink_rows(body)
     if not rows:
         raise ValueError("the base letter has no ink")
     body_left, body_right = ink_columns(body, rows)
     mark_left, mark_right = ink_columns(mark_grid, mark_rows)
-    dx = int(round((body_left + body_right) / 2
-                   - (mark_left + mark_right) / 2 + dx_shift))
+    top = body_top(body) if over_ink else rows[0]
+    centre = ink_centre(body) if over_ink else (body_left + body_right) / 2
+    dx = int(round(centre - (mark_left + mark_right) / 2 + dx_shift))
     dx = max(-mark_left, min(dx, WIDTH - 1 - mark_right))
-    dy = dy_for(rows, mark_rows)
+    dy = dy_for(top, rows[-1], mark_rows)
     out = [list(row) for row in body]
     for y in mark_rows:
         target_y = y + dy
@@ -105,24 +127,24 @@ def _place(body_block, mark_grid, mark_rows, dy_for, dx_shift=0):
 
 
 def compose(body_block, mark_grid, mark_rows, clearance=DEFAULT_CLEARANCE,
-            dx_shift=0):
+            dx_shift=0, over_ink=False):
     """Stack ``mark`` over ``body``, centred, with ``clearance`` rows of air."""
     return _place(body_block, mark_grid, mark_rows,
-                  lambda rows, mark: rows[0] - mark[-1] - 1 - clearance,
-                  dx_shift)
+                  lambda top, _bottom, mark: top - mark[-1] - 1 - clearance,
+                  dx_shift, over_ink)
 
 
 def compose_below(body_block, mark_grid, mark_rows,
                   clearance=DEFAULT_CLEARANCE):
     """Hang ``mark`` under ``body``, centred, with ``clearance`` rows of air."""
     return _place(body_block, mark_grid, mark_rows,
-                  lambda rows, mark: rows[-1] - mark[0] + 1 + clearance)
+                  lambda _top, bottom, mark: bottom - mark[0] + 1 + clearance)
 
 
 def compose_below_baseline(body_block, mark_grid, mark_rows, donor_bottom):
     """Hang ``mark`` under ``body`` at the baseline it was isolated against."""
     return _place(body_block, mark_grid, mark_rows,
-                  lambda rows, _mark: rows[-1] - donor_bottom)
+                  lambda _top, bottom, _mark: bottom - donor_bottom)
 
 
 BODY_START = {"i": 13}
@@ -137,7 +159,7 @@ def compose_replace(body_block, mark_grid, mark_rows, body_from,
     if not ink_rows(stripped):
         raise ValueError("stripping the body's top left no letter")
     return _place(pack(stripped), mark_grid, mark_rows,
-                  lambda rows, mark: rows[0] - mark[-1] - 1 - clearance,
+                  lambda top, _bottom, mark: top - mark[-1] - 1 - clearance,
                   dx_shift)
 
 
@@ -205,12 +227,13 @@ DONOR_BASE = {
     "å": "a",
 }
 
-MARK_VERTICAL_SHIFTS = {"ã": -1, "õ": -1,
+MARK_VERTICAL_SHIFTS = {"ã": -2, "õ": -2,
                         "á": -1, "é": -1, "ó": -1, "ú": -1,
                         "à": -1}
 
-MARK_HORIZONTAL_SHIFTS = {"á": 2, "é": 2, "ó": 2, "ú": 2, "à": -1.5,
-                          "ã": -0.5, "õ": -0.5}
+MARK_HORIZONTAL_SHIFTS = {"á": 2, "é": 2, "ó": 2, "ú": 2, "à": -1.5}
+
+OVER_INK_MARKS = frozenset({"ã", "õ"})
 
 
 LOWERCASE_EXTRA_OVERLAP = 1
@@ -241,7 +264,8 @@ def compose_character(body_block, character, mark_grid, mark_rows,
         return compose_below(body_block, mark_grid, mark_rows,
                              clearance=DEFAULT_CLEARANCE + shift)
     return compose(body_block, mark_grid, mark_rows,
-                   clearance=DEFAULT_CLEARANCE - shift, dx_shift=sideways)
+                   clearance=DEFAULT_CLEARANCE - shift, dx_shift=sideways,
+                   over_ink=donor in OVER_INK_MARKS)
 
 
 def codepage_byte(letter):
