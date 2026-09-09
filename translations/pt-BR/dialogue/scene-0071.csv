@@ -1,9 +1,15 @@
 resource,message_id,translated,notes
-71,2,,
-71,3,,
-71,4,,
-71,5,,
+71,2,Você gostaria de fazer uma oração? Vai deixar sua alma em paz.,
+71,3,"Enquanto rezarmos, uma tragédia como a da Princesa Alicia não vai acontecer de novo.",
+71,4,"Ela está sempre me cobrando para rezar antes de dormir. <PART>
+---
+Minha mãe se tornou uma fanática religiosa depois que um demônio possuiu a princesa aqui. <PART>
+---
+A princesa acabou morrendo, mas não tenho certeza se a possessão demoníaca foi a causa...",
+71,5,"A princesa costumava falar quando ninguém estava por perto e dizia coisas estranhas... <PART>
+---
+Pelo que ouvi, havia algo de errado com ela.",
 71,1,Sair,not displayed by the event script
 71,28,Dipan,not displayed by the event script
-71,29,,
+71,29,Mãe da menina,
 71,30,Garota,not displayed by the event script

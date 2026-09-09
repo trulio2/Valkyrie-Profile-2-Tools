@@ -1,8 +1,31 @@
 resource,message_id,translated,notes
-75,2,,
-75,3,,
-75,5,,
+75,2,"Os jovens dizem que eu estou louco, mas para mim o ar por aqui 
+parece mais pesado ultimamente! <PART>
+---
+Agora eles mantêm o castelo fechado, mas costumava ficar aberto 
+quando a princesa estava viva. <PART>
+---
+Suponho que até um grande rei não consiga suportar a dor de perder um filho...",""
+75,3,"Desde que a princesa morreu, a Rainha Malabeth tem sido reclusa.",
+75,5,"<A História de Dipan>
+ <PART>
+... O mundo inteiro estava envolvido na Guerra
+de Camille e da Princesa Guerreira Celes
+tornou-se herói para milhares. 
+Mais tarde, na Guerra de Um Ano, foi Rainha
+Phyress, que seria aclamada como a heroína. 
+As façanhas dessas duas mulheres trouxeram
+grande prosperidade para Dipan. <PART>
+--- 
+ <PART> <A História de Dipan>
+ <PART>
+No entanto, a Princesa Guerreira Celes viria a ser
+liderar tropas inimigas contra Dipan no Ano- 
+Guerra Longa. A Rainha Phyress a conduziu corajosamente
+as forças da irmã de sangue Celes recuam, perdendo-o
+braço no processo. O ferimento causado por
+A flecha de Phyress tirou a vida de Celes.",
 75,1,Sair,not displayed by the event script
-75,4,,
+75,4,Ler,
 75,36,Dipan,not displayed by the event script
 75,70,Matrona,not displayed by the event script

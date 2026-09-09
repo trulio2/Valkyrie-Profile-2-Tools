@@ -1,7 +1,7 @@
 resource,message_id,translated,notes
-67,3,,
-67,4,,
+67,3,Bem-vindo. Como posso ajudá-lo?,
+67,4,"Cuide-se <PART> ---- <PART>, está escuro lá fora.",
 67,1,Sair,not displayed by the event script
 67,2,Falar,not displayed by the event script
 67,35,Dipan,not displayed by the event script
-67,69,,
+67,69,Atendente de loja,

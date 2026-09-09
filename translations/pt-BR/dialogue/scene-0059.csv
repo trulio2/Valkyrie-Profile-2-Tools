@@ -1,5 +1,7 @@
 resource,message_id,translated,notes
-59,1,,
-59,2,,
+59,1,"Que negócios você tem aqui de novo? <PART>
+---
+A entrada do castelo fica na frente.",
+59,2,Dipan <PART> Portão Lateral,
 59,2740,Dipan,not displayed by the event script
 59,2741,Soldado de Dipan,not displayed by the event script

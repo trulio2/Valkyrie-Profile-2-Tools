@@ -1,6 +1,12 @@
 resource,message_id,translated,notes
-47,2,,
-47,3,,
+47,2,"Achei que rezaria por segurança aqui antes de começar minha jornada. <PART>
+---
+É estranho rezar por segurança para uma Donzela de Batalha que traz a morte. <PART>
+---
+Para os guerreiros, ser escolhido é uma honra, e algum dia espero conhecê-la. <PART>
+---
+Mas isso significa realmente morrer, né? Acho que prefiro não pensar sobre isso.",
+47,3,A vida eterna nos céus é prometida àqueles escolhidos para se tornarem einherjar.,
 47,4,,
 47,5,,
 47,6,,
@@ -342,12 +348,12 @@ Assim, Odin recriou a raça humana em Midgard, tornando-se, dessa forma, o pai d
 47,2560,,
 47,2561,,
 47,1,Sair,not displayed by the event script
-47,8,,
+47,8,Ler,
 47,11,<Teologia>,
-47,12,,
-47,13,,
+47,12,Sobre a Origem do Homem,
+47,13,Sobre as Valquírias,
 47,2562,Solde,not displayed by the event script
-47,2754,,
+47,2754,Adquiriu <PART> Ovo Dourado,
 47,2755,Aventureira,not displayed by the event script
 47,2756,Habitante,not displayed by the event script
 47,2757,Garota,not displayed by the event script
