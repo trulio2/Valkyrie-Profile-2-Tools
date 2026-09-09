@@ -1,10 +1,27 @@
 resource,message_id,translated,notes
-77,3,,
-77,4,,
-77,6,,
-77,7,,
-77,1,,
+77,3,"Vocês são viajantes, não são? Os piratas realmente atacaram os navios da Solde? <PART> 
+---
+O castelo nos manteve no escuro <PART> ---- <PART> até os guardas não querem falar sobre isso!",
+77,4,"A vida não mudou muito sem os transatlânticos navegando, mas ainda assim... <PART>
+---
+Se as munições de Kalstad ficarem difíceis de encontrar, podemos ter um problema.",
+77,6,"<Teologia> <PART>
+O Fim do Começo, O Poder de Tudo:
+A Árvore do Mundo
+
+A árvore do mundo, Yggdrasil, sustenta os mundos
+dos deuses, dos homens e dos mortos-vivos.
+Quando ela murcha, tudo é destruído.
+Quando ela floresce, tudo prospera. <PART>
+---
+ <PART> <Teologia> <PART>
+No entanto, ela não pode ser vista no mundo humano.
+Ela fica protegida por elfos, bem no fundo
+da Floresta dos Espíritos, onde ninguém
+pode alcançá-la.",
+77,7,Todos os livros são sobre teologia.,
+77,1,Primeiro Andar,
 77,2,Falar,not displayed by the event script
-77,5,,
+77,5,Ler,
 77,38,Dipan,not displayed by the event script
 77,72,Habitante,not displayed by the event script
