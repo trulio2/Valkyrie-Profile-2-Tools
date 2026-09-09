@@ -18,6 +18,7 @@ translations/<locale>/
     menu-3.csv
     menu-4.csv
     menu-5.csv
+  images/
 ```
 
 `pack.toml` declares `format = 2`, a BCP 47 `locale`, and a display `name`.
@@ -41,9 +42,15 @@ source text.
 ## Build profile
 
 `build-profile.csv` lists the resources this language's build writes, one row
-each. Its `kind` is `scene`, `container`, or `fontless`. A build only touches
-what this file names, so a pack translating one menu lists one resource and
-finishes in seconds.
+each. Its `kind` is `scene`, `container`, `fontless`, or `image`. A build only
+touches what this file names, so a pack translating one menu lists one
+resource and finishes in seconds.
+
+An `image` row is the one that does not name a CSV: parts of the interface are
+drawn rather than written, and its `sheet` column names the pack directory
+holding repainted copies of them, `images/` by default. See
+[translator.md](translator.md) for how to get a picture out and put one
+back.
 
 A resource may hold more than one bank of text. Where it does, the row's
 `subresource` column names the one it means, and a row that leaves it blank

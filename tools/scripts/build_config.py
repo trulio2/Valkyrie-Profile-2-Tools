@@ -24,6 +24,7 @@ FLAG_MAP = {
     'fontless': {
         'shared-font-glyphs': '--shared-font-glyphs',
     },
+    'image': {},
 }
 
 def expand_flags(row, kind):
@@ -90,7 +91,7 @@ def lint_manifest(rows, *, repair_sheets=True):
                 issues.append(('error', kind, resource,
                                f"{row_label}: sheet missing: {sheet}"))
             else:
-                if repair_sheets:
+                if repair_sheets and not os.path.isdir(sheet):
                     fields, records = normalize_sheet_newlines.repair_in_place(
                         sheet)
                     if fields or records:

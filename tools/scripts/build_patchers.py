@@ -292,3 +292,23 @@ def preflight(reference_iso, rows, *, dry_run, verbose=False):
         if verbose:
             print(audit_log.getvalue(), end='')
     print(f"== pre-flight ok: {len(scene_rows)} row(s) ==")
+
+
+def patch_image_resource_in_memory(iso, row, *, primary_lookup=None):
+    from . import fis_images
+    folder = (row.get('sheet') or '').strip()
+    resource = int(row['resource'])
+    if not folder or not os.path.isdir(folder):
+        return {'written': 0, 'details': f'no image directory for {resource}'}
+    raw = bytes(iso.read_entry(resource))
+    built, applied = fis_images.apply_pack(raw, resource, folder)
+    changed = [name for name, count in applied if count]
+    if not changed:
+        return {'written': 0, 'details': 'no image differed from the disc'}
+    if len(built) != len(raw):
+        raise ValueError(f'resource {resource} changed length')
+    iso.write_entry(resource, built)
+    for name, count in applied:
+        if count:
+            print(f"  image {name}: {count} byte(s) changed")
+    return {'written': len(changed), 'details': ', '.join(changed)}

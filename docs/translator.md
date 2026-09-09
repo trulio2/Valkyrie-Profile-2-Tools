@@ -90,6 +90,56 @@ line is left out when it cannot be.
 This checks whether the text fits. Whether a scene plays correctly is only
 answered by playing it.
 
+## Interface artwork
+
+Part of the interface is drawn rather than written -- the settings screen,
+labels like `COST` and `OTH`, and the battle banners such as `Hit`, `Miss`
+and `Direct Assault`. Those are pictures, so no CSV row reaches them. A pack
+translates them by carrying repainted copies in its own `images/` directory,
+named by a row in its `build-profile.csv`:
+
+```csv
+"image","1781","images","","",""
+```
+
+### Getting a picture out
+
+```bash
+python tools/fis_image.py scan <usa-image.iso> --out <folder> --progress
+```
+
+That writes one PNG per picture into `<folder>`, named for where on the disc
+it came from. **Keep the name.** It is how a build knows which picture a file
+replaces, so a repainted one goes into the pack's `images/` unrenamed. Narrow
+a scan to one resource with `--first` and `--last`.
+
+### Painting one
+
+- **The size cannot change.** A PNG with different dimensions is refused.
+- **Use only the colours already in the picture.** Each one carries a small
+  palette of its own, and a colour that matches no entry is refused rather
+  than approximated.
+- **Open it on a dark background.** These are white-on-transparent overlays,
+  so the greys are opacity, and on white they look blank.
+- **The game recolours them.** `Direct Assault` is white in the picture and
+  yellow on screen. Paint in the shades the picture uses, not the ones the
+  game shows.
+
+There is no reflow. A phrase is a picture, so a longer translation does not
+wrap -- it runs off the edge. Rearranging buys width: the Spanish disc turns
+`LEARNED MAGIC SKILL ATTACK` from one line into four stacked words, which is
+what makes room for `¡Asalto directo!`.
+
+Accented letters are not in these pictures either. They have to be painted,
+or cut from the letters that are already there.
+
+### Room
+
+A repainted picture is the same size as the one it replaces, but it is stored
+compressed, and more ink compresses larger. There is room to spare and it is
+not generous. A pack that overruns it is refused rather than written, with a
+message saying by how much.
+
 ## Output
 
 When running from source, the default output is

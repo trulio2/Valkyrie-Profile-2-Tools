@@ -155,6 +155,8 @@ def repair_manifest_sheets(rows):
         sheet = row.get('sheet')
         if not sheet or not os.path.exists(sheet):
             continue
+        if os.path.isdir(sheet):
+            continue
         fields, records = normalize_sheet_newlines.repair_in_place(sheet)
         if not (fields or records):
             continue

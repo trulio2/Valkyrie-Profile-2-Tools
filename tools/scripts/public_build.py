@@ -39,6 +39,7 @@ _ROUTINE = re.compile(r"^(\[\d+/\d+\]|copy: |writing to |workspace: "
                       r"|dedupe: |shared-font: |chapters: |sheets: |== |"
                       r"accents: |streamed archive |tracked SLZ )")
 
+IMAGE_DIRECTORY = "images"
 SHEET_NAME_RE = re.compile(
     r"^(?:resource-[0-9]+-scenes|container-[0-9]+)\.csv$")
 MENU_LAYOUT = PROJECT_ROOT / "data" / "menu-layout.csv"
@@ -168,18 +169,15 @@ def check_pack_profile(pack: str | os.PathLike[str]) -> int:
     for line, row in enumerate(rows, 2):
         where = f"{path}:{line}"
         kind = (row.get("kind") or "").strip()
-        if kind not in ("scene", "container", "fontless"):
+        if kind not in ("scene", "container", "fontless", "image"):
             raise PackError(f"{where}: unknown kind {kind!r}")
         try:
             resource = str(int((row.get("resource") or "").strip(), 0))
         except ValueError as exc:
             raise PackError(f"{where}: invalid resource "
                             f"{row.get('resource')!r}") from exc
-        # Only the shape of the name, because a sheet is a source of text
-        # rather than the resource's own: the menu layout points 25, 868,
-        # 869, 1480, and 1481 at container-0024.csv.
         name = Path(row.get("sheet") or "").name
-        if not SHEET_NAME_RE.fullmatch(name):
+        if kind != "image" and not SHEET_NAME_RE.fullmatch(name):
             raise PackError(f"{where}: {name!r} is not a generated sheet name")
         if (kind, resource) in seen:
             raise PackError(f"{where}: duplicate {kind} resource {resource}")
@@ -261,8 +259,9 @@ def compile_build_workspace(
     matched_chapters: set[tuple[str, str, str, str]] = set()
     try:
         profile_rows = _profile_rows(profile_path)
-        profile_sheets = {Path(row["sheet"]).name for row in profile_rows}
-        missing = [row for row in profile_rows
+        text_rows = [row for row in profile_rows if row["kind"] != "image"]
+        profile_sheets = {Path(row["sheet"]).name for row in text_rows}
+        missing = [row for row in text_rows
                    if not _input_sheet(records, row).is_file()]
         if missing:
             named = ", ".join(
@@ -299,6 +298,22 @@ def compile_build_workspace(
                 f"{unmatched[:5]!r}")
 
         for profile_row in profile_rows:
+            if profile_row["kind"] == "image":
+                folder = pack_path / (profile_row.get("sheet")
+                                      or IMAGE_DIRECTORY)
+                if not folder.is_dir():
+                    raise PackError(
+                        f"{profile_path}: resource "
+                        f"{profile_row['resource']} names image directory "
+                        f"{folder}, which is not there")
+                manifest_rows.append({
+                    "kind": "image",
+                    "resource": str(int(profile_row["resource"], 0)),
+                    "sheet": os.fspath(folder),
+                    "flags": "", "verify": "", "subresource": "",
+                    "chapter_title": "", "chapter_title_message": "",
+                })
+                continue
             source = _input_sheet(records, profile_row)
             if not source.is_file():
                 raise PackError(
@@ -337,7 +352,7 @@ def compile_build_workspace(
                 "message_id": "0",
                 "message_index": "",
             })[:2])
-            for row in profile_rows
+            for row in text_rows
         }
         ignored_chapters = set(chapters) - matched_chapters
         ignored = (sum(key[:2] not in profile_pairs for key in exact)

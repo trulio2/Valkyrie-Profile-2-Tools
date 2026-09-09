@@ -27,7 +27,7 @@ from .build_patchers import (
     _scene_args_from_row, audit_args, collect_shared_font_characters,
     install_shared_font_in_memory, install_shared_font_once, patch_args,
     patch_container_resource_in_memory, patch_fontless_resource_in_memory,
-    patch_scene_resource_in_memory,
+    patch_image_resource_in_memory, patch_scene_resource_in_memory,
     patch_worldmap_resource_in_memory, preflight, run, verify_args,
     verify_scene_in_memory, wants_verify,
 )
@@ -418,11 +418,14 @@ def main():
 
         warn_unknown_flags(row, kind)
 
-        if kind in ('container', 'fontless', 'worldmap', 'scene'):
+        if kind in ('container', 'fontless', 'worldmap', 'scene', 'image'):
             row_log = io.StringIO()
             try:
                 with contextlib.redirect_stdout(row_log):
-                    if kind == 'container':
+                    if kind == 'image':
+                        details = patch_image_resource_in_memory(
+                            iso, row, primary_lookup=primary_lookup)
+                    elif kind == 'container':
                         details = patch_container_resource_in_memory(
                             iso, row, primary_lookup=primary_lookup)
                     elif kind in ('fontless', 'worldmap'):
