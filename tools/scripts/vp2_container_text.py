@@ -98,6 +98,8 @@ def entries(blob, meta):
 
 def render_tokens(blob, meta, offset, slots):
     """Decode a token record, returning (text, byte length including the 0)."""
+    from . import vp2_cutscene_subtitles as subtitles
+
     start = meta["text_start"] + offset
     position, out = start, []
     while position < meta["text_end"]:
@@ -108,12 +110,17 @@ def render_tokens(blob, meta, offset, slots):
         index = token - TOKEN_BASE
         if 0 <= index < len(slots):
             out.append(slots[index])
-        elif token == 0x0100:
-            out.append(" ")
-        elif token == LINE_BREAK:
+            continue
+        if token == LINE_BREAK:
             out.append("\n")
-        else:
-            out.append("<%04X>" % token)
+            continue
+        width = subtitles.RECORD_PARAMETERS.get(token, 0)
+        if width:
+            payload = bytes(blob[position:position + width])
+            out.append("<%04X:%s>" % (token, payload.hex().upper()))
+            position += width
+            continue
+        out.append("<%04X>" % token)
     return "".join(out), position - start + 1
 
 def codepage_record_is_local(blob, meta, offset):
@@ -1114,11 +1121,9 @@ def walk_block(blob, meta, slots):
     parent, suffix = None, 0
     while position < meta["text_end"]:
         begin = position
-        while position < meta["text_end"] and blob[position] != 0:
-            position += 2
-        position += 1
         offset = begin - meta["text_start"]
-        text, _ = render_tokens(blob, meta, offset, slots)
+        text, length = render_tokens(blob, meta, offset, slots)
+        position = begin + length
         if offset in referenced:
             parent, suffix = referenced[offset], 0
             key = str(parent)
@@ -1235,29 +1240,31 @@ def slot_lookup(slots, first=SUBTITLE_CUT_FIRST_SLOT):
 
 def encode_tokens(text, lookup, label):
     """Encode a translation into tokens, keeping <XXXX> control codes."""
-    tokens, position = [], 0
+    output, position = bytearray(), 0
     while position < len(text):
+        tag = CODEPAGE_TAG.match(text, position)
+        if tag:
+            value, _, payload = tag.group()[1:-1].partition(":")
+            token = int(value, 16)
+            if token == 0:
+                raise ValueError("%s contains <0000>, the record terminator"
+                                 % label)
+            output.extend(struct.pack("<H", token))
+            output.extend(bytes.fromhex(payload))
+            position = tag.end()
+            continue
         character = text[position]
-        if character == "<" and text.find(">", position) > position:
-            end = text.find(">", position)
-            body = text[position + 1:end]
-            try:
-                tokens.append(int(body, 16))
-                position = end + 1
-                continue
-            except ValueError:
-                pass
         if character == "\n":
-            tokens.append(LINE_BREAK)
+            output.extend(struct.pack("<H", LINE_BREAK))
         elif character in lookup:
-            tokens.append(TOKEN_BASE + lookup[character])
+            output.extend(struct.pack("<H", TOKEN_BASE + lookup[character]))
         else:
             raise ValueError(
                 "%s needs a glyph this container does not have: %r. Its font "
                 "holds: %s" % (label, character,
                                "".join(sorted(set(lookup) - {"\n"}))))
         position += 1
-    return b"".join(struct.pack("<H", t) for t in tokens) + b"\0"
+    return bytes(output) + b"\0"
 
 def cmd_patch(args):
     if os.path.exists(args.output_iso) and not getattr(args, "dry_run", False) \
@@ -1358,7 +1365,9 @@ def patch_resource_in_memory(iso, resource, supplied, *,
     finished = set()
     for record in walk_block(blob, meta, slots):
         row = rows.get(record["key"])
-        finished |= set(row["translated"] if row else record["original_en"])
+        text = row["translated"] if row else record["original_en"]
+        # A control tag is not text the font has to draw.
+        finished |= set(CODEPAGE_TAG.sub("", text))
     missing = sorted(c for c in finished
                      if c not in lookup and c not in ("\n", "<", ">")
                      and not c.isdigit())
@@ -1482,13 +1491,12 @@ def patch_resource_in_memory(iso, resource, supplied, *,
     records, position = [], meta["text_start"] + block_start
     while position < meta["text_start"] + region:
         begin = position
-        while position < meta["text_start"] + region and blob[position] != 0:
-            position += 2
-        position += 1
+        _, length = render_tokens(blob, meta, begin - meta["text_start"], slots)
+        position = begin + length
         records.append((begin - meta["text_start"], bytes(blob[begin:position])))
         if position >= meta["text_start"] + region:
             break
-        if blob[position - 1] == 0 and position - begin <= 1 and            all(b == 0 for b in blob[position:position + 8]):
+        if length <= 1 and all(b == 0 for b in blob[position:position + 8]):
             break
     by_offset = {}
     for record in walk_block(blob, meta, slots):
