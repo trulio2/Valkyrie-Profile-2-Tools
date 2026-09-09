@@ -1,45 +1,68 @@
 resource,message_id,translated,notes
-37,6,,
-37,7,,
-37,8,,
-37,9,,
-37,10,,
+37,6,"Há algum tempo, ouvi falar de uma luta lá por Crell Monferaigne. <PART>
+---
+Dipan tira os olhos deles, e os invasores não perdem tempo em atacar. <PART>
+---
+Bem, enquanto Dipan não estiver patrulhando o mundo, nenhum país pode estar despreparado.",
+37,7,Midgard está segura enquanto Dipan existir. Até os deuses devem respeitar seu poder.,
+37,8,Os deuses realmente vão atacar? Isso está saindo totalmente do controle.,
+37,9,"Todos se dispersaram e fugiram, assim como filhotes de aranha de um ninho quebrado. <PART>
+---
+Meu filho e a esposa dele disseram para deixar Solde, mas para onde eu posso ir na minha idade? <PART>
+---
+Estou cansado demais para recomeçar em outro lugar, então vou ver esta cidade até o seu fim.",
+37,10,"Costumava ser tão barulhento que você não conseguia dormir, mas agora este lugar é como uma cidade fantasma.",
 37,29,Parece com fome...,
 37,13,Coma bastante!,
 37,30,"Desculpe...
 Não tenho comida para você.",
 37,15,"Hmm...
 Certo... Obrigada.",
-37,17,,
-37,19,,
-37,21,,
-37,32,,
-37,33,,
-37,43,,
+37,17,"Hmm...
+Certo... Obrigada.",
+37,19,"Hmm...
+Certo... Obrigada.",
+37,21,"Hmm...
+Certo... Obrigada.",
+37,32,"Miauuustando!  
+Miau consegue falar gato? <PART>  
+---  
+Essa é uma miau novidade! Nunca conheci  
+ninguém como você pessoalmente! <PART>  
+---  
+É tão solitário com todas as  
+pessoas indo embora. <PART>  
+---  
+Comida é tão difícil de encontrar!  
+Miau não tem nada, você tem?",
+37,33,"Mew pode falar gato! Peixe! Peixe! Eu quero peixe! <PART>
+---",
+37,43,Mew é uma pessoa fria e sem coração!,
 37,38,Toma aqui!,
-37,40,,
-37,41,,
-37,42,,
-37,2,,
+37,40,Isto é perfeito! Agradeça-me!,
+37,41,"Sinto muito...  
+Não tenho nenhum alimento para você.",
+37,42,Miau! Me ajudaaaa!,
+37,2,Capela,
 37,3,Casa,not displayed by the event script
-37,4,,
-37,5,,
-37,11,,
-37,12,,
-37,14,,
-37,16,,
-37,18,,
-37,20,,
-37,22,,
+37,4,Casa,
+37,5,Solde <PART> Praça da Capela,
+37,11,Frutos do mar <PART> adquiridos,
+37,12,Frutos do mar <PART> adquiridos,
+37,14,Adquirido <PART> Rato Caçado,
+37,16,Adquiriu <PART> Lagarto Sem Cauda,
+37,18,Adquirido <PART> Pássaro Desafortunado,
+37,20,Adquirido <PART> Fezes de Gato,
+37,22,Alimentar com frutos do mar?,
 37,23,Sim.,not displayed by the event script
 37,24,Não.,not displayed by the event script
-37,34,,
-37,35,,
-37,36,,
-37,37,,
-37,39,,
-37,44,,
-37,45,,
+37,34,Alimentar com frutos do mar?,
+37,35,Sim.,
+37,36,Não.,
+37,37,Frutos do mar <PART> adquiridos,
+37,39,Frutos do mar <PART> adquiridos,
+37,44,Adquiriu o Anel de Salomão <PART>,
+37,45,Adquiriu o Anel de Salomão <PART>,
 37,384,Solde,not displayed by the event script
 37,2792,Matrona,not displayed by the event script
 37,2793,Gato,not displayed by the event script

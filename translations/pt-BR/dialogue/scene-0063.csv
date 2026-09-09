@@ -1,6 +1,12 @@
 resource,message_id,translated,notes
-63,6,,
-63,8,,
+63,6,"Vocês são viajantes, certo?
+Bem-vindos a Dipan. <PART>
+---
+Vocês devem estar exaustos da viagem.
+Uma noite por aqui faria bem a vocês!",
+63,8,"Essa pintura mostra a Floresta dos Espíritos, lar dos elfos. <PART>
+---
+Dentro das névoas confusas da floresta estão Yggdrasil e os portões para os céus.",
 63,34,"Vai ficar?
 Temos um quarto com vista disponível.",
 63,35,Bem-vindo. Gostaria de um quarto?,
@@ -53,7 +59,7 @@ Voltem quando tiverem o dinheiro!",
 para alocar os quartos.",
 63,1,Sair,not displayed by the event script
 63,5,Falar,not displayed by the event script
-63,7,,
+63,7,Verificar,
 63,31,Diária: <PART> OTH,not displayed by the event script
 63,32,Sim,not displayed by the event script
 63,33,Não,not displayed by the event script

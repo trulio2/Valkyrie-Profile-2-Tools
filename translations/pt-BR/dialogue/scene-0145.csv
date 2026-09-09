@@ -4,6 +4,6 @@ Troque de lugar com o inimigo e salte até a saliência. <PART>
 ---
 Após o inimigo ser derrotado, o remanescente não se move. Porém, ele se restaura ao sair da área e voltar.",
 145,2,Passagem Subterrânea Real,not displayed by the event script
-145,22,,
+145,22,Passagem Subterrânea Real,
 145,2741,Adquirido <PART> 400 OTH,not displayed by the event script
 145,2742,Adquirido <PART> Arcano do Guerreiro,not displayed by the event script

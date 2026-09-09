@@ -58,21 +58,21 @@ As coisas estão difíceis hoje em dia, não é?",
 43,27,"<Garra de Obsidiana>
 <PART> Lobo do Inverno <PART> : Perna
 <PART> Lobo Selvagem <PART> : Perna",
-43,37,"<Making Valued Customer Items>
+43,37,"<Criando Itens Valorizados pelos Clientes>
  <PART> O que é um Item de Cliente Valioso? <PART>
 Como o nome sugere, Itens de Cliente Valioso são itens reservados exclusivamente para clientes preferenciais.
 
 Entre eles estão itens normalmente difíceis de obter e itens que não são encontrados em outros lugares.",
-43,43,"<Making Valued Customer Items>
+43,43,"<Criando Itens Valorizados pelos Clientes>
  <PART> Como eu vejo os itens à venda? <PART>
 Nomes de itens aparecendo como ""?"" vão se tornar visíveis quando você se tornar um cliente valorizado.
 
 Se você não vê os nomes, é porque o lojista julga que seu nível de patronagem é insuficiente. <PART>
 ---
- <PART> <Making Valued Customer Items>
+ <PART> <Criando Itens Valorizados pelos Clientes>
  <PART> Como eu vejo os itens à venda? <PART>
 Quanto mais  você comprar em uma loja, maior será o seu valor como cliente, fazendo com que cada vez mais itens fiquem visíveis.",
-43,44,"<Making Valued Customer Items>
+43,44,"<Criando Itens Valorizados pelos Clientes>
  <PART> Diga-me quais materiais eu preciso! <PART>
 Depois de saber o nome do item,
 é hora de pegar os materiais. Os materiais estão listados para cada item,
@@ -80,24 +80,24 @@ então você só precisa pegá-los.
 
 A maioria dos materiais pode ser obtida derrotando monstros. <PART>
 ---
- <PART> <Making Valued Customer Items>
+ <PART> <Criando Itens Valorizados pelos Clientes>
  <PART> Diga-me quais materiais eu preciso! <PART>
 O que você consegue varia de acordo com quais partes do monstro se quebram.
 
 Quais partes fornecem quais materiais estão listadas nas <PART> Anotações do Comerciante <PART> em algum lugar da loja.",
-43,45,"<Making Valued Customer Items>
+43,45,"<Criando Itens Valorizados pelos Clientes>
  <PART> Faça meu item! <PART>
 Quando você tiver os itens necessários
 para criar um Item de Cliente Valorizado,
 os materiais aparecerão em <PART> amarelo <PART> quando
 você os vender. <PART>
 ---
- <PART> <Making Valued Customer Items>
+ <PART> <Criando Itens Valorizados pelos Clientes>
  <PART> Faça meu item! <PART>
 Quando o nome do item que você quer fazer estiver visível e você tiver vendido
 os materiais necessários ao Comerciante, o item será feito. <PART>
 ---
- <PART> <Making Valued Customer Items>
+ <PART> <Criando Itens Valorizados pelos Clientes>
  <PART> Faça meu item! <PART>
 Quando os Itens de Cliente Valorizado
 aparecerem em um tom mais escuro de
@@ -107,7 +107,7 @@ não foram vendidos ao Comerciante.
 Também significa que o cliente possui
 os itens necessários. <PART>
 ---
- <PART> <Making Valued Customer Items>
+ <PART> <Criando Itens Valorizados pelos Clientes>
  <PART> Faça meu item! <PART>
 O número de itens que podem ser feitos
 com os materiais vendidos aparece entre
@@ -119,19 +119,19 @@ feitos com os materiais vendidos.",
 43,1,Sair,not displayed by the event script
 43,10,Falar,not displayed by the event script
 43,14,Ler,
-43,19,,
+43,19,<Notas do Comerciante>,
 43,20,Pedra do Mau Olhado,
 43,21,Espinélio Sagrado,
 43,22,Fragmento de Espelho,
 43,23,Minério Vermelho Polido,
 43,24,Pérola Gigante,
 43,25,Garra de Obsidiana,
-43,32,,
+43,32,Criando Itens Valorizados pelos Clientes,
 43,33,O que é um Item de Cliente Valorizado?,
 43,34,Como posso ver os itens à venda?,
 43,35,Diga-me quais materiais eu preciso!,
 43,36,Faça meu item!,
-43,38,,
+43,38,Criando Itens Valorizados pelos Clientes,
 43,39,O que é um Item de Cliente Valorizado?,
 43,40,Como posso ver os itens à venda?,
 43,41,Diga-me quais materiais eu preciso!,

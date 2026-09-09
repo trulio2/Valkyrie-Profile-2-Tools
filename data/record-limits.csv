@@ -13,6 +13,7 @@
 651,container,1338,verified,highest extent this bank has been played with; its real limit is unknown.
 652,container,11963,limit,measured cap: records past this point stop the game.
 53,scene-content,676744,candidate,"Recorded by a build, not by a play-test. Resource #53 reached 676744 with scope=scene-content. Play this screen, then change kind to verified if it holds or lower this row if it does not."
+59,scene-content,455028,candidate,"Recorded by a build, not by a play-test. Resource #59 reached 455028 with scope=scene-content. Play this screen, then change kind to verified if it holds or lower this row if it does not."
 61,scene-content,526360,verified,highest extent this scene has been played with.
 97,scene-content,1052108,candidate,"Recorded by a build, not by a play-test. Resource #97 reached 1052108 with scope=scene-content. Play this screen, then change kind to verified if it holds or lower this row if it does not."
 127,scene-content,1575628,verified,highest extent this scene has been played with.

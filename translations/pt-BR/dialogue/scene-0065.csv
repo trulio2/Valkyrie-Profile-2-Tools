@@ -1,8 +1,26 @@
 resource,message_id,translated,notes
-65,2,,
-65,3,,
-65,4,,
-65,5,,
+65,2,"Dizem que Dipan é um país de cavaleiros, mas a feitiçaria aqui também é incrível. <PART>
+---
+Eu atribuo isso ao Rei Barbarossa e aos Três Magos que trabalham sob ele. <PART>
+---
+Se continuarem progredindo assim, até os deuses vão ter dificuldade de acompanhar.",
+65,3,"Ruas seguras, comida ótima e vinho potente <PART> ---- <PART>
+a vida aqui realmente pode enferrujar suas habilidades. <PART>
+---
+Deveria fazer um pouco de treino contra monstros amanhã...
+É melhor encontrar alguns desarmados. <PART>
+---
+Você não odeia quando eles estão armados?
+Bem, sempre ajuda se você conseguir derrubá-los...",
+65,4,"Que azar o meu! Estou preso aqui em Dipan.  
+Dizem que o navio está fora de serviço. <PART>  
+---  
+Bem, não vai me matar dar uma relaxada por aqui por um tempo...",
+65,5,"Diz aí, você já ouviu falar sobre o poema espalhado? <PART>
+---
+Ouvi dizer que se você encontrar todas as três partes, elas formam algum tipo de brasão, <PART>
+---
+mas não tem como adivinhar onde estão as partes ou o que é o brasão.",
 65,1,Sair,not displayed by the event script
 65,36,Dipan,not displayed by the event script
-65,70,Aventureira,not displayed by the event script
+65,70,Aventureiro,not displayed by the event script

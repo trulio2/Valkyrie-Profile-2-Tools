@@ -1,9 +1,16 @@
 resource,message_id,translated,notes
-55,6,,
-55,7,,
+55,6,"Isso é ridículo! Eu não acredito.  
+Os preços estão disparando. Disparando! <PART>  
+---  
+O vinho importado de Crell Monferaigne  
+dobrou de preço. Dobrou! <PART>  
+---  
+Eles me dão alguma desculpa de serviço de linha...  
+Aconteceu algum acidente ou algo assim?",
+55,7,Os preços das importações estão fora de controle! Algo deve estar errado com os barcos.,
 55,1,Casa,not displayed by the event script
-55,2,,
-55,3,,
-55,4,,
+55,2,Casa,
+55,3,Capela,
+55,4,Dipan <PART> Praça da Capela,
 55,30,Dipan,not displayed by the event script
 55,31,Habitante,not displayed by the event script
