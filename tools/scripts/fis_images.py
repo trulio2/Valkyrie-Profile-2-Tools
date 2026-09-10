@@ -441,6 +441,51 @@ def views(raw, resource=None):
     return out
 
 
+def pack_files(folder, resource):
+    """The pack's PNGs for one resource."""
+    prefix = "fis-%04d-" % int(resource)
+    if not os.path.isdir(folder):
+        return []
+    return sorted(name for name in os.listdir(folder)
+                  if name.startswith(prefix) and name.endswith(".png"))
+
+
+def _by_shape(current, resource, folder, wanted, applied):
+    for name in wanted:
+        path = os.path.join(folder, name)
+        try:
+            width, height, _rows = read_png(path)
+        except FisError:
+            continue
+        matches = []
+        for route, blob, write in views(current, resource):
+            for at, item in items_in(blob):
+                try:
+                    meta = descriptor(item)
+                except FisError:
+                    continue
+                if meta["width"] != meta["draw_width"]:
+                    continue
+                if (meta["width"], meta["height"]) == (width, height):
+                    matches.append((route, at, item, blob, write))
+        if len(matches) != 1:
+            continue
+        route, at, item, blob, write = matches[0]
+        try:
+            built, _approximated = encode(item, path)
+        except FisError:
+            continue
+        if built == item:
+            applied.append((name, 0))
+            continue
+        patched = bytearray(blob)
+        patched[at:at + len(built)] = built
+        current = write(bytes(patched))
+        changed = sum(1 for a, b in zip(item, built) if a != b)
+        applied.append((name, changed))
+    return current
+
+
 def apply_pack(raw, resource, folder):
     applied, current = [], bytes(raw)
     while True:
@@ -471,4 +516,13 @@ def apply_pack(raw, resource, folder):
             if progressed:
                 break
         if not progressed:
-            return current, applied
+            break
+    placed = {name for name, _count in applied}
+    left = [name for name in pack_files(folder, resource) if name not in placed]
+    if left:
+        current = _by_shape(current, resource, folder, left, applied)
+    placed = {name for name, _count in applied}
+    for name in pack_files(folder, resource):
+        if name not in placed:
+            applied.append((name, None))
+    return current, applied

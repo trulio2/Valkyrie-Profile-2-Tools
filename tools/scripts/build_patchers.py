@@ -302,6 +302,12 @@ def patch_image_resource_in_memory(iso, row, *, primary_lookup=None):
         return {'written': 0, 'details': f'no image directory for {resource}'}
     raw = bytes(iso.read_entry(resource))
     built, applied = fis_images.apply_pack(raw, resource, folder)
+    missed = [name for name, count in applied if count is None]
+    if missed:
+        raise ValueError(
+            'resource %d: %s matched no picture on this disc. Re-extract '
+            'against the disc being built, or check the size is right.'
+            % (resource, ', '.join(missed)))
     changed = [name for name, count in applied if count]
     if not changed:
         return {'written': 0, 'details': 'no image differed from the disc'}

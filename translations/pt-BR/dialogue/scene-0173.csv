@@ -15,12 +15,12 @@ resource,message_id,translated,notes
 173,2754,,
 173,2755,,
 173,2756,,
-173,2757,Roland <PART> entrou para o grupo.,
+173,2757,,
 173,2758,,
 173,2759,,
 173,2760,,
 173,2761,,
-173,2762,Kraad <PART> entrou para o grupo.,
+173,2762,,
 173,2763,,
 173,2764,,
 173,2765,,
@@ -55,12 +55,12 @@ resource,message_id,translated,notes
 173,2592,,
 173,2593,,
 173,2594,,
-173,2595,"Não se preocupe, apenas deixe comigo.",
+173,2595,,
 173,2596,,
 173,2597,,
 173,2598,,
 173,2599,,
-173,2600,Já faz um tempo desde a última vez que lutei.,
+173,2600,,
 173,2601,,
 173,2602,,
 173,2603,,
@@ -83,13 +83,13 @@ resource,message_id,translated,notes
 173,2620,,
 173,2621,,
 173,2622,,
-173,2623,A alma de um guerreiro pesado emana da espada.,
+173,2623,,
 173,2624,,
 173,2625,,
 173,2629,,
-173,2626,Realizar a materialização?,not displayed by the event script
-173,2627,Sim,not displayed by the event script
-173,2628,Não,not displayed by the event script
+173,2626,,not displayed by the event script
+173,2627,,not displayed by the event script
+173,2628,,not displayed by the event script
 173,2630,Passagem Subterrânea Real,not displayed by the event script
 173,2742,Elixir <PART> Adquirido,
 173,2743,Adquirido <PART> 600 OTH,

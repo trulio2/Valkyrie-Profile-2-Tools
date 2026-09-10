@@ -1021,9 +1021,12 @@ def japanese_text(iso_path, resource, glyph_table, names_path=None,
                     continue
                 slot = token_slot(token, meta["glyph_base"],
                                   meta["glyph_count"])
-                if slot is None or not 0 <= slot < len(names):
+                if slot is not None:
+                    if 0 <= slot < len(names):
+                        pieces.append(names[slot] or "〓")
                     continue
-                pieces.append(names[slot] or "〓")
+                if 0 < token < 0x80:
+                    pieces.append(dcms.decode_english_tokens([token]))
         out[key] = "".join(pieces)
     return out
 

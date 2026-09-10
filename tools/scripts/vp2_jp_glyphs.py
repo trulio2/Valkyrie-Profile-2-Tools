@@ -150,14 +150,11 @@ def cmd_index(args):
     resources = []
     with open(args.manifest, newline="", encoding="utf-8-sig") as source:
         for row in csv.DictReader(source):
-            if row["type"] in ("pk1", "slz", "zls"):
-                resources.append(int(row["index"]))
+            resources.append(int(row["index"]))
     resources.sort()
     with open(args.iso, "rb") as handle:
         _, total, table = triace.load_table(handle)
         glyphs = collect(handle, table, total, resources)
-    # Most-used first: a glyph in four hundred resources is a kana worth
-    # naming before one that appears once.
     order = sorted(glyphs.values(),
                    key=lambda item: (-len(item["resources"]), -item["slots"],
                                      item["first_resource"], item["first_slot"]))
@@ -312,6 +309,7 @@ def cmd_gaps(args):
 
 
 UNKNOWN = "\u3013"
+BREAK_TEXT = {0x8080: "\n", subtitles.PAGE_BREAK: subtitles.PAGE_BREAK_TEXT}
 VOICE_HEADER = bytes((0x9E, 0x80))
 
 
@@ -348,19 +346,28 @@ def decode_resource(handle, table, total, resource, names):
                      struct.unpack_from("<H", record, 4)[0])
         runs, missing = [], 0
         for offset, _, tokens in subtitles.parse_record(record, metadata):
-            text = []
+            text, drawn = [], False
             for token in tokens:
+                if token in BREAK_TEXT:
+                    text.append(BREAK_TEXT[token])
+                    continue
                 slot = subtitles.token_slot(
                     token, metadata["glyph_base"], metadata["glyph_count"])
                 if slot is None:
+                    if 0 < token < 0x80:
+                        rendered = dcms.decode_english_tokens([token])
+                        text.append(rendered)
+                        drawn = drawn or bool(rendered.strip())
                     continue
                 if slot in alphabet:
                     text.append(alphabet[slot])
+                    drawn = drawn or bool(alphabet[slot].strip())
                 else:
                     text.append(UNKNOWN)
                     missing += 1
-            visible = "".join(text).strip()
-            if visible:
+                    drawn = True
+            visible = "".join(text).strip(" \t")
+            if drawn:
                 runs.append((offset, visible))
         best = (" %s " % subtitles.FRAGMENT_MARKER).join(
             visible for _, visible in sorted(runs))

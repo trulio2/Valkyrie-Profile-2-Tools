@@ -87,9 +87,9 @@ resource,message_id,translated,notes
 283,2629,,
 283,2630,,
 283,2634,,
-283,2631,Realizar a materialização?,not displayed by the event script
-283,2632,Sim,not displayed by the event script
-283,2633,Não,not displayed by the event script
+283,2631,,not displayed by the event script
+283,2632,,not displayed by the event script
+283,2633,,not displayed by the event script
 283,2635,Cavernas do Vulcão Surts,not displayed by the event script
 283,2782,,
 283,2783,,
