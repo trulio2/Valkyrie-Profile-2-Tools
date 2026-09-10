@@ -1,11 +1,29 @@
 resource,message_id,translated,notes
-103,3,,
-103,4,,
-103,6,,
-103,7,,
-103,393,,
-103,394,,
-103,395,,
+103,3,Vou usar com sabedoria.,
+103,4,Eles nunca limpam?,
+103,6,"Algo está pendurado na parede.  
+Um texto antigo, talvez...",
+103,7,"<Teologia> <PART>
+Poder místico concedido apenas aos deuses <PART> ---- <PART>
+fragmentos do poder de Yggdrasil <PART> ---- <PART> pedras-selo.
+Assumindo a forma de bolas de luz no
+mundo humano, eles confundem a visão de
+quem não sabe.
+Se houvesse uma maneira de manuseá-los, eles
+seriam de grande ajuda... <PART>
+---
+ <PART> <Teologia> <PART>
+O poder místico de uma pedra-selo exerce enorme
+influência sobre seu entorno.
+
+Ao encontrar uma em um campo de batalha desconhecido,
+pegue-a sem receio.
+O posicionamento de uma pedra-selo transforma um lugar, abertando novos caminhos. <PART>
+---",
+103,393,Adquirido <PART> OTH,
+103,394,Perdido <PART> OTH,
+103,395,"Dinheiro
+<PART> OUT",
 103,2489,,
 103,2491,,
 103,2494,,

@@ -20,7 +20,7 @@ disse que era em forma de inseto gigante! <PART>
 Bateram com paus e cortaram com espadas,
 mas só cuspia gosma. <PART>
 ---
-Afugentaram com tocha, então acho
+Atiçaram com tocha, então acho
 que é vulnerável a fogo. <PART>
 ---
 De qualquer jeito, devemos chamar profissionais
@@ -32,7 +32,9 @@ de aço para Dipan via Solde. <PART>
 militarização, mas incomum para Dipan...",
 99,19,"Já pegou sua recompensa? O velho
 pode ser insistente, mas é boa gente.",
-99,9,,
+99,9,"Achei estranho na época, e ainda acho agora <PART> ---- <PART> por que haveria um covil de monstro ali? <PART>
+---
+É como se tivessem colocado ali de propósito. As pessoas fazem coisas loucas por direitos de mineração...",
 99,10,"Nada entra nem sai de Dipan.
 Enquanto isso, estou aqui perdendo tempo. <PART>
 ---
@@ -75,7 +77,7 @@ Devemos chamar profissionais
 antes que mais alguém se machuque.",
 99,24,"Não sei dos planos militares de Villnore,
 mas se houver recrutamento, saberei.",
-99,27,,
+99,27,"Eu não sei os planos militares de Villnore, mas se a inscrição começar, eu vou descobrir.",
 99,1,Sair,not displayed by the event script
 99,21,Ouvir,not displayed by the event script
 99,146,Villnore,not displayed by the event script

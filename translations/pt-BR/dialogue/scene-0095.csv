@@ -1,38 +1,72 @@
 resource,message_id,translated,notes
-95,3,,
-95,4,,
-95,5,,
-95,6,,
-95,7,,
-95,8,,
-95,9,,
-95,10,,
-95,11,,
-95,12,,
-95,13,,
-95,14,,
-95,15,,
-95,16,,
-95,17,,
-95,18,,
-95,19,,
-95,33,,
-95,32,,
-95,31,,
-95,30,,
-95,29,,
-95,28,,
+95,3,"Temos uma guilda de mineradores nesta cidade. Todo o minério de ferro extraí
+dopassa por eles. <PART>
+---
+Até alguns anos atrás, havia outra guilda, mas as baixas acabaram com eles.",
+95,4,A outra guilda fechou mais ou menos na época em que eles encontraram ovos de monstro na Mina Turgen.,
+95,5,Qual é toda essa confusão lá fora? Eles fecharam os portões do castelo de repente!,
+95,6,Villnore é um ótimo lugar para fazer compras! Você não vai encontrar uma cidade melhor para isso!,
+95,7,"Me venda qualquer coisa que você não usa.  
+Eu talvez consiga fazer algo para você! <PART>  
+---  
+Você me traz bastante negócio, e  
+talvez eu faça algo especial para você. <PART>  
+---  
+Vou te dizer uma coisa <PART> ---- <PART> você não vai encontrar meus produtos em nenhum outro lugar... especialmente armaduras.",
+95,8,Prazer em fazer negócios. Volte em breve!,
+95,9,Villnore é um ótimo lugar para fazer compras! Você não vai encontrar uma cidade melhor para isso!,
+95,10,O castelo acabou de fazer um inventário das minhas armas e armaduras! Que diabos?,
+95,11,Villnore é um ótimo lugar para fazer compras! Você não vai encontrar uma cidade melhor para isso!,
+95,12,"As armas voaram das prateleiras depois que Dipan caiu.  
+Foi bom para as vendas, mas eu não quero guerra.",
+95,13,Villnore é um ótimo lugar para fazer compras! Você não vai encontrar uma cidade melhor para isso!,
+95,14,"Eu sei que armas causam guerras, mas se eu não vendê-las, não consigo ganhar a vida.",
+95,15,"Todo mundo na cidade está dizendo que esperam que o recrutamento comece em breve... <PART>
+---
+Eu não quero ser soldado!
+Não vou morrer na batalha!",
+95,16,"Monstros saíram da floresta
+por Coriander. <PART>
+---
+Os guardas não vão dar conta lá <PART> ---- <PART>
+eles precisam de aventureiros para resolver isso.",
+95,17,Agora há monstros por estas partes... O mundo anda louco ultimamente.,
+95,18,"Eles também não os têm à venda aqui... 
+Armas <PART> ---- <PART> armas de caçador, para ser mais preciso. <PART>
+---
+Mesmo monstros que normalmente são imunes a armas são fichinha com caçadores. <PART>
+---
+O Matador de Dragões derruba dragões, enquanto o Matador de Plantas poda plantas. <PART>
+---
+Com esse tipo de poder na sua arma, não há nada a temer!",
+95,19,"Mesmo que eles tivessem armas de caçador, os preços seriam astronômicos.",
+95,33,"<Chifre de Besouro>
+ <PART> Escaravelho Gigante <PART> : Cabeça
+ <PART> Besouro de Armadura <PART> : Cabeça",
+95,32,"<Pétala de Flor Branca>
+ <PART> Flor Tóxica <PART> : Parte Superior do Corpo
+ <PART> Flor de Areia <PART> : Parte Superior do Corpo",
+95,31,"<Escamas de Andorinha Sem Carga>
+ <PART> Lagarto Selvagem <PART> : Perna",
+95,30,"<Ponta Afiada>
+ <PART> Cavaleiro Lagarto <PART> : Arma
+ <PART> Armadura Viva <PART> : Arma",
+95,29,"<Ruby Básico>
+ <PART> Joia Vermelha <PART> : Tesouro
+ <PART> Joia Negra <PART> : Tesouro",
+95,28,"<Semente Tóxica>
+ <PART> Flor Mimética <PART>: Parte Superior do Corpo",
 95,1,Sair,not displayed by the event script
 95,2,Falar,not displayed by the event script
 95,20,,
 95,21,,
-95,22,,
-95,23,,
-95,24,,
-95,25,,
-95,26,,
-95,27,,
+95,22,Chifre de Besouro,
+95,23,Pétala de Flor Branca,
+95,24,Escalas de Andorinha Sem Carga,
+95,25,Ponta de Lança Afiada,
+95,26,Ruby Básico,
+95,27,Semente Tóxica,
 95,150,Villnore,not displayed by the event script
 95,2890,Habitante,not displayed by the event script
 95,2891,,
-95,2892,Aventureira,not displayed by the event script
+95,2892,Aventureiro,not displayed by the event script
