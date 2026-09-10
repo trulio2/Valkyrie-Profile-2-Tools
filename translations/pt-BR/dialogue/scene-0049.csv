@@ -196,8 +196,8 @@ de status, se você conseguir encontrá-los.",
 49,2266,,
 49,2267,,
 49,2268,,
-49,2269,,
-49,2270,,
+49,2269,"",
+49,2270,"",
 49,2271,,
 49,2272,,
 49,2273,,
@@ -439,26 +439,73 @@ de status, se você conseguir encontrá-los.",
 49,2557,,
 49,2558,,
 49,2559,,
-49,2770,,
-49,2769,,
+49,2770,"<Guia Tático>
+ <PART> Mudando Alvos <PART>
+Em batalha, o alvo do ataque do personagem
+pode ser alterado.
+
+Isso é chamado de <PART> Mudando Alvos <PART>.<PART>
+---
+ <PART> <Guia Tático>
+ <PART> Mudando Alvos <PART>
+Para mudar os alvos, primeiro use <PART>.
+O novo alvo pode então ser selecionado.
+Isso é especialmente útil para alvos que não são inimigos em campo de batalha, como pilares.",
+49,2769,"<Manual Tático>
+ <PART> Atributos Mágicos <PART>
+A magia possui vários atributos.
+
+Fogo: Consideravelmente afetado pelo MAG do lançador e pelo RST do alvo.
+Gelo: Controlado pelo LV do lançador, quase não é afetado pelo RST do alvo. <PART>
+---
+ <PART> <Manual Tático>
+ <PART> Atributos Mágicos <PART>
+Terra: Sem pontos fortes ou fracos específicos; Magia padrão.
+Raio: Não é muito forte, mas frequentemente causa acertos críticos.
+Sagrado: Fortemente afetado pelo MAG do lançador e pelo RST do alvo.
+Sombrio: Controlado pelo LV do lançador, quase não é afetado pelo RST do alvo. <PART>
+---
+ <PART> <Manual Tático>
+ <PART> Atributos Mágicos <PART>
+Para se tornar um verdadeiro feiticeiro, você deve entender esses atributos e dominar várias magias de ataque.
+
+Aqueles que não conseguem, não são dignos de serem chamados de feiticeiros.",
 49,2768,,
-49,2767,,
+49,2767,"<Manual Tático>
+ <PART> Desviar <PART>
+Movimento rápido é a chave para o combate.
+Se você domina ou não o <PART> Desvio <PART> pode decidir
+o resultado da batalha.
+
+Desviar usando <PART> . <PART>
+---
+ <PART> <Manual Tático>
+ <PART> Desviar <PART>
+Existem três tipos de Desvio.
+Pressione rapidamente <PART> para se mover uma curta distância,mantenha pressionado para se mover uma longa distância, ou pressione duas vezes para se mover uma distância média. <PART>
+---
+ <PART> <Manual Tático>
+ <PART> Desviar <PART>
+Além disso, elimine o tempo de recuperação da corrida ao
+atacar enquanto ainda estiver em movimento.
+
+Isso é chamado de <PART> cancelamento de corrida <PART>.",
 49,2772,,
 49,2773,,
 49,2774,,
 49,2776,,
 49,1,Sair,not displayed by the event script
-49,2,,
-49,8,,
-49,9,,
-49,10,,
-49,2762,,
-49,2763,,
-49,2764,,
-49,2765,,
-49,2766,,
-49,2771,,
-49,2775,,
+49,2,Ler,
+49,8,<Manual Tático>,
+49,9,▪Condições de Status,
+49,10,▪Lançamento de Feitiços,
+49,2762,<Guia Tático>,
+49,2763,▪Mudando Alvos,
+49,2764,▪Atributos Mágicos,
+49,2765,▪Elementos,
+49,2766,▪Desviar,
+49,2771,▪Condições de Status,
+49,2775,▪Lançamento de Feitiços,
 49,2777,Solde,not displayed by the event script
 49,2894,,
 49,2895,,

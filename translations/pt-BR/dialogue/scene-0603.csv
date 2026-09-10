@@ -1,8 +1,9 @@
 resource,message_id,translated,notes
-603,6,,
-603,4,,
-603,5,,
+603,6,Adquiriu outra bolsa de selo. Você agora pode carregar até quatro pedras de selo.,
+603,4,"Um <PART> sealpouch <PART> aumenta o número de sealstones que você pode carregar.
+Agora você pode carregar até dois sealstones.",
+603,5,Conseguiu mais uma bolsa de selo. Agora você pode carregar até três pedras de selo.,
 603,15,Mina de Turgen,not displayed by the event script
-603,18,,
-603,19,,
-603,20,,
+603,18,Adquirido <PART> 15000 OTH,
+603,19,Adquirido <PART> Overdrive,
+603,20,Adquirido <PART> Prime Elixir,

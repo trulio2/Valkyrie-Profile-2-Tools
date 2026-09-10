@@ -129,9 +129,12 @@ conforme a estação.",
 89,78,Coma bastante!,
 89,81,"Hmm...
 Certo... Obrigada.",
-89,84,,
-89,86,,
-89,88,,
+89,84,"Hmm...
+Certo... Obrigada.",
+89,86,"Hmm...
+Certo... Obrigada.",
+89,88,"Hmm...
+Certo... Obrigada.",
 89,89,"Desculpe...
 Não tenho comida para você.",
 89,91,"Ora! Você entende o que eu digo?
@@ -150,7 +153,8 @@ Não posso pagar, estou só com fome.",
 89,97,Toma aqui!,
 89,98,"Valeu, agradeço mesmo.
 Para um humano, você é legal.",
-89,100,,
+89,100,"Desculpe...
+Não tenho comida para você.",
 89,101,"Bem... não há o que fazer...
 Desculpe por pedir.",
 89,102,Não acho que gosto muito de você.,
@@ -177,7 +181,7 @@ precisar de flores!",
 89,2484,,
 89,1,Pousada,not displayed by the event script
 89,2,Casa,not displayed by the event script
-89,3,,
+89,3,Casa,
 89,5,Villnore,not displayed by the event script
 89,6,Saída,not displayed by the event script
 89,7,Sair de Villnore?,not displayed by the event script
@@ -189,25 +193,25 @@ precisar de flores!",
 89,19,Ouvir,not displayed by the event script
 89,25,Fui lá.,not displayed by the event script
 89,26,Não fui.,not displayed by the event script
-89,28,,
+89,28,Adquirido <PART> Cristal Prisma,
 89,35,Lírio: 10 OTH,not displayed by the event script
-89,36,,
-89,37,,
+89,36,Eu compro.,
+89,37,Adeus.,
 89,53,Lírio-do-Vale: 10 OTH,not displayed by the event script
-89,54,,
-89,55,,
+89,54,Eu compro.,
+89,55,Adeus.,
 89,57,Gladíolo: 10 OTH,not displayed by the event script
-89,58,,
-89,59,,
+89,58,Eu compro.,
+89,59,Adeus.,
 89,74,Dar costelas?,not displayed by the event script
 89,75,Sim.,not displayed by the event script
 89,76,Não.,not displayed by the event script
-89,77,,
-89,79,,
-89,80,,
-89,83,,
-89,85,,
-89,87,,
+89,77,Adquirido <PART> Costeletas de Carne,
+89,79,Adquirido <PART> Costeletas de Carne,
+89,80,Adquirido <PART> Osso Desgastado,
+89,83,Adquirido <PART> Sapatos Mastigados,
+89,85,Adquirido <PART> Pano Sórdido,
+89,87,Adquirido <PART> Fezes de Cachorro,
 89,90,,
 89,93,,
 89,94,,

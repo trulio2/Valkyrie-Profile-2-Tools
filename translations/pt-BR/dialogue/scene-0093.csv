@@ -1,9 +1,23 @@
 resource,message_id,translated,notes
-93,3,,
-93,4,,
-93,5,,
-93,6,,
-93,7,,
+93,3,"Olá pessoal, aventureiros! Prestem atenção!
+Eu encontrei esses monstros outro dia <PART> ---- <PART>
+---
+homens-lagarto. Já ouviram falar deles? Enfim,
+eles estão constantemente na defensiva! <PART>
+---
+Cada vez que eu os atacava de frente,
+neles paravam meu golpe! <PART>
+---
+Se não fosse por suas defesas,
+eles não seriam tão chatos.",
+93,4,"Os homens-lagarto parecem estar usando armas deixadas dentro das ruínas. <PART>
+---
+Você nunca sabe <PART> ---- <PART> eles podem estar guardando algum artefato precioso!",
+93,5,"Fugi de Solde para vir aqui, mas Villnore tem problemas próprios!",
+93,6,"Você sabe como  Dipan foi destruido? Pois é,  Solde estava na esteira dos tremores secundários.",
+93,7,"Todas as pessoas capazes de sair de Solde estão saindo da cidade. <PART>
+---
+Os únicos que ficaram são crianças, idosos e aqueles que não têm para onde ir.",
 93,2866,"Vai ficar?
 Temos um quarto com vista disponível.",
 93,2867,Bem-vindo. Gostaria de um quarto?,

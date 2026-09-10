@@ -1,9 +1,17 @@
 resource,message_id,translated,notes
-101,3,,
-101,4,,
-101,391,,
-101,392,,
-101,393,,
+101,3,"Mês O, Dia O
+A outra guilda descobriu...novo minério...
+Mês X, Dia X
+...transformou em...monstro...
+Agora...para esmagar...veia.
+Mês X, Dia O
+...os caras não podem ser contidos.
+As baixas são...não sei o que...",
+101,4,"Parece ser uma página de diário, mas está ilegível em alguns pontos.",
+101,391,Adquirido <PART> OTH,
+101,392,Perdido <PART> OTH,
+101,393,"Dinheiro
+<PART> OUT",
 101,2487,,
 101,2489,,
 101,2492,,
@@ -328,11 +336,11 @@ resource,message_id,translated,notes
 101,2859,,
 101,2860,,
 101,1,Sair,not displayed by the event script
-101,2,,
-101,5,,
+101,2,Verificar,
+101,5,Adquirido <PART> Amuleto à Prova de Terra,
 101,2861,Villnore,not displayed by the event script
-101,2863,,
-101,2864,,
+101,2863,Adquiriudo <PART> Inteligência do Guerreiro,
+101,2864,Adquirida <PART> Experiência de Especialista,
 101,2865,,
 101,2866,,
 101,2867,,
