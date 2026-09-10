@@ -1,5 +1,10 @@
 resource,message_id,translated,notes
-87,9,,
+87,9,"<Manual Tático>
+ <PART>
+Na batalha, a vida dos aliados está nas
+mãos do comandante.
+Vós que desejais comandar, conhecei de
+coração estes segredos...",
 87,10,,
 87,3,,
 87,4,,
@@ -332,8 +337,8 @@ resource,message_id,translated,notes
 87,2631,,
 87,2632,,
 87,2633,,
-87,2904,,
-87,2903,,
+87,2904,"",
+87,2903,"",
 87,2902,,
 87,2901,,
 87,2906,,
@@ -356,8 +361,8 @@ resource,message_id,translated,notes
 87,2905,,
 87,2909,,
 87,2911,Coriander,not displayed by the event script
-87,3028,,
-87,3029,,
+87,3028,Adquirido <PART> Experiência de Especialista,
+87,3029,Adquirido <PART> Lágrima de Ymir,
 87,3030,,
 87,3031,,
 87,3032,,

@@ -19,7 +19,13 @@ Se der sorte, claro! <PART>
 ---
 Que tal eu te dar esse?
 Vai, experimenta!",
-79,46,,
+79,46,"Vai lá agora, experimente esses dois como equipamento de combinação de cores. <PART>
+---
+Acho que combinar sua arma vai te fazer mais bem. <PART>
+---
+Procure cores que combinem sempre que pegar algum acessório novo. <PART>
+---
+Runas brilhantes significam que você aprendeu uma habilidade. Não esqueça disso, hein, ouviu?",
 79,8,"Saber ou não saber habilidades faz toda
 a diferença do mundo! <PART>
 ---
@@ -184,18 +190,18 @@ comerciante que sabia lutar!",
 79,4,Sair de Coriander?,not displayed by the event script
 79,5,Sim,not displayed by the event script
 79,6,Não,not displayed by the event script
-79,19,,
-79,31,,
-79,34,,
-79,43,,
-79,44,,
-79,45,,
+79,19,Poção de Força <PART> adquirida,
+79,31,Adquiriu <PART> Ovo Dourado,
+79,34,Experiência de Especialista <PART> Adquirida,
+79,43,Adquiriu <PART> Ovo Dourado,
+79,44,Adquiriu <PART> Ferrão de Inseto,
+79,45,Adquirido <PART> Chama da Alma Azul,
 79,47,Ouvir,not displayed by the event script
-79,58,,
-79,59,,
-79,61,,
+79,58,Adquirido <PART> Falchion,
+79,59,Adquiriu o <PART> Anel de Salomão,
+79,61,Adquiriu o <PART> Anel de Salomão,
 79,111,,
-79,2810,Aventureira,not displayed by the event script
+79,2810,Aventureiro,not displayed by the event script
 79,2811,Mercador,not displayed by the event script
 79,2812,Habitante,not displayed by the event script
 79,2813,Garota,not displayed by the event script

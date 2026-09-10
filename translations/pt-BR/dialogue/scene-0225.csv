@@ -1,12 +1,15 @@
 resource,message_id,translated,notes
-225,6,,
-225,8,,
+225,6,"Pedras do Selo <PART>
+Pressione <PART> para abrir o menu e pegar as pedras do selo.
+ <PART> Pedras do Selo afetam <PART> inimigos quando estão no pedestal, e o grupo quando são seguradas. <PART> Veja <PART> Guia <PART> no menu para mais detalhes.",
+225,8,Dominar as pedras do selo é a chave para a estratégia da masmorra.,
 225,2,Saída,not displayed by the event script
-225,3,,
+225,3,"Sair das Ruínas da Montanha Serdberg?
+(As pedras do selo voltam aos lugares originais.)",
 225,4,Sim,not displayed by the event script
 225,5,Não,not displayed by the event script
 225,7,Ruínas do Monte Serdberg,not displayed by the event script
-225,9,,
-225,10,,
-225,11,,
-225,12,,
+225,9,Sair das Ruínas da Montanha Serdberg?,
+225,10,Sim,
+225,11,Não,
+225,12,Ruínas da Montanha Serdberg,
