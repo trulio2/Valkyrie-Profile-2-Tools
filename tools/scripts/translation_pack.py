@@ -41,6 +41,13 @@ class PackError(ValueError):
     """A language pack or local workspace violates the public contract."""
 
 
+def is_language_pack(path: str | os.PathLike[str]) -> bool:
+    """Whether a folder is a language to offer; a leading `_` marks one that is not."""
+    directory = Path(path)
+    return (not directory.name.startswith("_")
+            and (directory / "pack.toml").is_file())
+
+
 def canonical_source(text: str | None) -> str:
     """Return the canonical decoded source representation."""
     return (text or "").replace("\r\n", "\n").replace("\r", "\n")

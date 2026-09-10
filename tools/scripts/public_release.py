@@ -10,6 +10,7 @@ from pathlib import Path
 from .paths import (
     BUILD_DIR, DATA_DIR, PROJECT_ROOT, FROZEN, WORKSPACE_DIR, output_root,
 )
+from .translation_pack import is_language_pack
 
 PAYLOAD_TREES = (
     ("data", "**/*.csv"),
@@ -36,6 +37,10 @@ def payload_members(root: str | os.PathLike[str] | None = None):
         for path in sorted((base / name).glob(pattern)):
             if not path.is_file() or path.name in PAYLOAD_EXCLUDED:
                 continue
+            inside = path.relative_to(base / name).parts
+            if (name == "translations" and len(inside) > 1
+                    and not is_language_pack(base / name / inside[0])):
+                continue
             relative = path.relative_to(base).as_posix()
             if relative in seen:
                 continue
@@ -49,7 +54,7 @@ def _packs(root: Path):
     if not directory.is_dir():
         return []
     return sorted(p.name for p in directory.iterdir()
-                  if (p / "pack.toml").is_file())
+                  if is_language_pack(p))
 
 
 def self_check(stream=None) -> int:

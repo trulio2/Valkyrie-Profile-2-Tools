@@ -15,6 +15,7 @@ release/
 roundtrip/
 workspace/
 resources/
+translations/_*
 .research*/
 .venv/
 .pytest_cache/

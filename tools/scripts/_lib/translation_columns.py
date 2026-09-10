@@ -113,7 +113,7 @@ def iter_translation_tables(translations_root):
         return
     for lang_dir in sorted(os.listdir(translations_root)):
         lang_path = os.path.join(translations_root, lang_dir)
-        if not os.path.isdir(lang_path):
+        if lang_dir.startswith("_") or not os.path.isdir(lang_path):
             continue
         for root, _dirs, files in os.walk(lang_path):
             for name in sorted(files):

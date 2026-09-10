@@ -21,6 +21,7 @@ from typing import NamedTuple
 
 from tools.scripts.public_build import build_iso, terminate_active_builds
 from tools.scripts.paths import PROJECT_ROOT, WORKSPACE_DIR
+from tools.scripts.translation_pack import is_language_pack
 from tools.app_meta import VERSION as __version__
 
 try:
@@ -100,9 +101,9 @@ def language_packs(root: Path = PROJECT_ROOT) -> list[LanguagePack]:
     packs = []
     directory = root / "translations"
     for path in sorted(directory.iterdir() if directory.is_dir() else ()):
-        metadata = path / "pack.toml"
-        if not metadata.is_file():
+        if not is_language_pack(path):
             continue
+        metadata = path / "pack.toml"
         try:
             values = tomllib.loads(metadata.read_text(encoding="utf-8"))
             locale = str(values["locale"])

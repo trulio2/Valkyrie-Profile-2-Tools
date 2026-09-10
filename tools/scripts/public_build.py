@@ -31,6 +31,7 @@ from .translation_pack import (
     PackError,
     _expanded_targets,
     _menu_units,
+    is_language_pack,
     load_pack,
 )
 
@@ -51,7 +52,7 @@ def installed_locales() -> list[str]:
     if not TRANSLATIONS.is_dir():
         return []
     return sorted(entry.name for entry in TRANSLATIONS.iterdir()
-                  if (entry / "pack.toml").is_file())
+                  if is_language_pack(entry))
 
 
 def workspace_is_ready(workspace: str | os.PathLike[str]) -> bool:

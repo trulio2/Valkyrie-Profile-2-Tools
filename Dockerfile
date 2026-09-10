@@ -33,7 +33,7 @@ WORKDIR /src
 COPY . .
 
 RUN python -m unittest discover -s tests -q \
-    && for pack in translations/*/; do \
+    && for pack in translations/[!_]*/; do \
     python vp2_translate.py check-pack "$pack"; \
     done \
     && pyinstaller data/vp2_tools.spec \

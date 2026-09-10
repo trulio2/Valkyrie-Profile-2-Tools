@@ -11,7 +11,9 @@ from tools.scripts import vp2_glyph_compose as glyph_compose
 from tools.scripts import vp2_shared_font as shared_font
 from tools.scripts import vp2_text_patch as text_patch
 from tools.scripts.paths import PROJECT_ROOT
-from tools.scripts.translation_pack import PACK_FIELDS, PACK_SLOTS, load_pack
+from tools.scripts.translation_pack import (
+    PACK_FIELDS, PACK_SLOTS, is_language_pack, load_pack,
+)
 
 PACKS = PROJECT_ROOT / "translations"
 #: Entry 8's font holds this many glyphs, so a token outside it has no slot.
@@ -21,7 +23,7 @@ SHARED_FONT_SLOTS = 95
 def pack_tables():
     for pack in sorted(PACKS.iterdir()):
         table = pack / PACK_SLOTS
-        if table.is_file():
+        if is_language_pack(pack) and table.is_file():
             yield pack.name, table
 
 

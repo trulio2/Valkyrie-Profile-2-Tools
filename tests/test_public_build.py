@@ -46,8 +46,9 @@ class CacheLocationTests(unittest.TestCase):
 class PackProfileTests(unittest.TestCase):
     def _packs(self):
         directory = ROOT / "translations"
+        from tools.scripts.translation_pack import is_language_pack
         return sorted(path for path in directory.iterdir()
-                      if (path / "pack.toml").is_file())
+                      if is_language_pack(path))
 
     def test_every_installed_pack_carries_a_valid_profile(self):
         from tools.scripts.public_build import check_pack_profile
@@ -82,6 +83,37 @@ class PackProfileTests(unittest.TestCase):
         with self.assertRaises(PackError) as raised:
             resolve_pack("xx-XX")
         self.assertIn("pt-BR", str(raised.exception))
+
+
+class UnlistedFolderTests(unittest.TestCase):
+    """A `_` folder under translations/ is a starting point, not a language."""
+
+    def test_it_is_not_offered_bundled_or_checked(self):
+        import shutil
+        import tempfile
+        from unittest import mock
+        from tools import translate_gui
+        from tools.scripts import public_build, public_release
+        with tempfile.TemporaryDirectory() as elsewhere:
+            root = Path(elsewhere)
+            for name in ("xx-XX", "_draft"):
+                pack = root / "translations" / name
+                pack.mkdir(parents=True)
+                shutil.copy(ROOT / "translations" / "sv-SE" / "pack.toml", pack)
+                (pack / "chapter.csv").write_text(
+                    "resource,message_id,translated,notes\n", encoding="utf-8")
+            with mock.patch.object(public_build, "TRANSLATIONS",
+                                   root / "translations"):
+                self.assertEqual(["xx-XX"], public_build.installed_locales())
+            self.assertEqual(["xx-XX"], public_release._packs(root))
+            self.assertEqual(
+                [root / "translations" / "xx-XX"],
+                [pack.path for pack in translate_gui.language_packs(root)])
+            bundled = [name for _source, name
+                       in public_release.payload_members(root)]
+            self.assertIn("translations/xx-XX/chapter.csv", bundled)
+            self.assertEqual(
+                [], [name for name in bundled if "/_draft/" in name])
 
 
 class ChapterProfileSelectionTests(unittest.TestCase):
