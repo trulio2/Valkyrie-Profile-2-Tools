@@ -14,6 +14,7 @@ release/
 resources/
 .research*/
 /voices/
+replacements/
 
 # Python and test state
 __pycache__/

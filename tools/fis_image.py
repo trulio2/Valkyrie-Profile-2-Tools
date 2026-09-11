@@ -55,6 +55,7 @@ def cmd_scan(args):
                         name = os.path.join(
                             args.out, "fis-%04d-%s-%X.png"
                             % (resource, safe, at))
+                        os.makedirs(args.out, exist_ok=True)
                         try:
                             render(item, name)
                         except Exception as error:               # noqa: BLE001
