@@ -1,5 +1,9 @@
-# Runtime dependencies for vp2_translate.py and vp2_cheats.py.
+# vp2_translate.py and vp2_cheats.py use only Python 3.11+ standard-library
+# modules. Tkinter/Tcl-Tk is supplied by the Python installation or operating
+# system rather than PyPI.
 #
-# Both applications use only Python 3.11+ standard-library modules, so there
-# are currently no third-party packages for pip to install. Tkinter/Tcl-Tk is
-# supplied by the Python installation or operating system rather than PyPI.
+# The packages below are needed only to make PCSX2 texture replacements.
+numpy>=2.0
+Pillow>=11.0
+etcpak>=0.9.15
+pyoxipng>=9.1
