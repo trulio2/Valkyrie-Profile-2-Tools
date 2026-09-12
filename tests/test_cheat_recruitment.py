@@ -2,10 +2,13 @@
 # SPDX-License-Identifier: GPL-3.0-only
 import struct
 import unittest
+from pathlib import Path
 
-from tools.cheat_patcher import elf, main_overlay, resource3_overlay
+from tools.cheat_patcher import elf, resource3_overlay
 from tools.cheat_patcher.cheats import (
-    join_all_unlocked, join_level_1, mithra_swap,
+    add_characters,
+    join_all_unlocked,
+    join_level_1,
     stop_removing_characters,
 )
 from tests.test_cheat_disable_anti_cheat import (
@@ -16,6 +19,97 @@ from tests.test_cheat_disable_anti_cheat import (
 def _words(data, address, count):
     offset = elf.file_offset_for_address(data, address, count * 4)
     return struct.unpack_from("<%dI" % count, data, offset)
+
+
+class AddCharactersTests(unittest.TestCase):
+    def test_rejects_a_pristine_hook_with_anything_but_a_zero_word(self):
+        executable, _ = make_executable()
+        offset = elf.file_offset_for_address(
+            executable, add_characters.HOOK_ADDRESS, 4
+        )
+        bad = bytearray(executable)
+        struct.pack_into("<I", bad, offset, 0xDEADBEEF)
+        with self.assertRaisesRegex(
+            ValueError,
+            "Add Characters hook validation failed at EE 0x%08X; "
+            "expected 0x00000000, found 0xDEADBEEF" % add_characters.HOOK_ADDRESS,
+        ):
+            add_characters.patch_executable(bytes(bad))
+
+    def test_rejects_a_hook_that_is_already_patched(self):
+        executable, _ = make_executable()
+        patched = add_characters.patch_executable(executable).data
+        with self.assertRaisesRegex(
+            ValueError, "Add Characters is already patched in the executable"
+        ):
+            add_characters.patch_executable(patched)
+
+    def test_installs_the_exact_routine_and_hook_word(self):
+        executable, _ = make_executable()
+        details = add_characters.patch_executable(executable)
+        self.assertEqual(
+            add_characters.INJECT_WORDS,
+            _words(
+                details.data, add_characters.INJECT_ADDRESS,
+                len(add_characters.INJECT_WORDS),
+            ),
+        )
+        hook_offset = elf.file_offset_for_address(
+            details.data, add_characters.HOOK_ADDRESS, 4
+        )
+        self.assertEqual(
+            add_characters.HOOK_PATCHED,
+            struct.unpack_from("<I", details.data, hook_offset)[0],
+        )
+        self.assertEqual(elf.pcsx2_crc(executable), details.patched_crc)
+        self.assertEqual(
+            details.change_count, 1 + len(add_characters.INJECT_WORDS)
+        )
+
+    def test_hook_jump_resolves_to_the_inject_address(self):
+        hook_jump = add_characters.HOOK_PATCHED
+        self.assertEqual(
+            add_characters.INJECT_ADDRESS,
+            (hook_jump & 0x03FFFFFF) << 2,
+        )
+
+    def test_return_jump_resolves_past_the_hook(self):
+        return_jump = add_characters.INJECT_WORDS[-1]
+        self.assertEqual(
+            add_characters.RETURN_ADDRESS,
+            (return_jump & 0x03FFFFFF) << 2
+        )
+
+    def test_inject_words_match_the_pnach_reference_byte_for_byte(self):
+        reference = (
+            Path(__file__).resolve().parents[1]
+            / "tools" / "cheat_patcher" / "cheats" / "references"
+            / "SLUS-21452_CC96CE93.pnach"
+        )
+        words = {}
+        in_block = False
+        for line in reference.read_text(encoding="utf-8").splitlines():
+            stripped = line.strip()
+            if stripped.startswith("["):
+                in_block = stripped == "[(!) Add Characters]"
+                continue
+            if not in_block or not stripped.startswith("patch="):
+                continue
+            parts = stripped.split(",")
+            if parts[0] != "patch=1" or parts[1] != "EE":
+                continue
+            address = int(parts[2], 16)
+            value = int(parts[4], 16)
+            words[address] = value
+        start = add_characters.INJECT_ADDRESS
+        end = start + len(add_characters.INJECT_WORDS) * 4
+        for offset in range(start, end, 4):
+            self.assertEqual(
+                add_characters.INJECT_WORDS[(offset - start) // 4],
+                words.get(offset, 0),
+                "PNACH byte at EE 0x%08X does not match add_characters "
+                "INJECT_WORDS" % offset,
+            )
 
 
 class RecruitmentPatchTests(unittest.TestCase):
@@ -41,52 +135,7 @@ class RecruitmentPatchTests(unittest.TestCase):
         )
         self.assertEqual(elf.pcsx2_crc(executable), elf.pcsx2_crc(patched))
 
-    def test_mithra_guard_uses_complete_original_words_and_exact_routine(self):
-        resource = make_main_resource()
-        before = main_overlay.read(resource).output
-        details = mithra_swap.patch_main_resource(resource)
-        after = main_overlay.read(details.data).output
-        expected = bytearray(before)
-        for address, _, replacement in mithra_swap.PATCHES:
-            struct.pack_into(
-                "<I", expected,
-                address - main_overlay.LOAD_ADDRESS, replacement
-            )
-        self.assertEqual(bytes(expected), after)
-        self.assertEqual(0x2685001E, mithra_swap.PATCHES[1][1])
-
-        malformed = bytearray(before)
-        struct.pack_into(
-            "<I", malformed,
-            0x003C20C0 - main_overlay.LOAD_ADDRESS, 0xDEAD001E
-        )
-        malformed_resource, _ = main_overlay.replace(resource, malformed)
-        with self.assertRaisesRegex(ValueError, "expected .*0x2685001E"):
-            mithra_swap.patch_main_resource(malformed_resource)
-
-        executable, _ = make_executable()
-        patched = mithra_swap.patch_executable(executable).data
-        self.assertEqual(
-            mithra_swap.INJECT_WORDS,
-            _words(patched, mithra_swap.INJECT_ADDRESS,
-                   len(mithra_swap.INJECT_WORDS))
-        )
-
-    def test_each_hook_jump_resolves_to_the_literal_pnach_entry(self):
-        self.assertEqual(
-            join_all_unlocked.INJECT_ADDRESS + 0x18,
-            (join_all_unlocked.PATCHES[1][2] & 0x03FFFFFF) << 2
-        )
-        self.assertEqual(
-            mithra_swap.INJECT_ADDRESS,
-            (mithra_swap.PATCHES[1][2] & 0x03FFFFFF) << 2
-        )
-        self.assertEqual(
-            join_level_1.INJECT_ADDRESS,
-            (join_level_1.PATCHES[0][2] & 0x03FFFFFF) << 2
-        )
-
-    def test_level_one_is_independent_and_writes_its_mithra_overrides(self):
+    def test_level_one_is_independent_and_writes_its_add_characters_overrides(self):
         resource = make_resource_3()
         before = resource3_overlay.read(resource).output
         details = join_level_1.patch_resource(resource)
@@ -100,46 +149,28 @@ class RecruitmentPatchTests(unittest.TestCase):
         self.assertEqual(bytes(expected), after)
 
         executable, _ = make_executable()
-        patched = join_level_1.patch_executable(executable).data
+        add_patched = add_characters.patch_executable(executable).data
+        patched = join_level_1.patch_executable(add_patched).data
         self.assertEqual(
             join_level_1.INJECT_WORDS,
             _words(patched, join_level_1.INJECT_ADDRESS,
                    len(join_level_1.INJECT_WORDS))
         )
-        for address, _, replacement in join_level_1.MITHRA_LEVEL_OVERRIDES:
+        for address, _, replacement in join_level_1.ADD_CHARACTERS_LEVEL_OVERRIDES:
             self.assertEqual((replacement,), _words(patched, address, 1))
-
-    def test_level_one_and_mithra_compose_in_either_order(self):
-        executable, _ = make_executable()
-        level_then_mithra = mithra_swap.patch_executable(
-            join_level_1.patch_executable(executable).data
-        ).data
-        mithra_then_level = join_level_1.patch_executable(
-            mithra_swap.patch_executable(executable).data
-        ).data
-        self.assertEqual(level_then_mithra, mithra_then_level)
-        self.assertEqual(
-            mithra_swap.INJECT_WORDS_WITH_LEVEL1,
-            _words(level_then_mithra, mithra_swap.INJECT_ADDRESS,
-                   len(mithra_swap.INJECT_WORDS_WITH_LEVEL1))
-        )
 
     def test_all_injected_routines_share_one_exact_address_arena(self):
         executable, _ = make_executable()
         modules = (
             stop_removing_characters,
             join_all_unlocked,
-            mithra_swap,
+            add_characters,
             join_level_1,
         )
         forward = executable
         for module in modules:
             forward = module.patch_executable(forward).data
-        reverse = executable
-        for module in reversed(modules):
-            reverse = module.patch_executable(reverse).data
-        self.assertEqual(forward, reverse)
-        self.assertEqual(len(executable) + 0x3E0, len(forward))
+        self.assertEqual(len(executable), len(forward))
         self.assertEqual(elf.pcsx2_crc(executable), elf.pcsx2_crc(forward))
         self.assertEqual(
             join_all_unlocked.INJECT_WORDS,
@@ -150,6 +181,22 @@ class RecruitmentPatchTests(unittest.TestCase):
             stop_removing_characters.INJECT_WORDS,
             _words(forward, stop_removing_characters.INJECT_ADDRESS,
                    len(stop_removing_characters.INJECT_WORDS))
+        )
+        override_addresses = {
+            address
+            for address, _, _ in join_level_1.ADD_CHARACTERS_LEVEL_OVERRIDES
+        }
+        patched_words = list(add_characters.INJECT_WORDS)
+        for address, _, replacement in (
+            join_level_1.ADD_CHARACTERS_LEVEL_OVERRIDES
+        ):
+            patched_words[(address - add_characters.INJECT_ADDRESS) // 4] = (
+                replacement
+            )
+        self.assertEqual(
+            tuple(patched_words),
+            _words(forward, add_characters.INJECT_ADDRESS,
+                   len(add_characters.INJECT_WORDS))
         )
         self.assertEqual(
             join_level_1.INJECT_WORDS,

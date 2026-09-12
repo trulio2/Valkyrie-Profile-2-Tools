@@ -58,17 +58,16 @@ CHEATS = (
         True,
     ),
     Cheat(
-        "mithra-swap",
-        "(!) Mithra Swap",
-        "Replaces Mithra's recruitment event with the PNACH special-character "
-        "roster.",
+        "add-characters",
+        "(!) Add Characters",
+        "Hold L1+L2+R1+R2 together to add the PNACH special-character roster "
+        "to the party.",
         True,
     ),
     Cheat(
         "join-level-1",
         "(!) Characters Join At Level 1",
-        "Makes the special recruited characters join at level 1; when Mithra "
-        "Swap is also selected, its first nine join levels become 1 too.",
+        "Makes the characters recruited by Add Characters join at level 1.",
         True,
     ),
     Cheat(

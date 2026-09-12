@@ -103,8 +103,10 @@ from tools.cheat_patcher.cheats.join_all_unlocked import (
 from tools.cheat_patcher.cheats.join_level_1 import (
     PATCHES as LEVEL_1_PATCHES,
 )
-from tools.cheat_patcher.cheats.mithra_swap import (
-    PATCHES as MITHRA_PATCHES,
+from tools.cheat_patcher.cheats import add_characters
+from tools.cheat_patcher.cheats.add_characters import (
+    HOOK_ADDRESS as ADD_CHARACTERS_HOOK_ADDRESS,
+    HOOK_ORIGINAL as ADD_CHARACTERS_HOOK_ORIGINAL,
 )
 from tests.test_cheat_angel_slayer import write_synthetic_iso
 from tests.test_cheat_equip_everything import make_equip_resource
@@ -149,8 +151,6 @@ def make_main_resource():
     struct.pack_into(
         "<2I", output, HOOK_ADDRESS - 0x0035EC80, *HOOK_ORIGINALS
     )
-    for address, original, _ in MITHRA_PATCHES:
-        struct.pack_into("<I", output, address - 0x0035EC80, original)
     for address, original, _ in (CHARACTER_LIMIT_PATCHES +
                                  NEGATE_ENCOUNTER_PATCHES +
                                  FLOAT_HOOK_PATCHES):
@@ -284,25 +284,29 @@ def make_battle_resource():
 
 
 def make_executable():
-    data = bytearray(0x13A20)
+    data = bytearray(0x24608)
     data[:6] = b"\x7fELF\x01\x01"
     struct.pack_into("<I", data, 28, 52)
-    struct.pack_into("<I", data, 32, 0x10000)
+    struct.pack_into("<I", data, 32, 0x20800)
     struct.pack_into("<HH", data, 42, 32, 2)
-    struct.pack_into("<HHH", data, 46, 40, 0x174, 1)
+    struct.pack_into("<HHH", data, 46, 40, 397, 1)
     file_offset = 0x1000
     virtual_address = 0x00100000
-    file_size = 0xF000
+    file_size = 0x1F628
     struct.pack_into(
         "<8I", data, 52, 1, file_offset, virtual_address, 0,
         file_size, file_size, 5, 0x1000
     )
     struct.pack_into(
-        "<8I", data, 84, 1, 0x10000, 0x00200000, 0x00200000,
+        "<8I", data, 84, 1, 0x20800, 0x00200000, 0x00200000,
         0, 0, 6, 0x10
     )
     target = file_offset + EXECUTABLE_ADDRESS - virtual_address
     struct.pack_into("<I", data, target, EXECUTABLE_ORIGINAL)
+    add_hook_target = file_offset + ADD_CHARACTERS_HOOK_ADDRESS - virtual_address
+    struct.pack_into(
+        "<I", data, add_hook_target, ADD_CHARACTERS_HOOK_ORIGINAL
+    )
     return bytes(data), target
 
 
@@ -443,14 +447,15 @@ class CompleteBuildTests(unittest.TestCase):
             result = build_iso(source, output)
 
             self.assertEqual(
-                ("angel-slayer", "equip-everything", "99-skill-points",
-                 "battle-anti-freeze", "battle-menu-always",
-                 "36-character-limit", "infinite-ap-attacks",
-                 "dupe-attacks", "100-percent-drop-rate",
-                 "negate-encounters", "hold-circle-float",
-                 "disable-anti-cheat", "stop-removing-characters",
-                 "join-all-unlocked", "mithra-swap", "join-level-1",
-                 "ether-set-effects", "heavenly-punishment-15-ap",
+                ("add-characters", "angel-slayer", "equip-everything",
+                 "99-skill-points", "battle-anti-freeze",
+                 "battle-menu-always", "36-character-limit",
+                 "infinite-ap-attacks", "dupe-attacks",
+                 "100-percent-drop-rate", "negate-encounters",
+                 "hold-circle-float", "disable-anti-cheat",
+                 "stop-removing-characters", "join-all-unlocked",
+                 "join-level-1", "ether-set-effects",
+                 "heavenly-punishment-15-ap",
                  "restore-all-sealstones",
                  "no-limit-sealstone-withdrawals", "all-items-99"),
                 tuple(item.name for item in result.patches)
@@ -511,6 +516,14 @@ class CompleteBuildTests(unittest.TestCase):
             self.assertEqual(EXECUTABLE_PATCHED, struct.unpack_from(
                 "<I", patched_executable, executable_target
             )[0])
+            self.assertEqual(add_characters.INJECT_ADDRESS,
+                             (struct.unpack_from(
+                                 "<I", patched_executable,
+                                 elf.file_offset_for_address(
+                                     patched_executable,
+                                     ADD_CHARACTERS_HOOK_ADDRESS, 4,
+                                 ),
+                             )[0] & 0x03FFFFFF) << 2)
             self.assertEqual(
                 elf.pcsx2_crc(executable),
                 elf.pcsx2_crc(patched_executable)
@@ -533,7 +546,7 @@ class CompleteBuildTests(unittest.TestCase):
                     patched_executable, float_at,
                 ),
             )
-            self.assertEqual(0x13E00, len(patched_executable))
+            self.assertEqual(len(executable), len(patched_executable))
 
 
 if __name__ == "__main__":

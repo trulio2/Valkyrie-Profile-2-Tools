@@ -8,6 +8,7 @@ from .paths import PROJECT_ROOT
 from . import normalize_sheet_newlines
 from .flag_duplicates import (AUTHORITATIVE, AUTHORITATIVE_RECORD,
                               WORKSPACE_CLAIM)
+from . import einherjar_roster
 
 HERE = PROJECT_ROOT / "tools"
 
@@ -89,6 +90,7 @@ def _build_dedupe_lookup(scenes_dir=None, *, en_only=False, conflicts=None,
     from .flag_duplicates import _normalize_text
     lookup = {}
     source = {}
+    rosters = einherjar_roster.load_rosters()
     _load_workspace_translations(lookup, source, workspace_dir, en_only)
     base = Path(scenes_dir) if scenes_dir else SCENES_DIR
     if not base or not base.is_dir():
@@ -102,6 +104,15 @@ def _build_dedupe_lookup(scenes_dir=None, *, en_only=False, conflicts=None,
         except (OSError, csv.Error, UnicodeDecodeError):
             continue
         kind = sheet_kind(fname)
+        for claimed in einherjar_roster.suppressed_rows(rows, rosters):
+            resource = (claimed.get("resource") or "").strip()
+            claimed_en = _normalize_text(claimed.get("original_en"))
+            claimed_jp = ("" if en_only
+                          else _normalize_text(claimed.get("original_jp")))
+            if resource and claimed_en:
+                lookup.setdefault(
+                    (WORKSPACE_CLAIM, kind, resource, claimed_en, claimed_jp),
+                    True)
         for row in rows:
             translated = (row.get("translated") or "").strip()
             if not translated:

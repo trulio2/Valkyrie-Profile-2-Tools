@@ -7,6 +7,7 @@ import argparse
 import sys
 
 from tools.cheat_patcher.cheats import (
+    add_characters,
     all_items_99,
     angel_slayer,
     battle_anti_freeze,
@@ -21,7 +22,6 @@ from tools.cheat_patcher.cheats import (
     heavenly_punishment_15_ap,
     join_all_unlocked,
     join_level_1,
-    mithra_swap,
     negate_encounters,
     no_limit_sealstone_withdrawals,
     restore_all_sealstones,
@@ -208,13 +208,13 @@ def main(argv=None):
                    join_all_unlocked.INJECT_ADDRESS,
                    patch.files[0].patched_crc)
             )
-        elif applied.name == "mithra-swap":
+        elif applied.name == "add-characters":
             print(
-                "Mithra Swap: %d hook instructions + %d-word routine at EE "
+                "Add Characters: %d hook word + %d-word routine at EE "
                 "0x%08X (PCSX2 CRC preserved: %08X)"
-                % (patch.resources[0].change_count,
-                   patch.files[0].change_count,
-                   mithra_swap.INJECT_ADDRESS,
+                % (patch.files[0].change_count - len(add_characters.INJECT_WORDS),
+                   len(add_characters.INJECT_WORDS),
+                   add_characters.INJECT_ADDRESS,
                    patch.files[0].patched_crc)
             )
         elif applied.name == "join-level-1":

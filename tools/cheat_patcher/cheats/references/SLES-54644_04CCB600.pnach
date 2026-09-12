@@ -149,9 +149,11 @@ patch=1,EE,01FEA244,word,00000000
 [(!) Mithra Swap]
 author=Trulio
 description=(Save, close the game and disable this cheat after getting the characters)4 Freyas, Lenneth, Hrist, Silmeria, Valkyrie, Brahms, Leone, Arngrim, Lezard, Zunde and Celes together with Mithra
-patch=1,EE,E002001E,extended,003C20A0
-patch=1,EE,203B5D4C,extended,00000000
-patch=1,EE,203C20A0,extended,087FAB60
+patch=1,EE,D03C20A0,extended,0000001E
+patch=1,EE,203C20A0,extended,087FAB5C
+patch=1,EE,01FEAD70,word,3C05003B
+patch=1,EE,01FEAD74,word,34A55D4C
+patch=1,EE,01FEAD78,word,ACA00000
 patch=1,EE,01FEAD80,word,24520000
 patch=1,EE,01FEAD84,word,2405000D
 patch=1,EE,01FEAD88,word,0C0ED730

@@ -56,7 +56,10 @@ class StopRemovingCharactersTests(unittest.TestCase):
         segment = struct.unpack_from(
             "<8I", patched, program_offset + (count - 1) * entry_size
         )
-        self.assertEqual(0x10000, segment[1])
+        terminal_file_offset = struct.unpack_from(
+            "<8I", executable, 84
+        )[1]
+        self.assertEqual(terminal_file_offset, segment[1])
         self.assertEqual(elf.CODE_ARENA_ADDRESS, segment[2])
         self.assertEqual(elf.CODE_ARENA_SIZE, segment[4])
         self.assertEqual(elf.CODE_ARENA_SIZE, segment[5])
@@ -70,7 +73,7 @@ class StopRemovingCharactersTests(unittest.TestCase):
                 "<I", patched, mapped + ENTRY_ADDRESS - INJECT_ADDRESS
             )[0]
         )
-        self.assertEqual(len(executable) + 0x3E0, len(patched))
+        self.assertEqual(len(executable), len(patched))
         self.assertEqual(0, struct.unpack_from("<I", patched, 32)[0])
         self.assertEqual((0, 0, 0), struct.unpack_from("<HHH", patched, 46))
         self.assertEqual(elf.pcsx2_crc(executable), elf.pcsx2_crc(patched))

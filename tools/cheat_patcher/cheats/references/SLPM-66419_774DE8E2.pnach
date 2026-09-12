@@ -145,9 +145,11 @@ patch=1,EE,01FEA244,word,00000000
 [(!) ミトラ加入キャラ入替]
 author=Trulio
 description=（取得後はセーブ→ゲーム終了→チート無効化推奨）ミトラと一緒にフレイ×4、レナス、アーリィ、シルメリア、ヴァルキリー、ブラムス、レオーネ、アリューゼ、レザード、ザンデ、セレスが加入します
-patch=1,EE,E002001E,extended,003C7900
-patch=1,EE,203BB61C,extended,00000000
-patch=1,EE,203C7900,extended,087FAB60
+patch=1,EE,D03C7900,extended,0000001E
+patch=1,EE,203C7900,extended,087FAB5C
+patch=1,EE,01FEAD70,word,3C05003B
+patch=1,EE,01FEAD74,word,34A5B61C
+patch=1,EE,01FEAD78,word,ACA00000
 patch=1,EE,01FEAD80,word,24520000
 patch=1,EE,01FEAD84,word,2405000D
 patch=1,EE,01FEAD88,word,0C0EED64

@@ -9,6 +9,7 @@ from typing import Optional
 
 from . import iso9660, triace
 from .cheats import (
+    add_characters,
     all_items_99,
     angel_slayer,
     battle_anti_freeze,
@@ -24,7 +25,6 @@ from .cheats import (
     hold_circle_float,
     join_all_unlocked,
     join_level_1,
-    mithra_swap,
     negate_encounters,
     no_limit_sealstone_withdrawals,
     restore_all_sealstones,
@@ -34,6 +34,7 @@ from .cheats import (
 
 
 PATCHERS = {
+    "add-characters": add_characters,
     "angel-slayer": angel_slayer,
     "equip-everything": equip_everything,
     "99-skill-points": skill_points_99,
@@ -48,7 +49,6 @@ PATCHERS = {
     "disable-anti-cheat": disable_anti_cheat,
     "stop-removing-characters": stop_removing_characters,
     "join-all-unlocked": join_all_unlocked,
-    "mithra-swap": mithra_swap,
     "join-level-1": join_level_1,
     "ether-set-effects": ether_set_effects,
     "heavenly-punishment-15-ap": heavenly_punishment_15_ap,

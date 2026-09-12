@@ -56,8 +56,8 @@ the complete arguments.
 | `stop-removing-characters`       | (!) Stop The Game From Removing Characters                       | Keeps protected party members when the active roster is rebuilt.       |
 | `36-character-limit`             | (!) 36 Characters Limit                                          | Raises the permanent roster limit from 33 to 36.                       |
 | `join-all-unlocked`              | (!) Characters Join With All Skills, Spells And Attacks Unlocked | Recruited characters arrive with every ability unlocked.               |
-| `mithra-swap`                    | (!) Mithra Swap                                                  | Replaces Mithra's recruitment event with the special-character roster. |
-| `join-level-1`                   | (!) Characters Join At Level 1                                   | Makes the special recruited characters join at level 1.                |
+| `add-characters`                 | (!) Add Characters                                               | Holds L1+L2+R1+R2 to add the special-character roster to the party.    |
+| `join-level-1`                   | (!) Characters Join At Level 1                                   | Makes the characters recruited by Add Characters join at level 1.      |
 | `heavenly-punishment-15-ap`      | (!) Heavenly Punishment Costs 15 AP                              | Reduces Freya's Heavenly Punishment AP cost to 15.                     |
 | `infinite-ap-attacks`            | (!) Infinite AP And Attacks                                      | Removes AP costs and the attack-chain limit in battle.                 |
 | `battle-menu-always`             | (!) Battle Menu Always Available                                 | Removes the battle-menu cooldown.                                      |

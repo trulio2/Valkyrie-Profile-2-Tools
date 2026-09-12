@@ -74,7 +74,8 @@ def self_check(stream=None) -> int:
     tables = sorted(p.name for p in DATA_DIR.glob("*.csv")) if DATA_DIR.is_dir() else []
     notes.append(f"structural tables : {len(tables)}")
     for required in ("menu-layout.csv", "record-limits.csv",
-                     "authored-marks.csv", "authored-glyphs.csv"):
+                     "authored-marks.csv", "authored-glyphs.csv",
+                     "einherjar-rosters.csv"):
         if required not in tables:
             problems.append(f"missing structural table: {required}")
 

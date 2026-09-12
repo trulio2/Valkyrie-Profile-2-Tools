@@ -46,8 +46,8 @@ class CatalogTests(unittest.TestCase):
             catalog.required_with(["stop-removing-characters"])
         )
         self.assertEqual(
-            ("disable-anti-cheat", "mithra-swap", "join-level-1"),
-            catalog.required_with(["join-level-1", "mithra-swap"])
+            ("disable-anti-cheat", "add-characters", "join-level-1"),
+            catalog.required_with(["join-level-1", "add-characters"])
         )
 
     def test_an_ordinary_cheat_does_not(self):

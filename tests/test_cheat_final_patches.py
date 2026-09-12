@@ -111,7 +111,7 @@ class SealstonePatchTests(unittest.TestCase):
         )
         self.assertEqual(0x01FEDE00,
                          elf.CODE_ARENA_ADDRESS + elf.CODE_ARENA_SIZE)
-        self.assertEqual(len(executable) + 0x3E0, len(details.data))
+        self.assertEqual(len(executable), len(details.data))
         self.assertEqual(elf.pcsx2_crc(executable), details.patched_crc)
 
     def test_withdrawal_guard_rejects_only_a_matching_low_half(self):

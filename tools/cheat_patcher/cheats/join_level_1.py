@@ -28,16 +28,16 @@ INJECT_WORDS = (
     0x3C1768F8, 0x36F7F751, 0xAD170000, 0x1000FFCB, 0x00000000, 0x20A80018,
     0x3C176CF8, 0x36F7F751, 0xAD170000, 0x1000FFC5, 0x00000000, 0x00000000,
 )
-MITHRA_LEVEL_OVERRIDES = (
-    (0x01FEAD8C, 0x24060032, 0x24060001),
-    (0x01FEAD9C, 0x24060032, 0x24060001),
-    (0x01FEADAC, 0x24060032, 0x24060001),
-    (0x01FEADBC, 0x24060032, 0x24060001),
-    (0x01FEADCC, 0x24060032, 0x24060001),
-    (0x01FEADDC, 0x2406002D, 0x24060001),
-    (0x01FEADEC, 0x2406002F, 0x24060001),
-    (0x01FEADFC, 0x24060037, 0x24060001),
-    (0x01FEAE0C, 0x24060030, 0x24060001),
+ADD_CHARACTERS_LEVEL_OVERRIDES = (
+    (0x01FEAC6C, 0x24060032, 0x24060001),
+    (0x01FEAC78, 0x24060032, 0x24060001),
+    (0x01FEAC84, 0x24060032, 0x24060001),
+    (0x01FEAC90, 0x24060032, 0x24060001),
+    (0x01FEAC9C, 0x24060032, 0x24060001),
+    (0x01FEACA8, 0x2406002D, 0x24060001),
+    (0x01FEACB4, 0x2406002F, 0x24060001),
+    (0x01FEACC0, 0x24060037, 0x24060001),
+    (0x01FEACCC, 0x24060030, 0x24060001),
 )
 
 
@@ -71,7 +71,7 @@ def patch_executable(data):
     writes = [injected_code.Write(INJECT_ADDRESS, INJECT_WORDS)]
     writes.extend(
         injected_code.Write(address, (replacement,), ((0,), (original,)))
-        for address, original, replacement in MITHRA_LEVEL_OVERRIDES
+        for address, original, replacement in ADD_CHARACTERS_LEVEL_OVERRIDES
     )
     return injected_code.patch_executable(
         data, "main executable level-one recruitment routine", tuple(writes)
