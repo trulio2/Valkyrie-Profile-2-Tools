@@ -293,6 +293,49 @@ def preflight(reference_iso, rows, *, dry_run, verbose=False):
             print(audit_log.getvalue(), end='')
     print(f"== pre-flight ok: {len(scene_rows)} row(s) ==")
 
+LABEL_ROW = 'label'
+
+def _label_word(sheet):
+    """The label word from a chapters sheet, or ``''``."""
+    if not sheet or not os.path.isfile(sheet):
+        return ''
+    with open(sheet, newline='', encoding='utf-8-sig') as handle:
+        for row in csv.DictReader(handle):
+            if (row.get('resource') or '').strip().lower() == LABEL_ROW:
+                return (row.get('translated') or '').strip()
+    return ''
+
+_LABEL_CACHE = {}
+
+def patch_chapter_label_in_memory(iso, row, *, reference=None):
+    """Cut the chapter-introduction label for this pack's word."""
+    from . import chapter_label
+    resource = int(row['resource'])
+    word = (row.get('chapter_label') or '').strip() or _label_word(row.get('sheet'))
+    if not word:
+        return {'written': 0, 'details': 'no label word in the pack'}
+    raw = bytes(iso.read_entry(resource))
+    found = chapter_label.label_row(raw)
+    if found is None:
+        raise ValueError(
+            f'resource {resource} carries no chapter label to translate')
+    index, offset, length, blob = found
+    key = (word, blob)
+    if key not in _LABEL_CACHE:
+        _LABEL_CACHE[key] = chapter_label.cut_for_word(
+            reference if reference is not None else iso, blob, word)[0]
+    cut = _LABEL_CACHE[key]
+    if cut == blob:
+        return {'written': 0, 'details': 'the disc already spells it that way'}
+    rebuilt = chapter_label.rewrite_row(raw, index, offset, length, cut)
+    back = chapter_label.label_row(rebuilt)
+    if back is None or back[3] != cut:
+        raise ValueError(
+            f'resource {resource} did not read back as the new label')
+    iso.write_entry(resource, rebuilt)
+    print(f"  chapter label {word}: {length} -> {back[2]} stored byte(s)")
+    return {'written': 1, 'details': word}
+
 
 def patch_image_resource_in_memory(iso, row, *, primary_lookup=None):
     from . import fis_images

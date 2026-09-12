@@ -25,6 +25,7 @@ from pathlib import Path
 from .paths import BUILD_DIR, PROJECT_ROOT, WORKSPACE_DIR, output_root
 from .workspace_extract import generate_workspace
 from .translation_layout import rename_tree
+from . import chapter_label
 from .translation_pack import (
     PACK_PROFILE,
     PACK_SLOTS,
@@ -44,6 +45,7 @@ IMAGE_DIRECTORY = "images"
 SHEET_NAME_RE = re.compile(
     r"^(?:resource-[0-9]+-scenes|container-[0-9]+)\.csv$")
 MENU_LAYOUT = PROJECT_ROOT / "data" / "menu-layout.csv"
+CHAPTER_LABEL_SHEET = "chapter-label.csv"
 WORKSPACE = WORKSPACE_DIR
 TRANSLATIONS = PROJECT_ROOT / "translations"
 
@@ -344,6 +346,24 @@ def compile_build_workspace(
                 manifest["chapter_title_message"] = key[2]
                 matched_chapters.add(key)
             manifest_rows.append(manifest)
+
+        label_key = next(
+            (key for key in chapters
+             if key[1] == str(chapter_label.CARRIERS[0])
+             and key[2] == str(chapter_label.FIRST_MESSAGE)), None)
+        if label_key is not None:
+            _write_csv(staging / CHAPTER_LABEL_SHEET,
+                       ["resource", "translated"],
+                       [{"resource": "label", "translated": chapters[label_key]}])
+            for carrier in chapter_label.CARRIERS:
+                manifest_rows.append({
+                    "kind": "chapter-label",
+                    "resource": str(carrier),
+                    "sheet": os.fspath(build_root / CHAPTER_LABEL_SHEET),
+                    "flags": "", "verify": "", "subresource": "",
+                    "chapter_title": "", "chapter_title_message": "",
+                })
+            matched_chapters.add(label_key)
 
         profile_pairs = {
             (_record_key({

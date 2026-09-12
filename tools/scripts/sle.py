@@ -35,6 +35,29 @@ def decompress(data):
     return slz.decompress(reveal(data))
 
 
+def conceal(stream):
+    """Return one ordinary SLZ stream as an SLE stream."""
+    if len(stream) < HEADER_SIZE or stream[:3] != b"SLZ":
+        raise ValueError("not an SLZ stream")
+    stored_size = struct.unpack_from("<I", stream, 4)[0]
+    end = HEADER_SIZE + stored_size
+    if end > len(stream):
+        raise ValueError("truncated SLZ body: need %d bytes, have %d" %
+                         (stored_size, len(stream) - HEADER_SIZE))
+    concealed = bytearray(stream[:end])
+    for position in range(stored_size):
+        addend = (3 + 3 * position) & 0xFF
+        value = concealed[HEADER_SIZE + position] ^ KEY[position & 0x0F]
+        concealed[HEADER_SIZE + position] = (value + addend) & 0xFF
+    concealed[2] = ord("E")
+    return bytes(concealed)
+
+
+def compress(data, mode=2):
+    """Compress *data* and store it as an SLE stream."""
+    from . import slz_compress
+    return conceal(slz_compress.compress(bytes(data), mode=mode))
+
 def streams(data):
     """Yield ``(number, offset, output)`` from a bare or ZLS-wrapped entry."""
     if data[:4] == b"ZLS\0":

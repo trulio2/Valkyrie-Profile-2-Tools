@@ -148,7 +148,7 @@ def pk1_section_tag(raw, subresource=None):
         return None
     return section["tag"] if section else None
 
-def unpack_container_entry(raw, resource, subresource=None):
+def unpack_container_entry(raw, resource, subresource=None, stripped=False):
     """Return the one structurally reachable MCPS2 container in an entry."""
     if raw[:3] == b"SLZ":
         blob = decompress(raw)
@@ -178,11 +178,10 @@ def unpack_container_entry(raw, resource, subresource=None):
                 blob = package_archive.unpack_container(clear)
             except (protected_package.ProtectedPackageError,
                     package_archive.ContainerNotFound) as protected_exc:
-                if encrypted_entry.is_encrypted(resource):
-                    # Strip the keystream and read it by the ordinary routes.
+                if encrypted_entry.is_encrypted(resource) and not stripped:
                     return unpack_container_entry(
                         encrypted_entry.decode_entry(raw, resource),
-                        resource, subresource)
+                        resource, subresource, stripped=True)
                 raise ValueError(
                     "resource #%d is not a readable container (%r)" %
                     (resource, bytes(raw[:4]))) from protected_exc
