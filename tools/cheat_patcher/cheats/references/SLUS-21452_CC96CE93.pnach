@@ -175,12 +175,12 @@ patch=1,EE,01FEA244,word,00000000
 
 [(!) Add Characters]
 author=Trulio
-description=Press R1, R2, L1 and L2 together to add the characters
+description=Press Square, Triangle, R1, R2, L1 and L2 together to add the characters
 patch=1,EE,0011F624,word,087FAB00
 patch=1,EE,01FEAC08,word,3C06001C
 patch=1,EE,01FEAC0C,word,34C6A1DC
 patch=1,EE,01FEAC10,word,94C60000
-patch=1,EE,01FEAC14,word,34A5F0FF
+patch=1,EE,01FEAC14,word,34A5C0FF
 patch=1,EE,01FEAC18,word,14A60032
 patch=1,EE,01FEAC20,word,3C06003B
 patch=1,EE,01FEAC24,word,34C65DD4
