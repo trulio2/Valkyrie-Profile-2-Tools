@@ -60,7 +60,7 @@ CHEATS = (
     Cheat(
         "add-characters",
         "(!) Add Characters",
-        "Hold Square+Triangle+L1+L2+R1+R2 together to add the PNACH special-character roster "
+        "Hold □+△+L1+L2+R1+R2 together to add the PNACH special-character roster "
         "to the party.",
         True,
     ),
