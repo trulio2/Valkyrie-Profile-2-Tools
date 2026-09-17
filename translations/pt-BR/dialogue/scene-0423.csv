@@ -80,10 +80,9 @@ queria lhe dar quando a visse de novo. <PART>
 ---
 Está bem aqui... Hummm...
 Acho que perdi... Fica para a próxima!",
-423,381,Adquirido <PART> OTH,
-423,382,Perdido <PART> OTH,
-423,383,"Dinheiro
- <PART> OTH",
+423,381,,
+423,382,,
+423,383,,
 423,1,Floresta dos Espíritos,not displayed by the event script
 423,2,Saída,not displayed by the event script
 423,4,"Sair da Floresta dos Espíritos?

@@ -92,10 +92,9 @@ a certa hipótese. <PART>
 ---
 Se ela se provar, a relação entre deuses
 e humanos vai mudar. Fique viva até lá.",
-589,383,Adquirido <PART> OTH,
-589,384,Perdido <PART> OTH,
-589,385,"Dinheiro
- <PART> OTH",
+589,383,,
+589,384,,
+589,385,,
 589,3,Mina de Turgen,not displayed by the event script
 589,5,Saída,not displayed by the event script
 589,6,"Sair da Mina de Turgen?

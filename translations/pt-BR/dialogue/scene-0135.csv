@@ -7,10 +7,9 @@ resource,message_id,translated,notes
 135,5,Parece um rascunho.,
 135,6,"Pensando bem, havia uma
 mensagem parecida em Solde...",
-135,351,Adquirido <PART> OTH,
-135,352,Perdido <PART> OTH,
-135,353,"Dinheiro
- <PART> OTH",
+135,351,,
+135,352,,
+135,353,,
 135,2451,"Meu desejo é viver uma vida plena e
 descansar para sempre nesta cidade. <PART>
 ---

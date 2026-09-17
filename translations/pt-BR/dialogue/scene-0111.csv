@@ -1,10 +1,9 @@
 resource,message_id,translated,notes
 111,4,Vou usar com sabedoria.,
 111,3,Nunca vi móveis tão exóticos.,
-111,394,Adquirido <PART> OTH,
-111,395,Perdido <PART> OTH,
-111,396,"Dinheiro
- <PART> OTH",
+111,394,,
+111,395,,
+111,396,,
 111,2244,"É uma honra ter sido escolhida
 pela senhora Silmeria, <PART>
 ---

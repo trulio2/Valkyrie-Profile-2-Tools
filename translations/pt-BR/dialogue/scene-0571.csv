@@ -86,10 +86,9 @@ Sou apenas um investigador da magia. <PART>
 ---
 Pouco tenho a oferecer em batalha.
 Duvido que lutemos juntos no futuro.",
-571,383,Adquirido <PART> OTH,
-571,384,Perdido <PART> OTH,
-571,385,"Dinheiro
- <PART> OTH",
+571,383,,
+571,384,,
+571,385,,
 571,4,"Sair do Chateau Obsession?
 (As pedras de selo retornam aos seus lugares originais.)",
 571,5,Sim,not displayed by the event script
