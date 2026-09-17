@@ -235,7 +235,8 @@ def _check_scene_content_ceiling(source_iso, resource, patched, fail,
             fail(str(exc))
             return
         if container_text.record_candidate_extent(
-                resource, "scene-content", content_end):
+                resource, "scene-content", content_end,
+                allocation=allocation):
             CANDIDATE_EXTENTS.append((resource, content_end))
             print("CANDIDATE: recorded resource #%d at %d in the limits "
                   "table so this build could finish. %s"

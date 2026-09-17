@@ -45,6 +45,15 @@ class CandidateExtentTests(unittest.TestCase):
         self.assertEqual("4096", rows[0]["max_extent"])
         self.assertEqual("candidate", rows[0]["kind"])
 
+    def test_a_candidate_note_names_the_allocation_it_crossed(self):
+        write(self.path, [])
+        self.assertTrue(container_text.record_candidate_extent(
+            53, "scene-content", 4096, path=self.path, allocation=1234))
+        rows = read(self.path)
+        self.assertIn(
+            "content ending at 4096, 2862 bytes past its pristine outer "
+            "allocation of 1234.", rows[0]["evidence"])
+
     def test_a_verified_row_is_never_overwritten(self):
         """Only a person writes that word, so a build may not argue with it."""
         write(self.path, [{"resource": "53", "scope": "scene-content",

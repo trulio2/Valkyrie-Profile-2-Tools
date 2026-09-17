@@ -469,7 +469,8 @@ class StreamedNeighbourReclaimed(ValueError):
     """A streamed scene rewrote a neighbour without a recorded play-test."""
 
 
-def record_candidate_extent(resource, scope, extent, path=None, note=None):
+def record_candidate_extent(resource, scope, extent, path=None, note=None,
+                            allocation=None):
     """Write *resource* into the limits table as a candidate."""
     path = path or _RECORD_LIMITS_PATH
     fields = ["resource", "scope", "max_extent", "kind", "evidence"]
@@ -494,11 +495,13 @@ def record_candidate_extent(resource, scope, extent, path=None, note=None):
             return False
         row["max_extent"] = str(extent)
         row["kind"] = "candidate"
-        row["evidence"] = note or _candidate_note(resource, scope, extent)
+        row["evidence"] = note or _candidate_note(
+            resource, scope, extent, allocation)
     if not seen:
         rows.append({"resource": str(resource), "scope": scope,
                      "max_extent": str(extent), "kind": "candidate",
-                     "evidence": note or _candidate_note(resource, scope, extent)})
+                     "evidence": note or _candidate_note(
+                         resource, scope, extent, allocation)})
     rows.sort(key=lambda row: (row.get("scope") or "",
                                int(row.get("resource") or 0)))
     with io.open(path, "w", encoding=encoding, newline="") as handle:
@@ -509,7 +512,15 @@ def record_candidate_extent(resource, scope, extent, path=None, note=None):
     return True
 
 
-def _candidate_note(resource, scope, extent):
+def _candidate_note(resource, scope, extent, allocation=None):
+    if allocation is not None and extent > allocation:
+        return ("What is under test: whether resource #%d runs with scope=%s "
+                "content ending at %d, %d bytes past its pristine outer "
+                "allocation of %d. Recorded by a build, not by a play-test, "
+                "and the table had nothing further. Nobody has seen this "
+                "screen at this extent: play it, then change kind to "
+                "verified if it holds or lower this row if it does not."
+                % (resource, scope, extent, extent - allocation, allocation))
     return ("What is under test: whether resource #%d runs with scope=%s "
             "content ending at %d. Recorded by a build, not by a play-test, "
             "and the table had nothing further. Nobody has seen this screen "
