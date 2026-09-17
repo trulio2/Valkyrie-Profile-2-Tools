@@ -1,21 +1,40 @@
 resource,message_id,translated,notes
-129,2,,
-129,3,,
-129,4,,
-129,18,,
-129,17,,
-129,16,,
-129,15,,
-129,14,,
-129,13,,
+129,2,"Bem-vindos! Pode não parecer grande coisa,
+mas temos uma seleção e tanto aqui!",
+129,3,"Se você virar cliente frequente,
+o papai pode fazer algo pra você. <PART>
+---
+Nossa loja tem uma seleção única!
+Traga materiais e leve ótimas armas!",
+129,4,"Muito obrigado!
+Volte sempre!",
+129,18,"<Pena de Cauda Carregada>
+ <PART> Falcão do Trovão <PART> : Cauda",
+129,17,"<Pena de Asa>
+ <PART> Grifo <PART> : Asa
+ <PART> Falcão Élfico <PART> : Asa",
+129,16,"<Asa de Aço>
+ <PART> Rouba-Vidas <PART> : Asa
+ <PART> Príncipe de Hel <PART> : Asa
+ <PART> Demônio Abissínio <PART> : Asa",
+129,15,"<Dente de Cordeiro>
+ <PART> Sátiro <PART> : Cabeça
+ <PART> Homem-Bode <PART> : Cabeça
+ <PART> Baphomet <PART> : Cabeça",
+129,14,"<Escamas de Ghibli>
+ <PART> Dragão Relâmpago <PART> : Asa
+ <PART> Morcego Dragão <PART> : Asa",
+129,13,"<Pedra do Relâmpago>
+ <PART> Exército Esquelético <PART> : Corpo
+ <PART> Concha Repugnante <PART> : Cabeça",
 129,1,Sair,not displayed by the event script
-129,5,,
-129,6,,
-129,7,,
-129,8,,
-129,9,,
-129,10,,
-129,11,,
-129,12,,
+129,5,Ler,
+129,6,<Anotações do Lojista>,
+129,7,Pena de Cauda Carregada,
+129,8,Pena de Asa,
+129,9,Asa de Aço,
+129,10,Dente de Cordeiro,
+129,11,Escamas de Ghibli,
+129,12,Pedra do Relâmpago,
 129,68,Crell Monferaigne,not displayed by the event script
-129,2808,,
+129,2808,Atendente de loja,

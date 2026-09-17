@@ -1,18 +1,49 @@
 resource,message_id,translated,notes
-115,2,,
-115,3,,
-115,7,,
-115,11,,
-115,4,,
-115,5,,
-115,6,,
-115,12,,
-115,13,,
-115,14,,
+115,2,"Ora, que mão incrível! Em todos os meus anos
+lendo a sorte, esta é a primeira vez! <PART>
+---
+Você é levada, impotente, pela correnteza,
+mas o fluxo leva à sua morte... <PART>
+---
+Espere! Vejo uma brecha na correnteza!
+Essa brecha pode mudar o destino do mundo.",
+115,3,"Seu destino pode ser cruel,
+mas você não deve desistir!",
+115,7,"Veja seu futuro! Uma vez, 100 OTH!
+Não me responsabilizo por erros grosseiros!",
+115,11,Esta é a única sorte que posso ler agora.,
+115,4,"Bem, que nossos caminhos se cruzem de novo...",
+115,5,"Hmm... Entendo... Veja só...
+Ora, ora... Quem diria... <PART>
+---
+Você pode se separar dos que a acompanham
+por sua própria escolha. <PART>
+---
+Se depois quiser procurá-los,
+viaje a vários lugares. <PART>
+---
+Pode encontrá-los em casas vazias nas cidades.
+...Essa é a minha visão.",
+115,6,"Desculpe, mas não leio de graça...",
+115,12,"Desculpe, mas desisti de ler a sorte.
+Só vejo visões de tristeza...",
+115,13,"Vocês também caçam tesouros! Aparece muita
+gente <PART> ---- <PART> a paz é má notícia pra mercenários. <PART>
+---
+Vim para cá porque ouvi falar das
+ruínas, mas os monstros são duros. <PART>
+---
+Principalmente aquele inseto esquisito. Quando
+você acha que pegou... É de enlouquecer!",
+115,14,"Enfim, é um inseto. Um negócio gigante!
+Cuidado se for entrar naquele deserto. <PART>
+---
+Não baixe a guarda nem por um segundo,
+ou será o seu fim. Cuide-se!",
 115,1,Sair,not displayed by the event script
-115,8,,
-115,9,,
-115,10,,
+115,8,Leitura de sorte duvidosa 100 OTH,
+115,9,Manda ver.,
+115,10,Deixa pra lá.,
 115,71,Kalstad,not displayed by the event script
 115,2811,Habitante,not displayed by the event script
 115,2812,Aventureira,not displayed by the event script

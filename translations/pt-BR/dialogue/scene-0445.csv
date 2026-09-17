@@ -1,8 +1,9 @@
 resource,message_id,translated,notes
-445,4,,
+445,4,Ainda não posso passar.,
 445,2,Floresta dos Espíritos,not displayed by the event script
-445,3,,
-445,5,,
+445,3,Cavernas do Desfiladeiro,
+445,5,"Sair da Floresta dos Espíritos?
+(As pedras de selo retornam aos seus lugares originais.)",
 445,6,Sim,not displayed by the event script
 445,7,Não,not displayed by the event script
-445,2154,,
+445,2154,Floresta dos Espíritos,

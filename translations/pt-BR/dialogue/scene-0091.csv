@@ -1,5 +1,9 @@
 resource,message_id,translated,notes
-91,8,,
+91,8,"Foram vocês que expulsaram os monstros
+da mina? Muito bem! <PART>
+---
+Não é muito, mas nossa guilda juntou uma
+recompensa. Nós mineradores esperamos que curta!",
 91,65,Adquirido <PART> OTH,
 91,9,"É perigoso lá nas minas.
 Exige músculo e coragem para sobreviver. <PART>
@@ -55,7 +59,11 @@ Parece que saiu em um pedaço. <PART>
 ---
 Não tenho como agradecer o suficiente!
 Isso é o mínimo que posso fazer...",
-91,28,,
+91,28,"Sabia que antes havia outra guilda de
+mineradores aqui? É só um palpite, <PART>
+---
+mas acho que os primeiros monstros que surgiram
+eram na verdade... ah, esquece, é loucura...",
 91,29,"Isso é ruim! Se Dipan perder,
 perco meu maior cliente!",
 91,31,"Não houve luta real por um tempo,
@@ -111,14 +119,32 @@ próprios problemas... <PART>
 ---
 Esqueça que eu mencionei!
 Nós resolvemos!",
-91,55,,
+91,55,"Escolheu uma ótima hora para aparecer!
+Dipan tem seus problemas, mas temos os nossos! <PART>
+---
+Monstros voltaram às minas.
+Poder mágico atrai seres mágicos... <PART>
+---
+O que acha? Tenta de novo?
+Vou compensar...",
 91,59,"Sério, você vai mesmo?
 Você me traz lágrimas de alegria! <PART>
 ---
 Boa sorte aí fora e
 continue o bom trabalho!",
-91,60,,
-91,64,,
+91,60,"Escolheu uma ótima hora para aparecer!
+Dipan tem seus problemas, mas temos os nossos! <PART>
+---
+Monstros voltaram às minas.
+Poder mágico atrai seres mágicos... <PART>
+---
+O que acha? Tenta de novo?
+Vou compensar...",
+91,64,"Sério? Você vai mesmo?
+Você me traz lágrimas de alegria! <PART>
+---
+Boa sorte aí fora e
+continue o bom trabalho!",
 91,1,Taberna,not displayed by the event script
 91,2,Armaria,not displayed by the event script
 91,3,Casa,not displayed by the event script
@@ -128,19 +154,19 @@ continue o bom trabalho!",
 91,7,Não,not displayed by the event script
 91,13,"Crell Monferaigne está sedenta de sangue
 após as últimas expansões de Villnore.",not displayed by the event script
-91,27,,
-91,43,,
-91,47,,
-91,48,,
+91,27,Adquirido <PART> Metabolizador,
+91,43,Adquirido <PART> Anel de Salomão,
+91,47,Adquirido <PART> Anel de Salomão,
+91,48,Adquirido <PART> Anel de Salomão,
 91,52,Vamos lá.,not displayed by the event script
 91,53,Deixar pra lá.,not displayed by the event script
 91,54,Visitar as minas de novo?,not displayed by the event script
-91,56,,
-91,57,,
-91,58,,
-91,61,,
-91,62,,
-91,63,,
+91,56,Visitar as minas de novo?,
+91,57,Vamos lá.,
+91,58,Deixar pra lá.,
+91,61,Visitar as minas de novo?,
+91,62,Vamos lá.,
+91,63,Deixar pra lá.,
 91,182,Villnore,not displayed by the event script
 91,2924,Habitante,not displayed by the event script
 91,2925,Matrona,not displayed by the event script

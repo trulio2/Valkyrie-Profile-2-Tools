@@ -1,54 +1,157 @@
 resource,message_id,translated,notes
-107,4,,
-107,5,,
-107,6,,
-107,7,,
-107,8,,
-107,9,,
-107,10,,
-107,11,,
-107,18,,
-107,15,,
-107,16,,
-107,17,,
-107,19,,
-107,20,,
-107,21,,
-107,22,,
-107,23,,
-107,24,,
-107,25,,
-107,27,,
-107,26,,
-107,28,,
-107,29,,
-107,30,,
-107,31,,
-107,32,,
-107,33,,
-107,34,,
-107,35,,
-107,36,,
-107,37,,
-107,38,,
-107,39,,
-107,41,,
-107,42,,
-107,44,,
-107,46,,
-107,47,,
-107,48,,
-107,49,,
-107,50,,
-107,51,,
+107,4,"O deserto destruiu nosso pasto, e o leite
+das vacas anda azedo ultimamente. <PART>
+---
+É hora de pensar em deixar Kalstad
+em busca de pastos mais verdes.",
+107,5,"Minha família viveu aqui por gerações,
+mas chega. Nunca esteve tão ruim assim.",
+107,6,"Esta cidade já foi bem próspera <PART> ---- <PART> até
+conseguimos deter Crell Monferaigne! <PART>
+---
+Mas os ventos sazonais mudaram, soprando
+a areia do deserto para cima de nós. <PART>
+---
+Agora é só contar os dias até o deserto
+nos engolir por inteiro.",
+107,7,"Há contos de heróis que protegeram esta
+cidade da invasão de Crell Monferaigne. <PART>
+---
+A espadachim Rasheeka, a arqueira Arcana
+e mais alguém. <PART>
+---
+O nome do outro não foi passado adiante,
+então devia ser alguém bem sem graça...",
+107,8,"Dipan e Crell Monferaigne têm
+castelos gigantes, não têm? <PART>
+---
+Aposto que têm princesas com vestidos
+lindos e sem preocupação nenhuma...",
+107,9,"Sabia que Dipan não tem princesa agora?
+Quem sabe me aceitam como substituta!",
+107,10,"A mãe mandou eu levar o gado pro pasto,
+mas é longe demais. Que saco. <PART>
+---
+O pai é um inútil. Só fica varrendo areia.
+Sou o único que trabalha por aqui!",
+107,11,"Você parece estar bem de vida, que tal
+ajudar um camarada com uns trocados?",
+107,18,Por que você tem que ser tão pão-dura?,
+107,15,"Entregou 10 OTH
+",
+107,16,"Beleza! Um dia eu te pago de volta.
+Ah, já sei quando! No fim do mundo! Haha...",
+107,17,Qual é? Você é pobre ou o quê?,
+107,19,"Um aventureiro me disse que monstros saíram
+da floresta perto de Coriander. <PART>
+---
+Mas pra ser sincero, eu não faço
+ideia de onde fica Coriander...",
+107,20,"Villnore já teve uma guilda de ladrões. É isso
+que chamam de ""mal necessário ao progresso""?",
+107,21,"O território de Crell Monferaigne fica além
+do deserto leste. Eles são rígidos lá!",
+107,22,"Eu queria visitar Crell Monferaigne, mas
+não deixam entrar gente vestida como eu!",
+107,23,"Minha mãe é vidente, mas ela nunca
+diz nada de importante. <PART>
+---
+Você a encontra numa casa no lado leste
+da cidade. Passe lá um dia.",
+107,24,"Há algo pesado no ar... incomum.
+Estou com um mau pressentimento...",
+107,25,"...Uma sombra de infortúnio paira sobre você.
+Aconteça o que acontecer, fique alerta!",
+107,27,"O céu do norte parece um pouco mais claro.
+Nunca vi nada parecido...",
+107,26,"Algo assustou o gado de repente,
+mas não sei o que foi...",
+107,28,"A mãe sentiu algo ruim e ficou abalada.
+Deve ser palpite de vidente.",
+107,29,"Tem gente demais passando por aqui hoje,
+dificultando o meu trabalho. <PART>
+---
+Se eu fosse uma princesa, não precisaria
+nem levantar um dedo!",
+107,30,"Como eu sonho com a boa vida em Dipan!
+Se ao menos alguém me levasse pra lá...",
+107,31,"Os viajantes estão alvoroçados com a queda
+de Dipan. A ira dos deuses é de se temer.",
+107,32,"Já vi que a ira dos deuses é terrível,
+mas as bênçãos deles existem mesmo?",
+107,33,"Alguns acham que agora vai ter guerra.
+É pra isso que venho treinando! <PART>
+---
+...Ah, eu não vou lutar <PART> ---- <PART> vou ficar
+num papel de apoio ou algo assim.",
+107,34,"Rumores de militarização em Villnore, e
+falam de guerra em Crell Monferaigne... <PART>
+---
+Quem sairá vitorioso?
+Talvez eu faça uma aposta...",
+107,35,"Ouvi falar do Rei Barbarossa. Se ele é
+tão bom, por que o país dele foi destruído?",
+107,36,"Dizem que a rainha de Dipan seguiu
+o rei até o túmulo. <PART>
+---
+Não é romântico? É uma história de amor!
+O amor verdadeiro deve ser assim.",
+107,37,"O país que desafiou os deuses caiu diante
+deles em uma noite. Parece conto de fadas!",
+107,38,"Se eu tivesse um pouco mais de dinheiro,
+teria feito isso e aquilo...",
+107,39,"Ei, é a garota que me deu dinheiro!
+Valeu por aquilo! Ajudou muito. <PART>
+---
+Na verdade, estou treinando pra ser ferreiro.
+O dinheiro que você me deu virou material. <PART>
+---
+Aceite isto em troca. Pense nisso como
+obra de um futuro ferreiro. Haha...",
+107,41,"Quando eu melhorar minhas habilidades,
+faço uma ainda melhor pra você!",
+107,42,"Ei, é a garota que me deu dinheiro!
+Valeu por aquilo! Ajudou muito. <PART>
+---
+Na verdade, estou treinando pra ser ferreiro.
+O dinheiro que você me deu virou material. <PART>
+---
+Aceite isto em troca. Pense nisso como
+obra de um futuro ferreiro. Haha...",
+107,44,"Ei, é a garota que me deu dinheiro!
+Valeu por aquilo! Ajudou muito. <PART>
+---
+Na verdade, estou treinando pra ser ferreiro.
+O dinheiro que você me deu virou material. <PART>
+---
+Aceite isto em troca. Pense nisso como
+obra de um futuro ferreiro. Haha...",
+107,46,"Acho que Crell Monferaigne será o próximo
+a conquistar a supremacia do continente. <PART>
+---
+O exército deles parece o mais organizado,
+e o povo está acostumado à guerra.",
+107,47,"É melhor eu me mudar pra outro vilarejo
+antes que o deserto engula esta cidade...",
+107,48,"Ouvi dizer que uma guerra vai estourar,
+mas não acredito que vá acontecer mesmo.",
+107,49,"O que a guerra trará? Os mercenários que
+estavam aqui pareciam contentes com o serviço...",
+107,50,"A classe alta nunca precisa lutar
+numa guerra, sabe como é? <PART>
+---
+É o mundo em que eles nasceram...
+Só queria não ter nascido aqui.",
+107,51,"Estão contratando mercenários em Villnore.
+Quanto você acha que um mercenário ganha?",
 107,2,Casa,not displayed by the event script
-107,3,,
-107,12,,
+107,3,Casa,
+107,12,Entregar 10 OTH?,
 107,13,Sim,not displayed by the event script
 107,14,Não,not displayed by the event script
-107,40,,
-107,43,,
-107,45,,
+107,40,Adquirido <PART> Shamshir,
+107,43,Adquirido <PART> Chuva de Sol,
+107,45,Adquirido <PART> Solais Claiomh,
 107,108,Kalstad,not displayed by the event script
 107,2851,Habitante,not displayed by the event script
 107,2852,Menino,not displayed by the event script

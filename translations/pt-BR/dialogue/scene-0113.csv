@@ -2,9 +2,10 @@ resource,message_id,translated,notes
 113,5,Vou usar com sabedoria.,
 113,4,"Está cheio de bebida <PART> ---- <PART>
 o sonho de Arngrim realizado.",
-113,395,,
-113,396,,
-113,397,,
+113,395,Adquirido <PART> OTH,
+113,396,Perdido <PART> OTH,
+113,397,"Dinheiro
+ <PART> OTH",
 113,2268,"Nunca levei uma vida normal.
 Minha vida passada foi cheia de extremos.",
 113,2270,"Esta cidade não vai durar muito,

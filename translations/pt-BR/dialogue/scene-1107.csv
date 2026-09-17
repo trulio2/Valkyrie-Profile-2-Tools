@@ -1,10 +1,10 @@
 resource,message_id,translated,notes
-1107,2,,
-1107,8,,
-1107,1,,
-1107,3,,
+1107,2,Uma presença mortal espreita adiante...,
+1107,8,Uma presença mortal espreita adiante...,
+1107,1,Verificar,
+1107,3,Inspecionar a área.,
 1107,4,Sair.,not displayed by the event script
-1107,5,,
-1107,6,,
-1107,7,,
+1107,5,Verificar,
+1107,6,Inspecionar a área.,
+1107,7,Sair.,
 1107,2970,Portal Seráfico,not displayed by the event script

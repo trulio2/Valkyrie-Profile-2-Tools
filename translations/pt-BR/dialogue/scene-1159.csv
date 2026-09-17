@@ -99,9 +99,10 @@ soltando monstros!",
 ---
 Vejo que muita coisa aconteceu enquanto estive fora.
 A tecnologia realmente não para de avançar.",
-1159,382,,
-1159,383,,
-1159,384,,
+1159,382,Adquirido <PART> OTH,
+1159,383,Perdido <PART> OTH,
+1159,384,"Dinheiro
+ <PART> OTH",
 1159,1,Saída,not displayed by the event script
 1159,2,Sair das Planícies de Kythena?,
 1159,3,Sim,not displayed by the event script

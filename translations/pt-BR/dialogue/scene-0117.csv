@@ -1,12 +1,25 @@
 resource,message_id,translated,notes
-117,5,,
-117,6,,
-117,7,,
-117,8,,
+117,5,"Se vai seguir adiante, tenha cuidado.
+As forças de Crell Monferaigne estão por aí. <PART>
+---
+Dizem que são só manobras, mas é
+claro que estão se preparando pra guerra. <PART>
+---
+Não perderam tempo ao saber de Dipan.
+As grandes potências adoram expandir.",
+117,6,"Não me importa onde os países travam
+suas batalhas, desde que não seja aqui.",
+117,7,"""Àquele que der fim a tudo,
+os portões sagrados se abrirão."" <PART>
+---
+É uma velha passagem transmitida há gerações,
+mas eu não a entendo muito bem.",
+117,8,"As areias subiram de novo...
+Há poucos anos, ainda dava pra viver aqui.",
 117,1,Saída,not displayed by the event script
-117,2,,
+117,2,Sair de Kalstad?,
 117,3,Sim,not displayed by the event script
 117,4,Não,not displayed by the event script
-117,9,,
+117,9,Kalstad <PART> Deserto de Sahma,
 117,66,Kalstad,not displayed by the event script
 117,2806,Habitante,not displayed by the event script

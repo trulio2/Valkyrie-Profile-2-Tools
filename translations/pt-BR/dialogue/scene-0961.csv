@@ -1,7 +1,8 @@
 resource,message_id,translated,notes
 961,2,Torre de Lezard Valeth,
 961,3,Saída,
-961,6,,
+961,6,"Sair da Torre de Lezard Valeth?
+(As pedras de selo voltam aos lugares originais.)",
 961,7,Sim,
 961,8,Não,
-961,34,,
+961,34,Torre de Lezard Valeth,

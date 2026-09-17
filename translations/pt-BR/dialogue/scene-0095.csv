@@ -58,8 +58,8 @@ Com esse tipo de poder na sua arma, não há nada a temer!",
  <PART> Flor Mimética <PART>: Parte Superior do Corpo",
 95,1,Sair,not displayed by the event script
 95,2,Falar,not displayed by the event script
-95,20,,
-95,21,,
+95,20,Ler,
+95,21,<Anotações do Lojista>,
 95,22,Chifre de Besouro,
 95,23,Pétala de Flor Branca,
 95,24,Escalas de Andorinha Sem Carga,
@@ -68,5 +68,5 @@ Com esse tipo de poder na sua arma, não há nada a temer!",
 95,27,Semente Tóxica,
 95,150,Villnore,not displayed by the event script
 95,2890,Habitante,not displayed by the event script
-95,2891,,
+95,2891,Lojista,
 95,2892,Aventureiro,not displayed by the event script

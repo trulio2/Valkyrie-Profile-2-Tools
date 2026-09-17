@@ -2,7 +2,11 @@ resource,message_id,translated,notes
 109,4,"Ouviram, ouviram, viajantes cansados!
 O vendedor ambulante está aqui para servir!",
 109,3,Aguardo ansioso pelo nosso próximo encontro!,
-109,5,,
+109,5,"Hmm... as cavernas vulcânicas ao sul?
+Ainda tem magma correndo por lá. <PART>
+---
+A menos que queira morrer e conhecer uma
+valquíria, recomendo não fazer a viagem!",
 109,6,"Onde posso achar monstros por aqui?
 Preciso de certo material.",
 109,16,"Magma quente... diga, algum dos

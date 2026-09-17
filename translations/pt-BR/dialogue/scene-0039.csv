@@ -1,7 +1,8 @@
 resource,message_id,translated,notes
-39,336,,
-39,337,,
-39,338,,
+39,336,Adquirido <PART> OTH,
+39,337,Perdido <PART> OTH,
+39,338,"Dinheiro
+ <PART> OTH",
 39,2187,"Só você pode escolher o próprio destino.
 E é isso que você precisa fazer agora.",
 39,2190,"Fiquei fora por tanto tempo que estou

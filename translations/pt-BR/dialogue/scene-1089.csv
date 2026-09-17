@@ -1,9 +1,9 @@
 resource,message_id,translated,notes
-1089,2,,
-1089,1,,
-1089,3,,
+1089,2,Uma presença mortal espreita adiante...,
+1089,1,Verificar,
+1089,3,Inspecionar a área.,
 1089,4,Sair.,not displayed by the event script
 1089,2966,Portal Seráfico,not displayed by the event script
-1089,2970,,
-1089,2971,,
-1089,2972,,
+1089,2970,Adquirido <PART> Chuva de Sangue,
+1089,2971,Adquirido <PART> Cristal Sacro,
+1089,2972,Adquirido <PART> Quinto Oráculo,

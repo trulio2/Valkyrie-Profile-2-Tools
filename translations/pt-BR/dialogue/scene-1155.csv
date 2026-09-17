@@ -1,7 +1,8 @@
 resource,message_id,translated,notes
-1155,280,,
-1155,281,,
-1155,282,,
+1155,280,Adquirido <PART> OTH,
+1155,281,Perdido <PART> OTH,
+1155,282,"Dinheiro
+ <PART> OTH",
 1155,2773,Jessica <PART> entrou para o grupo.,
 1155,2788,Aaron <PART> entrou para o grupo.,
 1155,2789,Dyn <PART> entrou para o grupo.,
@@ -90,7 +91,8 @@ os meus pecados do passado.",
 Vagueio em busca de uma terra pacífica para chamar de minha.",
 1155,1,Deserto de Sahma,not displayed by the event script
 1155,2,Saída,not displayed by the event script
-1155,3,,
+1155,3,"Sair do Deserto de Sahma?
+",
 1155,4,Sim,not displayed by the event script
 1155,5,Não,not displayed by the event script
 1155,2666,Realizar a materialização?,not displayed by the event script

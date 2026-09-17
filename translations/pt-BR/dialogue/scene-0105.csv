@@ -1,54 +1,142 @@
 resource,message_id,translated,notes
-105,11,,
-105,10,,
-105,12,,
-105,13,,
-105,14,,
-105,15,,
-105,17,,
-105,16,,
-105,18,,
-105,19,,
-105,20,,
-105,21,,
-105,23,,
-105,22,,
-105,27,,
-105,28,,
-105,35,,
-105,34,,
-105,36,,
-105,37,,
-105,39,,
-105,40,,
-105,41,,
-105,42,,
-105,45,,
-105,46,,
-105,47,,
-105,48,,
-105,49,,
-105,50,,
-105,51,,
-105,52,,
-105,53,,
-105,54,,
-105,55,,
-105,56,,
+105,11,"Bem-vindo a Kalstad, o ""oásis na areia"".
+...Apesar de agora ser mais areia que oásis.",
+105,10,"Minha família tem uma pousada na cidade.
+Minha irmã está lá, se você quiser descansar. <PART>
+---
+",
+105,12,"Se eu varrer mais, meus braços vão cair!
+Mas se eu parar, a areia me enterra. <PART>
+---
+Que saco! Não aguento mais!
+Mas se eu parar, vou ouvir da patroa.",
+105,13,"As coisas eram melhores quando eu era menino...
+Hoje, as dunas são mais altas que as casas!",
+105,14,"A areia castiga a cidade sem piedade.
+Daqui a uns anos, talvez nem exista cidade! <PART>
+---
+Uma parada a caminho de Villnore é útil,
+mas estas condições são intoleráveis!",
+105,15,"Outro dia parei em outra cidade e ouvi
+falar de um pássaro que botava ovos de ouro.",
+105,17,"A magia pode mudar o ambiente? Se sim,
+poderíamos nos livrar deste deserto...",
+105,16,"Parece que o navio que sai de Solde
+para Dipan foi suspenso. <PART>
+---
+As notícias demoram a chegar até nós
+aqui no meio do nada.",
+105,18,"Dipan é aquele país lá no norte, não?
+Os barcos pararam e depois voltaram...",
+105,19,"Não entendo. Barcos são tão importantes?
+Mercadores fazem tempestade em copo d'água...",
+105,20,"Há muito tempo, viajei com um amigo,
+mas não tive notícias dele ultimamente. <PART>
+---
+Soube que ele explorou as ruínas próximas,
+espero que tenha voltado...",
+105,21,"As ruínas daqui são perigosas, e muitos
+não saem de lá com vida. Coitado dele...",
+105,23,O que você quer de mim?,
+105,22,"O filho dele fez isto <PART> ---- <PART> é um talismã da sorte.
+Neste ramo, qualquer dia pode ser o último...",
+105,27,Isto aqui...,
+105,28,"Isto era dele...!
+Onde você encontrou!? <PART>
+---
+...Ah, então ele se foi mesmo.
+Bem, pelo menos agora tenho certeza. <PART>
+---
+Vou levar este talismã à família dele.
+Aceite isto pelo incômodo...",
+105,35,...? Diga o que quer ou siga seu caminho.,
+105,34,Qual é o seu problema?,
+105,36,"Em algum lugar deste mundo está uma
+das lendárias Quatro Relíquias. <PART>
+---
+Apenas vê-la já seria um sonho realizado
+para qualquer caçador de tesouros.",
+105,37,"Dizem que monstros e mortos-vivos são
+atraídos por poder e energia psíquica, não? <PART>
+---
+Se for verdade, os lugares com monstros
+mais fortes devem ter grandes tesouros...",
+105,39,"Eles vieram para cá depois da campanha <PART> ---- <PART>
+soldados apavorados de Crell Monferaigne, <PART>
+---
+falando de coisas em Dipan...
+O que aconteceu lá?",
+105,40,"O que exatamente aconteceu em Dipan?
+Todo mundo só fala disso.",
+105,41,"O dia todo é Dipan isso, Dipan aquilo...
+O que eu saberia sobre Dipan? <PART>
+---
+Já estou ocupado demais tentando descobrir
+se o deserto vai nos enterrar ou não!",
+105,42,"Temos problemas demais por aqui para
+nos preocuparmos com outro país!",
+105,45,"Daqui, vai até Villnore, para em algum vilarejo,
+cruza as Planícies de Kythena até Solde... <PART>
+---
+É esse o caminho para Dipan, certo?
+Hã? Esse é o caminho turístico? <PART>
+---
+Bem, o Desfiladeiro de Sukavia é mais rápido,
+mas cruzar uma montanha gelada não tem graça.",
+105,46,"Quase ninguém usa o Desfiladeiro de Sukavia
+agora. A neve é simplesmente demais!",
+105,47,"Dizem que arrasaram Dipan em um só dia.
+Finalmente foram longe demais para os deuses. <PART>
+---
+Muitos refugiados devem aparecer por aqui,
+é melhor eu preparar a pousada!",
+105,48,"Vários refugiados virão de Dipan.
+Só espero que isso não gere mais conflitos.",
+105,49,"Bom te ver de novo. Obrigada pela outra vez.
+Entreguei a lembrança à família dele. <PART>
+---
+Eles perderam seu provedor, e agora a queda
+de Dipan pode ser um prelúdio de guerra...",
+105,50,"Mesmo que você tente chegar a Valhalla,
+quando se morre, acabou.",
+105,51,"Posso estar louco, mas a queda de Dipan
+é mesmo tão importante assim? <PART>
+---
+Um país sumir não significa que este
+deserto vá a algum lugar, significa?",
+105,52,"Todos deviam pensar menos em Dipan e mais
+em juntar comida e varrer areia. <PART>
+---
+As pessoas precisam cuidar da própria vida
+antes de se preocupar com a dos outros.",
+105,53,"Crell Monferaigne a leste, Villnore
+a oeste e Artolia ao sul... <PART>
+---
+Esta cidade ocupa um território estratégico,
+mas, ironicamente, é ignorada por todos.",
+105,54,"Quem perderia tempo lutando contra um país
+que um dia será conquistado pela areia?",
+105,55,"Desde que não haja guerras por aqui,
+que importa quais países são destruídos? <PART>
+---
+Acha que sou frio? É natural que cada um
+cuide de si primeiro. Não acha?",
+105,56,"O que acontecer com Dipan não faz diferença
+na nossa vida, nem para a areia.",
 105,3,Pousada,not displayed by the event script
 105,4,Casa,not displayed by the event script
 105,5,Kalstad,not displayed by the event script
 105,6,Saída,not displayed by the event script
-105,7,,
+105,7,Sair de Kalstad?,
 105,8,Sim,not displayed by the event script
 105,9,Não,not displayed by the event script
-105,26,,
-105,29,,
-105,30,,
-105,31,,
-105,32,,
-105,33,,
-105,38,,
+105,26,Adquirido <PART> Talismã,
+105,29,Adquirido <PART> Talismã Infalível,
+105,30,Adquirido <PART> Talismã,
+105,31,Entregar o talismã?,
+105,32,Sim,
+105,33,Não,
+105,38,Adquirido <PART> Ovo Dourado,
 105,57,,
 105,2800,Habitante,not displayed by the event script
 105,2801,Aventureira,not displayed by the event script

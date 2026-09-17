@@ -1,11 +1,27 @@
 resource,message_id,translated,notes
-1167,8,,
-1167,11,,
-1167,10,,
+1167,8,"Quer dar uma olhada?
+Tenho umas belezinhas!",
+1167,11,"Vou aguardar notícias suas!
+Tenha cuidado por aí!",
+1167,10,"Vocês duas não são einherjar, são!? Uau!
+Chegaram até aqui sozinhas, foi? <PART>
+---
+Calma, não quero confusão. Só vim
+ver qual era todo esse alvoroço. <PART>
+---
+Sou o tipo de sujeito que corre riscos.
+Dizem para eu ficar longe de einherjar. <PART>
+---
+Como veem, eu era mascate em Midgard.
+Meu filho deve tocar o negócio agora. <PART>
+---
+O que me dizem? Vão dar uma olhada?
+Aceitamos OTH com o maior prazer!",
 1167,2,Asgard,not displayed by the event script
-1167,3,,
+1167,3,"Sair de Asgard?
+",
 1167,4,Sim,not displayed by the event script
 1167,5,Não,not displayed by the event script
-1167,6,,
+1167,6,Mapa do Mundo,
 1167,12,,
 1167,13,Mercador,not displayed by the event script

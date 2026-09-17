@@ -1,8 +1,44 @@
 resource,message_id,translated,notes
-10,1,,
-10,0,,
-10,2,,
-10,3,,
+10,1,"<8084:01>Ativar a varredura progressiva?
+<8099:08>Sim (16:9)  <8099:07>Sim (4:3)  <8099:06>Não
+<0065>
+<808A:CDCC4C3FCDCC4C3F>Cabo AV Componente (para PlayStation<0066>2) e televisão
+compatível (525p) são necessários para a varredura progressiva.
+<0065>
+<8088:04>Se a imagem progressiva não aparecer em 10 segundos,
+você retornará automaticamente a este menu.
+ 
+Pressione <8099:08> para ativar o modo widescreen.
+Configure sua televisão para o modo de exibição adequado.
+Consulte o manual de instruções da sua televisão para obter mais detalhes.
+",
+10,0,"<8084:01>Ativar a varredura progressiva?
+<8099:08>Sim (16:9)  <8099:07>Sim (4:3)  <8099:06>Não
+<0065>
+<808A:CDCC4C3FCDCC4C3F>Cabo AV Componente (para PlayStation<0066>2) e televisão
+compatível (525p) são necessários para a varredura progressiva.
+<0065>
+<8088:04>Se a imagem progressiva não aparecer em 10 segundos,
+você retornará automaticamente a este menu.
+ 
+Pressione <8099:08> para ativar o modo widescreen.
+Configure sua televisão para o modo de exibição adequado.
+Consulte o manual de instruções da sua televisão para obter mais detalhes.
+",
+10,2,"<8084:01>Varredura progressiva (16:9) ativada.
+Continuar o jogo neste modo de exibição?
+<8099:21>Sim <8099:22>Não
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Você retornará ao menu se não houver
+resposta em 10 segundos.
+",
+10,3,"<8084:01>Exibição progressiva (4:3) definida.
+Continuar o jogo neste modo de exibição?
+<8099:21>Sim <8099:22>Não
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Você retornará ao menu se não houver
+resposta em 10 segundos.
+",
 10,4,"<8084:01>Nenhum cartão de memória (8MB)(para PlayStation<0066>2) inserido
 no slot 1 ou no slot 2.
 Valkyrie Profile<0066>2 requer <8094:00><CONT> KB de espaço livre para salvar.
@@ -31,8 +67,21 @@ do slot <8094:01><CONT>.",
 <808A:CDCC4C3FCDCC4C3F><8088:04>Pressione <8099:08> para ativar o modo widescreen.
 Configure sua televisão para o modo de exibição adequado.
 Consulte o manual de instruções da sua televisão para obter mais detalhes.",
-10,11,,
-10,90,,
+10,11,"<8084:01>Ativar o modo 1080i.
+Este modo só é compatível com televisões de alta
+definição que suportam o modo de exibição 1080i.
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Este modo não é suportado.
+Continue o jogo por sua conta e risco.<8089><808B>
+ 
+Continuar o jogo?
+<8099:21>Sim <8099:22>Não
+",
+10,90,"<8084:01>Controle analógico DUALSHOCK<0066>2 não detectado.
+Insira o controle analógico DUALSHOCK<0066>2
+na entrada de controle 1.
+ 
+Pressione <8099:21> para continuar.",
 10,100,Sim,
 10,101,Não,
 10,102,Pular esta sequência?,

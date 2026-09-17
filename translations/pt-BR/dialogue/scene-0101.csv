@@ -8,9 +8,10 @@ Mês X, Dia O
 ...os caras não podem ser contidos.
 As baixas são...não sei o que...",
 101,4,"Parece ser uma página de diário, mas está ilegível em alguns pontos.",
-101,391,,
-101,392,,
-101,393,,
+101,391,Adquirido <PART> OTH,
+101,392,Perdido <PART> OTH,
+101,393,"Dinheiro
+<PART> OUT",
 101,2503,"Ei, vamos lá. Você devia treinar
 no seu tempo livre! <PART>
 ---

@@ -57,7 +57,7 @@ mas não contaria com isso.",
 uma xícara de chá de camomila resolve.",
 89,34,"Flores acalmam a alma atribulada.
 Gostaria de uma?",
-89,38,,
+89,38,"Ah, então tá...",
 89,39,"Não acredito... Dipan...
 Um boletim foi posto no castelo...",
 89,40,"Os rumores eram verdade, Dipan está...
@@ -69,7 +69,11 @@ Viram fumaça subindo na direção de
 Dipan pelo telescópio.",
 89,42,"Que país teria a audácia de atacar
 uma superpotência como Dipan?",
-89,43,,
+89,43,"Rumores de que Dipan conduzia pesquisas
+suspeitas já circulavam há um tempo. <PART>
+---
+Alguns achavam que Dipan se preparava
+para a guerra. Parece que estavam certos.",
 89,44,"Suspeito que este ataque a Dipan foi em resposta
 às pesquisas suspeitas deles.",
 89,45,"Meu pai foi convocado ao castelo de repente,
@@ -200,21 +204,21 @@ precisar de flores!",
 89,83,Adquirido <PART> Sapatos Mastigados,
 89,85,Adquirido <PART> Pano Sórdido,
 89,87,Adquirido <PART> Fezes de Cachorro,
-89,90,,
-89,93,,
-89,94,,
-89,95,,
-89,96,,
-89,99,,
-89,103,,
-89,104,,
-89,105,,
-89,108,,
-89,109,,
-89,111,,
-89,112,,
-89,114,,
-89,115,,
+89,90,Adquirido <PART> Anel de Salomão,
+89,93,Dar costelas?,
+89,94,Sim.,
+89,95,Não.,
+89,96,Adquirido <PART> Costeletas de Carne,
+89,99,Adquirido <PART> Costeletas de Carne,
+89,103,Adquirido <PART> Anel de Salomão,
+89,104,Adquirido <PART> Florzinha,
+89,105,Adquirido <PART> Florzinha,
+89,108,Adquirido <PART> Lílica,
+89,109,Adquirido <PART> Lílica,
+89,111,Adquirido <PART> Lírio Lamentoso,
+89,112,Adquirido <PART> Lírio Lamentoso,
+89,114,Adquirido <PART> Gladiolo,
+89,115,Adquirido <PART> Gladiolo,
 89,2488,,
 89,2879,Garota,not displayed by the event script
 89,2880,Garoto,not displayed by the event script

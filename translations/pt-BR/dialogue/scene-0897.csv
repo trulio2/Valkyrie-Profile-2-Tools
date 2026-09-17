@@ -1,6 +1,7 @@
 resource,message_id,translated,notes
-897,1,,
-897,2,,
+897,1,Cavernas do Desfiladeiro,
+897,2,"Sair das Cavernas do Desfiladeiro?
+(As pedras de selo voltam aos lugares originais.)",
 897,3,Sim,
 897,4,Não,
-897,17,,
+897,17,Cavernas do Desfiladeiro,

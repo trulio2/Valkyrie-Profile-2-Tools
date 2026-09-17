@@ -1,15 +1,35 @@
 resource,message_id,translated,notes
-403,2,,
-403,4,,
-403,6,,
-403,5,,
-403,7,,
-403,3,,
+403,2,"Não pode ser! É mesmo a senhora, Princesa?
+Esteve viva esse tempo todo? <PART>
+---
+Não me importo se estou sonhando <PART> ---- <PART> por favor,
+eu imploro, vá até o rei! <PART>
+---
+Ele foi levado por uma Donzela de Batalha vestida
+de negro. Querem executá-lo! <PART>
+---
+Tenho vergonha, mas minha perna está esmagada
+e não posso me mover. É o mínimo que posso fazer...",
+403,4,"Se a senhora é mesmo a Princesa Alicia,
+precisa ir até o Rei Barbarossa!",
+403,6,"Princesa Alicia! O rei...!
+Ah, Alicia... <PART>
+---
+Receio... que seja tarde demais para
+o rei...",
+403,5,"Pela minha vida... aconteça o que acontecer comigo,
+nunca perdoarei aquela Donzela de Batalha!",
+403,7,"Dizem para eu fugir,
+mas estou preocupado com o papai... <PART>
+---
+Por que ele não se mexe?",
+403,3,Adquirido <PART> Experiência dos Especialístas,
 403,8,Saída,not displayed by the event script
-403,9,,
+403,9,"Sair do Castelo de Dipan?
+(As pedras de selo retornam aos seus lugares originais.)",
 403,10,Sim,not displayed by the event script
 403,11,Não,not displayed by the event script
 403,12,Castelo de Dipan,not displayed by the event script
-403,35,,
+403,35,Castelo de Dipan,
 403,2754,Soldado de Dipan,not displayed by the event script
 403,2755,Menino,not displayed by the event script

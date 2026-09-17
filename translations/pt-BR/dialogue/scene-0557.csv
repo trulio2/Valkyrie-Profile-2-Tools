@@ -113,9 +113,10 @@ dar para a jornada. <PART>
 ---
 Terei alguma coisa da próxima vez
 que nos encontrarmos.",
-557,387,,
-557,388,,
-557,389,,
+557,387,Adquirido <PART> OTH,
+557,388,Perdido <PART> OTH,
+557,389,"Dinheiro
+ <PART> OTH",
 557,392,Floresta Antiga,not displayed by the event script
 557,393,Adquirido <PART> Gema Prisma,
 557,394,Adquirido <PART> Tintura da Deusa,

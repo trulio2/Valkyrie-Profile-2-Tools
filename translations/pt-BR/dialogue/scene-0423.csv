@@ -1,5 +1,11 @@
 resource,message_id,translated,notes
-423,3,,
+423,3,"Esta é a entrada da floresta.
+Como voltamos para cá...? <PART>
+---
+Não podemos ferir nenhum elfo. <PART>
+---
+Vamos ter que prendê-los em cristais
+e passar sem que percebam.",
 423,13,"Está passando por maus bocados? <PART>
 ---
 A vida é feita de altos e baixos.
@@ -74,12 +80,14 @@ queria lhe dar quando a visse de novo. <PART>
 ---
 Está bem aqui... Hummm...
 Acho que perdi... Fica para a próxima!",
-423,381,,
-423,382,,
-423,383,,
+423,381,Adquirido <PART> OTH,
+423,382,Perdido <PART> OTH,
+423,383,"Dinheiro
+ <PART> OTH",
 423,1,Floresta dos Espíritos,not displayed by the event script
 423,2,Saída,not displayed by the event script
-423,4,,
+423,4,"Sair da Floresta dos Espíritos?
+(As pedras de selo retornam aos seus lugares originais.)",
 423,5,Sim,not displayed by the event script
 423,6,Não,not displayed by the event script
 423,386,Floresta dos Espíritos,

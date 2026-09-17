@@ -34,9 +34,10 @@ Aqueles escolhidos por ela caminham pelos céus como einherjar, soldados dos deu
 47,10,"<Teologia> <PART>
 ...Ao final da longa guerra, aquele que tomou o trono dos deuses foi o senhor dos Aesir, Odin. Mas a guerra destruiu tudo, não deixando nada para governar.
 Assim, Odin recriou a raça humana em Midgard, tornando-se, dessa forma, o pai de toda a existência.",
-47,347,,
-47,348,,
-47,349,,
+47,347,Adquirido <PART> OTH,
+47,348,Perdido <PART> OTH,
+47,349,"Dinheiro
+ <PART> OTH",
 47,2215,"Quais são seus planos? O que você quer fazer?
 Só você pode decidir isso, sabia?",
 47,2223,"Não tenho nada a dizer a você.

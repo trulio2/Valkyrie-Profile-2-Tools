@@ -1,11 +1,20 @@
 resource,message_id,translated,notes
-393,9,,
-393,2,,
-393,4,,
-393,10,,
-393,5,,
-393,11,,
-393,3,,
+393,9,"Por que o Rei Barbarossa teve de
+sofrer a ira dos deuses? <PART>
+---
+Os deuses não podiam ao menos ter
+um pouco de piedade da rainha?",
+393,2,"Foi tudo tão repentino... Dezenas de soldados
+dizimados por um único guerreiro solitário.",
+393,4,"Então o rei foi... executado...
+Acabou... para Dipan...",
+393,10,"Abandonados pelos deuses que veneramos.
+Quem somos nós para rogar agora?",
+393,5,"Centenas de anos erguendo nossa cultura,
+tudo perdido num piscar de olhos. Para quê?",
+393,11,"Diga, não é você... sim, a Princesa Alicia!
+Por favor, diga-nos... O que devemos fazer?",
+393,3,Descer,
 393,7,Falar,not displayed by the event script
 393,34,Castelo de Dipan,not displayed by the event script
 393,2752,Habitante,not displayed by the event script

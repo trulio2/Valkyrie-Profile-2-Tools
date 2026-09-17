@@ -1,49 +1,104 @@
 resource,message_id,translated,notes
-119,8,,
-119,9,,
-119,14,,
-119,15,,
-119,16,,
-119,17,,
-119,18,,
-119,19,,
-119,29,,
-119,22,,
-119,20,,
-119,21,,
-119,23,,
-119,26,,
-119,27,,
-119,28,,
-119,30,,
-119,31,,
-119,32,,
-119,33,,
-119,34,,
-119,35,,
-119,36,,
-119,37,,
-119,38,,
-119,39,,
-119,41,,
-119,42,,
-119,40,,
-119,43,,
-119,44,,
-119,45,,
-119,46,,
-119,47,,
-119,48,,
-119,49,,
-119,1,,
+119,8,"Não! Os deuses nos observam sempre...
+É pra gente não fazer coisas ruins.",
+119,9,"Acho que os deuses não vão me castigar
+só por faltar à capela às vezes.",
+119,14,"Os deuses sorriem para Crell Monferaigne.
+Um dia, governaremos o continente.",
+119,15,"Ando ouvindo muito sobre Dipan.
+Estão aprontando algo, pode acreditar.",
+119,16,"Dipan pode ser um grande país, mas os
+rumores recentes não são motivo de orgulho.",
+119,17,"Você vem hoje, e ponto final!
+Já faz quatro dias que você não reza. <PART>
+---
+Continue fugindo da capela assim, e os
+deuses vão acabar castigando você!",
+119,18,Vou levar você comigo de qualquer jeito!,
+119,19,"Quanto mais você fala assim comigo,
+menos vontade eu tenho de ir!",
+119,29,"O clérigo diz que a luz lançada
+sobre Dipan foi a ira dos deuses.",
+119,22,"Por que as batalhas continuam
+mesmo com a gente rezando todo dia?",
+119,20,"Ah, querido papai...
+Será que ele não volta da campanha? <PART>
+---
+Por que as batalhas continuam
+mesmo com a gente rezando todo dia?",
+119,21,"O papai é responsável por levar os
+ensinamentos dos deuses aos malfeitores. <PART>
+---
+Enquanto continuarmos rezando,
+as batalhas vão acabar, com certeza.",
+119,23,"Enquanto continuarmos rezando,
+as batalhas vão acabar, com certeza.",
+119,26,"Todos os gatos e cães estão escondidos.
+Alguma coisa apavorou os bichos!",
+119,27,"Antes de os cães e gatos fugirem,
+uma luz brilhou no céu. Foi surreal.",
+119,28,"O papai voltou da campanha, mas
+foi direto de volta pro castelo. <PART>
+---
+Ouvi dizer que algo aconteceu em Dipan...
+Será que tem algo a ver com isso?",
+119,30,"Nosso país está em alerta temporário.
+Circulando. Nada de vadiagem.",
+119,31,"Como eu suspeitava, só um povo piedoso
+e justo é digno de governar Midgard. <PART>
+---
+Crell Monferaigne jamais faria
+o que Dipan fez.",
+119,32,"É natural que Dipan tenha caído.
+Eles se rebelaram contra os deuses!",
+119,33,A ira dos deuses esmagou Dipan.,
+119,34,Castigo é o que os blasfemos merecem!,
+119,35,"Os deuses nos observam o tempo todo.
+Acho que Dipan se esqueceu disso.",
+119,36,"Ouvi dizer que os Três Magos viraram
+monstros na hora das execuções. <PART>
+---
+Então foi assim que acabou a rebelião divina?
+Podem ser magos, mas é patético.",
+119,37,"Nossos devotos compatriotas veneram os deuses.
+Jamais teríamos o destino de Dipan.",
+119,38,Por quê? Tinha gente má lá?,
+119,39,"Ei, mana, escuta só!
+Me inscrevi nos cavaleiros mirins!",
+119,41,"Vou destruir qualquer um que desafie nossos
+deuses ou adore outros!",
+119,42,"Vou destruir todos aqueles
+que desafiarem nossos deuses!",
+119,40,Que ótimo.,
+119,43,"É, que ótimo, hein.",
+119,44,"As coisas vão ferver por aqui!
+A era de ouro de Crell Monferaigne chegou!",
+119,45,"Villnore e Artolia não são páreo para nós.
+Só a nós o verdadeiro caminho está aberto.",
+119,46,"O que o rei de Dipan tinha em mente,
+tentando se rebelar contra os deuses? <PART>
+---
+Estava cego pela própria sede de poder?
+Seja qual for o motivo, é tolice.",
+119,47,"Só posso ter pena do povo de Dipan,
+amaldiçoado com um rei desses.",
+119,48,"Todos dizem que Dipan está sob ataque!
+Mas ninguém sabe quem está atacando.",
+119,49,"Deleitar-se na glória é pecado.
+Dipan foi punida pelos deuses.",
+119,1,Taberna,
 119,2,Casa,not displayed by the event script
 119,3,Armaria,not displayed by the event script
-119,6,,
+119,6,Crell Monferaigne <PART> Rua Principal,
 119,7,Saída,not displayed by the event script
 119,10,Sair de Crell Monferaigne?,not displayed by the event script
 119,11,Sim,not displayed by the event script
 119,12,Não,not displayed by the event script
-119,13,,
+119,13,"Viajantes, é? Já estiveram em Villnore?
+Como são as coisas por lá? <PART>
+---
+Villnore ficou poderosa com o
+comércio... Eles não são moleza!",
 119,630,Crell Monferaigne,not displayed by the event script
 119,2790,Garota,not displayed by the event script
 119,2791,Menino,not displayed by the event script

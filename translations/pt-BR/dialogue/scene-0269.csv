@@ -1,7 +1,8 @@
 resource,message_id,translated,notes
 269,1,Cavernas do Vulcão Surts,
 269,2,Saída,
-269,3,,
+269,3,"Sair do Vulcão Surts?
+(As pedras de selo retornam aos seus lugares originais.)",
 269,4,Sim,
 269,5,Não,
-269,57,,
+269,57,Cavernas do Vulcão Surts,

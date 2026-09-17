@@ -1,7 +1,13 @@
 resource,message_id,translated,notes
-395,1,,
-395,2,,
-395,3,,
+395,1,"Princesa Alicia! Sua Alteza sempre
+se preocupou tanto com a senhora. <PART>
+---
+Ela sempre dizia que fora um erro
+deixá-la partir, custasse o que custasse.",
+395,2,"A força militar sem igual de Dipan foi
+tão impotente assim contra os deuses?",
+395,3,"Princesa... Alicia...
+O que... aconteceu!?",
 395,762,Castelo de Dipan,not displayed by the event script
-395,2744,,
+395,2744,Adquirido <PART> Botas de Couro,
 395,2745,Soldado de Dipan,not displayed by the event script

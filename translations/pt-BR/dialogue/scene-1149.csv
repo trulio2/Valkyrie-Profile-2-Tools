@@ -1,12 +1,39 @@
 resource,message_id,translated,notes
 1149,150,,
-1149,159,,
-1149,160,,
-1149,161,,
-1149,162,,
-1149,163,,
-1149,164,,
-1149,165,,
+1149,159,"Esta terra é o lugar dos que se apartaram
+em razão de sua força imensa. <PART>
+---
+Você também foi expulsa
+do seu mundo?",
+1149,160,"Estou perplexa.
+Um poder igual ao... <PART>
+---
+Não, que supera o das Quatro Relíquias...
+Sinto um poder assim vindo de você. <PART>
+---
+Como isso é possível?",
+1149,161,"Eu sou a Ethereal Queen.
+Visitantes, digam-me seus nomes. <PART>
+---
+Se obedecerem, criarei um lugar
+para todos vocês nesta terra.",
+1149,162,"Enfim nos libertamos
+das mãos dos deuses. <PART>
+---
+Por mais superior que você seja,
+não precisamos de sua ajuda nem proteção.",
+1149,163,"Ousa me desafiar?
+Se é essa a sua escolha, que seja. <PART>
+---
+Contudo, já que escolheu este caminho,
+só terá a si mesma para culpar. <PART>
+---
+Consegue arcar com a sua escolha?",
+1149,164,Isto não pode ser...,
+1149,165,"O que fará com todo o poder que possui?
+Talvez você tenha o necessário... <PART>
+---
+para derrotar o Único...",
 1149,166,Portal Seráfico,not displayed by the event script
 1149,167,,
 1149,168,,

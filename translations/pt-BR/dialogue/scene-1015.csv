@@ -126,7 +126,7 @@ por esta área. <PART>
 1015,53,"Ainda não posso mostrar o que há adiante.
 Voltem quando estiverem mais perto da verdade! <PART>
 ---",
-1015,55,,
+1015,55,Podem ir! Voltem logo!,
 1015,136,"Baús Abertos <PART> %
  <PART> Mapa Explorado <PART> %
  <PART> Salvamentos <PART> Encontros <PART> Monstros Derrotados",
@@ -162,22 +162,27 @@ Voltem quando estiverem mais perto da verdade! <PART>
 1015,19,Quero enfrentá-lo!,not displayed by the event script
 1015,20,Me dê um tempo!,not displayed by the event script
 1015,22,Lutar?,not displayed by the event script
-1015,23,,
-1015,24,,
-1015,28,,
-1015,29,,
-1015,30,,
-1015,32,,
-1015,33,,
-1015,34,,
-1015,36,,
-1015,37,,
-1015,38,,
-1015,40,,
-1015,41,,
-1015,42,,
-1015,44,,
-1015,45,,
-1015,46,,
-1015,149,,
+1015,23,Sim,
+1015,24,Não,
+1015,28,"Lutar novamente?
+",
+1015,29,Manda ver!,
+1015,30,Já chega!,
+1015,32,"Enfrentar um oponente mais forte?
+",
+1015,33,Manda ver!,
+1015,34,Me dá um tempo!,
+1015,36,"Enfrentar um oponente mais forte?
+",
+1015,37,Manda ver!,
+1015,38,Me dá um tempo!,
+1015,40,"Enfrentar um oponente mais forte?
+",
+1015,41,Manda ver!,
+1015,42,Me dá um tempo!,
+1015,44,"Enfrentar um oponente mais forte?
+",
+1015,45,Manda ver!,
+1015,46,Me dá um tempo!,
+1015,149,Portal Seráfico,
 1015,150,Dirna Hamilton,not displayed by the event script

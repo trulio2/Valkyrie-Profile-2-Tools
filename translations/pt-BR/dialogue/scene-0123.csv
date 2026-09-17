@@ -1,36 +1,97 @@
 resource,message_id,translated,notes
-123,3,,
-123,4,,
+123,3,"Diziam por aí que uma garota estava escondida
+na propriedade fora da cidade. <PART>
+---
+Cada um tinha uma teoria <PART> ---- <PART> uns diziam que era
+a princesa de Dipan, tida como morta. <PART>
+---
+Mas acho que nunca saberemos, porque
+o lugar desabou por completo.",
+123,4,"Se era mesmo a princesa de Dipan,
+ela escolheu um ótimo esconderijo. <PART>
+---
+Quem jamais pensaria
+em procurar por ela aqui?",
 123,5,Parece com fome...,
 123,10,Coma bastante!,
 123,11,"Desculpe...
 Não tenho comida para você.",
-123,38,,
-123,14,,
-123,15,,
-123,16,,
-123,17,,
-123,19,,
-123,18,,
-123,20,,
-123,21,,
-123,22,,
-123,25,,
-123,31,,
-123,32,,
-123,34,,
+123,38,Obrigada. Vou fazer bom uso disto.,
+123,14,"Há um velho conto sobre um dragão que
+vivia no leste do continente. <PART>
+---
+O dragão odiava os humanos e dormia no fundo
+de seu palácio, guardando um tesouro.",
+123,15,"Você se surpreenderia com quantos
+contos antigos acabam sendo verdade. <PART>
+---
+Talvez esse também seja real.",
+123,16,"O céu relampejou por um segundo, e isso
+espantou até as pulgas do meu cão! <PART>
+---
+Ele se encolheu no canto, e agora não
+dá um passo pra fora de casa.",
+123,17,"O que foi aquilo, afinal? O povo está
+em polvorosa, e os bichos, apavorados!",
+123,19,"O rei de Dipan de fato pecou,
+mas não era também um grande líder? <PART>
+---
+A vida dele podia ter sido poupada. Fico
+pensando se os deuses conhecem a piedade.",
+123,18,"Até agora eram campanhas e escaramuças,
+mas sem Dipan a coisa vai escalar. <PART>
+---
+Para onde Crell Monferaigne olhará agora?
+Suponho que só os deuses saibam...",
+123,20,"Com Dipan destruída da noite pro dia,
+acho que os deuses existem mesmo. <PART>
+---
+Eu nunca acreditei muito nessas coisas,
+mas de agora em diante vou à capela!",
+123,21,"Eu só acreditava no que via
+com meus próprios olhos, <PART>
+---
+mas se os deuses são reais,
+vou ter que mudar meus costumes.",
+123,22,"Nosso cão vive escondendo coisas, o danado.
+Ele consegue umas coisas incríveis! <PART>
+---
+Mas ele não mostra nem pra nós, a família,
+a menos que ganhe um agrado. <PART>
+---
+Imagine então para estranhos!
+Ele tem que estar no clima.",
+123,25,Obrigada. Vou fazer bom uso disto.,
+123,31,"Au-au-au! Você entende as palavras
+que saem da minha boca? Sério, sério? <PART>
+---
+Sempre quis conversar com uma pessoa!
+Achei que podia ser interessante. <PART>
+---
+Deixe-me recompensar você, então.
+Já ouviu falar do Portal Seráfico? <PART>
+---
+É um mundo estranho que desafia
+completamente as leis do nosso. <PART>
+---
+Por isso, o que quer que aconteça lá
+não tem efeito algum neste mundo.",
+123,32,"Ah, é! Peguei isto outro dia.
+Vou deixar você ficar com meu precioso achado.",
+123,34,"Ninguém sabe do Portal Seráfico.
+Nem pros meus donos eu contei!",
 123,2,Casa,not displayed by the event script
 123,6,Dar costelas?,not displayed by the event script
 123,7,Sim,not displayed by the event script
 123,8,Não,not displayed by the event script
-123,9,,
-123,23,,
-123,24,,
-123,27,,
-123,33,,
-123,35,,
-123,36,,
-123,37,,
+123,9,Adquirido <PART> Costeletas,
+123,23,Crell Monferaigne <PART> Arredores orientais,
+123,24,Adquirido <PART> Cristal de Fulgor,
+123,27,Adquirido <PART> Anel de Salomão,
+123,33,Adquirido <PART> Tintura da Deusa,
+123,35,Adquirido <PART> Costeletas,
+123,36,Adquirido <PART> Anel de Salomão,
+123,37,Adquirido <PART> Tintura da Deusa,
 123,2943,Crell Monferaigne,not displayed by the event script
 123,2948,Habitante,not displayed by the event script
 123,2949,Matrona,not displayed by the event script

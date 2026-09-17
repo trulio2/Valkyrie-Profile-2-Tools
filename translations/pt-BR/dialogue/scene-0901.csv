@@ -1,8 +1,10 @@
 resource,message_id,translated,notes
-901,6,,
+901,6,"O anel deve estar no tronco de Yggdrasil.
+Vamos procurá-lo de novo mais tarde.",
 901,1,Saída,not displayed by the event script
 901,2,,
-901,3,,
+901,3,"Sair de Yggdrasil?
+(As pedras de selo voltam aos lugares originais.)",
 901,4,Sim,not displayed by the event script
 901,5,Não,not displayed by the event script
 901,8,,
