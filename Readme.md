@@ -18,19 +18,10 @@ The application never modifies a source disc image.
 
 ## Status
 
-### pt-BR
-
-Cutscenes: 100%\
-NPC Dialogues: 100%\
-Menus: 99%\
-Images: 10%
-
-### sv-SE
-
-Cutscenes: 100%\
-NPC Dialogues: 5%\
-Menus: 1%\
-Images: 0%
+| Language | Cutscenes | NPC Dialogues | Menus | Images |
+| -------- | --------- | ------------- | ----- | ------ |
+| pt-BR    | 100%      | 100%          | 99%   | 10%    |
+| sv-SE    | 100%      | 5%            | 1%    | 0%     |
 
 ## Requirements
 
