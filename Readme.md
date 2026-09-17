@@ -84,14 +84,14 @@ the optional Japanese reference, and language-pack usage.
 
 ### About the Game's Anti-Cheat
 
-99.9% of the translation we're making does not trigger the game's anti cheat functions, but the script to add offsets to how the game finds texts inside images in battle do get caught by the anticheat. So, this leaves us with 3 options:
+99.9% of the translations we're making does not trigger the game's anti cheat functions, but the script to add offsets to how the game finds texts inside images in battle do get caught by the anticheat. So, this leaves us with 3 options:
 
 1. Give up on translating texts inside battle images.
 2. Continue translating battle images, but make the texts in the translated images have identical positions and length,
    so changing offsets are not necessary.
 3. Remove the anticheat functions directly from the translated iso, so it can't trigger regardless of the changes we make.
 
-Options 3 is being used by default. The last step of the translation build patches the "disable-anti-cheat" directly the iso, so this new generated iso can have any offset changes or cheats enabled, and the anticheat will not trigger.
+Options 3 is being used by default. The last step of the translation build patches the "disable-anti-cheat" directly into the iso, so this new generated iso can have any offset changes or cheats enabled, and the anticheat will not trigger.
 
 ## Cheat Patcher
 
