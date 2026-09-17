@@ -16,6 +16,22 @@ The application never modifies a source disc image.
 
 ![](images/gui.jpg)
 
+## Status
+
+### pt-BR
+
+Cutscenes: 100%
+NPC Dialogues: 100%
+Menus: 99%
+Images: 10%
+
+### sv-SE
+
+Cutscenes: 100%
+NPC Dialogues: 5%
+Menus: 1%
+Images: 0%
+
 ## Requirements
 
 - A clean USA disc image (`SLUS_214.52`) for translation and cheats.
@@ -65,6 +81,17 @@ python vp2_translate.py build <usa-image.iso>
 Portuguese (`pt-BR`) is selected when no language is specified. See the
 [translator guide](docs/translator.md) for every command, output locations,
 the optional Japanese reference, and language-pack usage.
+
+### About the Game's Anti-Cheat
+
+99.9% of the translation we're making does not trigger the game's anti cheat functions, but the script to add offsets to how the game finds texts inside images in battle do get caught by the anticheat. So, this leaves us with 3 options:
+
+1. Give up on translating texts inside battle images.
+2. Continue translating battle images, but make the texts in the translated images have identical positions and length,
+   so changing offsets are not necessary.
+3. Remove the anticheat functions directly from the translated iso, so it can't trigger regardless of the changes we make.
+
+Options 3 is being used by default. The last step of the translation build patches the "disable-anti-cheat" directly the iso, so this new generated iso can have any offset changes or cheats enabled, and the anticheat will not trigger.
 
 ## Cheat Patcher
 
