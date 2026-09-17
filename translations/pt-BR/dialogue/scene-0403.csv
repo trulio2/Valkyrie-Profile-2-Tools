@@ -24,12 +24,12 @@ mas estou preocupado com o papai... <PART>
 ---
 Por que ele não se mexe?",
 403,3,Adquirido <PART> Experiência dos Especialístas,
-403,8,Saída,not displayed by the event script
+403,8,Saída,
 403,9,"Sair do Castelo de Dipan?
 (As pedras de selo retornam aos seus lugares originais.)",
-403,10,Sim,not displayed by the event script
-403,11,Não,not displayed by the event script
-403,12,Castelo de Dipan,not displayed by the event script
+403,10,Sim,
+403,11,Não,
+403,12,Castelo de Dipan,
 403,35,Castelo de Dipan,
-403,2754,Soldado de Dipan,not displayed by the event script
-403,2755,Menino,not displayed by the event script
+403,2754,Soldado de Dipan,
+403,2755,Menino,
