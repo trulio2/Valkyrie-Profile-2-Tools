@@ -366,7 +366,7 @@ Hrist => 1313 (and 1339 - Seraphic Gate)
 
 Brahms => 1313
 
-Lenneth => 1315 (and 1339 - Seraphic Gate)
+Lenneth => 1351 (and 1339 - Seraphic Gate)
 
 Silmeria => 1317 (and 1339 - Seraphic Gate)
 
