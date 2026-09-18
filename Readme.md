@@ -2,7 +2,7 @@
 
 Tools for _Valkyrie Profile 2: Silmeria_ on PlayStation 2. [Project Showcase](https://trulio2.github.io/Valkyrie-Profile-2-Tools/)
 
-The downloadable **ValkyrieProfile2-Tools** application contains three tools:
+The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases) **ValkyrieProfile2-Tools** application contains three tools:
 
 - **Translate** builds a translated copy of the game.
 - **Cheats** writes selected cheats into a copy of the game so they work
