@@ -146,6 +146,27 @@ Tower of Lezard Valeth 10 - After final Battle => scene-1323
 
 Tower of Lezard Valeth 11 - Rufus takes Gungnir, Arngrim takes the orb, Brahms ded => scene-1325
 
+### Seraphic Gate Cutscenes
+
+Gabriel Celeste => 1345\
+Odin => 1339\
+Lezard => 1341\
+Freya => 1343\
+Ethereal Queen => 1347
+
+Dogs
+
+Freaky Dog Alicia => 1359\
+Dog Rufus and Dog Alicia => 1361\
+Dog Arngrim => 1363\
+Dog Rufus Sniper => 1365\
+Dog Sovereign's Rite => 1367\
+Dog Odin and Dog Freya => 1369\
+Alicia got plumply => 1371\
+Freaky Dog Brahms => 1375\
+Alicia slide => 1377\
+Dog Lezard final cutscene => 1379
+
 ### Einherjar locations
 
 - Fallback at every weapon location: Jessica (her line and "joined the party" show when the party is full and a new einherjar cannot join)
