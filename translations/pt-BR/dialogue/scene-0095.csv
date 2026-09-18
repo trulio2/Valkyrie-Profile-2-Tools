@@ -56,8 +56,8 @@ Com esse tipo de poder na sua arma, não há nada a temer!",
  <PART> Joia Negra <PART> : Tesouro",
 95,28,"<Semente Tóxica>
  <PART> Flor Mimética <PART>: Parte Superior do Corpo",
-95,1,Sair,not displayed by the event script
-95,2,Falar,not displayed by the event script
+95,1,Sair,
+95,2,Falar,
 95,20,Ler,
 95,21,<Anotações do Lojista>,
 95,22,Chifre de Besouro,
@@ -66,7 +66,7 @@ Com esse tipo de poder na sua arma, não há nada a temer!",
 95,25,Ponta de Lança Afiada,
 95,26,Ruby Básico,
 95,27,Semente Tóxica,
-95,150,Villnore,not displayed by the event script
-95,2890,Habitante,not displayed by the event script
+95,150,,
+95,2890,Habitante,
 95,2891,Lojista,
-95,2892,Aventureiro,not displayed by the event script
+95,2892,Aventureiro,

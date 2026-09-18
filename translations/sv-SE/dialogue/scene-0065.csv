@@ -1,8 +1,26 @@
 resource,message_id,translated,notes
-65,2,,
-65,3,,
-65,4,,
-65,5,,
-65,1,,
-65,36,,
-65,70,,
+65,2,"Jag hörde att Dipan är ett riddarland, men magin här är också enastående. <PART>
+---
+Det kan jag tacka kung Barbarossa och de tre visarna som tjänar honom för. <PART>
+---
+Om de fortsätter utvecklas så här kommer de snart att nå ikapp till och med gudarna.",
+65,3,"Säkra gator, god mat och starkt vin <PART> ---- <PART>
+livet här kan verkligen rosta dina färdigheter. <PART>
+---
+Jag borde träna mot monster i morgon...
+Helst några som är obeväpnade. <PART>
+---
+Du hatar väl när de är beväpnade?
+Nåja, det hjälper att kunna slå dem i spillror...",
+65,4,"Vilken otur... jag kan inte ta mig ut ur Dipan.
+Båtarna verkar ha stoppats. <PART>
+---
+Nåja, att stanna i en stad och ta det lugnt en stund är inte så dumt ibland.",
+65,5,"Förresten... har du hört talas om det spridda poemet? <PART>
+---
+Jag hörde att om man samlar alla tre verserna får man något slags emblem, <PART>
+---
+men var verserna finns eller vad emblemet är har jag ingen aning om.",
+65,1,Utgång,
+65,36,Dipan,
+65,70,Äventyrare,

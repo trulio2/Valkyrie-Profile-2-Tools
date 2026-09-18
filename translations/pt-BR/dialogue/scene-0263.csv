@@ -3,7 +3,7 @@ resource,message_id,translated,notes
 263,6,"Com o <PART> Doador do Tempo Divino <PART> , você pode
 exceder o número predefinido de ataques. <PART>
 Atenção: o custo de AP dobra após o primeiro conjunto.",
-263,3,Avançar.,not displayed by the event script
-263,4,Voltar.,not displayed by the event script
-263,34,Templo de Audoula no Lago,not displayed by the event script
+263,3,Avançar.,
+263,4,Voltar.,
+263,34,Templo de Audoula no Lago,
 263,2774,Adquirido <PART> Malha Cristal,

@@ -44,7 +44,7 @@ Miau não tem nada, você tem?",
 Não tenho nenhum alimento para você.",
 37,42,Miau! Me ajudaaaa!,
 37,2,Capela,
-37,3,Casa,not displayed by the event script
+37,3,Casa,
 37,4,Casa,
 37,5,Solde <PART> Praça da Capela,
 37,11,Adquirido <PART> Frutos do mar,
@@ -54,8 +54,8 @@ Não tenho nenhum alimento para você.",
 37,18,Adquirido <PART> Pássaro Desafortunado,
 37,20,Adquirido <PART> Fezes de Gato,
 37,22,Alimentar com frutos do mar?,
-37,23,Sim.,not displayed by the event script
-37,24,Não.,not displayed by the event script
+37,23,Sim.,
+37,24,Não.,
 37,34,Alimentar com frutos do mar?,
 37,35,Sim.,
 37,36,Não.,
@@ -63,6 +63,6 @@ Não tenho nenhum alimento para você.",
 37,39,Adquirido <PART> Frutos do mar,
 37,44,Adquirido <PART> Anel de Salomão,
 37,45,Adquirido <PART> Anel de Salomão,
-37,384,Solde,not displayed by the event script
-37,2792,Matrona,not displayed by the event script
-37,2793,Gato,not displayed by the event script
+37,384,,
+37,2792,Matrona,
+37,2793,Gato,

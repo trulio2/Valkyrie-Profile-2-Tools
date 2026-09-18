@@ -7,14 +7,14 @@ será um prazer.",
 1191,300,A alma de um feiticeiro emana do cajado.,
 1191,304,"A materialização é impossível
 sem a Silmeria...",
-1191,1,Saída,not displayed by the event script
+1191,1,Saída,
 1191,2,Sair do Desfiladeiro de Sukavia?,
-1191,3,Sim,not displayed by the event script
-1191,4,Não,not displayed by the event script
-1191,5,Desfiladeiro de Sukavia,not displayed by the event script
-1191,301,Realizar a materialização?,not displayed by the event script
+1191,3,Sim,
+1191,4,Não,
+1191,5,Desfiladeiro de Sukavia,
+1191,301,Realizar a materialização?,
 1191,302,Sim,
 1191,303,Não,
 1191,305,Desfiladeiro de Sukavia,
-1191,432,Jessica,
-1191,462,Aegis,
+1191,432,,
+1191,462,,

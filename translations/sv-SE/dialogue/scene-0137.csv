@@ -1,19 +1,58 @@
 resource,message_id,translated,notes
-137,2,,
-137,3,,
-137,4,,
-137,5,,
-137,6,,
-137,7,,
-137,8,,
-137,9,,
-137,10,,
-137,11,,
-137,12,,
-137,13,,
-137,1,,
-137,14,,
-137,15,,
-137,91,,
-137,2807,,
-137,2808,,
+137,2,"Vilken söt ung dam! Se upp, det finns
+monster överallt här! <PART>
+---
+Det vimlar av monster i ruinerna
+söderut i våtmarkerna. <PART>
+---
+Se upp var du kliver <PART> ---- <PART> du vill verkligen inte
+möta Hel, underjordens drottning.",
+137,3,"Åskan slår ständigt ner i Crawsus
+skogsruiner. Alldeles för farligt för mig! <PART>
+---
+Nåja, det finns ett sätt att ta sig förbi...
+Åska slår bara ner på höga platser. <PART>
+---
+Om du håller dig låg klarar du dig kanske.
+Men tro inte att det är ofarligt!",
+137,4,"Jag hittade det här för ett tag sedan.
+Jag har ingen nytta av det... <PART>
+---
+Det är besvärligt att slänga det på mina ben,
+så kan du inte ta med det?",
+137,5,"Gudarna ser oss alltid,
+så glöm inte att be dina böner.",
+137,6,"Hmm... Har jag inte träffat dig
+någonstans förut? <PART>
+---
+Du var mycket yngre då, men jag är säker
+på att vi har mötts...",
+137,7,"Jag råkade vara i Dipan under prinsessans
+födelsedagsfest en gång. <PART>
+---
+En förtjusande liten flicka vinkade
+från balkongen...",
+137,8,"Vad är det för oväsen där ute?
+Har soldaterna återvänt från fälttåget?",
+137,9,"Det blixtrade till där ute vid fönstret.
+Vad var det...?",
+137,10,"Jag har aldrig blivit så chockad i hela mitt liv
+som när jag fick höra om Dipans fall.",
+137,11,"Alla pratar om att ett krig är på väg.
+Hoppas de låter de gamla vara i fred.",
+137,12,"Nu minns jag vem du liknar...
+Dipans prinsessa, som sägs ha dött! <PART>
+---
+Jag såg henne bara ett ögonblick, men
+du är henne upp i dagen!",
+137,13,"Bry dig inte om gubben som säger
+att du liknar prinsessan i Dipan. <PART>
+---
+Ursäkta hans ohövliga beteende.
+Det stackars olyckliga landet...",
+137,1,Utgång,
+137,14,Erhöll <PART> Trasig Stav,
+137,15,Erhöll <PART> Stridsklubbhuvud,
+137,91,Crell Monferaigne,
+137,2807,Gamling,
+137,2808,Matrona,

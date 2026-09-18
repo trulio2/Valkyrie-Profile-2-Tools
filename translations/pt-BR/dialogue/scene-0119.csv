@@ -87,20 +87,20 @@ Mas ninguém sabe quem está atacando.",
 119,49,"Deleitar-se na glória é pecado.
 Dipan foi punida pelos deuses.",
 119,1,Taberna,
-119,2,Casa,not displayed by the event script
-119,3,Armaria,not displayed by the event script
+119,2,Casa,
+119,3,Armaria,
 119,6,Crell Monferaigne <PART> Rua Principal,
-119,7,Saída,not displayed by the event script
-119,10,Sair de Crell Monferaigne?,not displayed by the event script
-119,11,Sim,not displayed by the event script
-119,12,Não,not displayed by the event script
+119,7,Saída,
+119,10,Sair de Crell Monferaigne?,
+119,11,Sim,
+119,12,Não,
 119,13,"Viajantes, é? Já estiveram em Villnore?
 Como são as coisas por lá? <PART>
 ---
 Villnore ficou poderosa com o
 comércio... Eles não são moleza!",
-119,630,Crell Monferaigne,not displayed by the event script
-119,2790,Garota,not displayed by the event script
-119,2791,Menino,not displayed by the event script
-119,2792,Habitante,not displayed by the event script
-119,2793,Soldado,not displayed by the event script
+119,630,,
+119,2790,Garota,
+119,2791,Menino,
+119,2792,Habitante,
+119,2793,Soldado,

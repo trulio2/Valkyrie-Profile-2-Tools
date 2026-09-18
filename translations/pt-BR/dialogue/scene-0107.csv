@@ -144,15 +144,15 @@ numa guerra, sabe como é? <PART>
 Só queria não ter nascido aqui.",
 107,51,"Estão contratando mercenários em Villnore.
 Quanto você acha que um mercenário ganha?",
-107,2,Casa,not displayed by the event script
+107,2,Casa,
 107,3,Casa,
 107,12,Entregar 10 OTH?,
-107,13,Sim,not displayed by the event script
-107,14,Não,not displayed by the event script
+107,13,Sim,
+107,14,Não,
 107,40,Adquirido <PART> Shamshir,
 107,43,Adquirido <PART> Chuva de Sol,
 107,45,Adquirido <PART> Solais Claiomh,
-107,108,Kalstad,not displayed by the event script
-107,2851,Habitante,not displayed by the event script
-107,2852,Menino,not displayed by the event script
-107,2853,Garota,not displayed by the event script
+107,108,,
+107,2851,Habitante,
+107,2852,Menino,
+107,2853,Garota,

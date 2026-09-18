@@ -111,15 +111,15 @@ Enfim, vai ficar bem, faça o que fizer!
 ...Ei, não me olhe assim!",
 47,2551,"Não preciso mais servir a você.
 Então, o que é que você quer?",
-47,1,Sair,not displayed by the event script
+47,1,Sair,
 47,8,Ler,
 47,11,<Teologia>,
 47,12,Sobre a Origem do Homem,
 47,13,Sobre as Valquírias,
-47,2562,Solde,not displayed by the event script
+47,2562,,
 47,2754,Adquirido <PART> Ovo Dourado,
-47,2755,Aventureira,not displayed by the event script
-47,2756,Habitante,not displayed by the event script
-47,2757,Garota,not displayed by the event script
-47,2779,Phyress,
-47,2787,Ehrde,
+47,2755,Aventureira,
+47,2756,Habitante,
+47,2757,Garota,
+47,2779,,
+47,2787,,

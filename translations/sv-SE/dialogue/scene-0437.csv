@@ -1,7 +1,13 @@
 resource,message_id,translated,notes
-437,2,,
-437,3,,
-437,4,,
-437,11,,
-437,12,,
-437,13,,
+437,2,"Kommer du ihåg den tjocka dimman på vägen hit? <PART>
+---
+Där finns ett illusionsfält för att
+hålla inkräktare borta. <PART>
+---
+Använd de vita blommorna som märke
+när du vill hitta hit igen.",
+437,3,Använd de vita blommorna som märke om du vill hit igen.,
+437,4,Tala,
+437,11,Andarnas skog,
+437,12,Erhöll <PART> Felfri Talisman,
+437,13,Roussalier,

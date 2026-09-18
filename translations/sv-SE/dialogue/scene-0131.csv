@@ -1,13 +1,68 @@
 resource,message_id,translated,notes
-131,3,,
-131,4,,
-131,5,,
-131,6,,
-131,7,,
-131,8,,
-131,12,,
-131,13,,
-131,1,,
-131,9,,
-131,63,,
-131,2803,,
+131,3,"Snälla, lyssna!
+Min forskning har upptäckt något nytt! <PART>
+---
+En del monster blir faktiskt
+starkare när de såras. <PART>
+---
+Särskilt drakar tappar förnuftet och
+rasar när deras horn bryts!",
+131,4,"Monster som blir starkare när de såras...
+Ännu en upptäckt!",
+131,5,"Lyssna! Jag har hittat en utmärkt
+stridstaktik i en av de gamla skrifterna! <PART>
+---
+När solen förseglar tre sidor av ett
+kraftfält förstärks den som står inuti. <PART>
+---
+Det är perfekt! Bortsett från en liten detalj <PART> ---- <PART>
+Om fältet bryts är det värdelöst. <PART>
+---
+Men man kan inte ta sig ut utan att bryta det.
+Dessutom vrängs tiden i fältet, <PART>
+---
+så man åldras snabbt och dör nästan på fläcken.
+Hmm... <PART>
+---
+Det är nog bäst att jag håller mig till attackmagi.",
+131,6,"Att snabba på tiden i ett visst rum...
+Om jag bara kunde specialisera det... <PART>
+---
+Ack! Något som tiden inte påverkar...
+Eller kanske...",
+131,7,"Röd är eld, blå är vatten, gul är åska, lila är jord.
+Den som vill ha allt förlorar allt. <PART>
+---
+De orden stod ristade i alvfolkets ruiner.
+Vad tror du att de betyder...?",
+131,8,"Djupt inne i Andarnas skog
+sägs regnbågsbron Bifrost ligga. <PART>
+---
+Bevakad av gudomliga alver är den den enda
+länken mellan gudarnas och människornas värld. <PART>
+---
+Bortom den finns källan till all visdom,
+toppen av det stora trädet Yggdrasil. <PART>
+---
+Om jag bara kunde lämna detta köttsfängelse
+skulle jag överskrida rummet och korsa Bifrost.",
+131,12,"<En äventyrares anteckningar> <PART>
+..den som sägs vara starkast av alla
+vandöda, och därför bär kungens namn, är
+vandödskungen Brahms.
+ <PART>
+---
+ <PART> <En äventyrares anteckningar> <PART>
+Han är en kung törstig efter strid som förblivit
+orädd i sina många drabbningar med
+Oden, asarnas herre. <PART>
+---
+ <PART> <En äventyrares anteckningar> <PART>
+Jag ska hämnas de vandöda
+för mina föräldrars död!",
+131,13,"Efter denna text...
+står det inget mer...",
+131,1,Utgång,
+131,9,Läsa,
+131,63,Crell Monferaigne,
+131,2803,Crellbo,

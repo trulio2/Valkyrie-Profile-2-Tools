@@ -95,19 +95,19 @@ Não tenho comida para você.",
 Como faço ele sorrir?",
 81,67,QUERO!,
 81,69,CHEGA!,
-81,1,Pousada,not displayed by the event script
-81,2,Casa,not displayed by the event script
-81,3,Saída,not displayed by the event script
-81,4,Sair de Coriander?,not displayed by the event script
-81,5,Sim,not displayed by the event script
-81,6,Não,not displayed by the event script
-81,15,Encontrei.,not displayed by the event script
-81,16,Não desta vez.,not displayed by the event script
+81,1,Pousada,
+81,2,Casa,
+81,3,Saída,
+81,4,Sair de Coriander?,
+81,5,Sim,
+81,6,Não,
+81,15,Encontrei.,
+81,16,Não desta vez.,
 81,19,Adquirido <PART> Geléia Real,
 81,27,Adquirido <PART> Ovo Dourado,
-81,32,Dar farelo de osso?,not displayed by the event script
-81,33,Sim.,not displayed by the event script
-81,34,Não.,not displayed by the event script
+81,32,Dar farelo de osso?,
+81,33,Sim.,
+81,34,Não.,
 81,35,Adquirido <PART> Ossada,
 81,38,Adquirido <PART> Ossada,
 81,43,Dar farelo de osso?,
@@ -124,9 +124,9 @@ Como faço ele sorrir?",
 81,65,Adquirido <PART> Anel de Salomão,
 81,66,Adquirido <PART> Anel de Salomão,
 81,68,Adquirido <PART> Anel de Salomão,
-81,2312,Coriander,not displayed by the event script
-81,2891,Garota,not displayed by the event script
-81,2892,Habitante,not displayed by the event script
-81,2893,Aventureira,not displayed by the event script
-81,2894,Galinha,not displayed by the event script
-81,2895,Cão,not displayed by the event script
+81,2312,,
+81,2891,Garota,
+81,2892,Habitante,
+81,2893,Aventureira,
+81,2894,Galinha,
+81,2895,Cão,

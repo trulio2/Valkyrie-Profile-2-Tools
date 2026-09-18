@@ -57,11 +57,11 @@ Isso é um negócio, sabiam!",
 Voltem quando tiverem o dinheiro!",
 63,63,"Receio que precisamos do pagamento total
 para alocar os quartos.",
-63,1,Sair,not displayed by the event script
-63,5,Falar,not displayed by the event script
+63,1,Sair,
+63,5,Falar,
 63,7,Verificar,
-63,31,Diária: <PART> OTH,not displayed by the event script
-63,32,Sim,not displayed by the event script
-63,33,Não,not displayed by the event script
-63,64,Dipan,not displayed by the event script
-63,65,Dono da Pousada,not displayed by the event script
+63,31,Diária: <PART> OTH,
+63,32,Sim,
+63,33,Não,
+63,64,,
+63,65,Dono da Pousada,

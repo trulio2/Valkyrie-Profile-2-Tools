@@ -259,7 +259,7 @@ pode aniquilar vários inimigos de uma vez.
 Mas os inimigos também podem usá-la. Ao ser
 atingido por uma Grande Magia, atente para o
 estado de quem está ao lado do alvo.",
-97,1,Sair,not displayed by the event script
+97,1,Sair,
 97,10,Verificar,
 97,11,Verificar,
 97,12,<Manual Tático>,
@@ -269,5 +269,5 @@ estado de quem está ao lado do alvo.",
 97,16,▪Desviar,
 97,21,▪Alterações de Estado,
 97,25,▪Lançando Feitiços,
-97,143,Villnore,not displayed by the event script
-97,2883,Habitante,not displayed by the event script
+97,143,,
+97,2883,Habitante,

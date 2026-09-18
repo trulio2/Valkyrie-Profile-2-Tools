@@ -126,13 +126,13 @@ O amor está em toda parte! <PART>
 ---
 Você devia achar alguém!
 Só não se perca no momento!",
-35,1,Sala de Espera,not displayed by the event script
-35,2,Solde <PART> Porto de Logun,not displayed by the event script
-35,34,Falar,not displayed by the event script
+35,1,Sala de Espera,
+35,2,Solde <PART> Porto de Logun,
+35,34,Falar,
 35,42,Adquirido <PART> Anel de Salomão,
-35,2739,Solde,not displayed by the event script
-35,2742,Garota,not displayed by the event script
-35,2743,Marinheiro,not displayed by the event script
-35,2744,Habitante,not displayed by the event script
-35,2745,Garoto,not displayed by the event script
-35,2746,Gato,not displayed by the event script
+35,2739,,
+35,2742,Garota,
+35,2743,Marinheiro,
+35,2744,Habitante,
+35,2745,Garoto,
+35,2746,Gato,

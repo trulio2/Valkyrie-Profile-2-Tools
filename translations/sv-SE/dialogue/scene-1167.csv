@@ -1,11 +1,26 @@
 resource,message_id,translated,notes
-1167,8,,
-1167,11,,
-1167,10,,
+1167,8,"Vill du ta en titt?
+Jag har några riktiga godbitar!",
+1167,11,"Jag ser fram emot nyheter om era äventyr!
+Var försiktiga där ute!",
+1167,10,"Ni två är inga einherjar, va!? Oj!
+Ända hit helt på egen hand? <PART>
+---
+Lugn, jag är ingen fiende. Jag kom bara
+för att se vad allt ståk handlade om. <PART>
+---
+Jag är en sån som gärna sticker näsan i roliga saker.
+De säger att jag inte är värdig einherjarna. <PART>
+---
+När jag levde var jag köpman, som ni ser.
+Nu för tiden borde min son ha tagit över. <PART>
+---
+Nå, vad sägs? Ska ni ta en titt?
+Jag tar gärna OTH!",
 1167,2,,
-1167,3,,
-1167,4,,
-1167,5,,
-1167,6,,
+1167,3,Lämna Asgård?,
+1167,4,Ja,
+1167,5,Nej,
+1167,6,Världskarta,
 1167,12,,
-1167,13,,
+1167,13,Köpman,

@@ -80,10 +80,10 @@ não tem efeito algum neste mundo.",
 Vou deixar você ficar com meu precioso achado.",
 123,34,"Ninguém sabe do Portal Seráfico.
 Nem pros meus donos eu contei!",
-123,2,Casa,not displayed by the event script
-123,6,Dar costelas?,not displayed by the event script
-123,7,Sim,not displayed by the event script
-123,8,Não,not displayed by the event script
+123,2,Casa,
+123,6,Dar costelas?,
+123,7,Sim,
+123,8,Não,
 123,9,Adquirido <PART> Costeletas,
 123,23,Crell Monferaigne <PART> Arredores orientais,
 123,24,Adquirido <PART> Cristal de Fulgor,
@@ -92,7 +92,7 @@ Nem pros meus donos eu contei!",
 123,35,Adquirido <PART> Costeletas,
 123,36,Adquirido <PART> Anel de Salomão,
 123,37,Adquirido <PART> Tintura da Deusa,
-123,2943,Crell Monferaigne,not displayed by the event script
-123,2948,Habitante,not displayed by the event script
-123,2949,Matrona,not displayed by the event script
-123,2950,Cão,not displayed by the event script
+123,2943,,
+123,2948,Habitante,
+123,2949,Matrona,
+123,2950,Cão,

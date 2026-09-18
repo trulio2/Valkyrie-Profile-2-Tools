@@ -116,8 +116,8 @@ parênteses após a quantidade de compra.
 
 Neste exemplo, 10 elixires podem ser
 feitos com os materiais vendidos.",
-43,1,Sair,not displayed by the event script
-43,10,Falar,not displayed by the event script
+43,1,Sair,
+43,10,Falar,
 43,14,Ler,
 43,19,<Notas do Comerciante>,
 43,20,Pedra do Mau Olhado,
@@ -136,6 +136,6 @@ feitos com os materiais vendidos.",
 43,40,Como posso ver os itens à venda?,
 43,41,Diga-me quais materiais eu preciso!,
 43,42,Faça meu item!,
-43,385,Solde,not displayed by the event script
+43,385,,
 43,2787,Comerciante,
-43,2788,Aventureira,not displayed by the event script
+43,2788,Aventureira,

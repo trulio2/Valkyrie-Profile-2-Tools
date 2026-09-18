@@ -1,5 +1,7 @@
 resource,message_id,translated,notes
-59,1,,
-59,2,,
-59,2740,,
-59,2741,,
+59,1,"Vad har du för ärenden här igen? <PART>
+---
+Slottets ingång är på framsidan.",
+59,2,Dipan <PART> Sidoporten,
+59,2740,Dipan,
+59,2741,Dipansk Soldat,

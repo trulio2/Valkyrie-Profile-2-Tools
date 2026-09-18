@@ -1,7 +1,10 @@
 resource,message_id,translated,notes
-357,2,,
-357,9,,
-357,10,,
-357,11,,
-357,12,,
-357,13,,
+357,2,"Det står ristat på väggen: <PART>
+---
+Svärdskrossaren, Bliden eller Vampyren...
+Bemästra en av deras krafter på denna plats...",
+357,9,Vördade Drakens sal,
+357,10,Erhöll <PART> 25000 OTH,
+357,11,Erhöll <PART> Flare Baselard,
+357,12,Erhöll <PART> Besvärjelsepotion,
+357,13,Erhöll <PART> Värdebenskydd,

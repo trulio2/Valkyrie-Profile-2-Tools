@@ -83,15 +83,15 @@ Acho que perdi... Fica para a próxima!",
 423,381,,
 423,382,,
 423,383,,
-423,1,Floresta dos Espíritos,not displayed by the event script
-423,2,Saída,not displayed by the event script
+423,1,Floresta dos Espíritos,
+423,2,Saída,
 423,4,"Sair da Floresta dos Espíritos?
 (As pedras de selo voltam aos lugares originais.)",
-423,5,Sim,not displayed by the event script
-423,6,Não,not displayed by the event script
+423,5,Sim,
+423,6,Não,
 423,386,Floresta dos Espíritos,
 423,387,Adquirido <PART> Elixir,
 423,388,Adquirido <PART> Elíxir Nobre,
 423,389,Adquirido <PART> Tintura da Deusa,
-423,390,Lwyn,
-423,395,Crescent,
+423,390,,
+423,395,,

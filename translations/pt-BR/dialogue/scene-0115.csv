@@ -40,10 +40,10 @@ Cuidado se for entrar naquele deserto. <PART>
 ---
 Não baixe a guarda nem por um segundo,
 ou será o seu fim. Cuide-se!",
-115,1,Sair,not displayed by the event script
+115,1,Sair,
 115,8,Leitura de sorte duvidosa 100 OTH,
 115,9,Manda ver.,
 115,10,Deixa pra lá.,
-115,71,Kalstad,not displayed by the event script
-115,2811,Habitante,not displayed by the event script
-115,2812,Aventureira,not displayed by the event script
+115,71,,
+115,2811,Habitante,
+115,2812,Aventureira,

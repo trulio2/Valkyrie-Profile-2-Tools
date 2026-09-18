@@ -1,9 +1,16 @@
 resource,message_id,translated,notes
-55,6,,
-55,7,,
-55,1,,
-55,2,,
-55,3,,
-55,4,,
-55,30,,
-55,31,,
+55,6,"Det här är ju löjligt!
+Priserna skjuter i höjden. I höjden! <PART>
+---
+Vinet från Crell Monferaigne
+har plötsligt dubblats i pris! <PART>
+---
+De mumlar något om båttrafiken...
+Har det hänt någon olycka eller?",
+55,7,Priserna på importerade varor är helt galna! Något måste ha hänt båtarna.,
+55,1,Hus,
+55,2,Hus,
+55,3,Kapell,
+55,4,Dipan <PART> Kapelltorget,
+55,30,Dipan,
+55,31,Dipanbo,

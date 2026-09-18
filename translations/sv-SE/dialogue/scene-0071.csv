@@ -1,9 +1,15 @@
 resource,message_id,translated,notes
-71,2,,
-71,3,,
-71,4,,
-71,5,,
-71,1,,
-71,28,,
-71,29,,
-71,30,,
+71,2,Skulle ni inte be en bön? Det lugnar själen.,
+71,3,Så länge vi ber kommer en tragedi som prinsessan Alicias aldrig att hända igen.,
+71,4,"Hon tjatar alltid på mig att jag ska be innan jag sover. <PART>
+---
+Mamma blev väldigt religiös efter att en demon besatt prinsessan här. <PART>
+---
+Prinsessan dog för några år sedan, men jag vet inte om besättningen var orsaken...",
+71,5,"Den avlidna prinsessan talade för sig själv när ingen var i närheten och sade konstiga saker... <PART>
+---
+Hur som helst hörde jag att det var något som inte stod rätt till med henne.",
+71,1,Utgång,
+71,28,Dipan,
+71,29,Flickans Mor,
+71,30,Flicka,

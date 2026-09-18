@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2026 Valkyrie Profile 2 Translation Tools contributors
 # SPDX-License-Identifier: GPL-3.0-only
 import csv
+import functools
 import re
 
 from . import einherjar_roster
@@ -8,6 +9,8 @@ from .paths import DATA_DIR
 
 STORY_EVENTS_PATH = DATA_DIR / "story-events.csv"
 DUPLICATE_LINES_PATH = DATA_DIR / "duplicate-lines.csv"
+UNUSED_LINES_PATH = DATA_DIR / "unused-lines.csv"
+UNUSED_MENU_LINES_PATH = DATA_DIR / "unused-menu-lines.csv"
 
 ITEM_LINE = re.compile(r"^Acquired <PART> (.+)$")
 
@@ -68,6 +71,89 @@ def load_duplicate_lines(path=None):
         table.setdefault(resource, set()).update(ids)
     return {resource: frozenset(ids) for resource, ids in table.items()}
 
+@functools.lru_cache(maxsize=8)
+def _unused_runs(source):
+    """``((resource, first_id, last_id, reclaim), ...)`` from *source*."""
+    runs = []
+    try:
+        with open(source, encoding="utf-8-sig", newline="") as handle:
+            for row in csv.DictReader(handle):
+                resource = (row.get("resource") or "").strip()
+                reclaim = (row.get("reclaim") or "").strip().lower() in (
+                    "yes", "true", "1")
+                try:
+                    first = int((row.get("first_id") or "").strip())
+                    last = int((row.get("last_id") or "").strip())
+                except ValueError:
+                    continue
+                if resource and first <= last:
+                    runs.append((resource, first, last, reclaim))
+    except (OSError, csv.Error, UnicodeDecodeError):
+        return ()
+    return tuple(runs)
+
+
+@functools.lru_cache(maxsize=8)
+def load_unused_lines(path=None):
+    """Return ``{resource: frozenset(message_id)}`` for the hidden records."""
+    table = {}
+    for resource, first, last, _reclaim in _unused_runs(
+            str(path or UNUSED_LINES_PATH)):
+        table.setdefault(resource, set()).update(
+            str(number) for number in range(first, last + 1))
+    return {resource: frozenset(ids) for resource, ids in table.items()}
+
+
+@functools.lru_cache(maxsize=8)
+def load_reclaimable_unused(path=None):
+    """Return ``{resource: frozenset(message_id)}`` a build may spend."""
+    table = {}
+    for resource, first, last, reclaim in _unused_runs(
+            str(path or UNUSED_LINES_PATH)):
+        if reclaim:
+            table.setdefault(resource, set()).update(
+                str(number) for number in range(first, last + 1))
+    return {resource: frozenset(ids) for resource, ids in table.items()}
+
+
+@functools.lru_cache(maxsize=8)
+def _unused_menu_runs(source):
+    """``((resource, first_id, last_id), ...)`` from *source*."""
+    runs = []
+    try:
+        with open(source, encoding="utf-8-sig", newline="") as handle:
+            for row in csv.DictReader(handle):
+                resource = (row.get("resource") or "").strip()
+                try:
+                    first = int((row.get("first_id") or "").strip())
+                    last = int((row.get("last_id") or "").strip())
+                except ValueError:
+                    continue
+                if resource and first <= last:
+                    runs.append((resource, first, last))
+    except (OSError, csv.Error, UnicodeDecodeError):
+        return ()
+    return tuple(runs)
+
+
+@functools.lru_cache(maxsize=8)
+def load_unused_menu_lines(path=None):
+    """Return ``{resource: frozenset(message_id)}`` for the hidden menu rows."""
+    table = {}
+    for resource, first, last in _unused_menu_runs(
+            str(path or UNUSED_MENU_LINES_PATH)):
+        table.setdefault(resource, set()).update(
+            str(number) for number in range(first, last + 1))
+    return {resource: frozenset(ids) for resource, ids in table.items()}
+
+
+def menu_hidden(resource, message_id, table=None):
+    """Whether one menu record is in the unused table."""
+    table = load_unused_menu_lines() if table is None else table
+    return str(message_id).strip() in table.get(str(resource).strip(),
+                                                 frozenset())
+
+
 def _known(table, role):
     return frozenset().union(*table[role].values()) if table[role] else frozenset()
 
@@ -119,25 +205,41 @@ def _duplicate_hidden(rows, duplicates=None):
             if row.get("message_id") in unused}
 
 
+def _unused_hidden(rows, unused=None):
+    table = load_unused_lines() if unused is None else unused
+    listed = table.get(_resource(rows), frozenset())
+    return {row["message_id"] for row in rows
+            if row.get("message_id") in listed}
+
+
+def _unused_reclaimable(rows, unused=None):
+    table = load_reclaimable_unused() if unused is None else unused
+    listed = table.get(_resource(rows), frozenset())
+    return {row["message_id"] for row in rows
+            if row.get("message_id") in listed}
+
+
 def hidden_message_ids(rows, table=None, story_table=None,
                        duplicates=None):
-    """Every record in ``rows`` this scene never draws, from both models."""
+    """Every record in ``rows`` this scene never draws, from every model."""
     hidden = einherjar_roster.hidden_message_ids(rows, table)
     hidden.update(_template_hidden(rows, story_table))
     hidden.update(_duplicate_hidden(rows, duplicates))
+    hidden.update(_unused_hidden(rows))
     return hidden
 
 
 
 def reclaimable_message_ids(rows, table=None, story_table=None):
-    return einherjar_roster.hidden_message_ids(rows, table) | _template_hidden(
-        rows, story_table)
+    return (einherjar_roster.hidden_message_ids(rows, table)
+            | _template_hidden(rows, story_table)
+            | _unused_reclaimable(rows))
 
 def suppressed_rows(rows, rosters=None, story_table=None):
     """The rows a build must not fill from another sheet's translation."""
     claimed = list(einherjar_roster.suppressed_rows(rows, rosters))
     seen = {id(row) for row in claimed}
-    hidden = _template_hidden(rows, story_table)
+    hidden = _template_hidden(rows, story_table) | _unused_hidden(rows)
     claimed.extend(row for row in rows
                    if row.get("message_id") in hidden and id(row) not in seen)
     return claimed

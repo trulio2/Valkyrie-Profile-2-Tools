@@ -1,8 +1,16 @@
 resource,message_id,translated,notes
-69,4,,
-69,5,,
-69,1,,
-69,2,,
-69,3,,
-69,36,,
-69,71,,
+69,4,"Har du sett gatlyktorna på vägarna?
+De lyser med magi. <PART>
+---
+Dipan har tre mäktiga trollkarlar
+som kallas de tre visarna. <PART>
+---
+Här i Dipan lever vi ett bekvämt liv tack vare de tre visarna.",
+69,5,"De tre visarna Walther och Gyne börjar bli till åren... <PART>
+---
+Men Dallas är ung och väldigt stilig! Fast nu får man sällan se honom.",
+69,1,Utgång,
+69,2,Andra våningen,
+69,3,Erhöll <PART> Union Plume,
+69,36,Dipan,
+69,71,Dipanbo,

@@ -1,0 +1,20 @@
+resource,first_id,last_id,reason
+642,0,5144,debug menu bank
+648,101,101,debug map label
+648,103,103,debug map label
+648,570,668,debug map labels
+648,670,712,debug map labels
+652,35,35,debug map label
+652,37,37,debug map label
+652,504,602,debug map labels
+652,604,646,debug map labels
+866,371,371,debug map label
+866,373,373,debug map label
+866,840,938,debug map labels
+866,940,982,debug map labels
+641,3,3,control-only template
+641,1035,1048,DUMMY placeholders
+644,985,998,DUMMY placeholders
+645,1028,1041,DUMMY placeholders
+1781,2006,2006,control-only template
+1781,2009,2017,control-only templates

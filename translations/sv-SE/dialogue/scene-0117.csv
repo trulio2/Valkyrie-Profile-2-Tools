@@ -1,12 +1,25 @@
 resource,message_id,translated,notes
-117,5,,
-117,6,,
-117,7,,
-117,8,,
-117,1,,
-117,2,,
-117,3,,
-117,4,,
-117,9,,
-117,66,,
-117,2806,,
+117,5,"Om du ska vidare är det bäst att du är försiktig.
+Crell Monferaignes trupper har varit här i närheten. <PART>
+---
+De sägs vara på övning, men det är
+klart att de spanar inför krig. <PART>
+---
+Knappt hade ryktet om Dipan nått dem förrän detta.
+Storämnen älskar att växa.",
+117,6,"Jag bryr mig inte om var länderna
+krigar, bara det inte sker här.",
+117,7,"För den som bringar allt till ett slut,
+öppnas de heliga portarna. <PART>
+---
+Det är ett gammalt ordspråk som gått i arv i generationer,
+men jag förstår det inte riktigt.",
+117,8,"Sand har vällt in igen...
+För några år sedan gick det ännu att bo här.",
+117,1,Utgång,
+117,2,Lämna Kalstad?,
+117,3,Ja,
+117,4,Nej,
+117,9,Kalstad <PART> Sahmaöknen,
+117,66,Kalstad,
+117,2806,Kalstadbo,

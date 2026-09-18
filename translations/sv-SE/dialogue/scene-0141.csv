@@ -1,11 +1,22 @@
 resource,message_id,translated,notes
-141,2,,
-141,3,,
-141,4,,
-141,5,,
-141,6,,
-141,7,,
-141,8,,
-141,1,,
-141,1601,,
-141,2741,,
+141,2,"Slottet har ödelagts av gudarnas sändebud.
+Snart går det samma väg för staden...",
+141,3,"Den kungliga underjordiska gången bör vara öppen.
+Alla vanliga medborgare, ta er till Solde nu! <PART>
+---
+Denna stad har väckt gudarnas vrede.
+Här finns ingen tid att förlora.",
+141,4,"Det finns inget mer för er här i Dipan nu.
+Våra trupper följer sin kung i graven. <PART>
+---
+Kungens order var att rädda folket,
+men var och en är fri att dö för sin kung.",
+141,5,Det har blivit... underligt tyst...,
+141,6,"Vad händer därinne...?
+Förbannat! Om benen bara bar...",
+141,7,"Även drottning Malabeth är borta...
+Dipan är... slut...",
+141,8,...Varför... varför blev det så här... Förbannat... jävlar...!,
+141,1,Dipan <PART> Sidoporten,
+141,1601,Dipan,
+141,2741,Dipansk Soldat,

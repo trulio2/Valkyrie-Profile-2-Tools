@@ -171,33 +171,33 @@ você está, mas ânimo!",
 você a comprou <PART> ---- <PART> confie em mim!",
 89,116,"Obrigada! Estou sempre aqui para quando
 precisar de flores!",
-89,1,Pousada,not displayed by the event script
-89,2,Casa,not displayed by the event script
+89,1,Pousada,
+89,2,Casa,
 89,3,Casa,
-89,5,Villnore,not displayed by the event script
-89,6,Saída,not displayed by the event script
-89,7,Sair de Villnore?,not displayed by the event script
-89,8,Sim,not displayed by the event script
-89,9,Não,not displayed by the event script
-89,10,Eu compro.,not displayed by the event script
-89,11,Adeus.,not displayed by the event script
-89,13,Flor pequena: 10 OTH,not displayed by the event script
-89,19,Ouvir,not displayed by the event script
-89,25,Fui lá.,not displayed by the event script
-89,26,Não fui.,not displayed by the event script
+89,5,,
+89,6,Saída,
+89,7,Sair de Villnore?,
+89,8,Sim,
+89,9,Não,
+89,10,Eu compro.,
+89,11,Adeus.,
+89,13,Flor pequena: 10 OTH,
+89,19,Ouvir,
+89,25,Fui lá.,
+89,26,Não fui.,
 89,28,Adquirido <PART> Cristal Prisma,
-89,35,Lírio: 10 OTH,not displayed by the event script
+89,35,Lírio: 10 OTH,
 89,36,Eu compro.,
 89,37,Adeus.,
-89,53,Lírio-do-Vale: 10 OTH,not displayed by the event script
+89,53,Lírio-do-Vale: 10 OTH,
 89,54,Eu compro.,
 89,55,Adeus.,
-89,57,Gladíolo: 10 OTH,not displayed by the event script
+89,57,Gladíolo: 10 OTH,
 89,58,Eu compro.,
 89,59,Adeus.,
-89,74,Dar costelas?,not displayed by the event script
-89,75,Sim.,not displayed by the event script
-89,76,Não.,not displayed by the event script
+89,74,Dar costelas?,
+89,75,Sim.,
+89,76,Não.,
 89,77,Adquirido <PART> Costeletas de Carne,
 89,79,Adquirido <PART> Costeletas de Carne,
 89,80,Adquirido <PART> Osso Desgastado,
@@ -220,9 +220,9 @@ precisar de flores!",
 89,114,Adquirido <PART> Gladiolo,
 89,115,Adquirido <PART> Gladiolo,
 89,2488,,
-89,2879,Garota,not displayed by the event script
-89,2880,Garoto,not displayed by the event script
-89,2881,Moça,not displayed by the event script
-89,2882,Cavalheiro,not displayed by the event script
-89,2883,Habitante,not displayed by the event script
-89,2884,Cachorro,not displayed by the event script
+89,2879,Garota,
+89,2880,Garoto,
+89,2881,Moça,
+89,2882,Cavalheiro,
+89,2883,Habitante,
+89,2884,Cachorro,

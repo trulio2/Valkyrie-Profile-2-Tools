@@ -1,12 +1,21 @@
 resource,message_id,translated,notes
-393,9,,
-393,2,,
-393,4,,
-393,10,,
-393,5,,
-393,11,,
-393,3,,
-393,7,,
-393,34,,
-393,2752,,
-393,2753,,
+393,9,"Varför måste kung Barbarossa
+drabbas av gudarnas vrede? <PART>
+---
+Kan gudarna inte ens visa
+drottningen lite barmhärtighet?",
+393,2,"Det hände på ett ögonblick.
+Dussintals soldater slogs ut av en enda krigare...",
+393,4,"Kungen... avrättades...
+Då... är Dipan förlorat...",
+393,10,"Vi är övergivna av de gudar vi bad till.
+Vem ska vi nu be till...?",
+393,5,"Många hundra år av storhet försvann på ett ögonblick...
+Vad har vi byggt allt detta för...?",
+393,11,"Prinsessan Alicia... är det ni?
+Vi... vad ska vi göra nu...?",
+393,3,Nedgång,
+393,7,Tala,
+393,34,Dipans slott,
+393,2752,Dipanbo,
+393,2753,Dipansk Soldat,

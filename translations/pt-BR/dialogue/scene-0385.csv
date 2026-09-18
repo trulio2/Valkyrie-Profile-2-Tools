@@ -1,8 +1,8 @@
 resource,message_id,translated,notes
 385,3,Uma presença mortal espreita além...,
 385,4,Verificar.,
-385,5,Sair.,not displayed by the event script
-385,11,Palácio do Dragão Venerado,not displayed by the event script
+385,5,Sair.,
+385,11,Palácio do Dragão Venerado,
 385,12,Adquirido <PART> Pedra Sol e Lua,
 385,13,Adquirido <PART> Ovo Dourado,
 385,14,Adquirido <PART> Armadura Dragão,

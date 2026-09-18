@@ -90,12 +90,12 @@ Isso é um negócio, sabiam!",
 Voltem quando tiverem o dinheiro!",
 109,2844,"Receio que precisamos do pagamento total
 para alocar os quartos.",
-109,1,Sair,not displayed by the event script
-109,2812,Diária: <PART> OTH,not displayed by the event script
-109,2813,Sim,not displayed by the event script
-109,2814,Não,not displayed by the event script
-109,2845,Kalstad,not displayed by the event script
-109,2857,Mercador,not displayed by the event script
-109,2858,Dono da Pousada,not displayed by the event script
-109,2859,Aventureira,not displayed by the event script
-109,2860,Habitante,not displayed by the event script
+109,1,Sair,
+109,2812,Diária: <PART> OTH,
+109,2813,Sim,
+109,2814,Não,
+109,2845,,
+109,2857,Mercador,
+109,2858,Dono da Pousada,
+109,2859,Aventureira,
+109,2860,Habitante,

@@ -1,18 +1,49 @@
 resource,message_id,translated,notes
-115,2,,
-115,3,,
-115,7,,
-115,11,,
-115,4,,
-115,5,,
-115,6,,
-115,12,,
-115,13,,
-115,14,,
-115,1,,
-115,8,,
-115,9,,
-115,10,,
-115,71,,
-115,2811,,
-115,2812,,
+115,2,"Oj, vilken märklig hand! Under alla mina år
+som spåman har jag aldrig sett maken! <PART>
+---
+Du förs med, maktlös, av strömmen,
+men flödet leder till din död... <PART>
+---
+Vänta! Jag ser en spricka i strömmen!
+Den kan förändra världens öde.",
+115,3,"Ditt öde kan vara grymt,
+men du får aldrig ge upp!",
+115,7,"Se din framtid! En gång, 100 OTH!
+Jag ansvarar inte för grova fel!",
+115,11,Det är den enda spådom jag kan ge just nu.,
+115,4,"Nåväl, vi kanske ses igen...",
+115,5,"Hmm... Jag förstår... Jaså...
+Oj, oj... Vem hade trott... <PART>
+---
+Du kan skiljas från dem som följer dig
+av egen vilja. <PART>
+---
+Om du sedan vill söka upp dem,
+res till många olika platser. <PART>
+---
+Du kan möta dem i tomma hus i städerna.
+...Det är min syn.",
+115,6,"Ursäkta, men jag spår inte gratis...",
+115,12,"Ursäkta, men jag har slutat spå.
+Jag ser bara sorgliga syner...",
+115,13,"Ni letar också efter skatter! Det kommer många
+hit <PART> ---- <PART> fred är dåliga nyheter för legosoldater. <PART>
+---
+Jag kom hit för att jag hört talas om
+ruinerna, men monstren är tuffa. <PART>
+---
+Särskilt den där konstiga insekten. När
+man tror att man fångat den... Man blir tokig!",
+115,14,"Hur som helst, en insekt. En jättestor sak!
+Akta dig om du ger dig in i öknen. <PART>
+---
+Sänk inte garden en sekund,
+för då är det slut. Var försiktig!",
+115,1,Utgång,
+115,8,Tveksam spådom 100 OTH,
+115,9,Spå mig.,
+115,10,Glöm det.,
+115,71,Kalstad,
+115,2811,Kalstadbo,
+115,2812,Äventyrerska,

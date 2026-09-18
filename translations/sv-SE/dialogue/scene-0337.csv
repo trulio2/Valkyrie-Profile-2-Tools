@@ -1,6 +1,9 @@
 resource,message_id,translated,notes
-337,5,,
-337,1,,
-337,3,,
-337,11,,
-337,14,,
+337,5,"Det står ristat på stenen: <PART>
+---
+Hugg statyn bakifrån.
+Men låt ingen se dig.",
+337,1,Erhöll <PART> 30000 OTH,
+337,3,Erhöll <PART> Halosten,
+337,11,Vördade Drakens sal,
+337,14,Erhöll <PART> Union Plume,

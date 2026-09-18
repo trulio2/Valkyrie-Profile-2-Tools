@@ -16,10 +16,10 @@ os portões sagrados se abrirão."" <PART>
 mas eu não a entendo muito bem.",
 117,8,"As areias subiram de novo...
 Há poucos anos, ainda dava pra viver aqui.",
-117,1,Saída,not displayed by the event script
+117,1,Saída,
 117,2,Sair de Kalstad?,
-117,3,Sim,not displayed by the event script
-117,4,Não,not displayed by the event script
+117,3,Sim,
+117,4,Não,
 117,9,Kalstad <PART> Deserto de Sahma,
-117,66,Kalstad,not displayed by the event script
-117,2806,Habitante,not displayed by the event script
+117,66,,
+117,2806,Habitante,

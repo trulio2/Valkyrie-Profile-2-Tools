@@ -535,7 +535,7 @@ pode aniquilar vários inimigos de uma vez.
 Mas os inimigos também podem usá-la. Ao ser
 atingido por uma Grande Magia, atente para o
 estado de quem está ao lado do alvo.",
-87,1,Sair,not displayed by the event script
+87,1,Sair,
 87,2,Ler,
 87,17,<Manual Tático>,
 87,18,▪Elementos,
@@ -550,9 +550,9 @@ estado de quem está ao lado do alvo.",
 87,2900,▪Desviar,
 87,2905,▪Condições de Status,
 87,2909,▪Lançamento de Feitiços,
-87,2911,Coriander,not displayed by the event script
+87,2911,,
 87,3028,Adquirido <PART> Experiência de Especialista,
 87,3029,Adquirido <PART> Lágrima de Ymir,
-87,3031,Jessica,
-87,3032,Richelle,
-87,3036,Sylphide,
+87,3031,,
+87,3032,,
+87,3036,,

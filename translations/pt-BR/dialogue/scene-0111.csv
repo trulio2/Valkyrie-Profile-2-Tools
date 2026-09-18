@@ -118,11 +118,11 @@ Bem-vinda à minha terra, Kalstad. <PART>
 ---
 Não há muito o que ver, mas fique
 o tempo que quiser.",
-111,1,Sair,not displayed by the event script
+111,1,Sair,
 111,2,Verificar,
-111,2609,Kalstad,not displayed by the event script
+111,2609,,
 111,2801,Adquirido <PART> Arcano do Sábio,
 111,2802,Adquirido <PART> Kraadmalha,
-111,2806,Fraudir,
-111,2811,Circe,
-111,2812,Rasheeka,
+111,2806,,
+111,2811,,
+111,2812,,

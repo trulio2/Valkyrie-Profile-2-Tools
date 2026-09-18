@@ -86,11 +86,11 @@ Isso é um negócio, sabiam!",
 Voltem quando tiverem o dinheiro!",
 41,2789,"Receio que precisamos do pagamento total
 para alocar os quartos.",
-41,1,Sair,not displayed by the event script
-41,5,Falar,not displayed by the event script
-41,2757,Diária: <PART> OTH,not displayed by the event script
-41,2758,Sim,not displayed by the event script
-41,2759,Não,not displayed by the event script
-41,2790,Solde,not displayed by the event script
-41,2791,Aventureira,not displayed by the event script
-41,2792,Dono da Pousada,not displayed by the event script
+41,1,Sair,
+41,5,Falar,
+41,2757,Diária: <PART> OTH,
+41,2758,Sim,
+41,2759,Não,
+41,2790,,
+41,2791,Aventureira,
+41,2792,Dono da Pousada,

@@ -44,12 +44,12 @@ Minha mãe não gostava da ideia naquela época,
 mas sorri quando me vê agora.",
 53,22,"A arte da espada é inestimável, mas, nestes tempos de paz,
 seria sensato dedicar-se aos estudos.",
-53,4,Casa,not displayed by the event script
+53,4,Casa,
 53,5,Taberna,
-53,6,Pousada,not displayed by the event script
-53,7,Armaria,not displayed by the event script
+53,6,Pousada,
+53,7,Armaria,
 53,8,Dipan <PART> Rua Merney,
-53,23,Dipan,not displayed by the event script
-53,24,Mãe do Garoto,not displayed by the event script
-53,25,Soldado de Dipan,not displayed by the event script
-53,26,Menino,not displayed by the event script
+53,23,,
+53,24,Mãe do Garoto,
+53,25,Soldado de Dipan,
+53,26,Menino,

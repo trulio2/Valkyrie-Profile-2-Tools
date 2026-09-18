@@ -198,7 +198,7 @@ pode aniquilar vários inimigos de uma vez.
 Mas os inimigos também podem usá-la. Ao ser
 atingido por uma Grande Magia, atente para o
 estado de quem está ao lado do alvo.",
-73,1,Sair,not displayed by the event script
+73,1,Sair,
 73,2,Ler,
 73,8,Ler,
 73,11,<Manual Tático>,
@@ -206,5 +206,5 @@ estado de quem está ao lado do alvo.",
 73,13,▪Desviar,
 73,14,▪Condições de Status,
 73,15,▪Lançamento de Feitiços,
-73,50,Dipan,not displayed by the event script
-73,84,Ancião,not displayed by the event script
+73,50,,
+73,84,Ancião,

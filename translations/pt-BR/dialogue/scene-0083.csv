@@ -175,15 +175,15 @@ Isso é um negócio, sabiam!",
 Voltem quando tiverem o dinheiro!",
 83,2838,"Receio que precisamos do pagamento total
 para alocar os quartos.",
-83,1,Sair,not displayed by the event script
-83,3,Falar,not displayed by the event script
-83,2806,Diária: <PART> OTH,not displayed by the event script
-83,2807,Sim,not displayed by the event script
-83,2808,Não,not displayed by the event script
-83,2839,Coriander,not displayed by the event script
+83,1,Sair,
+83,3,Falar,
+83,2806,Diária: <PART> OTH,
+83,2807,Sim,
+83,2808,Não,
+83,2839,,
 83,2956,Adquirido <PART> Pingente da Deusa,
 83,2957,Adquirido <PART> Gema da Terra,
-83,2958,Dono da Pousada,not displayed by the event script
-83,2975,Aaron,
-83,2976,Dyn,
-83,2978,Zunde,
+83,2958,Dono da Pousada,
+83,2975,,
+83,2976,,
+83,2978,,

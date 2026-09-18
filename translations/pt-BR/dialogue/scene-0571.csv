@@ -89,13 +89,13 @@ Duvido que lutemos juntos no futuro.",
 571,383,,
 571,384,,
 571,385,,
-571,4,"Sair do Chateau Obsession?
+571,4,"Sair da Mansão da Obsessão?
 (As pedras de selo voltam aos lugares originais.)",
-571,5,Sim,not displayed by the event script
-571,6,Não,not displayed by the event script
-571,7,Chateau Obsession,not displayed by the event script
-571,8,Saída,not displayed by the event script
-571,388,Chateau Obsession,
+571,5,Sim,
+571,6,Não,
+571,7,Mansão da Obsessão,
+571,8,Saída,
+571,388,Mansão da Obsessão,
 571,389,Adquirido <PART> Talismã Infalível,
-571,426,Alm,
-571,429,Woltar,
+571,426,,
+571,429,,

@@ -1,10 +1,27 @@
 resource,message_id,translated,notes
-77,3,,
-77,4,,
-77,6,,
-77,7,,
-77,1,,
-77,2,,
-77,5,,
-77,38,,
-77,72,,
+77,3,"Är ni resenärer? Är det sant att pirater anföll Solde-båtarna? <PART>
+---
+Slottet har inte gett något besked <PART> ---- <PART> och soldaterna vägrar prata om det!",
+77,4,"Livet har inte förändrats så mycket utan båtarna, men ändå... <PART>
+---
+Om Kalstads mattor blir svåra att få tag på blir det besvärligt.",
+77,6,"<Teologi> <PART>
+Börjans slut, all makt:
+Världsträdet
+
+Världsträdet Yggdrasil bär upp gudarnas,
+människornas och de dödas världar.
+När det vissnar förgås allt.
+När det blomstrar frodas allt. <PART>
+---
+ <PART> <Teologi> <PART>
+Men i människornas värld kan man inte se det.
+Trädet vaktas av gudomliga väsen, djupt inne
+i Andarnas skog, på en plats dit ingen
+människohand når.",
+77,7,Det är bara böcker om teologi...,
+77,1,Första våningen,
+77,2,Tala,
+77,5,Läsa,
+77,38,Dipan,
+77,72,Dipanbo,

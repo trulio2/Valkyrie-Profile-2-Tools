@@ -83,11 +83,11 @@ use para treinar. <PART>
 alguma coisa? <PART>
 ---
 Suma daqui!",
-101,1,Sair,not displayed by the event script
+101,1,Sair,
 101,2,Verificar,
 101,5,Adquirido <PART> Amuleto à Prova de Terra,
-101,2861,Villnore,not displayed by the event script
+101,2861,,
 101,2863,Adquirido <PART> Inteligência do Guerreiro,
 101,2864,Adquirido <PART> Experiência de Especialista,
-101,2875,Falx,
-101,2880,Adonis,
+101,2875,,
+101,2880,,

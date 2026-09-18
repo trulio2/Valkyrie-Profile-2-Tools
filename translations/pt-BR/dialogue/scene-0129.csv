@@ -27,7 +27,7 @@ Volte sempre!",
 129,13,"<Pedra do Relâmpago>
  <PART> Exército Esquelético <PART> : Corpo
  <PART> Concha Repugnante <PART> : Cabeça",
-129,1,Sair,not displayed by the event script
+129,1,Sair,
 129,5,Ler,
 129,6,<Anotações do Lojista>,
 129,7,Pena de Cauda Carregada,
@@ -36,5 +36,5 @@ Volte sempre!",
 129,10,Dente de Cordeiro,
 129,11,Escamas de Ghibli,
 129,12,Pedra do Relâmpago,
-129,68,Crell Monferaigne,not displayed by the event script
+129,68,,
 129,2808,Atendente de loja,

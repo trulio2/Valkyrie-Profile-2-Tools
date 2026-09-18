@@ -1,18 +1,47 @@
 resource,message_id,translated,notes
-45,2,,
-45,3,,
-45,5,,
-45,4,,
-45,6,,
-45,7,,
-45,8,,
-45,9,,
-45,10,,
-45,11,,
-45,12,,
-45,13,,
-45,1,,
-45,15,,
-45,354,,
-45,2757,,
-45,2758,,
+45,2,"Skeppen går inte till Dipan på ett tag...
+Det måste vara svårt för folket där också. <PART>
+---
+Men kung Barbarossa ordnar säkert upp det.",
+45,3,Kung Barbarossa sägs vara Dipans främste härskare genom tiderna.,
+45,5,"Jag ser på utrustningen att du är ny.
+Lyssna då på en proffs som mig... <PART>
+---
+Utanför staden möter du massor av monster och allehanda varelser. <PART>
+---
+Om du hittar något när du slåss med dem, varför inte testa och se hur det fungerar? <PART>
+---
+Du hittar säkert något användbart. Prova också att kombinera och blanda saker.",
+45,4,"Lite råd från en erfaren resenär, nybörjare:
+I ruinerna hittar du skattkistor, <PART>
+---
+men en del har fällor. Du öppnar och pilar flyger eller så exploderar de! <PART>
+---
+Det tar en stund innan de löser ut, så var lugn och du klarar dig. <PART>
+---
+Jag förstår att man vill behålla sin skatt,
+men den som lade dit fällorna måste vara galen!",
+45,6,Jag har fortfarande inte hört något från Dipan. Hoppas inget har hänt slottet.,
+45,7,Jag har rest hela vägen till Solde och kan inte ens ta mig till Dipan. Vilken otur.,
+45,8,"Jag seglade hit från Dipan nyligen.
+Jag anade aldrig att det var sista båten. <PART>
+---
+När jag tänker efter kändes luften kring
+Dipans slott underligt spänd. <PART>
+---
+Jag undrar om något hände därinne...
+eller om det värsta ännu väntar?",
+45,9,"Något hände i slottet, eller så ska något hända... Intressant.",
+45,10,Nära ögat! Om jag hade missat den sista båten hade jag varit i fara nu!,
+45,11,Hur kunde detta hända Dipan? Vad gjorde kung Barbarossa?,
+45,12,"Går båten inte ännu?
+Vadå? Är Dipan i ruiner? På riktigt? <PART>
+---
+Nej... ingen har sagt något till mig.
+När hände allt det här?",
+45,13,Dipan förintades på en enda natt. Jag... jag hade ingen aning.,
+45,1,Utgång,
+45,15,Erhöll <PART> Bourgogneflaska,
+45,354,Solde,
+45,2757,Stadsflicka,
+45,2758,Äventyrare,

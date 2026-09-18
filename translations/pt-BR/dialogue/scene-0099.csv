@@ -78,9 +78,9 @@ antes que mais alguém se machuque.",
 99,24,"Não sei dos planos militares de Villnore,
 mas se houver recrutamento, saberei.",
 99,27,"Eu não sei os planos militares de Villnore, mas se a inscrição começar, eu vou descobrir.",
-99,1,Sair,not displayed by the event script
-99,21,Ouvir,not displayed by the event script
-99,146,Villnore,not displayed by the event script
-99,2886,Ancião,not displayed by the event script
-99,2887,Mercador,not displayed by the event script
-99,2888,Habitante,not displayed by the event script
+99,1,Sair,
+99,21,Ouvir,
+99,146,,
+99,2886,Ancião,
+99,2887,Mercador,
+99,2888,Habitante,

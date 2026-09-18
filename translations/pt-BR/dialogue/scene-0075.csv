@@ -25,7 +25,7 @@ Guerra Longa. A Rainha Phyress a conduziu corajosamente
 as forças da irmã de sangue Celes recuam, perdendo-o
 braço no processo. O ferimento causado por
 A flecha de Phyress tirou a vida de Celes.",
-75,1,Sair,not displayed by the event script
+75,1,Sair,
 75,4,Ler,
-75,36,Dipan,not displayed by the event script
-75,70,Matrona,not displayed by the event script
+75,36,,
+75,70,Matrona,

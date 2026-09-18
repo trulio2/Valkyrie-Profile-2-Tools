@@ -224,6 +224,7 @@ def _menu_reference(
               "build can translate, so it has to be regenerated whenever the "
               "extractor learns to read a bank it could not read before")
 
+    hidden_menu = undrawn_records.load_unused_menu_lines()
     row_count = occurrence_count = 0
     for menu in range(1, 6):
         reference_rows = []
@@ -233,6 +234,9 @@ def _menu_reference(
             key=lambda item: item[0],
         )
         for _unit, keys in units:
+            if all(undrawn_records.menu_hidden(key[1], key[2], hidden_menu)
+                   for key in keys):
+                continue
             records = [rows[key] for key in keys]
             english = {menu_source_key(row.get("original_en")) for row in records}
             if len(english) != 1:

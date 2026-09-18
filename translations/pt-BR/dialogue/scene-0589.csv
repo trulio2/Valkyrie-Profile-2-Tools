@@ -95,13 +95,13 @@ e humanos vai mudar. Fique viva até lá.",
 589,383,,
 589,384,,
 589,385,,
-589,3,Mina de Turgen,not displayed by the event script
-589,5,Saída,not displayed by the event script
+589,3,Mina de Turgen,
+589,5,Saída,
 589,6,"Sair da Mina de Turgen?
 (As pedras de selo voltam aos lugares originais.)",
-589,7,Sim,not displayed by the event script
-589,8,Não,not displayed by the event script
+589,7,Sim,
+589,8,Não,
 589,388,Mina de Turgen,
 589,389,Adquirido <PART> Sobrecarga,
-589,422,Psoron,
-589,424,Farant,
+589,422,,
+589,424,,

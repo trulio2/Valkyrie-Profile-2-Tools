@@ -1,8 +1,31 @@
 resource,message_id,translated,notes
-75,2,,
-75,3,,
-75,5,,
-75,1,,
-75,4,,
-75,36,,
-75,70,,
+75,2,"Även om ungdomarna inte håller med, tycker jag att luften
+över hela landet blivit tyngre än förr. <PART>
+---
+Slottets portar har varit stängda på senare tid.
+När prinsessan levde kändes allt mycket festligare. <PART>
+---
+Även en stor kung kan nog inte komma över sorgen över sitt barns död, hur många år som än går...",
+75,3,Sedan prinsessan dog har drottning Malabeth inte visat sig särskilt ofta...,
+75,5,"<Dipans historia>
+ <PART>
+... Hela världen drogs in i kriget vid Camille,
+och prinsessan, krigaren Celes, blev
+en hjälte för många.
+Senare, i Ettårskriget, var det drottning
+Phyress som hyllades som hjältinna.
+Dessa två kvinnors bedrifter förde
+stor välstånd till Dipan. <PART>
+--- 
+ <PART> <Dipans historia>
+ <PART>
+Men krigaren Celes kom att
+leda fiendens trupper mot Dipan i Ettårskriget. 
+Drottning Phyress drev tappert
+sin syster Celes styrkor tillbaka och förlorade
+därvid sin ena arm. Skadan från
+Phyress pil sägs ha kostat Celes livet.",
+75,1,Utgång,
+75,4,Läsa,
+75,36,Dipan,
+75,70,Matrona,

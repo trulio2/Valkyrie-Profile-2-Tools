@@ -415,7 +415,7 @@ pode aniquilar vários inimigos de uma vez.
 Mas os inimigos também podem usá-la. Ao ser
 atingido por uma Grande Magia, atente para o
 estado de quem está ao lado do alvo.",
-49,1,Sair,not displayed by the event script
+49,1,Sair,
 49,2,Ler,
 49,8,<Manual Tático>,
 49,9,▪Condições de Status,
@@ -427,6 +427,6 @@ estado de quem está ao lado do alvo.",
 49,2766,▪Desviar,
 49,2771,▪Condições de Status,
 49,2775,▪Lançamento de Feitiços,
-49,2777,Solde,not displayed by the event script
+49,2777,,
 49,2894,Adquirido <PART> Tomo de Alquimia,
-49,2926,Aegis,
+49,2926,,

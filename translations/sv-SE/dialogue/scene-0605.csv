@@ -1,10 +1,12 @@
 resource,message_id,translated,notes
-605,4,,
-605,9,,
-605,8,,
-605,2,,
-605,3,,
-605,5,,
-605,6,,
-605,7,,
-605,10,,
+605,4,Vi måste vidare snabbt!,
+605,9,Vi måste hitta ringen nu...,
+605,8,"När timern längst ner till vänster når noll försvinner
+ Rufus själ och spelet är över.",
+605,2,Klyftgrottorna,
+605,3,Andarnas skog,
+605,5,"Lämna Klyftgrottorna?
+(Sigillstenarna återställs till sina platser.)",
+605,6,Ja,
+605,7,Nej,
+605,10,Klyftgrottorna,

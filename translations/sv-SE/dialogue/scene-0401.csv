@@ -1,16 +1,49 @@
 resource,message_id,translated,notes
-401,3,,
-401,4,,
-401,5,,
-401,6,,
-401,7,,
-401,8,,
-401,10,,
-401,12,,
-401,14,,
-401,15,,
-401,11,,
-401,13,,
-401,38,,
-401,2757,,
-401,2758,,
+401,3,"Det är verkligen ni... prinsessan Alicia...
+Jag förstår... Ni levde alltså... <PART>
+---
+Kungen måste ha blivit så glad
+att få se er en sista gång...",
+401,4,"Alicia...
+Ni har fått utstå så mycket... <PART>
+---
+Och nu, återseendet med er far...
+På detta sätt...",
+401,5,"Snälla, lev vidare tillsammans med drottning Malabeth.
+Ni är vårt enda hopp, prinsessan Alicia.",
+401,6,"Prinsessa, drottningen lever ännu!
+Dallas förde henne till ett hemligt rum. <PART>
+---
+Snälla, för ert folks skull, hitta ett sätt
+att leva vidare med drottning Malabeth! <PART>
+---
+Vi stannar här
+med kung Barbarossa.",
+401,7,"Prinsessa, detta är ingen plats
+för er att vara på nu. <PART>
+---
+Här miste kungen sitt liv,
+och många följde honom. <PART>
+---
+En plats med en så mörk historia
+är inte värdig er. <PART>
+---
+Snälla, gå framåt som Dipans
+sista hopp...",
+401,8,"Förlåt min djärvhet, men jag tänker
+se Dipans slut i kungens ställe.",
+401,10,"...Gardeskaptenen...
+han går till fadern...",
+401,12,Din lojalitet ska inte glömmas...,
+401,14,"Prinsessan Alicia!
+Drottning Malabeth, hon är... <PART>
+---
+Jaså...
+Då blir kungen i alla fall inte ensam...",
+401,15,"Hon stod inte ut med att vara den enda
+som överlevde... Så typiskt drottningen.",
+401,11,Erhöll <PART> Hauteclaire,
+401,13,Tala,
+401,38,Dipans slott,
+401,2757,Dipanbo,
+401,2758,Dipans Gardeskapten,

@@ -1,11 +1,26 @@
 resource,message_id,translated,notes
-57,1,,
-57,2,,
-57,3,,
-57,5,,
-57,6,,
-57,7,,
-57,4,,
-57,30,,
-57,31,,
-57,32,,
+57,1,"Detta område är stängt för allmänheten. <PART>
+---
+Om du har ärenden på slottet måste du ansöka
+officiellt och komma tillbaka på dagen.",
+57,2,"Snart måste vi avlösa vakterna
+vid bakre porten.",
+57,3,"Jag säger: vi äter något först!
+Vem bryr sig om vi är lite sena? <PART>
+---",
+57,5,"Precis tänka <PART> ---- <PART> ingen går genom bakporten,
+så vi kan ta en paus, eller hur?",
+57,6,"Förr fick till och med vanligt folk
+komma och gå fritt. <PART>
+---
+Sedan prinsessan Alicias död har
+kungens gemak varit stängda. <PART>
+---
+Ursäkta, jag borde inte prata så,
+men ni liknar henne så mycket...",
+57,7,"När jag ser er känns det som att
+samtala med en vuxen prinsessa...",
+57,4,Dipan <PART> Slottets Huvudport,
+57,30,Dipan,
+57,31,Dipansk Soldat,
+57,32,Dipansk Soldat,

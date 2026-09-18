@@ -87,9 +87,9 @@ continua existindo. <PART>
 ---
 Que o povo desta cidade espalhe
 o jeito de Kalstad pelo mundo!",
-113,1,Sair,not displayed by the event script
+113,1,Sair,
 113,2,Verificar,
 113,3,Adquirido <PART> Frasco Vagabundo,
-113,2610,Kalstad,not displayed by the event script
-113,2829,Sophalla,
-113,2831,Arcana,
+113,2610,,
+113,2829,,
+113,2831,,

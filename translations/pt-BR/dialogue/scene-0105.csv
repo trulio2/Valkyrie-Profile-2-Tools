@@ -123,13 +123,13 @@ Acha que sou frio? É natural que cada um
 cuide de si primeiro. Não acha?",
 105,56,"O que acontecer com Dipan não faz diferença
 na nossa vida, nem para a areia.",
-105,3,Pousada,not displayed by the event script
-105,4,Casa,not displayed by the event script
-105,5,Kalstad,not displayed by the event script
-105,6,Saída,not displayed by the event script
+105,3,Pousada,
+105,4,Casa,
+105,5,,
+105,6,Saída,
 105,7,Sair de Kalstad?,
-105,8,Sim,not displayed by the event script
-105,9,Não,not displayed by the event script
+105,8,Sim,
+105,9,Não,
 105,26,Adquirido <PART> Talismã,
 105,29,Adquirido <PART> Talismã Infalível,
 105,30,Adquirido <PART> Talismã,
@@ -138,5 +138,5 @@ na nossa vida, nem para a areia.",
 105,33,Não,
 105,38,Adquirido <PART> Ovo Dourado,
 105,57,,
-105,2800,Habitante,not displayed by the event script
-105,2801,Aventureira,not displayed by the event script
+105,2800,Habitante,
+105,2801,Aventureira,

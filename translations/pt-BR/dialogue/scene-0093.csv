@@ -68,11 +68,11 @@ Isso é um negócio, sabiam!",
 Voltem quando tiverem o dinheiro!",
 93,2895,"Receio que precisamos do pagamento total
 para alocar os quartos.",
-93,1,Sair,not displayed by the event script
-93,2863,Diária: <PART> OTH,not displayed by the event script
-93,2864,Sim,not displayed by the event script
-93,2865,Não,not displayed by the event script
-93,2896,Villnore,not displayed by the event script
-93,2897,Aventureira,not displayed by the event script
-93,2898,Dama,not displayed by the event script
-93,2899,Dono da Pousada,not displayed by the event script
+93,1,Sair,
+93,2863,Diária: <PART> OTH,
+93,2864,Sim,
+93,2865,Não,
+93,2896,,
+93,2897,Aventureira,
+93,2898,Dama,
+93,2899,Dono da Pousada,

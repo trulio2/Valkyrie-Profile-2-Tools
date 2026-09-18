@@ -79,7 +79,8 @@ def self_check(stream=None) -> int:
     for required in ("menu-layout.csv", "record-limits.csv",
                      "authored-marks.csv", "authored-glyphs.csv",
                      "einherjar-rosters.csv", "story-events.csv",
-                     "duplicate-lines.csv"):
+                     "duplicate-lines.csv", "unused-lines.csv",
+                     "unused-menu-lines.csv"):
         if required not in tables:
             problems.append(f"missing structural table: {required}")
     packs = _packs(PROJECT_ROOT)

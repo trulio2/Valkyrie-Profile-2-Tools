@@ -1,20 +1,55 @@
 resource,message_id,translated,notes
-265,66,,
-265,106,,
-265,146,,
-265,186,,
-265,226,,
-265,266,,
-265,354,,
-265,394,,
+265,66,"Monstren blir inte färre, varken nu eller då. <PART>
+---
+Jag trodde att jag förseglat de flesta
+av de större...",
+265,106,"Låt mig ta hand om småsakerna. <PART>
+---
+Något mycket större väntar
+på er.",
+265,146,"Du skrämde mig.
+Jag trodde det var ett monster. <PART>
+---
+Jag har kämpat för att försegla monster
+ett tag nu, men det tar aldrig slut... <PART>
+---
+Det finns en gräns för vad
+en ensam person kan göra.",
+265,186,"Du skrämde mig.
+Jag trodde verkligen det var ett monster. <PART>
+---
+Nej... jag menade inte att ni
+liknar monster, alltså.",
+265,226,"Det är okej att jaga monster,
+men att bli jagad är värre... <PART>
+---
+Det krävs förberedelser och mod
+och en massa annat.",
+265,266,"I strid gäller det att slå först,
+det vet jag. <PART>
+---
+Ändå hamnar jag ofta
+i underläge... <PART>
+---
+Hur är det med dig?
+Hur känns det att vänta? <PART>
+---",
+265,354,"Jag har något som kanske är till nytta.
+Ta det, snälla.",
+265,394,"Men monstren blir inte färre, varken nu eller då.
+Jag trodde att jag förseglat många... <PART>
+---
+Om mina vänner Dyn och Chrys var här
+skulle striden bli mycket lättare.",
 265,397,,
 265,398,,
 265,399,,
-265,3,,
-265,4,,
-265,5,,
-265,6,,
-265,7,,
-265,402,,
-265,403,,
-265,441,,
+265,3,Audoulas vattentempel,
+265,4,Utgång,
+265,5,"Lämna Audoulas vattentempel?
+(Sigillstenarna återställs till sina platser.)",
+265,6,Ja,
+265,7,Nej,
+265,402,Audoulas vattentempel,
+265,403,Erhöll <PART> Alkemiens Bok,
+265,441,Seluvia,

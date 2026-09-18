@@ -1,15 +1,35 @@
 resource,message_id,translated,notes
-403,2,,
-403,4,,
-403,6,,
-403,5,,
-403,7,,
-403,3,,
-403,8,,
-403,9,,
-403,10,,
-403,11,,
-403,12,,
+403,2,"Något sådant! Prinsessa, är det verkligen ni?
+Ni har varit vid liv hela tiden? <PART>
+---
+Jag bryr mig inte om jag drömmer <PART> ---- <PART> snälla,
+jag ber er, skynda till kungen! <PART>
+---
+Han togs av en stridsjungfru klädd
+i svart, de ska avrätta honom! <PART>
+---
+Jag skäms, men mitt ben krossades
+och jag kan inte röra mig, ta åtminstone detta...",
+403,4,"Om ni är prinsessan Alicia,
+skynda till kung Barbarossa!",
+403,6,"Prinsessan Alicia! Kungen...!
+Åh, Alicia... <PART>
+---
+Jag fruktar... att det är för sent för
+kungen...",
+403,5,"Fördömd... detta hat...
+även i döden glömmer jag aldrig den stridsjungfrun!",
+403,7,"De säger att jag ska fly,
+men jag är orolig för pappa... <PART>
+---
+Varför rör han sig inte?",
+403,3,Erhöll <PART> Expertens Erfarenhet,
+403,8,Utgång,
+403,9,"Lämna Dipans slott?
+(Sigillstenarna återställs till sina platser.)",
+403,10,Ja,
+403,11,Nej,
+403,12,Dipans slott,
 403,35,,
-403,2754,,
-403,2755,,
+403,2754,Soldat,
+403,2755,Pojke,
