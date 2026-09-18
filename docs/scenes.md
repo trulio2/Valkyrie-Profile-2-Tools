@@ -35,116 +35,116 @@ scene-{0265,0423,0557,0571,0589,1155,1159,1183}.csv
 
 ### Chapter 1 Cutscenes
 
-Solde 1 - Getting to Solde => scene-1197\
-Solde 2 - Rufus shows up => scene-1195\
-Solde 3 - Leaving Solde => scene-1197
+Solde 1 - Getting to Solde => 1197\
+Solde 2 - Rufus shows up => 1195\
+Solde 3 - Leaving Solde => 1197
 
-Lost Forest 1 - Before tutorial battle => scene-1217\
-Lost Forest 2 - After tutorial battle => scene-1217\
-Lost Forest 3 - Mithra joins => scene-1219
+Lost Forest 1 - Before tutorial battle => 1217\
+Lost Forest 2 - After tutorial battle => 1217\
+Lost Forest 3 - Mithra joins => 1219
 
-Royal Underground Path 1 - Einherjar => scene-1221\
-Royal Underground Path 2 - Dylan joins => scene-1223\
-Royal Underground Path 3 - Before boss battle => scene-1227\
-Royal Underground Path 4 - Getting to Dipan => scene-1201
+Royal Underground Path 1 - Einherjar => 1221\
+Royal Underground Path 2 - Dylan joins => 1223\
+Royal Underground Path 3 - Before boss battle => 1227\
+Royal Underground Path 4 - Getting to Dipan => 1201
 
 ### Chapter 2 Cutscenes
 
-Dipan Castle 1 - Entering the castle => scene-1229\
-Dipan Castle 2 - There are monsters down here => scene-1231\
-Dipan Castle 3 - Before boss battle => scene-1235\
-Dipan Castle 4 - Finding Dallas and Barbarossa => scene-1233\
-Dipan Castle 5 - Hrist shows up => scene-1237\
-Dipan Castle 6 - Lezard saves the day => scene-1229 and scene-1239
+Dipan Castle 1 - Entering the castle => 1229\
+Dipan Castle 2 - There are monsters down here => 1231\
+Dipan Castle 3 - Before boss battle => 1235\
+Dipan Castle 4 - Finding Dallas and Barbarossa => 1233\
+Dipan Castle 5 - Hrist shows up => 1237\
+Dipan Castle 6 - Lezard saves the day => 1229 and 1239
 
-Lost Forest - Leaving the forest => scene-1213
+Lost Forest - Leaving the forest => 1213
 
 ### Chapter 3 Cutscenes
 
-Coriander - Getting to Coriander => scene-1203
+Coriander - Getting to Coriander => 1203
 
-Serdberg Mountain Ruins 1 - Getting to Serdberg => scene-1243\
-Serdberg Mountain Ruins 2 - Sealstone => scene-1251\
-Serdberg Mountain Ruins 3 - Leone and Arngrim => scene-1245\
-Serdberg Mountain Ruins 4 - After boss battle => scene-1247\
-Serdberg Mountain Ruins 5 - Leaving Serdberg => scene-1243
+Serdberg Mountain Ruins 1 - Getting to Serdberg => 1243\
+Serdberg Mountain Ruins 2 - Sealstone => 1251\
+Serdberg Mountain Ruins 3 - Leone and Arngrim => 1245\
+Serdberg Mountain Ruins 4 - After boss battle => 1247\
+Serdberg Mountain Ruins 5 - Leaving Serdberg => 1243
 
-Audoula Temple on the Lake 1 - Water scene => scene-1253\
-Audoula Temple on the Lake 2 - After boss battle => scene-1255
+Audoula Temple on the Lake 1 - Water scene => 1253\
+Audoula Temple on the Lake 2 - After boss battle => 1255
 
-Surts Volcano Caverns 1 - Rest => scene-1261\
-Surts Volcano Caverns 2 - After boss battle => scene-1263\
-Surts Volcano Caverns 3 - Leaving Surts => scene-1335
+Surts Volcano Caverns 1 - Rest => 1261\
+Surts Volcano Caverns 2 - After boss battle => 1263\
+Surts Volcano Caverns 3 - Leaving Surts => 1335
 
-Crell Mongeraigne - Campfire => scene-1335
+Crell Mongeraigne - Campfire => 1335
 
-Crawsus Forest Ruins - After boss battle => scene-1275
+Crawsus Forest Ruins - After boss battle => 1275
 
-Palace of the Venerated Dragon - Dragon Orb scene => scene-1277
+Palace of the Venerated Dragon - Dragon Orb scene => 1277
 
 ### Chapter 4 Cutscenes
 
-Dragonscrypt - Leaving Dragonscrypt => scene-1299 and scene-1303
+Dragonscrypt - Leaving Dragonscrypt => 1299 and 1303
 
-Crell Mongeraigne - Leaving the city => scene-1209
+Crell Mongeraigne - Leaving the city => 1209
 
-Solde - Dipan in flames => scene-1199
+Solde - Dipan in flames => 1199
 
-Royal Underground Path - Ull fight => scene-1227
+Royal Underground Path - Ull fight => 1227
 
-Dipan Castle 1 - Before mages battle => scene-1337\
-Dipan Castle 2 - After mages battle => scene-1281\
-Dipan Castle 3 - Back to the castle => scene-1285\
-Dipan Castle 4 - Before Hrist battle => scene-1283\
-Dipan Castle 5 - After Hrist battle => scene-1337 and scene-1299
+Dipan Castle 1 - Before mages battle => 1337\
+Dipan Castle 2 - After mages battle => 1281\
+Dipan Castle 3 - Back to the castle => 1285\
+Dipan Castle 4 - Before Hrist battle => 1283\
+Dipan Castle 5 - After Hrist battle => 1337 and 1299
 
 ### Chapter 5 Cutscenes
 
-Dipan Castle - After Sovereign's Rite => scene-1357
+Dipan Castle - After Sovereign's Rite => 1357
 
-Dipan - Go to the Forest of Spirits => scene-1211
+Dipan - Go to the Forest of Spirits => 1211
 
-Forest of Spirits 1 - After boss battle => scene-1287\
-Forest of Spirits 2 - Roussalier => scene-1289 and scene-1291
+Forest of Spirits 1 - After boss battle => 1287\
+Forest of Spirits 2 - Roussalier => 1289 and 1291
 
-Dipan Castle - Ghoul Powder => scene-1233
+Dipan Castle - Ghoul Powder => 1233
 
-Forest of Spirits 3 - before boss battle => scene-1287\
-Forest of Spirits 4 - after boss battle => scene-1287
+Forest of Spirits 3 - before boss battle => 1287\
+Forest of Spirits 4 - after boss battle => 1287
 
-Ravine Caverns - Leaving the cavern => scene-1295
+Ravine Caverns - Leaving the cavern => 1295
 
-Bifrost - Heimdall => scene-1297
+Bifrost - Heimdall => 1297
 
-Asgard - Odin and Gungnir scene => scene-1299
+Asgard - Odin and Gungnir scene => 1299
 
-Yggdrasil 1 - Alicia and Rufus => scene-1309\
-Yggdrasil 2 - Before Odin battle 1 => scene-1307\
-Yggdrasil 3 - Lezard saves the day => scene-1307\
-Yggdrasil 4 - Lezard unsaves the day => scene-1337 and scene-1307\
-Yggdrasil 5 - Rufus is back => scene-1311
+Yggdrasil 1 - Alicia and Rufus => 1309\
+Yggdrasil 2 - Before Odin battle 1 => 1307\
+Yggdrasil 3 - Lezard saves the day => 1307\
+Yggdrasil 4 - Lezard unsaves the day => 1337 and 1307\
+Yggdrasil 5 - Rufus is back => 1311
 
-Hall of Valhalla 1 - Odin's gone => scene-1299 and scene-1301 and scene-1303\
-Hall of Valhalla 2 - Arngrim's back => scene-1303\
-Hall of Valhalla 3 - Before freya's battle => scene-1305\
-Hall of Valhalla 4 - After freya's battle => scene-1305
+Hall of Valhalla 1 - Odin's gone => 1299 and 1301 and 1303\
+Hall of Valhalla 2 - Arngrim's back => 1303\
+Hall of Valhalla 3 - Before freya's battle => 1305\
+Hall of Valhalla 4 - After freya's battle => 1305
 
 ### Chapter 6 Cutscenes
 
-Tower of Lezard Valeth 1 - Getting to the twisted tree => scene-1313\
-Tower of Lezard Valeth 2 - Lenneth joins => scene-1351 and scene-1315\
-Tower of Lezard Valeth 3 - Lezard things => scene-1323\
-Tower of Lezard Valeth 4 - Before silmeria/lezard battle => scene-1317\
-Tower of Lezard Valeth 5 - After silmeria/lezard battle => scene-1317
+Tower of Lezard Valeth 1 - Getting to the twisted tree => 1313\
+Tower of Lezard Valeth 2 - Lenneth joins => 1351 and 1315\
+Tower of Lezard Valeth 3 - Lezard things => 1323\
+Tower of Lezard Valeth 4 - Before silmeria/lezard battle => 1317\
+Tower of Lezard Valeth 5 - After silmeria/lezard battle => 1317
 
-Tower of Lezard Valeth 6 - Before 1st battle against Lezard => scene-1353\
-Tower of Lezard Valeth 7 - After 1st battle against Lezard => scene-1337 and scene-1321
+Tower of Lezard Valeth 6 - Before 1st battle against Lezard => 1353\
+Tower of Lezard Valeth 7 - After 1st battle against Lezard => 1337 and 1321
 
-Tower of Lezard Valeth 8 - Before 2nd battle against Lezard => scene-1323\
-Tower of Lezard Valeth 9 - Valkyrie shows up => scene-1389\
-Tower of Lezard Valeth 10 - After final Battle => scene-1323
+Tower of Lezard Valeth 8 - Before 2nd battle against Lezard => 1323\
+Tower of Lezard Valeth 9 - Valkyrie shows up => 1389\
+Tower of Lezard Valeth 10 - After final Battle => 1323
 
-Tower of Lezard Valeth 11 - Rufus takes Gungnir, Arngrim takes the orb, Brahms ded => scene-1325
+Tower of Lezard Valeth 11 - Rufus takes Gungnir, Arngrim takes the orb, Brahms ded => 1325
 
 ### Seraphic Gate Cutscenes
 
