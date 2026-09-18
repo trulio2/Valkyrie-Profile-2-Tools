@@ -496,7 +496,8 @@ from .scene_layout import (
     TEXT_RUN_END, _record_gap_tokens, break_overflowing_run_junction,
     dialogue_max_lines, glyph_advances, materialize_blank_line,
     preserve_input_icon_spacing, preserve_source_run_edges,
-    soften_dialogue_breaks, verification_dialogue_layout,
+    record_owns_authored_layout, soften_dialogue_breaks,
+    verification_dialogue_layout,
     wrap_between_breaks, wrap_structured_translations, wrap_to_width,
     wrap_translation,
 )

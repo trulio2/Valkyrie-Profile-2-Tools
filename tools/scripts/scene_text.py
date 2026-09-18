@@ -17,7 +17,8 @@ from .scene_layout import (
     break_overflowing_run_junction, dialogue_max_lines,
     materialize_blank_line, preserve_input_icon_spacing,
     preserve_source_run_edges, preserve_translated_run_spacing,
-    wrap_structured_translations, wrap_translation,
+    record_owns_authored_layout, wrap_structured_translations,
+    wrap_translation,
 )
 from .scene_codec import pack_tokens
 from .vp2_scene_fingerprint import PAGE_BREAK, PAGE_BREAK_TEXT, render_tokens
@@ -820,6 +821,7 @@ def run_replacements(expanded, metadata, alphabet, glyph_base, rows,
                 (row["audio_id"], len(runs), len(targets), FRAGMENT_MARKER))
         edits, shown, drawn, codepage_runs = list(padding_edits), [], [], []
         layout_runs = []
+        source_owns_layout = record_owns_authored_layout(runs, max_lines)
         auto_paginate = (len(runs) == 1
                          and max_lines == NPC_DIALOGUE_MAX_LINES)
         prepared = []
@@ -862,14 +864,15 @@ def run_replacements(expanded, metadata, alphabet, glyph_base, rows,
         codepage_layout = shared_codepage_owns_layout(
             layout_runs, [source_run[2] for source_run in runs])
 
-        if len(prepared) > 1 and not any(codepage_runs):
+        if (len(prepared) > 1 and not any(codepage_runs)
+                and not source_owns_layout):
             wrapped_runs = wrap_structured_translations(
                 [target for _run, target, _from_codepage in prepared],
                 advances, max_lines=max_lines)
         else:
             wrapped_runs = []
             for (_run, target, from_codepage) in prepared:
-                if from_codepage or codepage_layout:
+                if from_codepage or codepage_layout or source_owns_layout:
                     wrapped = apply_hard_breaks(target)
                 else:
                     wrapped = wrap_translation(
@@ -926,7 +929,8 @@ def run_replacements(expanded, metadata, alphabet, glyph_base, rows,
             elif line.strip():
                 page_lines[-1] += 1
         needed_lines = max(page_lines, default=0)
-        if needed_lines > max_lines and not codepage_layout:
+        if needed_lines > max_lines and not codepage_layout \
+                and not source_owns_layout:
             raise ValueError(
                 "message %d needs %d lines; its dialogue box holds %d. "
                 "Shorten it." % (message_id, needed_lines, max_lines))

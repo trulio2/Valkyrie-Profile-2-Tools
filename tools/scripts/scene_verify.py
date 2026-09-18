@@ -13,7 +13,8 @@ from .scene_fonts import (
     iso_alphabet, remap_punctuation_to_period, require_local_font,
 )
 from .scene_layout import (
-    dialogue_max_lines, glyph_advances, verification_dialogue_layout,
+    dialogue_max_lines, glyph_advances, record_owns_authored_layout,
+    verification_dialogue_layout,
 )
 from .scene_records import (
     byte_tokens, clean_text, message_pointers, parse_record, split_nonempty,
@@ -189,9 +190,30 @@ def verify_scene_sheet(args):
                         local_runs.append(run_uses_local_font(
                             glyphs, metadata, display))
             structured_local = bool(local_runs) and all(local_runs)
+        record_owns_layout = False
+        if source_view is not None and message_id in source_offsets:
+            (source_expanded, source_metadata, source_display,
+             source_offsets, source_next) = source_view
+            source_start, source_end = (
+                source_metadata["text_start"] + source_offsets[message_id],
+                source_metadata["text_start"]
+                + source_next[source_offsets[message_id]])
+            source_runs = []
+            for _run_start, _run_end, tokens in parse_record(
+                    bytes(source_expanded[source_start:source_end]),
+                    source_metadata):
+                rendered, _, _ = render_tokens(
+                    tokens, source_metadata, source_display)
+                if clean_text(rendered):
+                    source_runs.append(
+                        (_run_start, _run_end, rendered,
+                         clean_text(rendered), tokens))
+            record_owns_layout = record_owns_authored_layout(
+                source_runs, max_lines)
         expected_layout = verification_dialogue_layout(
             row["translated"], advances, max_lines,
-            structured_local=structured_local)
+            structured_local=structured_local,
+            record_owns_layout=record_owns_layout)
         if expected_layout is not None:
             wanted_breaks = page_breaks(expected_layout)
         if breaks != wanted_breaks:

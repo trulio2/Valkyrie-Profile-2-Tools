@@ -13,6 +13,7 @@ resource,name,role,area
 1313,Brahms,join,
 1313,Hrist,join,
 1317,Silmeria,join,
+1351,Lenneth,join,
 1339,Hrist,join,Seraphic Gate
 1339,Lenneth,join,Seraphic Gate
 1339,Silmeria,join,Seraphic Gate
@@ -21,4 +22,3 @@ resource,name,role,area
 1345,Dylan,join,Seraphic Gate
 1345,Leone,join,Seraphic Gate
 1347,Valkyrie,join,Seraphic Gate
-1351,Lenneth,join,

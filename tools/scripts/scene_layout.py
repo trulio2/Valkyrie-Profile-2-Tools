@@ -4,7 +4,7 @@ import re
 import textwrap
 
 from .scene_codec import pack_tokens
-from .vp2_scene_fingerprint import PAGE_BREAK_TEXT
+from .vp2_scene_fingerprint import PAGE_BREAK, PAGE_BREAK_TEXT
 from .vp2_cutscene_subtitles import (
     CODEPAGE_TOKENS, FRAGMENT_MARKER, HARD_BREAK_TEXT, RECORD_PARAMETERS,
     TEXT_BREAKS, apply_hard_breaks,
@@ -38,6 +38,17 @@ def dialogue_max_lines(display_types):
     return (NPC_DIALOGUE_MAX_LINES
             if set(display_types or ()) == {NPC_DIALOGUE_DISPLAY_TYPE}
             else SUBTITLE_MAX_LINES)
+
+
+def record_owns_authored_layout(runs, max_lines):
+    if max_lines != NPC_DIALOGUE_MAX_LINES:
+        return False
+    pages = 0
+    rows = 1
+    for _start, _end, _visible, _text, tokens in runs:
+        pages += tokens.count(PAGE_BREAK)
+        rows += tokens.count(TEXT_BREAKS[0])
+    return pages == 0 and rows > max_lines
 
 def glyph_advances(expanded, metric_start, alphabet):
     """``character -> pixel advance``, read from the metric beside each slot."""
@@ -207,9 +218,9 @@ def wrap_structured_translations(parts, advances,
     return result
 
 def verification_dialogue_layout(text, advances, max_lines,
-                                 structured_local=False):
-    """Reproduce automatic NPC layout for the read-back verifier."""
-    if max_lines != NPC_DIALOGUE_MAX_LINES:
+                                 structured_local=False,
+                                 record_owns_layout=False):
+    if (max_lines != NPC_DIALOGUE_MAX_LINES or record_owns_layout):
         return None
     rendered = render_raw_tokens(text.strip())
     if FRAGMENT_MARKER not in rendered:

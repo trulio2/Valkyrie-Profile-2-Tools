@@ -4,10 +4,10 @@ resource,message_id,translated,notes
 1287,3,"Será que tem algum mecanismo ou porta
 secreta por aqui...?",
 1287,4,Uau!,
-1287,5,Alicia olha! Eu sabia que era aqui!,4
-1287,6,Vem rápido!,5
+1287,5,Alicia olha! Eu sabia que era aqui!,
+1287,6,Vem rápido!,
 1287,7,Não posso.,
-1287,8,Ah deixa pra lá...,7
+1287,8,Ah deixa pra lá...,
 1287,13,Como você atravessou este portão?,
 1287,17,Conheço esse anel!,
 1287,16,Meio elfo?,
@@ -15,13 +15,13 @@ secreta por aqui...?",
 1287,18,Sigam! Não os deixem escapar!,
 1287,14,Aquela mulher... não parecia uma elfa.,
 1287,2150,"Quando o pó fizer efeito corremos.
-Entendido?",0
+Entendido?",
 1287,2151,Ainda dá tempo de voltar.,
 1287,2152,"Melhor não. O risco é
 grande demais...",
-1287,2153,Como assim do nada!?,3
+1287,2153,Como assim do nada!?,
 1287,2154,Achei!,
-1287,2155,Logo agora é claro...,5
+1287,2155,Logo agora é claro...,
 1287,2158,Alicia!,
 1287,2156,Rufus... vai!,
 1287,2157,Idiota! Vamos lutar!,
