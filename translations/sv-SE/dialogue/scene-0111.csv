@@ -1,38 +1,126 @@
 resource,message_id,translated,notes
-111,4,,
-111,3,,
+111,4,"Förlåt, jag ska använda den förståndigt...",
+111,3,Aldrig sett sådana exotiska möbler...,
 111,394,,
 111,395,,
 111,396,,
-111,2244,,
-111,2249,,
-111,2250,,
-111,2284,,
-111,2289,,
-111,2290,,
-111,2324,,
-111,2329,,
-111,2330,,
-111,2364,,
-111,2369,,
-111,2370,,
-111,2404,,
-111,2409,,
-111,2410,,
-111,2444,,
-111,2449,,
-111,2450,,
-111,2532,,
-111,2537,,
-111,2538,,
-111,2572,,
-111,2577,,
-111,2578,,
-111,1,,
-111,2,,
-111,2609,,
-111,2801,,
-111,2802,,
-111,2806,,
-111,2811,,
-111,2812,,
+111,2244,"Det är en ära att ha blivit utvald
+av fru Silmeria, <PART>
+---
+och att ha fått chansen
+att kämpa vid din sida.",
+111,2249,"Underskatta inte dig själv.
+Det är andra som bestämmer ditt värde.",
+111,2250,"Den här staden har förändrats en hel del, men
+jag kan fortfarande se spår av det den var.",
+111,2284,"Det är en ära att ha fått chansen
+att kämpa vid din sida.",
+111,2289,"I slutändan är det upp till dig om du
+ser allvarligt på andras åsikter.",
+111,2290,"Många vattenhål har försvunnit, men staden
+har fortfarande spår av sitt förflutna. <PART>
+---
+Det räcker för mig.",
+111,2324,"Jag ångrar inte hur jag dog
+i mitt förra liv. <PART>
+---
+Men det finns en person jag aldrig glömmer... <PART>
+---
+Han var en dåre, men till slut
+var det jag som var den största dåren. <PART>
+---
+Ändå är jag glad att det
+slutade så.",
+111,2329,"Tiderna har förändrats, men
+inte jag. <PART>
+---
+Det finns fortfarande bara en människa
+som kan göra mig hel.",
+111,2330,"Jag gick för att hedra den viktigaste
+människan från mitt förflutna. <PART>
+---
+Öknen är platsen jag valt
+för vår grav.",
+111,2364,"Jag ångrar aldrig att jag dog
+så som jag gjorde. <PART>
+---
+Även om samma situation upprepades
+skulle jag inte kunna ta hans liv. <PART>
+---
+Som krigare är jag kanske inte värdig... <PART>
+---",
+111,2369,"Den största lyckan är att hitta någon
+som accepterar dig som du är. <PART>
+---
+Det är i alla fall vad jag tror.",
+111,2370,"Förr i tiden var jag inte den sortens person
+som hedrade de döda. <PART>
+---
+Men jag insåg att det är en fin känsla att veta
+att människor bryr sig om dig även efter döden. <PART>
+---
+Jag hoppas den jag hedrade
+känner likadant...",
+111,2404,"Säg till om det finns något jag kan hjälpa
+till med. <PART>
+---
+Även om det inte är på slagfältet
+finns det säkert något jag kan göra.",
+111,2409,"Jag tycker om att ha fått leva i
+två olika tider. <PART>
+---
+Det är en upplevelse de flesta aldrig får.",
+111,2410,"Jag tänker stanna i den här staden tills
+slutet. <PART>
+---
+Jag hyser mycket kärlek för Kalstad.
+Den rymmer många av mina minnen... <PART>
+---",
+111,2444,"Jag skulle inte vara till mycket hjälp på
+slagfältet... <PART>
+---
+Men det finns säkert något jag
+kan göra för dig.",
+111,2449,"Det finns saker som förändrats och
+saker som inte har det. <PART>
+---
+Många ställen har utvecklats, men
+andra har gått tillbaka. <PART>
+---
+Det är människans väsen.
+Vi är ju inte gudar.",
+111,2450,"Orsaken till att vattenhålen torkade ut är enkel. <PART>
+---
+Världsträdets flöde förändrades
+och missar staden helt. <PART>
+---
+Därför kan staden inte återhämtas. Det vore snabbare
+att grunda en ny stad en halv dags vandring härifrån.",
+111,2532,"Ta detta, snälla. Det är mitt
+sätt att visa tacksamhet.",
+111,2537,"Ta det här med dig.
+Det är ett av mina bästa verk!",
+111,2538,"Det måste ha varit en lång resa hit.
+Det är inte mycket, men ta det här.",
+111,2572,"Prinsessan Alicia, äntligen. <PART>
+---
+Det var en ära att få
+kämpa vid din sida.",
+111,2577,"Länge sedan.
+Det ser ut som att du haft det tufft. <PART>
+---
+Jag har något åt dig.
+Kom gärna och hälsa på mig igen, okej?",
+111,2578,"Alicia! Vad roligt att träffas!
+Välkommen till min hemstad Kalstad. <PART>
+---
+Det finns inte mycket att se, men stanna
+så länge du vill.",
+111,1,Utgång,
+111,2,Undersök,
+111,2609,Kalstad,
+111,2801,Erhöll <PART> Visarens Arkanum,
+111,2802,Erhöll <PART> Kraadbrynja,
+111,2806,Fraudir,
+111,2811,Circe,
+111,2812,Rasheeka,

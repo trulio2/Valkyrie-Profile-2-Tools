@@ -1,28 +1,95 @@
 resource,message_id,translated,notes
-113,5,,
-113,4,,
+113,5,"Förlåt, jag ska använda den förståndigt...",
+113,4,"Fullt av dryckesvaror <PART> ---- <PART>
+Arngrims dröm uppfylld.",
 113,395,,
 113,396,,
 113,397,,
-113,2268,,
-113,2270,,
-113,2308,,
-113,2310,,
-113,2348,,
-113,2350,,
-113,2388,,
-113,2390,,
-113,2428,,
-113,2430,,
-113,2468,,
-113,2470,,
-113,2556,,
-113,2558,,
-113,2596,,
-113,2598,,
-113,1,,
-113,2,,
-113,3,,
-113,2610,,
-113,2829,,
-113,2831,,
+113,2268,"Nog första gången med ett normalt liv.
+Mitt förra liv var fullt av ytterligheter.",
+113,2270,"Den här staden går snart under.
+Vår historia ska med den försvinna i sanden...",
+113,2308,"Livet är som bäst när det är normalt eller
+extremt. Halvmesyrer duger inte.",
+113,2310,"För går under är naturens lag
+så finner jag mig i det. <PART>
+---
+Naturen ska man leva med,
+inte underkasta sig.",
+113,2348,"Jag vet inte var eller när
+jag dog. <PART>
+---
+När jag vaknade var jag instängd
+i ett rum utan fönster...",
+113,2350,"Det här är en stad jag försvarade med
+livet som insats, tillsammans med två vänner. <PART>
+---
+Men varför valdes inte de två
+till einherjar? <PART>
+---
+Jag valdes ändå. Det vore märkligt om
+de inte gjorde det också... <PART>
+---
+Kanske var det för att de var för alldagliga?
+Det får bli min gissning.",
+113,2388,"Jag uppfostrades i tjuvgillet från barnsben
+så jag fruktade aldrig döden. <PART>
+---
+Jämfört med gillets träning betyder
+en amatörs straff ingenting.",
+113,2390,"Folk som kämpar men ändå aldrig
+får sitt lön för det finns. <PART>
+---
+En av mina barndomsvänner var sådan.",
+113,2428,"Förr levde jag bara för mig själv.
+Men efter giftermålet levde jag för honom. <PART>
+---
+Allt för den man som tog upp kampen med
+tjuvgillet innan han blev mördad. <PART>
+---
+För den som verkligen behövde mig
+skulle jag göra vad som helst.",
+113,2430,"Det flöde från världsträdet som torkat ut
+har tydligen återvänt. <PART>
+---
+En gång i fjärran framtid kan den här
+marken bli rik och grön igen.",
+113,2468,"Har jag berättat att jag uppfostrades
+som mördare i tjuvgillet? <PART>
+---
+Min blivande man var faktiskt
+och en av mina måltavlor. <PART>
+---
+Men han var ärlig och visste inte vad misstänksamhet
+var. Jag sa att jag närmade mig honom för mordet... <PART>
+---
+Det var mot alla regler. Tack
+vare honom vändes mitt liv.",
+113,2470,"Det torkade flödet från världsträdet
+har återvänt, verkar det som. <PART>
+---
+Men världen behöver tid till att återhämta sig.
+Den här stadens undergång går inte att hindra.",
+113,2556,"Ta det här från mig.
+Hoppas det är till någon nytta.",
+113,2558,"Eftersom du tagit dig hit låt mig
+åtminstone ge dig detta.",
+113,2596,"Ett liv där ingen känner mig eller förräder mig,
+utan att behöva gömma sig i mörkret. <PART>
+---
+Det var lugnt men saknade helt spänning,
+så det kändes konstigt.",
+113,2598,"Den här staden går snart under,
+och vår historia med den. <PART>
+---
+Men människorna som föddes och växte
+upp här försvinner inte. <PART>
+---
+Kraften från Kalstad sprider sig
+över hela världen.",
+113,1,Utgång,
+113,2,Undersök,
+113,3,Erhöll <PART> Portvin,
+113,2610,Kalstad,
+113,2829,Sophalla,
+113,2831,Arcana,

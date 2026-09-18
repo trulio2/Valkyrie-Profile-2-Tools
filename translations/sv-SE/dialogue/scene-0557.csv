@@ -1,34 +1,124 @@
 resource,message_id,translated,notes
-557,30,,
-557,31,,
-557,33,,
-557,70,,
-557,71,,
-557,73,,
-557,110,,
-557,111,,
-557,113,,
-557,150,,
-557,151,,
-557,153,,
-557,190,,
-557,191,,
-557,193,,
-557,230,,
-557,231,,
-557,233,,
-557,318,,
-557,319,,
-557,321,,
-557,358,,
-557,359,,
-557,361,,
+557,30,"Jag kan tydligen inte lägga ner svärdet. <PART>
+---
+Så jag fortsätter i alla fall jaga
+monster till förmån för människorna.",
+557,31,"Det smärtar mig att jag förlorat min kraft
+som einherjar. <PART>
+---
+Kom ihåg att jag alltid ber
+för prinsessans säkerhet.",
+557,33,"Med den kraft jag har nu skulle jag bara
+bli en börda för dig. <PART>
+---
+Men kom ihåg att jag alltid
+är med dig i anden.",
+557,70,"Jag saknar kraft att kämpa vid din sida,
+men jag fortsätter kämpa för mänskligheten.",
+557,71,"Det är inte många som kan säga att de stått
+vid en nations tre prinsessors sida.",
+557,73,Tänk på att jag alltid är med dig i anden.,
+557,110,"Jag blev krigare för att rentvå
+min mors fläckade namn. <PART>
+---
+Man sa att hon brutit sigillet
+som höll en ond drake fången. <PART>
+---
+Senare fick jag veta att draken släppts ut
+av självaste herr Oden. <PART>
+---
+Allt var en plan av gudarna
+för att förgöra staden Nethov.",
+557,111,"Jag valde vägen att skydda slottet,
+staden, folket och min egen själ. <PART>
+---
+Det beslutade jag för länge sedan, men först
+nu har jag börjat agera.",
+557,113,"Att vara en bland många för ett bekvämt liv, eller
+att vara en individ för att slippa boja... <PART>
+---
+Vem som har makten att välja
+är du själv. <PART>
+---
+Valhallas gudar lär inte tycka om
+människans självständighet.",
+557,150,"Jag ensam står inte för allt kaoset i Midgard.
+Det mesta är herr Odens verk. <PART>
+---
+Fru Silmeria fängslades för att hon motsatte sig
+hans metoder när hon fick veta sanningen. <PART>
+---
+Det är allt jag vet.",
+557,151,"Jag valde vägen att skydda slottet,
+staden, folket och min egen själ. <PART>
+---
+Det är därför jag nu kommer att kämpa.",
+557,153,"Att vara en bland många ger stabilitet,
+men tar bort individualiteten. <PART>
+---
+Att vara en individ ger instabilitet.
+Men det ger också frihet.",
+557,190,"Daglig träning har hjälpt mig att återfå
+mina stridsfärdigheter. <PART>
+---
+Nu kan jag nog vara en stor hjälp.",
+557,191,"Människornas vägar är bara
+en samling olika livsstilar. <PART>
+---
+Man behöver inte vara så bunden till sin,
+så länge man inte avviker alltför mycket.",
+557,193,"Jag har inga barn. Däremot
+finns det någon som jag älskar som en dotter... <PART>
+---
+Förlåt mig... Jag ville inte börja prata
+om det förflutna.",
+557,230,"Monstren har blivit oroliga på sistone.
+Är det ett förebud om stor förändring?",
+557,231,"Grubbla inte för mycket på det.
+Du ska leva precis som du vill, prinsessa.",
+557,233,"Får jag fråga vad vi betydde för dig,
+prinsessan Alicia? <PART>
+---
+En nära vän? En älskad dotter?
+Eller bara en besvärlig följeslagare?",
+557,318,"Jag har något åt dig. Ta emot det, snälla,
+som ett tecken på min tacksamhet.",
+557,319,"Snälla, ta det här med dig.
+Det kan komma till nytta på din resa.",
+557,321,"Vill du vara så snäll och ta emot det här?
+Pengar kan man aldrig få för mycket av. <PART>
+---
+Det var någon som lärde mig det för länge sedan.",
+557,358,"Att vi skulle ses igen...
+Du ser ut som alltid, välbehållen. <PART>
+---
+Jag kunde i slutändan inte lägga ner svärdet.
+Jag är tydligen inte skicklig nog för ett annat liv.",
+557,359,"Men se, Dipans prinsessa.
+Känner du igen undertecknad, Guilm? <PART>
+---
+Det är märkligt hur ödet fungerar. Här
+står jag åter i Dipans kungahus tjänst. <PART>
+---
+Med livet som du skänkte mig väljer jag
+att svinga svärdet för det enkla folket.",
+557,361,"Jag har inte glömt dagarna då jag kämpade
+vid din sida. <PART>
+---
+Om du ska fortsätta kämpa mot gudarna
+lär det bli många tunga stunder framöver. <PART>
+---
+Jag skulle vilja ge dig något användbart,
+men jag har inget med mig just nu. <PART>
+---
+Jag har något åt dig nästa gång
+vi träffas.",
 557,387,,
 557,388,,
 557,389,,
-557,392,,
-557,393,,
-557,394,,
-557,406,,
-557,407,,
-557,409,,
+557,392,Gamla Skogen,
+557,393,Erhöll <PART> Prismaädelsten,
+557,394,Erhöll <PART> Gudinnans Tinktur,
+557,406,Gerald,
+557,407,Guilm,
+557,409,Ehlen,

@@ -1,33 +1,115 @@
 resource,message_id,translated,notes
-1159,6,,
-1159,7,,
-1159,36,,
-1159,37,,
-1159,76,,
-1159,77,,
-1159,116,,
-1159,117,,
-1159,156,,
-1159,157,,
-1159,196,,
-1159,197,,
-1159,236,,
-1159,237,,
-1159,324,,
-1159,325,,
-1159,364,,
-1159,365,,
+1159,6,"Det finns monster här bortom. Om du inte vill strida är det bäst att undvika kontakt. <PART>
+---
+Det finns många sätt att göra det på, men varje monstertyp har sitt knep. <PART>
+---
+Spring över markkrälarna när du måste, med rätt tajming. <PART>
+---
+De flygande gastarna kommer närmare genom att försvinna och dyka upp igen, så se upp! <PART>
+---
+De bevingade kan du inte hoppa över, utan du får smyga dig under dem. <PART>
+---
+Bäst vore förstås att stoppa dem där de är...",
+1159,7,"Det är inget fel med att strida<PART> ---- <PART>
+men ibland är det bättre att spara sina krafter.",
+1159,36,"Nån håller visst på att släppa loss monster,
+och det är säkert någon elaking... <PART>
+---
+Japp, avgjort! Ingen ursäkt duger.
+Så fort jag ser dem skjuter jag! <PART>
+---
+Va? Varför får jag inte det?",
+1159,37,"Att så mycket hunnit ändras medan jag var död!
+Nu får jag verkligen ta tag i saker.",
+1159,76,"Elaka typer förtjänar att dö snabbt.
+Det är bäst för världen. <PART>
+---
+Du är alltför god. Det kan komma att
+orsaka dig stora bekymmer.",
+1159,77,"Jag har byggt några, men inte testat dem än.
+Vill du vara försökskanin? <PART>
+---
+Du kommer inte att dö. Lova!
+...Tror jag i alla fall...",
+1159,116,"Förr i tiden for jag, herr Seluvia och en till runt
+och förseglade monster här och var. <PART>
+---
+Nu går jag runt och kollar på dem,
+men en hel del är brutna. <PART>
+---
+Herr Seluvias sigill borde hålla än. Någon
+måste hålla på att ställa till det.",
+1159,117,"Jag tillverkar mycket, men inte nödvändigtvis
+praktiska eller säljbara saker... <PART>
+---
+De är inte perfekta, så jag är alltför osäker
+för att ge bort dem till folk.",
+1159,156,"Att någon krossar våra sigill, kärlekens sigill
+som herr Seluvia och jag skapade! <PART>
+---
+Dödsstraff! Absolut dödsstraff!
+Vad som än händer, dödsstraff!! <PART>
+---
+Det är meningslöst att stoppa mig!",
+1159,157,"Grejen är att om jag gör dem för andras bruk
+blir det mycket omak... <PART>
+---
+Om bara jag använder dem kan jag se
+problemen och vara försiktig. <PART>
+---
+Att förklara allt det för andra vore,
+enligt mig, bortkastad tid.",
+1159,196,"Men förresten...
+Har fru Silmeria kallat fram herr Seluvia än? <PART>
+---
+Inte än!? Nu på en gång!
+...Va? Huh? Vad? <PART>
+---
+Vad menar du!?
+Okej då! Jag klarar mig själv!",
+1159,197,"Allt jag lärt mig av mina försök är att sanningen
+inte finns någonstans, inte lättåtkomlig sådan. <PART>
+---
+Inte i teorier, inte i tro,
+inte heller i moral.",
+1159,236,"Hur som helst så klarar jag det!
+Bara vänta och se!",
+1159,237,"Sanningen finns ingenstans...
+Eller rättare sagt, är det kanske sanningen? <PART>
+---
+Ja, spelar det någon roll.
+Det är så jobbigt.",
+1159,324,"Hmm... Just det!
+Just det här ville jag ge dig!",
+1159,325,"Just det!
+Eftersom du kom får du det här med dig!",
+1159,364,"Oss? Minns du mig?
+Det är jag, Chrystie! <PART>
+---
+Tack vare dig har jag det bra och reser runt
+överallt och har roligt. <PART>
+---
+Och ändå finns det monster här.
+Jag trodde jag hunnit försegla så många förr. <PART>
+---
+Det är säkert någon elaking som går
+omkring och släpper loss dem!",
+1159,365,"Va!? Fru Silmeria? Eller Alicia?
+Vilken som är vilken gör detsamma... <PART>
+---
+Mycket har hunnit hända medan jag var död.
+Tekniken har verkligen gått framåt.",
 1159,382,,
 1159,383,,
 1159,384,,
-1159,1,,
-1159,2,,
-1159,3,,
-1159,4,,
-1159,5,,
-1159,387,,
-1159,388,,
-1159,389,,
-1159,390,,
-1159,413,,
-1159,414,,
+1159,1,Utgång,
+1159,2,Lämna Kythenaslätterna?,
+1159,3,Ja,
+1159,4,Nej,
+1159,5,Kythenaslätterna,
+1159,387,Kythenaslätterna,
+1159,388,Erhöll <PART> Prismaädelsten,
+1159,389,Erhöll <PART> Brittaniadräkt,
+1159,390,Äventyrare,
+1159,413,Chrystie,
+1159,414,Sha-kon,

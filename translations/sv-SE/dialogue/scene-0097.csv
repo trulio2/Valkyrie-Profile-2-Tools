@@ -1,29 +1,273 @@
 resource,message_id,translated,notes
-97,2,,
-97,3,,
-97,4,,
-97,5,,
-97,6,,
-97,7,,
-97,8,,
-97,9,,
-97,20,,
-97,19,,
-97,18,,
-97,17,,
-97,22,,
-97,23,,
-97,24,,
-97,26,,
-97,1,,
-97,10,,
-97,11,,
-97,12,,
-97,13,,
-97,14,,
-97,15,,
-97,16,,
-97,21,,
-97,25,,
-97,143,,
-97,2883,,
+97,2,"För några dar sedan var det en äventyrare som kom med en märklig sak, han sa att han hittat den i Andarnas Skog. <PART>
+---
+Kliv in i den skogen så går du antingen vilse eller jagas ut av älvorna. <PART>
+---
+Vet inte vad gudarna fick dem att vakta, men de kunde väl dela med sig av skatterna?",
+97,3,Finns det inga manliga älvor? Ryktet nämner bara kvinnor...,
+97,4,"Något lär ha hänt i Dipan.
+Du är väl äventyrare? Vet du något om det?",
+97,5,"Crell Monferaigne är högmodiga och näser åt Dipans undergång. <PART>
+---
+De har alltid hindrats av Dipan från att utöka sina territorier. <PART>
+---
+De lär passa på tillfället att kriga mot andra länder.",
+97,6,Ryttarna i Villnore tycks diskutera framtiden i slottet både dag och natt.,
+97,7,"V-vad ska jag ta mig till?
+De lär börja mönstra folk snart! <PART>
+---
+Jag borde lämna Villnore för en
+annan stad, men ingen mår bättre nån annanstans",
+97,8,Vad väntar den här kontinenten? Jag är så orolig att jag inte kan sitta still...,
+97,9,"De säger att om man sätter det här amuletten i hemmet så får man tag i bra järn. <PART>
+---
+Bland Villnores grundare fanns en kvinna vid namn Circe. <PART>
+---
+Hon var krigare i grunden, men ryktades vara en genialisk smed. <PART>
+---
+Det sägs att hennes svärd klyvde klippor och hennes rustningar stötte tillbaka pilar. <PART>
+---
+Krigaren Kraad, jämte henne, grundade staden och utförde stora bragder. <PART>
+---
+Hon kom från gruvorna här i närheten, därav detta.",
+97,20,"<Taktisk handledning>
+ <PART> Ändra mål <PART>
+I strid kan målet för karaktärens attack
+ändras.
+
+Det kallas för <PART> ändra mål <PART> . <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Ändra mål <PART>
+För att byta mål, använd först <PART> .
+Sedan kan det nya målet väljas.
+Det är särskilt användbart för icke-fiende-mål
+på slagfältet, som pelare.",
+97,19,"<Taktisk handledning>
+ <PART> Magiska egenskaper <PART>
+Magi har många egenskaper.
+
+Eld: Påverkas avsevärt av kastarens
+MAG och målets RST.
+Is: Styrs av kastarens LV,
+knappt påverkad av målets RST. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Magiska egenskaper <PART>
+Jord: Inga särskilda starka eller
+svaga sidor; standardmagi.
+Blixt: Inte särskilt stark, men
+ger ofta kritiska träffar.
+Helig: Påverkas kraftigt av kastarens
+MAG och målets RST.
+Mörker: Styrs av kastarens LV,
+knappt påverkad av målets RST. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Magiska egenskaper <PART>
+För att bli en sann magiker måste du
+förstå dessa egenskaper och behärska
+flera attackmagi.
+
+Den som inte kan är inte värd
+att kallas magiker.",
+97,18,"<Taktisk handledning>
+ <PART> Element <PART>
+Det finns fyra naturelement:
+eld, is, blixt och jord.
+Utöver dem finns även
+de magiska elementen helig och mörker. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Element <PART>
+Eldtekniker är effektiva mot
+monster som är svaga för hetta, medan is
+fungerar bra mot eldmonster.
+Jordtekniker med gift är kraftfulla
+mot levande organismer, och blixten träffar
+metallmonster hårt. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Element <PART>
+Att känna fiendens egenskaper och
+använda rätt element för attack kan vara
+en stor fördel i strid.",
+97,17,"<Taktisk handledning>
+ <PART> Rusning <PART>
+Snabb rörelse är nyckeln i strid.
+Huruvida du behärskar <PART> rusa <PART> kan avgöra
+stridens utgång.
+
+Rusa genom att använda <PART> . <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Rusning <PART>
+Det finns tre typer av rusning.
+Tryck <PART> snabbt för en
+kort sträcka, håll in för en lång
+sträcka, eller tryck två gånger för en
+medellång sträcka. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Rusning <PART>
+Dessutom kan du slippa återhämtningstiden
+genom att attackera rätt under rörelsen.
+
+Det kallas <PART> rusnings-avbrytande <PART> .",
+97,22,"<Taktisk handledning>
+ <PART> Statusåkommor <PART>
+Allt kan hända i strid, inklusive
+statusåkommor. Sådana här kan vara
+dödliga om de inte åtgärdas. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+Statusåkommorna nedan uppträder bara
+i strid.
+
+<Förvirring>
+Förvirring gör en oförmögen att tänka
+klart och därmed att attackera.
+Använd Normalisera eller en lämplig
+sak för att bota tillståndet.
+Saknar du botemedel får du
+helt enkelt vänta ut det. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Förlamning>
+Förlamning orsakar domningar i hela
+kroppen och gör rörelser omöjliga.
+Använd Normalisera eller en lämplig
+sak för att bota tillståndet.
+Saknar du botemedel får du
+helt enkelt vänta ut det. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Sten>
+Den som drabbas av Sten blir som en staty,
+fullständigt oförmögen att agera.
+Använd Normalisera eller en lämplig
+sak för att bota tillståndet.
+Saknar du botemedel får du
+helt enkelt vänta ut det. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Svimning>
+Svimning leder till medvetslöshet
+och gör en oförmögen att agera.
+Använd Normalisera eller en lämplig
+sak för att bota tillståndet. Att bli träffad
+av en attack väcker en också. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Överföring>
+Överföring kastar ut dig med våld från
+slagfältet och hindrar dig från att ansluta till
+dina kamrater en viss tid.
+Kan inte botas med Normalisera.
+Använd en lämplig sak för att bota det. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+Statusåkommorna nedan kvarstår även
+efter striden.
+
+<Gift>
+Gift tär på din HP med jämna
+mellanrum.
+Använd Normalisera eller en lämplig
+sak för att bota tillståndet. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Tystnad>
+Tystnad förbjuder magianvändning, och vissa
+fiendeattacker kan också
+neutraliseras.
+Använd Normalisera eller en lämplig sak för
+att bota tillståndet. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Förbannelse>
+Förbannelse hindrar utrustningsbyte.
+Använd Normalisera eller en lämplig sak för
+att bota tillståndet. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Svaghet>
+Svaghet hämmar kroppens förmåga att
+återhämta sig och gör helande omöjligt.
+Kan inte botas med Normalisera.
+Använd en lämplig sak för att bota det. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Statusåkommor <PART>
+<Medvetslös>
+Medvetslösa karaktärer ligger på
+dödens brant. Använd Invokationsfjäder
+eller en lämplig sak för att bota det.
+
+
+Vissa tillbehör kan hindra dessa
+statusåkommor, om du kan hitta dem.",
+97,23,"<Taktisk handledning>
+ <PART>
+I strid ligger de allierades liv i
+befälhavarens händer.
+Den som vill befalla ska lägga
+följande hemligheter på minnet...",
+97,24,"<Taktisk handledning>
+ <PART>
+Kom alltid ihåg:
+ens förmåga att befalla avgör
+om kamraterna lever eller dör.",
+97,26,"<Taktisk handledning>
+ <PART> Kasta besvärjelser <PART>
+En sann magiker kan inte bara kasta
+trollformler, utan vet också när och var. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Kasta besvärjelser <PART>
+Vanligtvis kastar en karaktär en förinställd
+formel för att skynda på attacker och
+integreras smidigt med allierade. Men utan tid
+för rätt andlig koncentration når
+räckvidden och effekten av dessa formler
+inte sin fulla potential. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Kasta besvärjelser <PART>
+För att öka magins kraft bör man
+stå still, öppna formelboken med <PART>
+och undersöka besvärjelsen att utföra.
+Det utesluter dock kombinationer med allierade.
+Vilken attackmetod du använder får du
+tillämpa din kunskap om i varje situation. <PART>
+---
+ <PART> <Taktisk handledning>
+ <PART> Kasta besvärjelser <PART>
+Det finns Stora Magier i den här världen som
+överträffar vanliga besvärjelser. Stor Magi kan
+utplåna flera fiender på en gång.
+
+Men fiender kan också använda den. När du
+attackeras av Stor Magi, håll minnet av
+tillståndet hos de som står bredvid målet.",
+97,1,Utgång,
+97,10,Undersök,
+97,11,Undersök,
+97,12,<Taktisk handledning>,
+97,13,▪Ändra mål,
+97,14,▪Magiska egenskaper,
+97,15,▪Element,
+97,16,▪Rusning,
+97,21,▪Statusåkommor,
+97,25,▪Kasta besvärjelser,
+97,143,Villnore,
+97,2883,Stadsbo,

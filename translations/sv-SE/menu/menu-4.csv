@@ -496,17 +496,17 @@ resource,message_id,translated,notes
 642,611,,
 642,612,,
 642,5000,,
-642,5001,,
+642,5001,Scenario,
 642,5002,,
 642,5003,,
 642,5005,,
 642,5006,,
 642,5007,,
 642,5008,,
-642,5009,,
+642,5009,Full styrka,
 642,5010,,
 642,5011,,
-642,5012,,
+642,5012,Alla föremål(<8099:2B>endast material),
 642,5013,,
 642,5014,,
 642,5020,,
@@ -603,134 +603,168 @@ resource,message_id,translated,notes
 642,5142,,
 642,5143,,
 642,5144,,
-643,27,,
-643,31,,
-643,32,,
-643,33,,
-643,34,,
-643,35,,
-643,36,,
-643,42,,
-643,43,,
-643,44,,
-643,45,,
-643,46,,
-643,47,,
-643,48,,
-643,49,,
-643,50,,
-643,51,,
-643,52,,
-643,53,,
-643,54,,
-643,55,,
-643,56,,
-643,57,,
-643,58,,
-643,59,,
-643,60,,
-644,5,,
-644,23,,
-644,24,,
-644,25,,
-644,26,,
-644,27,,
-644,39,,
-644,42,,
-644,43,,
-644,44,,
-644,45,,
-644,1749,,
-644,1750,,
-644,1751,,
-644,1752,,
-644,1753,,
-644,1754,,
-644,1755,,
-644,1756,,
-644,1757,,
-644,1761,,
-644,1769,,
-644,1774,,
-644,1775,,
-644,1776,,
-644,1777,,
-644,1778,,
-644,1779,,
-644,1780,,
-644,1781,,
-644,1782,,
-644,1783,,
-644,1784,,
-644,1794,,
-644,1795,,
-644,1796,,
-644,1802,,
-644,1803,,
-644,1804,,
-644,1805,,
-644,1806,,
-644,1807,,
-644,1808,,
-644,1809,,
-644,1810,,
-644,1811,,
-644,1812,,
-644,1813,,
-644,1814,,
-644,1815,,
-644,1816,,
-644,1817,,
-644,1818,,
-644,1819,,
-644,1820,,
-644,1821,,
-644,1822,,
-644,1823,,
-644,1824,,
-645,13,,
-645,14,,
-645,15,,
-645,16,,
-645,33,,
-645,34,,
-645,40,,
-645,41,,
-645,42,,
-645,43,,
-645,44,,
-645,45,,
-645,59,,
-645,60,,
-645,61,,
-645,62,,
-645,65,,
-645,66,,
-645,67,,
-645,68,,
-645,69,,
-645,70,,
-645,72,,
-645,74,,
-645,75,,
-645,76,,
-645,77,,
-645,78,,
-645,79,,
-645,80,,
-645,81,,
-645,82,,
-645,83,,
-645,84,,
-645,85,,
-645,86,,
-645,87,,
-645,88,,
-645,89,,
-646,4,,
-646,5,,
-646,6,,
-646,7,,
+643,27,Använd,
+643,31,Värdefulla,
+643,32,Hållna,
+643,33,Lista,
+643,34,Guide,
+643,35,Konfigurera,
+643,36,Befria,
+643,42,Profil,
+643,43,Biografi,
+643,44,Spel,
+643,45,Miljö,
+643,46,Styrning,
+643,47,Ändra,
+643,48,Ångra,
+643,49,Standard,
+643,50,Spara,
+643,51,Läs in,
+643,52,Använda föremål.,
+643,53,Ändra utrustning.,
+643,54,Ställ in färdigheter.,
+643,55,Ställ in vanliga attacker.,
+643,56,Visa sigillstensinformation.,
+643,57,Ordna om sällskapet.,
+643,58,Visa karaktärsstatus.,
+643,59,Justera spelinställningar.,
+643,60,Spara<001A>läs in speldata.,
+644,5,Värdefullt föremål,
+644,23,Använda ett föremål.,
+644,24,Visa utrustning.,
+644,25,Visa tillbehör.,
+644,26,Visa andra föremål.,
+644,27,Visa värdefulla föremål.,
+644,39,Sortera efter fysisk gräns.,
+644,42,<8099:32>Sortera <8099:09><8099:0A>Sida,
+644,43,<8099:21>Använd <8099:32>Sortera <8099:09><8099:0A>Sida,
+644,44,<8099:21>Använd <8099:09><8099:0A>Sida,
+644,45,<8099:21>Använd,
+644,1749,Solsten,
+644,1750,Gloriesten,
+644,1751,Målad molnsten,
+644,1752,Mörkmånsten,
+644,1753,Rubinflamsten,
+644,1754,Mylinns ring,
+644,1755,Drakorben,
+644,1756,Ghulpulver,
+644,1757,Sol- och månsten,
+644,1761,Förmörkelsesten,
+644,1769,Avancerad ursinne,
+644,1774,Första oraklet,
+644,1775,Andra oraklet,
+644,1776,Tredje oraklet,
+644,1777,Fjärde oraklet,
+644,1778,Femte oraklet,
+644,1779,Sjätte oraklet,
+644,1780,Sjunde oraklet,
+644,1781,Åttonde oraklet,
+644,1782,Nionde oraklet,
+644,1783,Vattenspegel,
+644,1784,Nyckeln till gruvorna,
+644,1794,Ringen som Odin tvingade Rufus att bära. Den undertrycker all kraft.,
+644,1795,En av de fyra skatterna. Den skyddar Midgård.,
+644,1796,Ett läkemedel som förvandlar levande människor till ghuler.,
+644,1802,Ger bäraren fler attacker än normalt möjligt.,
+644,1803,Text som lär Silmeria den vanliga attacken Rebellisk sanning.,
+644,1804,Text som lär Brahms den vanliga attacken Blodregn.,
+644,1805,Text som lär Rufus den vanliga attacken Åskbrott.,
+644,1806,Text som lär Arngrim den vanliga attacken Återvändsgränd.,
+644,1807,Text som lär Dylan den vanliga attacken Styckningslegion.,
+644,1808,Text som lär lätta krigare den vanliga attacken Andra undergången.,
+644,1809,Text som lär Hrist den vanliga attacken Avancerad ursinne.,
+644,1810,Text som lär Lenneth den vanliga attacken Kodbrytning.,
+644,1811,"Text som lär Alicia och Valkyrian den vanliga attacken Skyhög
+Egg.",
+644,1812,Text som lär tunga krigare den vanliga attacken Sonisk egg.,
+644,1813,Text som lär bågskyttar den vanliga attacken Krossande skott.,
+644,1814,"Ju mer du går runt, desto kraftfullare
+blir fienden. Var stark.",
+644,1815,"Friden skulle komma, om bara Odin inte fanns.",
+644,1816,"Om ingen ställde till besvär skulle Ragnarök
+aldrig komma. Ändå...",
+644,1817,Kan Rufus och Freja någonsin bli vänner...?,
+644,1818,Brahms överföring drar till sig de odödas ovälkomna uppmärksamhet.,
+644,1819,Med eller utan Odin skulle Lezard ändå bli en ond magiker.,
+644,1820,"Silmeria och hennes systrar har inte förändrats. Suveränens rit
+kommer att kalla på dem som alltid.",
+644,1821,"Jag tror inte att Surt och Hel skulle förändras. Gåtan är Loki...och
+varför han gjorde vad han gjorde.",
+644,1822,Du är stark. Jag förlorar. Försök en gång till; ditt pris väntar.,
+644,1823,"En skärva av vattenspegeln från Valhallasalen. Med den
+kan du resa vart som helst i världen.",
+644,1824,Nyckeln till dörren som finns i Turgengruvan.,
+645,13,Hjälm,
+645,14,Kyrass,
+645,15,Armskydd,
+645,16,Benskydd,
+645,33,Färdighet formad!,
+645,34,Färdighet förstörd.,
+645,40,Byt vapen.,
+645,41,Byt hjälm.,
+645,42,Byt kyrass.,
+645,43,Byt armskydd.,
+645,44,Byt benskydd.,
+645,45,Byt tillbehör.,
+645,59,Visa ej inlärda färdigheter.,
+645,60,Visa utrustningsförklaring.,
+645,61,<8099:33>Färdigheter <8099:0B><8099:0C>Karaktär <8099:10>Info,
+645,62,<8099:32>Sortera <8099:33>Färdighet <8099:09><8099:0A>Sida,
+645,65,<8099:03><8099:04>Byt sida,
+645,66,1. Visa status,
+645,67,2. Utrustningstyper,
+645,68,3. Länkar,
+645,69,4. Runor,
+645,70,5. Lära sig färdigheter,
+645,72,"Statusnumren som visas uppe till höger
+anger karaktärens förmågor.",
+645,74,"Utrusta 9 platser: vapen, huvud, kropp,
+armar, ben och 4 extra platser.",
+645,75,"Förutom en- och tvåhandstyperna
+finns det 4 färgtyper av utrustning: röd, blå, grön
+och färglös.",
+645,76,"Utrusta föremål av samma färg bredvid
+varandra så blinkar rutorna.
+
+Det kallas för en länk.",
+645,77,"När de är länkade förstärks effekterna
+av utrustningen.",
+645,78,"Ju mer utrustning som länkas, desto
+starkare förstärkning.",
+645,79,"Samla utrustning av samma färg för
+starkare effekter.",
+645,80,"Förutom färg har utrustningen även en run-
+egenskap.
+
+Det är runorna som formar färdigheter.",
+645,81,"Det finns runegenskaper i röda, gröna och
+blåa föremål, men inte i färglösa.",
+645,82,"En färdighet är en särskild förmåga du kan använda i strid.
+
+Använd attackfärdigheter för anfall, försvarsfärdigheter
+för försvar osv. Det finns 5 typer totalt.",
+645,83,"Att kombinera vissa runor genom länkad
+utrustning får runorna att lysa.
+
+Det formar en färdighet.",
+645,84,"När en färdighet formas visas dess namn
+på skärmen.",
+645,85,"Att bara forma en färdighet betyder inte att du kan använda den.
+Att forma en färdighet är som att upptäcka den.",
+645,86,"Kontrollera kombinationen av runor som behövs
+för att forma färdigheter med <8099:33>.",
+645,87,"Om en nödvändig runa saknas i din utrustning
+visas ett ""?"".",
+645,88,"Att vinna strider med formade färdigheter
+ökar inlärningsprocenten.",
+645,89,"När inlärningsprocenten når 100 lär du dig
+färdigheten.
+
+Ställ in den på färdighetsskärmen för att använda den i strid.",
+646,4,Kapacitetspoäng,
+646,5,Max,
+646,6,Totalt,
+646,7,Färdighet,
 646,8,,
 646,9,,
 646,10,,
@@ -738,166 +772,296 @@ resource,message_id,translated,notes
 646,12,,
 646,13,,
 646,14,,
-646,16,,
-646,23,,
-647,6,,
-647,7,,
-647,8,,
-647,9,,
-647,10,,
-647,13,,
-647,14,,
-647,15,,
-647,16,,
-647,21,,
-647,22,,
-647,23,,
-647,24,,
-647,25,,
-647,28,,
-648,1,,
-648,4,,
-648,5,,
-648,6,,
-648,7,,
-648,8,,
-648,9,,
+646,16,Aktion,
+646,23,Ställ in en färdighet.,
+647,6,Särskild attack,
+647,7,Stor magi,
+647,8,Nej,
+647,9,Vanliga attacker,
+647,10,Attacktrollformler,
+647,13,1.,
+647,14,2.,
+647,15,3.,
+647,16,STÄLL,
+647,21,Ställ in vanlig attack.,
+647,22,Ställ in rushattack.,
+647,23,Ställ in trollformel.,
+647,24,Sortera om attacker.,
+647,25,<8099:33>Sortera om <8099:0B><8099:0C>Karaktär,
+647,28,<8099:21><8099:33>OK <8099:22>Tillbaka,
+648,1,Kostnad,
+648,4,1. Sigillstenar,
+648,5,2. Effektmål,
+648,6,3. Områdeseffekter,
+648,7,4. Gudomens tomrum,
+648,8,5. Källorna och återställning,
+648,9,6. Lägermenyn,
 648,13,,
-648,3,,
-648,18,,
-648,19,,
+648,3,Ursprung,
+648,18,Förvärvad,
+648,19,Återställd,
 648,26,,
-648,50,,
-648,51,,
-648,52,,
-648,53,,
-648,54,,
-648,55,,
-648,56,,
-648,57,,
-648,58,,
-648,60,,
-648,61,,
-648,71,,
-648,72,,
-648,73,,
-648,74,,
-648,75,,
-648,76,,
-648,77,,
-648,78,,
-648,79,,
-648,80,,
-648,81,,
-648,82,,
-648,83,,
-648,84,,
-648,85,,
-648,86,,
-648,87,,
-648,88,,
-648,89,,
-648,90,,
-648,91,,
-648,92,,
-648,93,,
-648,94,,
-648,95,,
-648,96,,
-648,97,,
-648,98,,
-648,99,,
-649,12,,
-649,13,,
-649,24,,
-649,25,,
-649,26,,
-649,27,,
-649,28,,
-649,29,,
-649,30,,
-649,31,,
-649,33,,
-649,37,,
-649,38,,
-649,39,,
-649,40,,
-649,41,,
-649,42,,
-649,43,,
-649,44,,
-649,45,,
-649,46,,
-649,47,,
-649,48,,
-649,49,,
-649,50,,
-649,51,,
-649,52,,
-649,53,,
-649,54,,
-649,55,,
-649,56,,
-649,57,,
-649,58,,
-649,59,,
-649,60,,
-649,61,,
-649,62,,
-649,63,,
-649,64,,
-649,65,,
-649,66,,
-649,67,,
-649,68,,
-649,69,,
-649,70,,
-649,71,,
-649,72,,
-649,73,,
-649,74,,
-649,75,,
-649,76,,
-649,78,,
-649,79,,
-649,80,,
-649,81,,
-649,82,,
-649,83,,
-649,84,,
-649,85,,
-649,86,,
-649,87,,
-649,88,,
-649,89,,
-649,90,,
-649,91,,
-649,92,,
-649,93,,
-649,94,,
-649,95,,
-649,96,,
-649,97,,
-649,98,,
-649,99,,
-649,100,,
-649,101,,
-649,102,,
-649,103,,
-649,104,,
-649,105,,
-649,106,,
-649,107,,
-649,108,,
-649,109,,
-649,110,,
-649,111,,
-649,112,,
-649,113,,
-649,114,,
-649,115,,
-649,116,,
-649,117,,
-649,119,,
-649,120,,
-649,121,,
+648,50,Visa sigillstenar du håller.,
+648,51,Visa sigillstenslistan.,
+648,52,Visa sigillstensförklaring.,
+648,53,<8099:33>Info<0065><8099:09><8099:0A>Byt sida,
+648,54,<8099:33>Info,
+648,55,<8099:03><8099:04>Byt sida,
+648,56,<8099:33><8099:21>Info  <8099:32>Sortera  <8099:09><8099:0A>Sida,
+648,57,Sortera efter ursprung.,
+648,58,Sortera efter typ.,
+648,60,Förvärvade sigillstenar överst.,
+648,61,Lägg återställda sigillstenar överst.,
+648,71,"<8088:02>Sigillstenar<8089> är koncentrerad energi som
+sipprar ur Yggdrasils jordådror.
+De påverkar bärarens förmågor.",
+648,72,"När en karaktär bär en sigillsten
+påverkas hela sällskapet.",
+648,73,"Sigillstenar kan bara placeras på vissa
+ställen.",
+648,74,"Sigillstenar kan placeras på en <8088:02>piedestal<8089> där
+ådrorna korsas, i en <8088:02>källa<8089> där ådrorna
+öppnar sig, eller i ett <8088:02>skal<8089>.",
+648,75,"När de väl tagits kan sigillstenar bara
+avlägsnas på en <8088:02>piedestal<8089>, i ett <8088:02>skal<8089> eller i en <8088:02>källa<8089>.",
+648,76,"När spelarsällskapet bär en sigillsten,
+<8088:02>påverkas hela spelarsällskapet<8089> av
+effekterna.",
+648,77,"När en sigillsten placeras på en piedestal
+<8088:02>påverkas alla fiender i närheten<8089> av
+effekterna. Det kallas för
+<8088:02>Områdeseffekt<8089>.",
+648,78,"När du går in i en zon med aktiva Områdeseffekter
+visas en varningsikon.",
+648,79,"När en fiende bär en sigillsten
+påverkas den fienden.",
+648,80,"När du går in i en zon där en fiende
+har en sigillsten visas en varningsikon.
+Varningsikoner kan visas när som helst
+med <8099:30>.",
+648,81,"När du slåss mot fiender som bär sigillstenar
+<8088:02>påverkas hela fiendegruppen<8089> av
+effekterna.",
+648,82,"Om du besegrar fiender som bär
+sigillstenar ligger de kvar
+där för sällskapet att ta.",
+648,83,"Eftersom en piedestal ligger på jordådror
+färdas Områdeseffekterna genom
+ådrorna och påverkar hela kartan när
+en sigillsten placeras på en piedestal.",
+648,84,"Men där ådrorna tar slut eller
+avbryts upphör Områdeseffekterna
+där.",
+648,85,"Du kan se räckvidden för Områdeseffekter
+på hela kartan.
+Räckvidden för en Områdeseffekt visas
+i rött.",
+648,86,"När det finns två sigillstenar på en piedestal
+är effekterna från båda aktiva
+samtidigt.",
+648,87,"När det inte finns några sigillstenar på en piedestal
+upphör Områdeseffekterna där.",
+648,88,"När du placerar en sigillsten i ett skal
+aktiveras inte dess områdeseffekt.",
+648,89,"Ett <8088:02>Gudomens tomrum<8089> är där jordådrorna
+i Yggdrasil har torkat och dött.
+I ett <8088:02>Gudomens tomrum<8089> har hållna sigillstenar
+ingen effekt.",
+648,90,"Dessutom avbryter Gudomens tomrum
+även Områdeseffekter.",
+648,91,"När du lämnar en fängelsehåla återförs
+sigillstenarna till sin ursprungsplats.
+Vanligtvis kan de inte tas med ut.",
+648,92,"I fängelsehålor finns platser som kallas <8088:02>källor<8089>,
+genom vilka ådrorna rinner. Att kasta
+en sigillsten i en källa återför den till
+Yggdrasils jordådror.",
+648,93,"Att återföra sigillstenar till Yggdrasils
+jordådror kallas <8088:02>återställning<8089>.
+Att återställa sigillstenar förbrukar
+<8088:02>magiska kristaller<8089>.",
+648,94,"Efter återställning kan sigillstenar åter
+tas ur <8088:02>källorna<8089>.
+Att ta sigillstenar ur en källa kräver
+inga magiska kristaller.",
+648,95,"Källorna som är utspridda över världen
+hänger samman genom Yggdrasils ådror.
+En sigillsten som återställts i en källa kan
+tas ur en annan.",
+648,96,"Genom att återställa dem i källorna
+blir sigillstenarna tillgängliga att använda
+i andra fängelsehålor.",
+648,97,"Eftersom piedestaler också ligger på jordådror
+kan sigillstenar återställas där.
+Men sigillstenar kan inte tas
+ur piedestaler.",
+648,98,"Visa informationen för alla sigillstenar du
+burit minst en gång i avsnittet Sigillstenar
+i lägermenyn.",
+648,99,"Använd det här alternativet för att se kända platser
+för vissa sigillstenar och för att studera
+deras effekter.",
+649,12,1P,
+649,13,2P,
+649,24,"Fick en kristall som innehåller
+einherjarens kraft.",
+649,25,"<8084:01><8088:05>Om att befria einherjar<8089><808E:00008041>
+<808F>När du befriar en einherjar
+blir den ackumulerade kraften
+en kristall du får behålla.<8082><8081>Det finns tre typer
+av kraftkristaller:<808E:00000041>
+<8088:04>rosa, azurblå och jadestenar.<8089>
+<808F>Var och en ökar kraftigt sin
+motsvarande statuskategori.<8082><8081> 
+Vilken typ av kristall einherjaren
+blir när den befrias beror på
+karaktärens status.<8082><8081> 
+Du kan få andra saker
+beroende på einherjarens
+utrustning när den befrias.<8082><8081>Till exempel, om den har ett
+svärd utrustat får du<808E:00000041>
+<8088:04>Fäktarens skicklighet (STR + 5)<8089>
+<808F>tillsammans med kraftkristallen.<8082><8081> 
+Men med vissa föremål
+får du ingenting.<8082>",
+649,26,"<8084:01>Befria einherjar<808E:00000041>
+<808F><8088:05><808A:9A99593F9A99593F>(Utrustad utrustning försvinner.)<8082>",
+649,27,"<8084:01><8088:02>Varning<808E:00004041>
+<808F>Om du befriar den här einherjaren
+får du färre än fyra partimedlemmar.<8082>",
+649,28,Organisera sällskapet.,
+649,29,Befria en einherjar.,
+649,30,Välj en karaktär.,
+649,31,Välj ersättaren.,
+649,33,<8099:33>Byt karaktär,
+649,37,Hm? Är det allt du behöver av mig?,
+649,38,Har tiden kommit för mig att lämna din sida?,
+649,39,Vill du att jag ska befrias?,
+649,40,"Frihet.
+Har vi alltså slagits tillsammans länge nog?",
+649,41,Vill du befria mig från mitt öde?,
+649,42,Så det är tryggt för mig att vara åtskild från dig?,
+649,43,Är det dags för mig att gå nu?,
+649,44,Befria? Är du säker på att du inte kommer att ångra det?,
+649,45,Är det redan dags?,
+649,46,"Är det din önskan
+att vi skiljs åt?",
+649,47,Hmpf. Så känner du alltså?,
+649,48,Jag förstår. Har tiden kommit?,
+649,49,Kommer du att ge mig ett nytt liv?,
+649,50,"Tiden flyger verkligen...
+Jag antar att min tid är inne.",
+649,51,Ska jag lämna dina led?,
+649,52,Befriar du mig från detta sorgliga öde?,
+649,53,Verkligen... Är tiden inne för mig?,
+649,54,Så du behöver mig inte längre?,
+649,55,"Du befriar mig!?
+Har jag blivit så stark på riktigt?",
+649,56,"Javisst! Äntligen är jag fri!
+Det är, liksom, okej?",
+649,57,Ska jag lämna dig nu?,
+649,58,"Wow, är det redan dags?
+Nå, jag går väl då, om det är okej.",
+649,59,Är det vad du vill? Att jag ska gå?,
+649,60,Va? Menar du att det är dags för mig att gå?,
+649,61,"Så du befriar mig från
+mitt öde som einherjar?",
+649,62,Vill du bli av med mig?,
+649,63,Låter du mig gå?,
+649,64,"Wow, det här kom tidigare än väntat.",
+649,65,"Så det är dags för mig att gå.
+Du klarar dig väl då?",
+649,66,Befria mig om du vill.,
+649,67,Är du klar med mina krafter?,
+649,68,Dags för mig att gå?,
+649,69,"Det känns så plötsligt.
+Är jag äntligen redo för frihet?",
+649,70,Hahaha... Du är villig att släppa mig lös?,
+649,71,Är det redan dags att säga adjö?,
+649,72,"Du är en välvillig själ.
+Vill du befria mig från det här ödet?",
+649,73,Så jag är stark nog att gå ensam?,
+649,74,Befaller du mig att börja ett nytt liv?,
+649,75,"Så jag har längtat efter frihet!
+Får jag gå?",
+649,76,"Är det din önskan att jag ska vara fri?
+I så fall respekterar jag din vilja.",
+649,78,"Nå, jag antar att jag ger mig av.
+Säker på att du klarar dig utan mig?",
+649,79,"Jag tror att min styrka behövs.
+Är du säker på det här?",
+649,80,"Jag vill slåss vid din sida längre!
+Ber jag om för mycket?",
+649,81,"Jag har inget emot att gå,
+men är du verkligen säker?",
+649,82,"Du är verkligen stark.
+Det är okej om jag går, då?",
+649,83,Du saknar krigare. Är det här en bra plan?,
+649,84,"Du behöver all hjälp du kan få!
+Vill du fortfarande att jag går?",
+649,85,"Jag borde inte lämna dig med så få krigare.
+Vill du verkligen att jag går?",
+649,86,"Övermod leder till förtvivlan.
+Säker på att du inte behöver mig?",
+649,87,"Vänta, vårt antal är otillräckligt.
+Är det här verkligen en bra plan?",
+649,88,"Befriar du mig?
+Tror du att du klarar dig utan mig?",
+649,89,"Att minska arbetskraften är en nackdel.
+Vill du fortfarande göra det här?",
+649,90,"Jag kommer att sörja att lämna de här leden.
+Ska jag gå ändå?",
+649,91,"Du skulle behöva mer stöd.
+Har du bestämt dig för det här?",
+649,92,"Det finns få som kan slåss här.
+Är det här ett bra beslut?",
+649,93,Det blir tufft! Är det det du vill?,
+649,94,"Vänta! Vi är alldeles för få!
+Kan du verkligen avvara mig?",
+649,95,"Det verkar inte finnas nog med krigare.
+Är du säker på att jag ska gå?",
+649,96,Hörru! Klarar du dig utan mig?,
+649,97,"Nej! Att befria mig nu är ett no-no, sötnos!
+Säker på att du vill det?",
+649,98,"Jag går om det är din önskan.
+Är du säker på att det är det?",
+649,99,"Det här verkar vara ett dåligt strategiskt drag.
+Men vad vet jag! Ska jag gå?",
+649,100,"Vad!? Det här är ingen tid att förlora medlemmar!
+Är du säker på att du vet vad du gör?",
+649,101,"Öh, är du verkligen stark nog?
+Jag går, men kommer du att klara dig?",
+649,102,"Låt mig slåss med dig lite till.
+Måste du låta mig gå?",
+649,103,"Om det är din önskan, så fogar jag mig.
+Det är din önskan, eller hur?",
+649,104,"Nå, jag antar att jag går då<808C:000000C0>---<808D>om du är
+säker på att du klarar dig utan mig.",
+649,105,"Men du, öh, du vet, vi är, liksom, underbemannade.
+Är du klar med mig?",
+649,106,"Nå, jag klarar mig säkert. Men jag oroar
+mig för dig. Är du säker?",
+649,107,"Så du har inget emot att jag går,
+är det ditt slutgiltiga svar?",
+649,108,"Att förlora en medlem skadar sällskapet.
+Är du säker på att du vill göra det här?",
+649,109,"Om du klarar dig utan mig, säg till.",
+649,110,"Jag skulle ha velat följa dig längre.
+Klarar du dig utan mig?",
+649,111,"Ska du ta dig an gudarna med så få?
+Tror du att du klarar dig utan mig?",
+649,112,"Jag är tacksam för att du vill befria mig,
+men orolig. Kommer du att klara dig?",
+649,113,"Jag oroar mig för vårt antal.
+Vill du verkligen att jag går?",
+649,114,"Du har inte råd att förlora medlemmar.
+Vill du fortfarande att jag går?",
+649,115,"Stopp! Jag borde inte lämna dig så här.
+Måste jag lämna dig?",
+649,116,"Jag går gärna, om du klarar dig.
+Klara resten utan mig?",
+649,117,"Det här antalet räcker helt enkelt inte.
+Insisterar du på att jag går?",
+649,119,Tack för allt. Hej då!,
+649,120,Jag kommer för alltid att stå i din skuld.,
+649,121,Jag hoppas att jag tjänat dig väl.,

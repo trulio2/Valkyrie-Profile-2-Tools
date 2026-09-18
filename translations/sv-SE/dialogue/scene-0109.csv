@@ -1,54 +1,101 @@
 resource,message_id,translated,notes
-109,4,,
-109,3,,
-109,5,,
-109,6,,
-109,16,,
-109,7,,
-109,8,,
-109,9,,
-109,10,,
-109,11,,
-109,12,,
-109,13,,
-109,14,,
-109,15,,
-109,2815,,
-109,2816,,
-109,2817,,
-109,2818,,
-109,2819,,
-109,2820,,
-109,2821,,
-109,2822,,
-109,2823,,
-109,2824,,
-109,2825,,
-109,2826,,
-109,2827,,
-109,2828,,
-109,2829,,
-109,2830,,
-109,2831,,
-109,2832,,
-109,2833,,
-109,2834,,
-109,2835,,
-109,2836,,
-109,2837,,
-109,2838,,
-109,2839,,
-109,2840,,
-109,2841,,
-109,2842,,
-109,2843,,
-109,2844,,
-109,1,,
-109,2812,,
-109,2813,,
-109,2814,,
-109,2845,,
-109,2857,,
-109,2858,,
-109,2859,,
-109,2860,,
+109,4,"Hör upp, hör upp, trötta resenärer!
+Den kringresande försäljaren står till er tjänst!",
+109,3,Ser fram emot vårt nästa möte!,
+109,5,"Hmm... de vulkaniska grottorna i söder?
+Det rinner fortfarande magma där. <PART>
+---
+Om ni inte vill dö och träffa en
+valkyria, avråder jag er från att åka dit!",
+109,6,"Var kan jag hitta monster här?
+Jag behöver ett visst material.",
+109,16,"Varm magma... säg, är några av
+dina kunder bågskyttar eller magiker? <PART>
+---
+En grupp med bågskyttar eller magiker
+har bäst attackräckvidd. <PART>
+---
+Att slippa springa runt i värmen
+är en fördel i strid.",
+109,7,"Tyvärr har vi inte många kunder, och det
+verkar inte bli bättre på ett tag.",
+109,8,"Jag förstår helt enkelt inte äventyrare!
+Varför måste de kasta sig mot faran? <PART>
+---
+En skattsökare gick till grottorna
+häromdan, men han kom aldrig tillbaka.",
+109,9,"Kasta bort livet på att jaga skatter,
+och du blir utan allt!",
+109,10,"Vad har vi här!? En kund?
+Den kringresande försäljaren står till er tjänst!",
+109,11,Ser fram emot vårt nästa möte!,
+109,12,"Crell Monferaigne anlitade trupper, så
+jag anmälde mig. Övningarna började direkt efter. <PART>
+---
+Stridsövningar mitt i
+öknen är inte vad jag kallar kul.",
+109,13,"Jag skippar övningarna, slår ihjäl tid och
+tar ut min lön, tack så mycket.",
+109,14,"Hände det något någonstans?
+Resenärerna är upprörda.",
+109,15,"Dipan är det där landet långt uppe i norr, eller hur?
+Jag har hört att de har magiker eller något...",
+109,2815,"Vill ni övernatta?
+Vi har ett rum med utsikt ledigt.",
+109,2816,Välkommen. Vill du ha ett rum?,
+109,2817,"Åh, gäster som söker rum?",
+109,2818,"Ni är resenärer, eller hur? Ska ni stanna?",
+109,2819,"Välkomna. Ni ser ut att
+söka ett rum. Stämmer det?",
+109,2820,"Det är en ära att ta emot er.
+Ska jag boka ert rum?",
+109,2821,"Vad synd.
+Kom tillbaka om ni ångrar er.",
+109,2822,"Vänligen besök oss igen
+när ni får chansen.",
+109,2823,Jaha. Och jag som redan var eld och lågor.,
+109,2824,"Ge er i väg då, inget stå och hänga.",
+109,2825,"Nåväl, det är er förlust.
+Ni går miste om ett utmärkt bemötande.",
+109,2826,"Om tillfälle ges,
+kom gärna tillbaka.",
+109,2827,"Låt vågornas vaggvisa
+vara inbjudan till sömnen.",
+109,2828,Njut av er vistelse.,
+109,2829,"Så ni stannar ändå?
+Vila ut!",
+109,2830,"Jag har just bytt lakan.
+Ni kommer att sova som små barn!",
+109,2831,"Balanserad frukost på husets räkning!
+Sov gott.",
+109,2832,"Ni är säkert utmattade.
+Var snälla och gör det bekvämt för er.",
+109,2833,"Kom hit snart igen!
+Må havets välsignelser följa er.",
+109,2834,"Tack för att ni besökte oss.
+Var försiktiga.",
+109,2835,Titta in när ni är i närheten.,
+109,2836,"Ni sov gott, eller hur?
+Se upp där ute!",
+109,2837,"He he, sov ni gott? Kom snart igen!",
+109,2838,"Ni vilade säkert gott.
+Vi ser fram emot att tjäna er snart igen.",
+109,2839,"Hoppsan, ni har inte tillräckligt med pengar.",
+109,2840,"Tyvärr vore det omöjligt att låta
+er stanna utan att betala rätt avgift.",
+109,2841,"Oj, det går inte. Ni har inte råd.",
+109,2842,"Det räcker inte! Vad sysslar ni med?
+Det här är en affärsrörelse, vet ni!",
+109,2843,"Hmm... Det verkar som ni saknar lite.
+Kom tillbaka när ni har pengarna!",
+109,2844,"Tyvärr kräver vi full betalning
+i förskott för att tilldela rum.",
+109,1,Gå ut,
+109,2812,Rumskostnad: <PART> OTH,
+109,2813,Ja,
+109,2814,Nej,
+109,2845,Kalstad,
+109,2857,Köpman,
+109,2858,Värdshusvärd,
+109,2859,Äventyrare,
+109,2860,Stadsbo,

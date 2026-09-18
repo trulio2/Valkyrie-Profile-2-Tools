@@ -1,65 +1,208 @@
 resource,message_id,translated,notes
-79,7,,
-79,46,,
-79,8,,
-79,9,,
-79,10,,
-79,11,,
-79,14,,
-79,12,,
-79,16,,
-79,15,,
-79,17,,
-79,20,,
-79,18,,
-79,21,,
-79,23,,
-79,22,,
-79,24,,
-79,28,,
-79,29,,
-79,30,,
-79,32,,
-79,33,,
-79,35,,
-79,36,,
-79,37,,
-79,38,,
-79,39,,
-79,40,,
-79,41,,
-79,42,,
-79,48,,
-79,49,,
-79,50,,
-79,51,,
-79,53,,
-79,52,,
-79,55,,
-79,54,,
-79,56,,
-79,57,,
-79,60,,
-79,62,,
-79,1,,
-79,2,,
-79,3,,
-79,4,,
-79,5,,
-79,6,,
-79,19,,
-79,31,,
-79,34,,
-79,43,,
-79,44,,
-79,45,,
-79,47,,
-79,58,,
-79,59,,
-79,61,,
+79,7,"Har du någonsin hittat något efter att du
+huggit av en del av ett monster? <PART>
+---
+Vi kallar dem tillbehör häromkring.
+Du bär ju på dem, eller hur? <PART>
+---
+Det är inte den finaste hobbyn,
+men de är som turliga amuletter! <PART>
+---
+Ta på dig dem så känner du dig starkare,
+dina eldattacker bränner mer... <PART>
+---
+Men det är inte ens det bästa! Beroende
+på hur du utrustar dem väcker de krafter <PART> ---- <PART>
+---
+färdigheter <PART> ---- <PART> som sover inom dig.
+Om du har tur, förstås! <PART>
+---
+Vad sägs om att jag ger dig den här?
+Kör, testa den!",
+79,46,"Kör på nu, ta på de där två som färgmatchande utrustning. <PART>
+---
+Jag tror att matchning mot vapnet gör mest nytta. <PART>
+---
+Leta efter matchande färger varje gång du får ett nytt tillbehör. <PART>
+---
+Skina runor betyder att du fått en färdighet. Glöm inte det, hör du?",
+79,8,"Att kunna eller inte kunna färdigheter gör hela
+skillnaden i världen! <PART>
+---
+Med färdigheter blir några av de svåra
+striderna busenkla!",
+79,9,"Villnore skärpte plötsligt skatteindrivningen,
+och nu handlar ingen. <PART>
+---
+Men du är inte härifrån, eller hur?
+Nåväl, stig fram och ta en titt!",
+79,10,"Ser ut som en vanlig, ordinär by,
+men i själva verket... <PART>
+---
+är den en vanlig, ordinär by. Alla är
+självförsörjande, så det finns inga butiker.",
+79,11,"Den här byn är Villnores territorium, men
+de tar inte ut skatter här ute. <PART>
+---
+Vi styr oss i princip själva,
+därför är alla så lugna här.",
+79,14,"Det måste vara ett monster. Herregud.
+Om det där flyttar in är vi illa ute. <PART>
+---
+Du var ju äventyrare förut, eller hur?
+Besegra honom som i gamla dar!",
+79,12,"Du! Du tog dig tillbaka från ruinerna!?
+Vad sägs om en riktig monsterutmaning? <PART>
+---
+Du måste inte, men om du gör det
+finns det en belöning att hämta...",
+79,16,"Du såg den, eller hur?
+Den enorma fågeln i skogen!",
+79,15,"Prata om de goda gamla dagarna hur mycket du vill,
+men i min ålder, glöm det!",
+79,17,"Jösses... Han är aldrig till någon nytta när
+jag behöver honom. <PART>
+---
+Tack för hjälpen! Den vackra skogen
+lockar till sig till och med monster.",
+79,20,"Min förmåga var så bra att om jag
+dog skulle valkyrian välja mig. <PART>
+---
+Nu kan jag glömma att bli utvald.
+Jag skulle ha tur om jag bara fick se henne!",
+79,18,"Du tog verkligen hand om det monstret?
+Tack... tack så mycket! <PART>
+---
+Om resten bara är småkryp,
+lämnar jag det till mig! Ta det här <PART> ---- <PART>
+---
+en prov på vår tacksamhet... Det är inte mycket,
+men det är tanken som räknas, eller hur?",
+79,21,"Det är nästan dags att betala skatt, men återigen
+i år hör vi inte ett ord från Villnore. <PART>
+---
+Vem behöver vår skatt med deras
+stålindustri och handel?",
+79,23,"Ingen i den här byn duger något. Det vore
+toppen om någon tog hand om monstren.",
+79,22,"Två andra äventyrare var på väg mot
+ruinerna i berget <PART> ---- <PART> en man och en kvinna. <PART>
+---
+Hon hade honom helt under kontroll!
+Åh, ni träffades? He he he!",
+79,24,"Känner du något konstigt i luften?
+Känns den inte tyngre än vanligt? Underligt.",
+79,28,Vad? Dipan? Är du allvarlig?,
+79,29,"Rök steg upp från Dipans riktning.
+Farfar såg den från bergen.",
+79,30,En attack? Var det Crell Monferaigne?,
+79,32,"Enligt uppgift stiger rök från Dipan.
+Vet du vad som hänt?",
+79,33,"Tack för att du tog hand om vårt monsterproblem
+igen! Du är söt som en gudinna! <PART>
+---
+Jag önskar jag kunde ge dig mer,
+men var snäll och ta emot min tacksamhet...",
+79,35,"Om jag fortfarande var ungdomlig,
+skulle jag slå ihjäl ett par odjur själv!",
+79,36,"Är det sant att Dipan förintats?
+Säg att det bara är ett grymt skämt.",
+79,37,"Det är ganska illa när ett stort
+land försvinner, eller hur?",
+79,38,"Jag tog den hemliga kungliga vägen för att
+åka och se Dipan. Det är inte vackert...",
+79,39,"Jag måste betala skatt till Villnore, så jag
+har bara råd med det allra nödvändigaste.",
+79,40,Även i en lågkonjunktur måste butiken hålla igång!,
+79,41,"Villnore skärpte plötsligt
+skatteindrivningen. <PART>
+---
+Regeringen rör även stål
+och handel. Kanske militariserar de. <PART>
+---
+Vi har alltid styrt oss själva,
+men vad ska det bli av oss nu?",
+79,42,"Vem kunde tro att Dipans fall
+skulle påverka vår by så här?",
+79,48,"Du! Du tog dig tillbaka från ruinerna!?
+Vad sägs om en riktig monsterutmaning? <PART>
+---
+Ett konstigt monster har flyttat in i den
+närliggande skogen, och vi har inga vakter... <PART>
+---
+Du måste inte, men om du gör det
+finns det en belöning att hämta...",
+79,49,"Saken i skogen ser ut som
+en stor fågel eller något.",
+79,50,"Jag var något på min tid!
+Jag mötte dem i tusental <PART> ---- <PART> utan att svettas! <PART>
+---
+Varför tittar ni på mig så där?",
+79,51,"Du! Vad trevligt att du kom tillbaka!
+Det finns faktiskt ett nytt monster i skogen. <PART>
+---
+Du kanske kan titta till det åt mig
+när du har lite tid över.",
+79,53,"Hej där! Reser du, va? Resor medför
+problem, och problem medför skador. <PART>
+---
+Ett litet snitt kan kosta dig livet,
+men min butik finns här för att förhindra det! <PART>
+---
+Vi har extrapris på falchions, men
+skynda dig <PART> ---- <PART> till de här priserna räcker de inte länge! <PART>
+---
+De är normalt bara för stamkunder, men
+jag gör undantag för vackra leenden!",
+79,52,"Hej där! Reser du, va? Resor medför
+problem, och problem medför skador. <PART>
+---
+Ett litet snitt kan kosta dig livet,
+men min butik finns här för att förhindra det!",
+79,55,"Välkomna alla!
+Den kringresande försäljaren står till er tjänst! <PART>
+---
+Vi har extrapris på falchions!
+Monstren flyr från de här priserna! <PART>
+---
+Du ger mig material, jag gör dina vapen!
+Vad sägs? Ta en titt!",
+79,54,"Välkomna alla!
+Den kringresande försäljaren står till er tjänst!",
+79,56,"De bygger inte butiker på farliga platser,
+det är därför vi kringresande är så användbara!",
+79,57,"Om jag hade materialet till en falchion,
+skulle jag kunna göra en åt dig nu! <PART>
+---
+Det finns ett monster som heter Levande rustning.
+Du kan hitta den på Kythenaslätten. <PART>
+---
+Den har allt material du behöver.
+Jag skulle hjälpa till, men jag kan inte slåss. <PART>
+---
+Min pappa var annorlunda. Han var en
+köpman som kunde slåss!",
+79,60,JAG VILL HA!,
+79,62,SLUT PÅ DET!,
+79,1,Hus,
+79,2,Coriander,
+79,3,Utgång,
+79,4,Lämna Coriander?,
+79,5,Ja,
+79,6,Nej,
+79,19,Erhöll <PART> Kraftdryck,
+79,31,Erhöll <PART> Guldägg,
+79,34,Erhöll <PART> Expertens erfarenhet,
+79,43,Erhöll <PART> Guldägg,
+79,44,Erhöll <PART> Insektsgadd,
+79,45,Erhöll <PART> Blå själslåga,
+79,47,Lyssna,
+79,58,Erhöll <PART> Falchion,
+79,59,Erhöll <PART> Salomons ring,
+79,61,Erhöll <PART> Salomons ring,
 79,111,,
-79,2810,,
-79,2811,,
-79,2812,,
-79,2813,,
-79,2814,,
+79,2810,Äventyrare,
+79,2811,Köpman,
+79,2812,Stadsbo,
+79,2813,Flicka,
+79,2814,Höna,

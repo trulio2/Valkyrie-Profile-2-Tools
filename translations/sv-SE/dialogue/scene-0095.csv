@@ -1,38 +1,72 @@
 resource,message_id,translated,notes
-95,3,,
-95,4,,
-95,5,,
-95,6,,
-95,7,,
-95,8,,
-95,9,,
-95,10,,
-95,11,,
-95,12,,
-95,13,,
-95,14,,
-95,15,,
-95,16,,
-95,17,,
-95,18,,
-95,19,,
-95,33,,
-95,32,,
-95,31,,
-95,30,,
-95,29,,
-95,28,,
-95,1,,
-95,2,,
-95,20,,
-95,21,,
-95,22,,
-95,23,,
-95,24,,
-95,25,,
-95,26,,
-95,27,,
-95,150,,
-95,2890,,
-95,2891,,
-95,2892,,
+95,3,"Vi har ett gruvarbetargille i den här staden.
+Allt järnmalm som grävs upp passerar genom dem. <PART>
+---
+För några år sedan fanns ett annat gille, men förlusterna utplånade dem.",
+95,4,Det andra gillet lades ner kring den tid då de hittade monsterägg i Turgen Gruva.,
+95,5,Vad är det för väsen där ute? De stängde slottets portar helt plötsligt!,
+95,6,Villnore är ett toppenställe för shopping! Du hittar ingen bättre stad för det!,
+95,7,"Sälj mig allt du inte kan använda.
+Jag kan kanske göra något åt dig! <PART>
+---
+Om du skickar en hel del affärer min väg,
+kanske jag gör något alldeles extra åt dig. <PART>
+---
+Jag säger dig det här <PART> ---- <PART> du hittar inte mina varor någon annanstans... särskilt inte rustningar.",
+95,8,Nöjet är på min sida. Kom snart igen!,
+95,9,Villnore är ett toppenställe för shopping! Du hittar ingen bättre stad för det!,
+95,10,Slottet gjorde just en inventering av mina vapen och rustningar! Vad är detta?,
+95,11,Villnore är ett toppenställe för shopping! Du hittar ingen bättre stad för det!,
+95,12,"Vapnen sålde slut efter att Dipan föll.
+Bra för försäljningen, men jag vill inte ha krig.",
+95,13,Villnore är ett toppenställe för shopping! Du hittar ingen bättre stad för det!,
+95,14,"Jag inser att vapen orsakar krig, men om jag inte säljer dem kan jag inte försörja mig.",
+95,15,"Alla i stan säger att de förväntar sig att värnplikten drar igång snart... <PART>
+---
+Jag vill inte vara soldat!
+Jag tänker inte dö i strid!",
+95,16,"Monster har kommit ut ur skogen
+vid Coriander. <PART>
+---
+Vakterna klarar inte det där <PART> ---- <PART>
+de behöver äventyrare som sköter det.",
+95,17,Nu finns det monster här också... Världen har blivit galen på sistone.,
+95,18,"De har dem inte till salu här heller... 
+Vapen <PART> ---- <PART> dråparvapen, för att vara exakt. <PART>
+---
+Även monster som vanligtvis är immuna mot vapen är lätta med dråpar. <PART>
+---
+Drakdråparen fäller drakar, medan Växtdråparen ansar växter. <PART>
+---
+Med den kraften i ditt vapen finns inget att frukta!",
+95,19,Även om de hade dråparvapen skulle priserna vara astronomiska.,
+95,33,"<Skalbaggshorn>
+ <PART> Jätteskalbagge <PART> : Huvud
+ <PART> Pansarbagge <PART> : Huvud",
+95,32,"<Vitt Blomblad>
+ <PART> Giftblomma <PART> : Överkropp
+ <PART> Ökenblomma <PART> : Överkropp",
+95,31,"<Obelastade Svalfjäll>
+ <PART> Vildödla <PART> : Ben",
+95,30,"<Vass Spjutspets>
+ <PART> Ödleriddare <PART> : Vapen
+ <PART> Levande Rustning <PART> : Vapen",
+95,29,"<Kärnrubin>
+ <PART> Röd Juvel <PART> : Skatt
+ <PART> Svart Juvel <PART> : Skatt",
+95,28,"<Giftfrö>
+ <PART> Minetisk Blomma <PART> : Överkropp",
+95,1,Gå ut,
+95,2,Prat,
+95,20,Läsa,
+95,21,<Butiksägarens Anteckningar>,
+95,22,Skalbaggshorn,
+95,23,Vitt Blomblad,
+95,24,Obelastade Svalfjäll,
+95,25,Vass Spjutspets,
+95,26,Kärnrubin,
+95,27,Giftfrö,
+95,150,Villnore,
+95,2890,Stadsbo,
+95,2891,Butiksägare,
+95,2892,Äventyrare,

@@ -1,51 +1,91 @@
 resource,message_id,translated,notes
-133,3,,
-133,4,,
-133,5,,
-133,6,,
-133,7,,
-133,8,,
-133,12,,
-133,13,,
-133,14,,
-133,2807,,
-133,2808,,
-133,2809,,
-133,2810,,
-133,2811,,
-133,2812,,
-133,2813,,
-133,2814,,
-133,2815,,
-133,2816,,
-133,2817,,
-133,2818,,
-133,2819,,
-133,2820,,
-133,2821,,
-133,2822,,
-133,2823,,
-133,2824,,
-133,2825,,
-133,2826,,
-133,2827,,
-133,2828,,
-133,2829,,
-133,2830,,
-133,2831,,
-133,2832,,
-133,2833,,
-133,2834,,
-133,2835,,
-133,2836,,
-133,1,,
-133,9,,
-133,10,,
-133,11,,
-133,15,,
-133,2804,,
-133,2805,,
-133,2806,,
-133,2837,,
-133,2839,,
-133,2840,,
+133,3,"Prat inte om det där med kunderna.
+Det är bara ett monster eller något.",
+133,4,"En soldat från kampanjen berättade om ett
+före detta fångläger i söder. <PART>
+---
+Trots att det är helt övergivet, hörde han
+en kvinna skratta kusligt om natten.",
+133,5,"Om du är intresserad, varför går du
+inte och kollar läget?",
+133,6,"Självklart är det ett poltergeist!
+Poltergeist... Pol...ter...geist. <PART>
+---
+Något fick just gåshuden att resa sig!
+J-j-jag menar, jag är inte rädd eller något...",
+133,7,"Menar du att det bara var ett monster?
+Jag menar, monster kan vara läskiga, men ändå... <PART>
+---
+Hur som helst, tack för att du kollade för mig.
+Vad sägs om att jag ger dig det här?",
+133,8,"Har du varit på andra hemsökta ställen?
+Vad såg du? Spöken? Monster?",
+133,12,"Legenden säger att en kvinnlig alkemist brukade
+bo i slottet. <PART>
+---
+Försjunken i sin forskning måste hon ha
+skiljts från människornas värld.",
+133,13,"Där går han igen. Han älskar sådant
+prat, trots att han är en räddhare.",
+133,14,"Jag har en känsla av att Midgard går
+mot en mörk och farlig framtid.",
+133,2807,"Vill ni övernatta?
+Vi har ett rum med utsikt ledigt.",
+133,2808,Välkommen. Vill du ha ett rum?,
+133,2809,"Åh, gäster som söker rum?",
+133,2810,"Ni är resenärer, eller hur? Ska ni stanna?",
+133,2811,"Välkomna. Ni ser ut att
+söka ett rum. Stämmer det?",
+133,2812,"Det är en ära att ta emot er.
+Ska jag boka ert rum?",
+133,2813,"Vad synd.
+Kom tillbaka om ni ångrar er.",
+133,2814,"Vänligen besök oss igen
+när ni får chansen.",
+133,2815,Jaha. Och jag som redan var eld och lågor.,
+133,2816,"Ge er i väg då, inget stå och hänga.",
+133,2817,"Nåväl, det är er förlust.
+Ni går miste om ett utmärkt bemötande.",
+133,2818,"Om tillfälle ges, kom gärna tillbaka.",
+133,2819,"Låt vågornas vaggvisa
+vara inbjudan till sömnen.",
+133,2820,Njut av er vistelse.,
+133,2821,"Så ni stannar ändå?
+Vila ut!",
+133,2822,"Jag har just bytt lakan.
+Ni kommer att sova som små barn!",
+133,2823,"Balanserad frukost på husets räkning!
+Sov gott.",
+133,2824,"Ni är säkert utmattade.
+Var snälla och gör det bekvämt för er.",
+133,2825,"Kom hit snart igen!
+Må havets välsignelser följa er.",
+133,2826,"Tack för att ni besökte oss.
+Var försiktiga.",
+133,2827,Titta in när ni är i närheten.,
+133,2828,"Ni sov gott, eller hur?
+Se upp där ute!",
+133,2829,"He he, sov ni gott? Kom snart igen!",
+133,2830,"Ni vilade säkert gott.
+Vi ser fram emot att tjäna er snart igen.",
+133,2831,"Hoppsan, ni har inte tillräckligt med pengar.",
+133,2832,"Tyvärr vore det omöjligt att låta
+er stanna utan att betala rätt avgift.",
+133,2833,"Oj, det går inte. Ni har inte råd.",
+133,2834,"Det räcker inte! Vad sysslar ni med?
+Det här är en affärsrörelse, vet ni!",
+133,2835,"Hmm... Det verkar som ni saknar lite.
+Kom tillbaka när ni har pengarna!",
+133,2836,"Tyvärr kräver vi full betalning
+i förskott för att tilldela rum.",
+133,1,Gå ut,
+133,9,Chefen för Chateau Obsession var ett...,
+133,10,Spöke.,
+133,11,Monster.,
+133,15,Erhöll <PART> Vises Arkana,
+133,2804,Rumskostnad: <PART> OTH,
+133,2805,Ja,
+133,2806,Nej,
+133,2837,Crell Monferaigne,
+133,2839,Värdshusvärd,
+133,2840,Stadsbo,

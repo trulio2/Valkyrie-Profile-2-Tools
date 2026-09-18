@@ -1,41 +1,67 @@
 resource,message_id,translated,notes
-63,6,,
-63,8,,
-63,34,,
-63,35,,
-63,36,,
-63,37,,
-63,38,,
-63,39,,
-63,40,,
-63,41,,
-63,42,,
-63,43,,
-63,44,,
-63,45,,
-63,46,,
-63,47,,
-63,48,,
-63,49,,
-63,50,,
-63,51,,
-63,52,,
-63,53,,
-63,54,,
-63,55,,
-63,56,,
-63,57,,
-63,58,,
-63,59,,
-63,60,,
-63,61,,
-63,62,,
-63,63,,
-63,1,,
-63,5,,
-63,7,,
-63,31,,
-63,32,,
-63,33,,
-63,64,,
-63,65,,
+63,6,"Ni är resenärer, va?
+Välkomna till Dipan. <PART>
+---
+Ni måste vara utmattade efter resan.
+En natt här skulle göra er gott!",
+63,8,"Den där målningen föreställer Andarnas Skog, alvernas hem. <PART>
+---
+Djupt i skogens vilseledande dimmor ligger Yggdrasil och portarna till himlen.",
+63,34,"Ska du övernatta?
+Vi har ett rum med utsikt ledigt.",
+63,35,Välkommen. Önskar du ett rum?,
+63,36,"Jaså, gäster som söker rum?",
+63,37,"Ni är resenärer, va? Ska ni stanna?",
+63,38,"Hälsningar. Ni ser ut att
+leta efter ett rum. Har jag rätt?",
+63,39,"Det är en ära att ta emot er.
+Ska jag boka ert rum?",
+63,40,"Synd.
+Kom tillbaka om du ångrar dig.",
+63,41,"Besök oss gärna igen
+när ni får chansen.",
+63,42,Äsch. Och jag som blev upphetsad.,
+63,43,"Gå vidare nu, inget dagdriveri.",
+63,44,"Jaha, det är din förlust.
+Du missar utmärkt service.",
+63,45,"Om tillfället ges,
+besök oss gärna igen.",
+63,46,"Låt vågornas sång
+bjuda in dig till sömn.",
+63,47,Hoppas du trivs med vistelsen.,
+63,48,"Så du stannar alltså?
+Ta igen dig!",
+63,49,"Jag har just bytt lakan.
+Du kommer att sova som ett barn!",
+63,50,"Balanserad frukost på husets bekostnad!
+Sov gott.",
+63,51,"Ni måste vara utmattade.
+Känn er som hemma.",
+63,52,"Kom snart igen!
+Må havets välsignelser följa er.",
+63,53,"Tack för att ni valde oss.
+Ta hand om er.",
+63,54,Titta in när ni är i närheten.,
+63,55,"Du sov gott, va?
+Akta dig där ute!",
+63,56,"Hihi, sov du gott? Kom snart igen!",
+63,57,"Hoppas ni vilade gott.
+Vi ser fram emot er nästa besök.",
+63,58,"Oj, du har visst inte tillräckligt med pengar.",
+63,59,"Jag befarar att det är omöjligt att låta
+er få stanna utan att betala avgiften.",
+63,60,"Nej, så går det inte. Ni har inte råd.",
+63,61,"Det räcker inte! Vad försöker ni?
+Detta är en affärsrörelse, vet ni!",
+63,62,"Hmm... Ni har visst lite för lite.
+Kom tillbaka när ni har pengarna!",
+63,63,"Tyvärr kräver vi full betalning
+i förskott för att allokera rum.",
+63,1,Gå ut,
+63,5,Prat,
+63,7,Undersök,
+63,31,Rumskostnad: <PART> OTH,
+63,32,Ja,
+63,33,Nej,
+63,64,Dipan,
+63,65,Värdshusvärd,

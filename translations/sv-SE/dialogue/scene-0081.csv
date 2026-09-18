@@ -1,70 +1,132 @@
 resource,message_id,translated,notes
-81,7,,
-81,8,,
-81,9,,
-81,10,,
-81,14,,
-81,17,,
-81,18,,
-81,20,,
-81,21,,
-81,22,,
-81,23,,
-81,24,,
-81,25,,
-81,26,,
-81,28,,
-81,29,,
-81,30,,
-81,42,,
-81,31,,
-81,62,,
-81,36,,
-81,37,,
-81,39,,
-81,40,,
-81,41,,
-81,47,,
-81,50,,
-81,55,,
-81,57,,
-81,59,,
-81,60,,
-81,64,,
-81,67,,
-81,69,,
-81,1,,
-81,2,,
-81,3,,
-81,4,,
-81,5,,
-81,6,,
-81,15,,
-81,16,,
-81,19,,
-81,27,,
-81,32,,
-81,33,,
-81,34,,
-81,35,,
-81,38,,
-81,43,,
-81,44,,
-81,45,,
-81,46,,
-81,48,,
-81,49,,
-81,54,,
-81,56,,
-81,58,,
-81,61,,
-81,63,,
-81,65,,
-81,66,,
-81,68,,
-81,2312,,
-81,2891,,
-81,2892,,
-81,2893,,
-81,2894,,
-81,2895,,
+81,7,"Vad gör du i den här byn?
+Det finns inte mycket att se här. <PART>
+---
+Bara ruinerna uppe bland bergen.
+En vilsen man snubblade på dem för åratal sedan. <PART>
+---
+Det finns något levande där inne,
+så ingen i byn går nära.",
+81,8,"En sådan ofantlig struktur i bergen?
+Det är för att skydda en otrolig skatt, <PART>
+---
+eller så säger farfar. Äventyrare som går dit
+kommer alltid tillbaka besegrade av monstren.",
+81,9,"Kom du för att du hört ryktena om
+skatten? <PART>
+---
+Äventyrare dyker upp då och då, men
+lämnar besvikna. Titta på det här stället.",
+81,10,"Låt mig säga en sak <PART> ---- <PART>
+vilken idiot som helst kan anfalla rakt på. <PART>
+---
+Knutet är att pröva olika vinklar,
+och göra det lätt för sig själv. <PART>
+---
+Jag råkade ut för min beskärda del monster
+i mina dar.",
+81,14,"Hej, jag såg dig häromdagen! Hur gick
+det i ruinerna? Hittade du skatten?",
+81,17,"Så det fanns verkligen! Ingen här har
+någonsin sett den... Du är verkligen något!",
+81,18,"Vilken skam...
+Du åkte ända dit i onödan. <PART>
+---
+Tappa inte hoppet! Jag ger dig det här!
+Jag hittade det uppe bland bergen.",
+81,20,"När jag blir stor ska jag bli äventyrare!
+Jag samlar skatter och hjälper byn växa!",
+81,21,"Känner du spänningen i luften? Det känns
+som när ett monster överväldigar dig.",
+81,22,"Alla djuren är förstelnade!
+Vad i hela världen pågår?",
+81,23,"Resenärerna säger alla att Dipan krossats.
+Är det sant?",
+81,24,"Mamma sa att det kommer bli tufft.
+Hon sa att vi måste släppa hunden...",
+81,25,"Bara dåliga nyheter sedan Dipan föll.
+Villnore höjer skatter och militariserar. <PART>
+---
+Dags för mig att lösa in mina besparingar och
+ge mig av till en säker plats. <PART>
+---
+Saken är att säkra platser numera
+inte finns...",
+81,26,"Världen destabiliserades så plötsligt,
+att det bara kan vara gudarnas verk.",
+81,28,"Någon uppe i bergen sa att han såg
+ett underligt ljus i Dipans riktning.",
+81,29,"Har du hört talas om att knacka? Jag gömde just
+skatter i <PART> ---- <PART> jag menar, inget att se här!",
+81,30,"Hönorna här lägger guldägg, men de
+smakar likadant. Är de värda något?",
+81,42,Ser hungrigt ut...,
+81,31,"Titta på den här skiten de matar mig med!
+Den här byn är helt fel, helt fel! <PART>
+---
+Kuckeliku! En människa som pratar! <PART>
+---
+Omöjligt, omöjligt! Hur bär du dig åt?
+Ringen? Ringen! Salomons ring! <PART>
+---
+Så det är så det fungerar...
+Var snäll och mata mig.",
+81,62,"En människa som pratar!?
+Jag vill ha mat, ge mig mat!",
+81,36,Här ska du få.,
+81,37,Mums mums! Jag älskar människor!,
+81,39,"Förlåt...
+Jag har ingen mat att ge dig.",
+81,40,"Kuckeliku!
+Min mage är tom!",
+81,41,"Tack för ingenting, människa.",
+81,47,Ät upp!,
+81,50,"Hmm...
+Just det... Tack.",
+81,55,"Hmm...
+Just det... Tack.",
+81,57,"Hmm...
+Just det... Tack.",
+81,59,"Hmm...
+Just det... Tack.",
+81,60,"Förlåt...
+Jag har ingen mat att ge dig.",
+81,64,"Varför ser min husse så ledsen ut?
+Hur kan jag få honom att le?",
+81,67,JAG VILL HA!,
+81,69,SLUT PÅ DET!,
+81,1,Värdshus,
+81,2,Hus,
+81,3,Utgång,
+81,4,Lämna Coriander?,
+81,5,Ja,
+81,6,Nej,
+81,15,Det gjorde jag.,
+81,16,Ingen sån tur.,
+81,19,Erhöll <PART> Drottninggele,
+81,27,Erhöll <PART> Guldägg,
+81,32,Ge den benmjöl?,
+81,33,Visst.,
+81,34,Inte.,
+81,35,Erhöll <PART> Benmjöl,
+81,38,Erhöll <PART> Benmjöl,
+81,43,Ge den benmjöl?,
+81,44,Visst.,
+81,45,Inte.,
+81,46,Erhöll <PART> Benmjöl,
+81,48,Erhöll <PART> Benmjöl,
+81,49,Erhöll <PART> Kycklingfoder,
+81,54,Erhöll <PART> Grönsaksrester,
+81,56,Erhöll <PART> Snäckbete,
+81,58,Erhöll <PART> Fågelspillning,
+81,61,Erhöll <PART> Salomons ring,
+81,63,Erhöll <PART> Salomons ring,
+81,65,Erhöll <PART> Salomons ring,
+81,66,Erhöll <PART> Salomons ring,
+81,68,Erhöll <PART> Salomons ring,
+81,2312,Coriander,
+81,2891,Flicka,
+81,2892,Stadsbo,
+81,2893,Äventyrare,
+81,2894,Höna,
+81,2895,Hund,

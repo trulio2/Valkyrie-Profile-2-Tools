@@ -1,71 +1,189 @@
 resource,message_id,translated,notes
-83,4,,
+83,4,"Jag har varit i ruinerna i bergen. <PART>
+---
+De är en imponerande syn, mitt ute i ingenstans. <PART>
+---
+Det fanns monster, så jag kunde inte gå in. De ruinerna är verkligen något. <PART>
+---
+Den som byggde det stället visste verkligen vad de gjorde.",
 83,400,,
 83,401,,
 83,402,,
-83,2263,,
-83,2264,,
-83,2266,,
-83,2303,,
-83,2304,,
-83,2306,,
-83,2343,,
-83,2344,,
-83,2346,,
-83,2383,,
-83,2384,,
-83,2386,,
-83,2423,,
-83,2424,,
-83,2426,,
-83,2463,,
-83,2464,,
-83,2466,,
-83,2551,,
-83,2552,,
-83,2554,,
-83,2591,,
-83,2592,,
-83,2594,,
-83,2809,,
-83,2810,,
-83,2811,,
-83,2812,,
-83,2813,,
-83,2814,,
-83,2815,,
-83,2816,,
-83,2817,,
-83,2818,,
-83,2819,,
-83,2820,,
-83,2821,,
-83,2822,,
-83,2823,,
-83,2824,,
-83,2825,,
-83,2826,,
-83,2827,,
-83,2828,,
-83,2829,,
-83,2830,,
-83,2831,,
-83,2832,,
-83,2833,,
-83,2834,,
-83,2835,,
-83,2836,,
-83,2837,,
-83,2838,,
-83,1,,
-83,3,,
-83,2806,,
-83,2807,,
-83,2808,,
-83,2839,,
-83,2956,,
-83,2957,,
-83,2958,,
-83,2975,,
-83,2976,,
-83,2978,,
+83,2263,"Efter att ha varit tillsammans så länge,
+är det en underlig känsla att vara ensam. <PART>
+---
+Hur mår de andra?",
+83,2264,"När det gäller gudar och människor är
+ ingen av dem god eller ond. <PART>
+---
+Det finns gott och ont bland människor,
+liksom det finns bland gudarna.",
+83,2266,"Jag mår alldeles utmärkt, som du ser!
+Det känns som att det här är mitt hem nu. <PART>
+---
+Alla i byn älskar mig!
+Jag är alltid samtalsämnet!",
+83,2303,"Öh... Hmm...
+...Glöm det. Det är inte viktigt.",
+83,2304,"Det finns gott och ont bland människor,
+liksom det finns bland gudarna.",
+83,2306,"Jag tänkte leva ett lugnt liv, men...
+Det verkar som att popularitet har sina fördelar.",
+83,2343,"Det finns de som försöker
+dämpa kaoset i Midgard. <PART>
+---
+De är dock alla för svaga
+för att möta det som finns där ute. <PART>
+---
+Tror du att du kan
+stå upp för Midgards fred?",
+83,2344,"Midgard är inget annat än en skördeplats
+för Nifleheim och Valhalla. <PART>
+---
+När mänskliga själar vandrar vidare väljer gudarna
+de bästa och underjorden får resten. <PART>
+---
+Allt jag vill är att rädda Midgard från detta öde.
+Jag vill inte ta parti för någon av sidorna.",
+83,2346,"Behöver du min hjälp igen?
+Du vet att du kan lita på mig! <PART>
+---
+Jag behöver bara avsluta några uppdrag.
+Slå ihjäl kobolder i skogen här intill, <PART>
+---
+gobliner i grottan vid byn,
+ödlor vid floden, och... <PART>
+---
+Det borde inte dröja... länge...",
+83,2383,"Jag tror du klarar vilken
+situation som helst som dyker upp.",
+83,2384,"Allt jag vill är att rädda Midgard från
+händerna på Valhalla och Nifleheim. <PART>
+---
+Jag vill inte ta parti för någon av sidorna.",
+83,2386,"Det gläder mig att hjälpa dig så fort
+jag gjort klart sakerna här.",
+83,2423,"Det är viktigt att leva i lugn och ro. Men jag
+är inte van vid den typen av liv. <PART>
+---
+Vad ska jag göra?
+Att leva så här passar mig inte.",
+83,2424,"Om mänskliga själar vandrar vidare för evigt,
+kommer världen att stagnera. <PART>
+---
+Själar som avviker från gränserna för Valhalla
+och Nifleheim behöver ett mål.",
+83,2426,"Du borde leva varje dag som om den vore din sista.
+Grip tag i livet! <PART>
+---
+Va? Vad gäller mig?
+Självklart njuter jag av varje dag i mitt liv! <PART>
+---
+Kom igen, säg efter mig:
+Livet är fantastiskt!",
+83,2463,"Jag föredrar att hålla mig sysselsatt än att
+tillbringa dagarna med att inte göra något. <PART>
+---
+Jag antar att jag borde vara tacksam
+över att ha ett jobb.",
+83,2464,"Få människor kan fortsätta utan ett syfte. <PART>
+---
+Utan himlarna skulle ojämlikhet födas,
+och den skulle bara växa. <PART>
+---
+Samma sak gäller underjorden.
+Båda världarna är i själva verket ytterst nödvändiga.",
+83,2466,"Glöm inte mina ord!
+Grip alla tillfällen! <PART>
+---
+Spring mot din framtid!
+Titta inte tillbaka! Uppfattat?",
+83,2551,"Det är inte mycket, men ta detta.",
+83,2552,"Jag vet inte om det kommer till nytta,
+men var snäll och ta detta.",
+83,2554,"Här, ta detta! Det ska ge dig
+energi som mig!",
+83,2591,"Det är en underlig känsla att vara ensam.
+Hur mår de andra? <PART>
+---
+Särskilt... Hmm... Hur mår...?
+I-ingen fara! Glöm vad jag sa.",
+83,2592,"Fru Silmeria räddade min själ från en
+evighet av död i Nifleheim, i Huls händer. <PART>
+---
+Precis som människor finns det pålitliga gudar
+och svekfulla gudar. <PART>
+---
+Håller du inte med?",
+83,2594,"Hej! Det är du! <PART>
+---
+Hur är det?
+Du minns mig, eller hur? <PART>
+---
+Jag mår toppen, som du ser.
+Jag känner att den här staden är mitt hem nu. <PART>
+---
+Det finns fortfarande monster här, men
+frukta inte! Zunde är här!",
+83,2809,"Vill du övernatta?
+Vi har ett rum med utsikt ledigt.",
+83,2810,Välkommen. Vill du ha ett rum?,
+83,2811,"Oj, gäster som söker rum?",
+83,2812,"Ni är resenärer, eller hur? Ska ni stanna?",
+83,2813,"Hälsningar. Ni ser ut att
+söka ett rum. Stämmer det?",
+83,2814,"Det är en ära att ta emot ert besök.
+Ska jag boka ert rum?",
+83,2815,"Vilken skam.
+Kom tillbaka om ni ångrar er.",
+83,2816,"Besök oss gärna igen
+när ni har chansen.",
+83,2817,Jaså. Och jag som blev så upprymd.,
+83,2818,"Ge er av då, inget hängande här.",
+83,2819,"Nåväl, det är er förlust.
+Ni går miste om förstklassig service.",
+83,2820,"Om tillfället ges,
+audra gärna hos oss igen.",
+83,2821,"Låt vågornas vaggsång
+inbjuda dig till sömn.",
+83,2822,Njut av er vistelse.,
+83,2823,"Så ni stannar verkligen?
+Vila ut!",
+83,2824,"Jag har precis bytt lakan.
+Du kommer sova som ett barn!",
+83,2825,"Balanserad frukost på husets bekostnad!
+Sov gott.",
+83,2826,"Ni måste vara utmattade.
+Var snälla och gör er hemmastadda.",
+83,2827,"Kom snart igen!
+Må havets välsignelser följa er.",
+83,2828,"Tack för att ni valde oss.
+Ta hand om er.",
+83,2829,Titta in när ni är i närheten.,
+83,2830,"Du sov gott, eller hur?
+Se upp där ute!",
+83,2831,"Hehe, sov du gott? Kom snart igen!",
+83,2832,"Jag litar på att ni vilat väl.
+Vi ser fram emot att tjäna er snart igen.",
+83,2833,"Oj, du har inte tillräckligt med pengar.",
+83,2834,"Jag är rädd att det vore omöjligt att tillåta
+er att stanna utan att betala rätt avgift.",
+83,2835,"Åh, det går inte. Ni har inte råd.",
+83,2836,"Det räcker inte! Vad försöker ni hitta på?
+Det här är ett företag, vet ni!",
+83,2837,"Hmm... Det ser ut som att det fattas lite.
+Kom tillbaka när ni har pengarna!",
+83,2838,"Jag är rädd att vi kräver full betalning
+i förskott för att tilldela rum.",
+83,1,Gå ut,
+83,3,Prata,
+83,2806,Rumskostnad: <PART> OTH,
+83,2807,Ja,
+83,2808,Nej,
+83,2839,Coriander,
+83,2956,Erhöll <PART> Gudinnans hängsmycke,
+83,2957,Erhöll <PART> Jordstenen,
+83,2958,Värdshusvärd,
+83,2975,Aaron,
+83,2976,Dyn,
+83,2978,Zunde,

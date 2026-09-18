@@ -1,36 +1,98 @@
 resource,message_id,translated,notes
-123,3,,
-123,4,,
-123,5,,
-123,10,,
-123,11,,
-123,38,,
-123,14,,
-123,15,,
-123,16,,
-123,17,,
-123,19,,
-123,18,,
-123,20,,
-123,21,,
-123,22,,
-123,25,,
-123,31,,
-123,32,,
-123,34,,
-123,2,,
-123,6,,
-123,7,,
-123,8,,
-123,9,,
-123,23,,
-123,24,,
-123,27,,
-123,33,,
-123,35,,
-123,36,,
-123,37,,
-123,2943,,
-123,2948,,
-123,2949,,
-123,2950,,
+123,3,"Det ryktades att en flicka gömdes
+i egendomen utanför staden. <PART>
+---
+Alla hade en teori <PART> ---- <PART> en del sa att hon
+var prinsessan av Dipan, som troddes vara död. <PART>
+---
+Men jag antar att vi aldrig får veta, eftersom
+platsen föll ihop fullständigt.",
+123,4,"Om det verkligen var prinsessan av Dipan
+valde hon ett bra gömställe. <PART>
+---
+Vem skulle någonsin ha tänkt
+att söka efter henne här?",
+123,5,Ser hungrig ut...,
+123,10,Ät på!,
+123,11,"Förlåt...
+Jag har ingen mat att ge dig.",
+123,38,Tack. Jag kommer att ha god användning för den.,
+123,14,"Det finns en gammal sägen om en drake som
+bodde i östra delen av kontinenten. <PART>
+---
+Draken hatade människor och sov djupt inne i
+sitt palats, och vakade över en skatt.",
+123,15,"Du skulle bli förvånad över hur många
+gamla sägner som visar sig vara sanna. <PART>
+---
+Kanske är den där sann också.",
+123,16,"Himlen blixtrade till för en sekund, och det
+skrämde iväg till och med lopporna från min hund! <PART>
+---
+Han rullade ihop sig i hörnet, och nu vägrar
+han att sätta ett steg utanför huset.",
+123,17,"Vad var det egentligen för något? Folk är
+i uppståndelse, och husdjuren är skräckslagna!",
+123,19,"Kungen av Dipan var verkligen skyldig till synd,
+men var han inte också en stor ledare? <PART>
+---
+Hans liv kunde ha skonats. Jag undrar
+om gudarna känner till nåd.",
+123,18,"Hittills har det varit kampanjer och skärmytslingar,
+men med Dipan borta kommer det att trappas upp. <PART>
+---
+Vart riktar Crell Monferaigne blicken härnäst?
+Jag antar att bara gudarna vet...",
+123,20,"Med Dipan förstörd över en natt
+antar jag att gudarna verkligen finns. <PART>
+---
+Jag trodde aldrig riktigt på allt det där,
+men hädanefter går jag till kapellet!",
+123,21,"Jag trodde bara på det jag sett
+med mina egna ögon, <PART>
+---
+men om gudarna är verkliga
+måste jag ändra mitt leverne.",
+123,22,"Vår hund brukar alltid gömma saker, rackaren.
+Han får tag i otroliga saker! <PART>
+---
+Men han visar oss inte, sin familj, något
+om han inte får en goding. <PART>
+---
+Och särskilt inte främlingar!
+Han måste vara på humör.",
+123,25,Tack. Jag kommer att ha god användning för den.,
+123,31,"Vov, vov, vov! Förstår du orden som kommer
+ur min mun? Är du säker, är du säker? <PART>
+---
+Jag har alltid velat prata med en människa!
+Jag tänkte att det kunde vara intressant. <PART>
+---
+Låt mig då gengälda dig.
+Har du hört talas om Serafporten? <PART>
+---
+Det är en märklig värld som fullständigt
+struntar i vår världs lagar. <PART>
+---
+Därför har allt som händer där
+ingen betydelse för den här världen.",
+123,32,"Åh, just det! Jag plockade upp det här häromdagen.
+Jag låter dig få min dyrbara fångst.",
+123,34,"Ingen känner till Serafporten.
+Jag har inte ens berättat för mina husse!",
+123,2,Hus,
+123,6,Ge den kotletter?,
+123,7,Ja,
+123,8,Nej,
+123,9,Erhöll <PART> Kotletter,
+123,23,Crell Monferaigne <PART> Östra utkanten,
+123,24,Erhöll <PART> Blixtkristall,
+123,27,Erhöll <PART> Salomons Ring,
+123,33,Erhöll <PART> Gudinnans Tinktur,
+123,35,Erhöll <PART> Kotletter,
+123,36,Erhöll <PART> Salomons Ring,
+123,37,Erhöll <PART> Gudinnans Tinktur,
+123,2943,Crell Monferaigne,
+123,2948,Stadsbo,
+123,2949,Matrona,
+123,2950,Hund,

@@ -1,32 +1,97 @@
 resource,message_id,translated,notes
-423,3,,
-423,13,,
-423,18,,
-423,53,,
-423,58,,
-423,93,,
-423,98,,
-423,133,,
-423,138,,
-423,173,,
-423,178,,
-423,213,,
-423,218,,
-423,301,,
-423,306,,
-423,341,,
-423,346,,
+423,3,"Är det här skogens ingång?
+Vi kom ända hit i en blink... <PART>
+---
+Vi får inte skada älvorna... <PART>
+---
+Vi får stänga in dem i kristaller och
+ta oss vidare utan att bli upptäckta.",
+423,13,"Har du det tufft? <PART>
+---
+Livet består av både med- och motgångar.
+Ta inte allt så tungt.",
+423,18,"Va, är du här igen?
+Du måste ha mycket tid över. <PART>
+---
+Hoppas du kom för att få en present?
+Hmm, jag får fundera.",
+423,53,"Livet består av både med- och motgångar.
+Ta inte allt så tungt.",
+423,58,"Ta gladeligen emot vad som bjuds.
+Det är väl ändå lite som ett offer!",
+423,93,"Valhall verkar inte vara något
+vidare skönt ställe. <PART>
+---
+Vem var det som påstod något annat
+nerifrån början?",
+423,98,"Hörru, har du inget för dig?
+Har du tid att ströva här i skogen? <PART>
+---
+Du måste väl ha massor att göra?
+Vad är det med dig?!",
+423,133,"Vem var det som sa att Valhall
+var ett bra ställe? <PART>
+---
+Den personen förtjänar väl att
+ställas till svars, med svärd mot strupen?",
+423,138,"Om du vill komma hit är du
+alltid välkommen... <PART>
+---
+Men då måste jag skaffa tallrikar
+åt er allihop. <PART>
+---
+Det kostar, så slösa inte bort det!",
+423,173,"Ursäkta att jag säger det, men
+förstår du att ni är ett konstigt gäng? <PART>
+---
+En konstigare samling har jag
+väl aldrig sett.",
+423,178,"Förr i tiden trodde jag att ingen
+var olyckligare än mig. <PART>
+---
+Men nu är det annorlunda. <PART>
+---
+Det var tack vare det förflutna som jag
+fick möta dem jag skulle möta. <PART>
+---
+Huruvida man är lycklig eller olycklig avgörs
+av de sista ögonblicken av ens liv.",
+423,213,"Du är alldeles för snäll. <PART>
+---
+Det där i himlen borde du
+låta bli. <PART>
+---
+De som orsakat det får väl
+ta ansvar själva!",
+423,218,"Och du då?
+Tycker du att du har det olyckligt?",
+423,301,Ta det här. Bli lite gladare!,
+423,306,Lyssna nu! Ta emot det bara!,
+423,341,"Va? Tänk att vi skulle mötas här!
+Var det här vad man kallar öde? <PART>
+---
+Jaha... Det är inte läge att vara glad.
+Har du det tufft? <PART>
+---
+Ja, livet består av både med- och motgångar.
+Ta inte allt så tungt.",
+423,346,"Länge sedan! Mår du bra?
+Jag har något jag ville ge dig. <PART>
+---
+...Hmm? Öh...
+Ha ha ha, vi tar det nästa gång!",
 423,381,,
 423,382,,
 423,383,,
-423,1,,
-423,2,,
-423,4,,
-423,5,,
-423,6,,
-423,386,,
-423,387,,
-423,388,,
-423,389,,
-423,390,,
-423,395,,
+423,1,Andarnas Skog,
+423,2,Utgång,
+423,4,"Lämna Andarnas Skog?
+(Förseglingsstenarna återställs till ursprungsplatserna.)",
+423,5,Ja,
+423,6,Nej,
+423,386,Andarnas Skog,
+423,387,Erhöll <PART> Elixir,
+423,388,Erhöll <PART> Ädel Elixir,
+423,389,Erhöll <PART> Gudinnans Tinktur,
+423,390,Lwyn,
+423,395,Crescent,

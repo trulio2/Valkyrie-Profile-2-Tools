@@ -1,27 +1,86 @@
 resource,message_id,translated,notes
-99,3,,
-99,4,,
-99,5,,
-99,6,,
-99,7,,
-99,19,,
-99,9,,
-99,10,,
-99,29,,
-99,11,,
-99,12,,
-99,13,,
-99,14,,
-99,15,,
-99,16,,
-99,17,,
-99,18,,
-99,23,,
-99,24,,
-99,27,,
-99,1,,
-99,21,,
-99,146,,
-99,2886,,
-99,2887,,
-99,2888,,
+99,3,"Hör av dig, har det dykt upp monster i staden?
+Ryktet säger att de kom från Turgen Gruva.",
+99,4,"Turgen Gruva? Är det inte där de grävde
+fram ett monsterbo? <PART>
+---
+Monstren som strövar här numera
+är väl de därifrån...",
+99,5,"Aviserade och spärrade av ingången,
+sen fick det vara. <PART>
+---
+Skulle sprängt hela gruvan med dynamit.
+Men vad vet man nu i efterhand... <PART>
+---
+Jag ska be gillet om en belöning.
+Då kan väl någon nyfiken äventyrare ta hand om det!",
+99,6,"Den som såg monstret i gruvan säger att
+det såg ut som en gigantisk insekt. <PART>
+---
+De piskade på det med pinnar och svärd,
+men det verkade inte bekomma det. <PART>
+---
+De jagade bort det med brinnande facklor,
+så det kanske är svagt för eld? <PART>
+---
+Hursomhelst borde vi anlita någon
+innan skadorna blir större.",
+99,7,"Förresten fick vi nyligen en stor order
+på stål till Dipan via Solde. <PART>
+---
+Från Crell Monferaigne, som bygger upp sin
+krigsmakt, är det vanligt. Men från Dipan...",
+99,19,"Fick du din belöning? Den gamle killen
+är översvallande, men snäll.",
+99,9,"Jag tyckte detta var märkligt redan då <PART> ---- <PART> varför det var ett monsterbo just där <PART>
+---
+I efterhand känns det som att någon planterat monsterboet... Sådant händer ofta när handlare bråkar om mineralrätter.",
+99,10,"Import och export till Dipan har avstannat helt
+så jag sitter här och dödar tid. <PART>
+---
+Soldefolket litar så blint på kung Barbarossa
+att de inte gör något själv. Bekymmersamt.",
+99,29,"Dipan är så stor att det nog inte faller
+trots attacken...",
+99,11,"Överdriven blomstring leder till undergång...
+Dipan gjorde sig för god.",
+99,12,"Jag hörde att en valkyria i svart rustning
+ledde soldaterna där.",
+99,13,"Kan inte sägas högt, men på kung Barbarossas
+avrättning ska den döda prinsessan ha dykt upp! <PART>
+---
+Kan inte svära på att det är sant,
+men man hör saker...",
+99,14,"Attacken mot Dipan och den döda prinsessans
+återkomst... Det står nog något bakom.",
+99,15,"Handeln har gått bra och Villnore
+har varit stabilt några år nu. <PART>
+---
+Till och med tjuvgillet har hållit sig stilla.
+Men hur länge? Ingen vet.",
+99,16,"Ännu en gång är världen på väg in i krig...
+Varför måste det bli så här?",
+99,17,"Var det du som sågade monstret i gruvan?
+Tack ska du ha, du räddade oss! <PART>
+---
+Gillet har utlyst en belöning.
+Den gamle gruvarbetaren ska ha pengarna. <PART>
+---
+Han med bandy om huvudet och skägg,
+honom hittar du någonstans på gatan...",
+99,18,"Den gamle gruvarbetaren lär stå och
+prata någonstans på gatan.",
+99,23,"Den som såg monstret i gruvan säger att
+det såg ut som en gigantisk insekt. <PART>
+---
+Innan skadorna växer sig större borde vi
+anlita någon som sköter det här.",
+99,24,"Civålinvånare som jag har inte koll på
+trupperna. Börjar de värva får vi se.",
+99,27,"Jag vet inte om Villnores militära planer, men börjar värvingen får jag veta.",
+99,1,Utgång,
+99,21,Lyssna,
+99,146,Villnore,
+99,2886,Gamling,
+99,2887,Köpmän,
+99,2888,Stadsbo,

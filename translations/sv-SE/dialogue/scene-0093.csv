@@ -1,44 +1,78 @@
 resource,message_id,translated,notes
-93,3,,
-93,4,,
-93,5,,
-93,6,,
-93,7,,
-93,2866,,
-93,2867,,
-93,2868,,
-93,2869,,
-93,2870,,
-93,2871,,
-93,2872,,
-93,2873,,
-93,2874,,
-93,2875,,
-93,2876,,
-93,2877,,
-93,2878,,
-93,2879,,
-93,2880,,
-93,2881,,
-93,2882,,
-93,2883,,
-93,2884,,
-93,2885,,
-93,2886,,
-93,2887,,
-93,2888,,
-93,2889,,
-93,2890,,
-93,2891,,
-93,2892,,
-93,2893,,
-93,2894,,
-93,2895,,
-93,1,,
-93,2863,,
-93,2864,,
-93,2865,,
-93,2896,,
-93,2897,,
-93,2898,,
-93,2899,,
+93,3,"Hej allesammans, äventyrare! Lyssna!
+Jag mötte de här monstren häromdagen <PART> ---- <PART>
+---
+ödlemän. Har ni hört talas om dem? Hur som helst,
+de är ständigt på defensiven! <PART>
+---
+Varje gång jag högg dem framifrån
+parerade de mitt slag! <PART>
+---
+Vore det inte för deras blockeringar
+skulle de inte vara så besvärliga.",
+93,4,"Ödlemännen verkar använda vapen som lämnats kvar i ruinerna. <PART>
+---
+Man vet aldrig <PART> ---- <PART> de kan ha någon värdefull artefakt på sig!",
+93,5,"Jag flydde från Solde för att komma hit, men Villnore har egna problem!",
+93,6,"Du vet att Dipan jämnades med marken? Nåväl, Solde drabbades av efterskalven.",
+93,7,"Alla som kan lämna Solde strömmar ut ur staden. <PART>
+---
+Enda kvarvarande är barn, äldre och de som inte har någon annanstans att ta vägen.",
+93,2866,"Ska du övernatta?
+Vi har ett rum med utsikt ledigt.",
+93,2867,Välkommen. Önskar du ett rum?,
+93,2868,"Jaså, gäster som söker rum?",
+93,2869,"Ni är resenärer, va? Ska ni stanna?",
+93,2870,"Hälsningar. Ni ser ut att
+leta efter ett rum. Har jag rätt?",
+93,2871,"Det är en ära att ta emot er.
+Ska jag boka ert rum?",
+93,2872,"Synd.
+Kom tillbaka om du ångrar dig.",
+93,2873,"Besök oss gärna igen
+när ni får chansen.",
+93,2874,Äsch. Och jag som blev upphetsad.,
+93,2875,"Gå vidare nu, inget dagdriveri.",
+93,2876,"Jaha, det är din förlust.
+Du missar utmärkt service.",
+93,2877,"Om tillfället ges,
+besök oss gärna igen.",
+93,2878,"Låt vågornas sång
+bjuda in dig till sömn.",
+93,2879,Hoppas du trivs med vistelsen.,
+93,2880,"Så du stannar alltså?
+Ta igen dig!",
+93,2881,"Jag har just bytt lakan.
+Du kommer att sova som ett barn!",
+93,2882,"Balanserad frukost på husets bekostnad!
+Sov gott.",
+93,2883,"Ni måste vara utmattade.
+Känn er som hemma.",
+93,2884,"Kom snart igen!
+Må havets välsignelser följa er.",
+93,2885,"Tack för att ni valde oss.
+Ta hand om er.",
+93,2886,Titta in när ni är i närheten.,
+93,2887,"Du sov gott, va?
+Akta dig där ute!",
+93,2888,"Hihi, sov du gott? Kom snart igen!",
+93,2889,"Hoppas ni vilade gott.
+Vi ser fram emot er nästa besök.",
+93,2890,"Oj, du har visst inte tillräckligt med pengar.",
+93,2891,"Jag befarar att det är omöjligt att låta
+er få stanna utan att betala avgiften.",
+93,2892,"Nej, så går det inte. Ni har inte råd.",
+93,2893,"Det räcker inte! Vad försöker ni?
+Detta är en affärsrörelse, vet ni!",
+93,2894,"Hmm... Ni har visst lite för lite.
+Kom tillbaka när ni har pengarna!",
+93,2895,"Tyvärr kräver vi full betalning
+i förskott för att allokera rum.",
+93,1,Gå ut,
+93,2863,Rumskostnad: <PART> OTH,
+93,2864,Ja,
+93,2865,Nej,
+93,2896,Villnore,
+93,2897,Äventyrare,
+93,2898,Dama,
+93,2899,Värdshusvärd,

@@ -1,39 +1,122 @@
 resource,message_id,translated,notes
-121,5,,
-121,6,,
-121,11,,
-121,12,,
-121,13,,
-121,14,,
-121,15,,
-121,16,,
-121,17,,
-121,18,,
-121,19,,
-121,20,,
-121,21,,
-121,22,,
-121,23,,
-121,24,,
-121,25,,
-121,26,,
-121,27,,
-121,28,,
-121,29,,
-121,30,,
-121,31,,
-121,32,,
-121,33,,
-121,34,,
-121,2,,
-121,3,,
-121,4,,
-121,7,,
-121,8,,
-121,9,,
-121,10,,
-121,35,,
-121,665,,
-121,2825,,
-121,2826,,
-121,2827,,
+121,5,"Det heliga slottet Crell Monferaigne ligger
+framför dig. Endast auktoriserade personer!",
+121,6,"Det heliga slottet Crell Monferaigne ligger
+framför dig. Inträde vid dödsstraff!",
+121,11,"Det sägs finnas en stor skatt
+här i närheten. Drak...glob, eller något. <PART>
+---
+Inte för att jag vet något! Du får själv
+utforska fängelsehålorna för att få reda på det.",
+121,12,"Den heter Drakglob, så den lär
+finnas någonstans med anknytning till drakar.",
+121,13,"Vi är verkligen i Crell Monferaigne.
+Vakterna här är elaka, elaka, elaka... <PART>
+---
+Medborgarna är för fina för vårt slags folk.
+Det är inget ställe för äventyrare.",
+121,14,"Nyheterna om Dipan är sorgliga,
+men här gläds de åt dem. <PART>
+---
+Nu slipper de Dipan som ser över axeln
+när de vill expandera.",
+121,15,"Pojken i huset bredvid blev inkallad,
+så vi firade alla äran, men... <PART>
+---
+Jag bara...
+Jag ber bara att det inte blir fler krig.",
+121,16,"Allt vi kan göra är att önska gudarnas
+välsignelser över de inkallade.",
+121,17,"Expansionen kommer att ge välstånd, men om
+min man eller son sändes ut i strid... <PART>
+---
+Jag bryr mig inte om vi vinner eller förlorar, jag vill bara
+ha dem tillbaka. Är jag självisk?",
+121,18,"Säkerheten för dem du älskar
+är den största belöningen av alla...",
+121,19,"Hur är Asgard, platsen
+där gudarna sägs bo? <PART>
+---
+Skiljer sig dimensionerna från vår värld?
+Jag vet vad de säger i teologin, men...",
+121,20,"De lärde oss att de som valts av
+Valkyrian blir gudarnas soldater. <PART>
+---
+Kriget tar aldrig slut ens i gudarnas värld,
+var kan vi då finna frid?",
+121,21,"Vårt land är nu i tillfälligt beredskapsläge.
+Misstänkta personer håller sig undan!",
+121,22,"Vårt land är nu i tillfälligt beredskapsläge.
+Misstänkta personer spetsas!",
+121,23,"Nuförtiden hör man bara dystra rykten
+om att Dipan är under attack och så. <PART>
+---
+Somliga säger att det är gudarnas vrede.
+Om det stämmer är de helt säkert dömda.",
+121,24,"Prästen förkunnade att attacken
+mot Dipan var gudarnas vrede. <PART>
+---
+Om så är fallet borde ett fromt land som
+Crell Monferaigne vara tryggt.",
+121,25,"Det låter så hemskt! Ett ljus blixtrade
+på himlen innan Dipan attackerades. <PART>
+---
+Enligt prästen var det gudarnas
+vredes eld. Dipan gick för långt.",
+121,26,"Det sägs att Dipan forskade på
+en väg att sätta sig mot gudarna. <PART>
+---
+Kung Barbarossa avvek från mänsklighetens väg
+med sin storartade plan.",
+121,27,"Prinsessan levde hela tiden. Hon
+kom just när kungen avrättades... <PART>
+---
+Om det stämmer är det fruktansvärt sorgligt. Jag antar
+att det inte finns något kvar för henne nu.",
+121,28,"Den som ledde räden mot Dipan var
+en valkyria klädd i svartglänsande rustning. <PART>
+---
+Så gudarna slog verkligen ner Dipan.
+Att sätta sig mot gudarna är mer än dumt.",
+121,29,"Dipans fall kommer precis lagom
+till förmån för folk här. De är alla uppspelta. <PART>
+---
+Men om upprustningen betyder
+ett jobb för mig, klagar jag inte!",
+121,30,"Jag reste en gång till Dipan, vet du.
+Det var en vacker och charmig plats. <PART>
+---
+Jag vet inte om den där forskningen, men
+jag minns att deras kung var en bra man.",
+121,31,"Kriget är till för att sprida gudarnas läror.
+Kungen och prästen kallar det ""heligt krig"". <PART>
+---
+Om vårt land styrde kontinenten, skulle
+en tragedi som Dipans aldrig ske.",
+121,32,"Så att Dipans tragedi aldrig upprepas,
+måste ett fromt land styra världen. <PART>
+---
+I tider som dessa måste vi
+alla offra oss.",
+121,33,"Sanningen är att när jag tänker på min man
+eller son som ger sig ut i krig, går jag sönder inombords. <PART>
+---
+Men om det sprider gudarnas läror,
+är det ett offer jag måste göra.",
+121,34,"Dipan föll för att de glömde
+att dyrka, älska och frukta gudarna. <PART>
+---
+Från och med nu ska vårt land styra
+kontinenten i Dipans ställe.",
+121,2,Hus,
+121,3,Värdshus,
+121,4,Hus,
+121,7,Utgång,
+121,8,Lämna Crell Monferaigne?,
+121,9,Ja,
+121,10,Nej,
+121,35,Crell Monferaigne <PART> Slottets portar,
+121,665,Crell Monferaigne,
+121,2825,Soldat,
+121,2826,Äventyrare,
+121,2827,Stadsbo,

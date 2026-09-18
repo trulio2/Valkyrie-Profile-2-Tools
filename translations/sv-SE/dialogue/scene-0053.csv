@@ -1,21 +1,55 @@
 resource,message_id,translated,notes
-53,3,,
-53,13,,
-53,14,,
-53,15,,
-53,16,,
-53,17,,
-53,18,,
-53,19,,
-53,20,,
-53,21,,
-53,22,,
-53,4,,
-53,5,,
-53,6,,
-53,7,,
-53,8,,
-53,23,,
-53,24,,
-53,25,,
-53,26,,
+53,3,"Där är han igen <PART> ---- <PART> och tränar, tränar,
+och tränar lite till med svärdet. <PART>
+---
+Jag vill att han tjänar kung Barbarossa väl,
+men lite studier har aldrig skadat någon.",
+53,13,"Det är farligt att lämna staden på natten.
+Njut hellre av hur vackert Dipan är i mörkret!",
+53,14,"Vi, Dipans riddare, patrullerar ständigt dessa gator,
+så resenärer som du kan känna er trygga. <PART>
+---
+Här finns inga monster eller rövare
+så njut av en nattlig promenad.",
+53,15,"Nu är det sent, så vi går hem.
+Och se till att studera ordentligt! <PART>
+---
+Du kan inte tjäna kungen om du bara
+blir bra på svärd och inte på vett!",
+53,16,"Stör inte min träning!
+Jag har just börjat få kläm på det. <PART>
+---
+När jag blir stor ska jag bli
+en av kungens riddare! <PART>
+---
+Därför måste jag träna redan nu!",
+53,17,"När jag är klar med... *flämt* svärdsträningen...!
+Nu ska jag... *flämt* träna spjut...!",
+53,18,"Låt mig bara träna lite till!
+Jag pluggar i morgon! Jag lovar!",
+53,19,"Kanske vet du inte det,
+men jag pluggar faktiskt hela tiden! <PART>
+---
+Till exempel vet jag att om man attackerar
+en fiende bakifrån <PART>
+---
+är det lättare att träffa och man gör mer skada <PART> ---- <PART>
+plus att man kan undvika motattacker!",
+53,20,"Det där är ju taktik-plugg!
+Det är inte vad mamma menar!",
+53,21,"När jag var liten tränade jag till gryningen
+i hopp om att en dag bli riddare. <PART>
+---
+Min mor oroade sig nog då,
+men nu ser hon mig med ett leende.",
+53,22,"Vapnets konst är värdefull, men i dessa fredliga tider
+är det kanske klokare att ägna sig åt studier.",
+53,4,Hus,
+53,5,Krog,
+53,6,Värdshus,
+53,7,Vapnaffär,
+53,8,Dipan <PART> Merneygatan,
+53,23,Dipan,
+53,24,Gossens Mor,
+53,25,Dipansk Soldat,
+53,26,Pojke,

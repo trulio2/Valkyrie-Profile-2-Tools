@@ -2,25 +2,77 @@ resource,message_id,translated,notes
 39,336,,
 39,337,,
 39,338,,
-39,2187,,
-39,2190,,
-39,2227,,
-39,2230,,
-39,2267,,
-39,2270,,
-39,2307,,
-39,2310,,
-39,2347,,
-39,2350,,
-39,2387,,
-39,2390,,
-39,2475,,
-39,2478,,
-39,2515,,
-39,2518,,
-39,1,,
-39,2,,
-39,2551,,
-39,2744,,
-39,2749,,
-39,2752,,
+39,2187,"Bara du kan välja din egen öde.
+Och det måste du göra just nu.",
+39,2190,"Jag har varit borta så länge att jag
+har svårt att vänja mig.",
+39,2227,"Det finns saker bara du kan göra.
+Tillåt dig att välja den väg du vill gå.",
+39,2230,"Jag förstår inte hur folk
+tänker någon gång, jag blir så förvånad.",
+39,2267,"Än om jag lever är jag
+en kvinna från det förflutna. <PART>
+---
+Jag har inget att lära ut
+åt folk i den här tiden. <PART>
+---
+Det är ju du som är drottningen.",
+39,2270,"Jag orkar inte jaga namn och
+öka sin tillgång. <PART>
+---
+Det har jag redan provat.
+Det lämnar bara ett tomt läge.",
+39,2307,"Tänk och välj vilken väg
+som är rätt för dig. <PART>
+---
+Det är din plikt och ett av
+de få rättigheter du äger.",
+39,2310,"Kanske är det på tiden att
+låta livet ta mig med där det vill.",
+39,2347,"Konstigt att läsa om sig själv
+i historieböcker. <PART>
+---
+Men det är ett trevligt läge.",
+39,2350,"Har du ett hantverk får du
+överleva ändå. <PART>
+---
+Fast det är ovisst hur mycket
+hantverk det är att svinga ett svärd...",
+39,2387,"Jag ser drag av min äldre bror
+i dig. <PART>
+---
+Jag var bara besvärlig för honom.
+Hoppas inte han är arg.",
+39,2390,"Häh?
+Jag klarar mig utmärkt. <PART>
+---
+Men någon gång borde jag
+hitta någon innan skönheten förgår.",
+39,2475,"Ta det här med dig.
+Det kan komma till användning någon gång.",
+39,2478,"Åh, ändå att du kom hit
+får du ta med en souvenir.",
+39,2515,"Än om jag lever är jag
+en kvinna från det förflutna. <PART>
+---
+Det finns inget att lära ut
+åt folk i den här tiden. <PART>
+---
+Den väg du väljer är din, även
+om den väljes felaktigt.",
+39,2518,"Hej där! Hur mår ni?
+Ni ser inte särskilt pigg ut. <PART>
+---
+Jag kämpar också för att få
+kunna leva utan strul. <PART>
+---
+Att försöka övertyga folk om att jag är den historiska
+Tyrith är omöjligt ändå. <PART>
+---
+Och vem bryr sig? Åtminstone har jag kul!",
+39,1,Utgång,
+39,2,Erhöll <PART> Stridskonst,
+39,2551,Solde,
+39,2744,Erhöll <PART> Fläckfri Amulett,
+39,2749,Celes,
+39,2752,Tyrith,

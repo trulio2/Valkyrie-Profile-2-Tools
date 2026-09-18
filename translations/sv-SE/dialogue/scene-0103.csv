@@ -1,31 +1,101 @@
 resource,message_id,translated,notes
-103,3,,
-103,4,,
-103,6,,
-103,7,,
+103,3,"Förlåt, jag ska använda den förståndigt...",
+103,4,Städar de aldrig här?,
+103,6,"Det hänger något där.
+Ett antikt dokument, kanske...",
+103,7,"<Teologi> <PART>
+Helig kraft som endast gudarna fick förfoga över <PART> ---- <PART>
+fragment av Yggdrasils kraft <PART> ---- <PART> förseglingsstenar.
+I människovärlden antar de formen av ljuskulor,
+alltför starka för dem som
+inte vet bättre.
+För den som lär sig bruka dem
+blir de till stor nytta <PART>
+---
+ <PART> <Teologi> <PART>
+En förseglingssten är en märklig sten med starka
+verkningar på platsen där den ligger.
+
+På ett slagfält där ingen kan dess kraft
+ska du ta den utan tvekan.
+Att flytta stenarna kan öppna nya vägar <PART>
+---",
 103,393,,
 103,394,,
 103,395,,
-103,2508,,
-103,2513,,
-103,2548,,
-103,2553,,
-103,2588,,
-103,2593,,
-103,2628,,
-103,2633,,
-103,2668,,
-103,2673,,
-103,2708,,
-103,2713,,
-103,2796,,
-103,2801,,
-103,2836,,
-103,2841,,
-103,1,,
-103,2,,
-103,5,,
-103,2863,,
-103,2864,,
-103,2878,,
-103,2883,,
+103,2508,"När allt är över ber jag att få
+träda i prinsessans tjänst.",
+103,2513,"Hur skulle det kännas om du gav bort en handstickad
+tröja nån och de skickade den vidare? <PART>
+---
+Nej förresten, det var bara ett exempel.
+I rent hypotetiska ordalag.",
+103,2548,"Oroligheter i himlen och
+het på jorden... <PART>
+---
+För att Midgard ska få frid måste
+sig båda stillas.",
+103,2553,"Funkar svärdet jag gav dig?
+Duger det? <PART>
+---
+Det är inte så att jag vill ha tillbaka det.
+Det är bara att min fru... ja...",
+103,2588,"Jag har hört talas om Dipan. <PART>
+---
+Så länge prinsessan Alicia lever
+släcks inte Dipans kungahus ljus. <PART>
+---
+Det är säkert vad den bortgångne
+kung Barbarossa vill.",
+103,2593,"Ja, kanske vi måste visa dem
+människornas styrka... <PART>
+---
+De måste lära sig att vi
+har samma värde som de.",
+103,2628,"Allt går nu som de tänkt sig. Överlever prinsessan
+inte det här, blir allt som de vill. <PART>
+---
+Det tänker jag inte tillåta. Oavsett
+omständigheterna måste du överleva.",
+103,2633,"Så länge de där däruppe ser ner på oss
+ändras ingenting. <PART>
+---
+Att göra saker av medlidande eller förakt
+förändrar ingenting. Så är det bara.",
+103,2668,"Prinsessan Alicia tycks inte vilja
+kontrollera Midgard. <PART>
+---
+Men Midgards krig kräver en stark
+ledare. <PART>
+---
+Jag väntar på att du bestämmer dig,
+hur länge det än tar.",
+103,2673,"Kroppen har blivit slö... Det är för att jag
+rör mig mindre nän förr.",
+103,2708,"För friden i Midgard...
+För människorna som kämpar i krig... <PART>
+---
+Jag ber dig, prinsessan Alicia, att välja att
+spendera resten av ditt liv på att rädda Midgard. <PART>
+---
+Det måste helt enkelt vara du.
+Då får jag bli envis.",
+103,2713,"Det här går inte längre... Jag måste
+börja träna igen.",
+103,2796,"Prinsessan Alicia, ta det här...
+Jag hoppas det är till någon hjälp.",
+103,2801,Det här borde komma till nytta.,
+103,2836,"När allt är över ber jag att få
+träda i prinsessans tjänst. <PART>
+---
+Jag är övertygad om att den enda jag
+ska tjäna i den här tiden är du.",
+103,2841,"Länge sedan. Så du lever än?
+Med tanke på att jag överlevt så oroade jag mig inte.",
+103,1,Utgång,
+103,2,Undersök,
+103,5,Undersök,
+103,2863,Villnore,
+103,2864,Erhöll <PART> Kraadsabel,
+103,2878,Roland,
+103,2883,Kraad,

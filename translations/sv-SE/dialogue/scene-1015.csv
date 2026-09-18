@@ -1,67 +1,183 @@
 resource,message_id,translated,notes
-1015,6,,
-1015,58,,
-1015,61,,
-1015,59,,
-1015,60,,
-1015,57,,
-1015,8,,
-1015,56,,
-1015,9,,
-1015,13,,
-1015,14,,
-1015,15,,
-1015,16,,
-1015,17,,
-1015,21,,
-1015,27,,
-1015,31,,
-1015,35,,
-1015,39,,
-1015,43,,
-1015,47,,
-1015,48,,
-1015,50,,
-1015,51,,
-1015,52,,
-1015,54,,
-1015,53,,
-1015,55,,
-1015,136,,
-1015,137,,
-1015,143,,
-1015,138,,
-1015,141,,
-1015,140,,
-1015,142,,
-1015,1,,
-1015,2,,
-1015,3,,
-1015,4,,
-1015,7,,
-1015,10,,
-1015,11,,
-1015,12,,
-1015,18,,
-1015,19,,
-1015,20,,
-1015,22,,
-1015,23,,
-1015,24,,
-1015,28,,
-1015,29,,
-1015,30,,
-1015,32,,
-1015,33,,
-1015,34,,
-1015,36,,
-1015,37,,
-1015,38,,
-1015,40,,
-1015,41,,
-1015,42,,
-1015,44,,
-1015,45,,
-1015,46,,
-1015,149,,
-1015,150,,
+1015,6,"Krönikorna om den här världen flödar fram
+förbi föremålet.",
+1015,58,"Välkomna! <PART>
+---
+Jag blir er guide i Serafiska porten.
+Mitt namn är Dirna Hamilton. <PART>
+---",
+1015,61,"Serafiska porten är en anläggning för dem som avslutat
+huvudhistorien, men ändå vill fortsätta spela. <PART>
+---
+Monster starkare än några andra
+i huvudhistorien väntar på er där inne. <PART>
+---
+Händelserna här har dock
+inget med huvudhistorien att göra. <PART>
+---
+Klandra inte mig om era illusioner krossas.
+Ha det här i åtanke. <PART>
+---",
+1015,59,"Åh! Nästan glömt.
+Innan ni börjar... <PART>
+---
+Ni måste visa mig att ni är kvalificerade
+att gå in i porten. <PART>
+---
+De för svaga besegras om
+och om igen. Det kan vara ganska stressande.",
+1015,60,Är ni redo? Då kör vi!,
+1015,57,"Wow...
+Ni är mer än kvalificerade. <PART>
+---
+Okej. Jag har en känsla av att ni utmanar även
+de tuffaste monstren i Serafiska porten. <PART>
+---
+...Fast mina intryck brukar vara fel... <PART>
+---
+På det viset! Jag öppnar för er
+dörren till en ny värld.",
+1015,8,Lycka till!,
+1015,56,"Här finns ""spoilers"".
+Om ni inte har klarat spelet är det
+rekommenderat att spara spelet
+och komma tillbaka när huvudhistorien är avslutad.",
+1015,9,"Nå?
+Redo för ännu en strid?",
+1015,13,"Styrka har ingen gräns... <PART>
+---
+Men en person kan välja den lätta vägen
+eller den mer utmanande vägen för att nå den.",
+1015,14,"Om ni föredrar en större utmaning,
+kan jag hjälpa till med det.",
+1015,15,"Va? Redan över. <PART>
+---
+Att se är att tro.
+Ni borde gå och se själva.",
+1015,16,"Det finns ingen gräns för en människas styrka.
+Det beror på att människan har ambition. <PART>
+---
+Dörren till nästa utmaning står alltid öppen.
+Kom tillbaka när ni vill.",
+1015,17,"Nå?
+Är ni beredda att möta en starkare motståndare?",
+1015,21,"Ni har det bra ställt. <PART>
+---
+Imponerande att ni kom så här långt.
+Får jag ge allt den här gången?",
+1015,27,"Ni vann! <PART>
+---
+Hmm... <PART>
+---
+Jag hamnar i trubbel med gossarna där uppe
+om jag gör motståndarna starkare. <PART>
+---
+Vill ni fortsätta mot samma
+motståndare som förut?",
+1015,31,"Wow, ni är starka... <PART>
+---
+Nåväl, då... <PART>
+---
+Ärligt talat, det väntar mycket mer
+om ni vill fortsätta. <PART>
+---
+Är ni på hugget?
+De bara blir starkare och starkare.",
+1015,35,"Jag förväntade mig inte så mycket styrka. <PART>
+---
+Ni har säkert märkt det redan, men
+det väntar en ännu starkare motståndare. <PART>
+---
+Vad säger ni?",
+1015,39,"Det väntar en ännu starkare motståndare.
+Är ni beredda att ta er an honom?",
+1015,43,"Nåväl, det verkar som jag förlorat. <PART>
+---
+Jag visste inte att det fanns krigare
+med sådan styrka. <PART>
+---
+Vill ni fortfarande vinna mer styrka,
+ännu mer makt?",
+1015,47,"Allt bra? <PART>
+---
+Ni vet att ni inte behöver
+hålla igen, eller hur?",
+1015,48,"Om ni insisterar. <PART>
+---
+Då kör vi.
+Hoppas ni tål det här!",
+1015,50,"Jag skojade bara.
+Ni ska inte ta allt så allvarligt!",
+1015,51,"Ah, just det. Ni har saker att göra,
+folk att träffa... Kanske nästa gång.",
+1015,52,"Välkomna!
+...Åh, vänta. Jag tar tillbaka det. <PART>
+---
+Jag beklagar att behöva informera er om att ni inte
+är kvalificerade att se vad som väntar framåt. <PART>
+---
+Kom tillbaka när ni känner till
+sanningen om den här världen bättre. <PART>
+---
+Först då kommer jag att guida er
+igenom det här området. <PART>
+---",
+1015,54,Iväg med er! Kom snart tillbaka!,
+1015,53,"Jag kan inte visa vad som väntar framåt ännu.
+Kom tillbaka när ni är närmare sanningen! <PART>
+---",
+1015,55,Iväg med er! Kom snart tillbaka!,
+1015,136,"Öppnade kistor <PART> %
+ <PART> Utforskat område <PART> %
+ <PART> Sparningar <PART> Monstermöten <PART> Besegrade monster",
+1015,137,"Flykter <PART> gånger
+ <PART> Dödsfall <PART> gånger
+ <PART> Sprintar <PART> gånger
+ <PART> Maximal skada <PART> Max kedja <PART> träffar",
+1015,143,"Flykter <PART> gånger
+ <PART> Dödsfall <PART> gånger
+ <PART> Sprintar <PART> gånger
+ <PART> Maximal skada <PART> Max kedja <PART> träffar",
+1015,138,Lila ädelstenar erhållna <PART> Glittrande ädelstenar erhållna <PART> Magikristaller erhållna <PART> Studsar i vägg <PART> Studsar i golv,
+1015,141,"Serafiska porten klar <PART> gånger
+ <PART> Spelet klart <PART> gånger",
+1015,140,"Tid för kapitel 1 <PART> 0: <PART> 1: <PART> 1
+ <PART> Tid för kapitel 2 <PART> 0: <PART> 1: <PART> 1
+ <PART> Tid för kapitel 3 <PART> 0: <PART> 1: <PART> 1
+ <PART> Tid för kapitel 4 <PART> 0: <PART> 1: <PART> 1
+ <PART> Tid för kapitel 5 <PART> 0: <PART> 1: <PART> 1",
+1015,142,"Avhuggna kroppsdelar <PART> Break-läge aktiverat <PART> gånger
+ <PART> Ackumulerad skada <PART> Snabbaste strid <PART> 0: <PART> 1: <PART> 1
+ <PART> Längsta strid <PART> 0: <PART> 1: <PART> 1",
+1015,1,Utgång,
+1015,2,"Lämna Serafiska porten?
+(Sigillstenarna återgår till sina ursprungliga platser.)",
+1015,3,Ja,
+1015,4,Nej,
+1015,7,Serafiska porten,
+1015,10,Strida igen?,
+1015,11,Kom an!,
+1015,12,Det räcker nu!,
+1015,18,Strida mot en starkare motståndare?,
+1015,19,Kom an!,
+1015,20,Ge mig en paus!,
+1015,22,Strida?,
+1015,23,Ja,
+1015,24,Nej,
+1015,28,Strida igen?,
+1015,29,Kom an!,
+1015,30,Det räcker nu!,
+1015,32,Strida mot en starkare motståndare?,
+1015,33,Kom an!,
+1015,34,Ge mig en paus!,
+1015,36,Strida mot en starkare motståndare?,
+1015,37,Kom an!,
+1015,38,Ge mig en paus!,
+1015,40,Strida mot en starkare motståndare?,
+1015,41,Kom an!,
+1015,42,Ge mig en paus!,
+1015,44,Strida mot en starkare motståndare?,
+1015,45,Kom an!,
+1015,46,Ge mig en paus!,
+1015,149,Serafiska porten,
+1015,150,Dirna Hamilton,

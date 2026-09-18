@@ -1,118 +1,228 @@
 resource,message_id,translated,notes
-89,12,,
-89,14,,
-89,15,,
-89,16,,
-89,17,,
-89,18,,
-89,20,,
-89,21,,
-89,22,,
-89,23,,
-89,24,,
-89,27,,
-89,29,,
-89,30,,
-89,31,,
-89,32,,
-89,33,,
-89,34,,
-89,38,,
-89,39,,
-89,40,,
-89,41,,
-89,42,,
-89,43,,
-89,44,,
-89,45,,
-89,46,,
-89,47,,
-89,48,,
-89,49,,
-89,50,,
-89,51,,
-89,52,,
-89,56,,
-89,60,,
-89,61,,
-89,62,,
-89,63,,
-89,64,,
-89,65,,
-89,66,,
-89,67,,
-89,68,,
-89,73,,
-89,78,,
-89,81,,
-89,84,,
-89,86,,
-89,88,,
-89,89,,
-89,91,,
-89,92,,
-89,97,,
-89,98,,
-89,100,,
-89,101,,
-89,102,,
-89,106,,
-89,107,,
-89,110,,
-89,113,,
-89,116,,
-89,1,,
-89,2,,
-89,3,,
-89,5,,
-89,6,,
-89,7,,
-89,8,,
-89,9,,
-89,10,,
-89,11,,
-89,13,,
-89,19,,
-89,25,,
-89,26,,
-89,28,,
-89,35,,
-89,36,,
-89,37,,
-89,53,,
-89,54,,
-89,55,,
-89,57,,
-89,58,,
-89,59,,
-89,74,,
-89,75,,
-89,76,,
-89,77,,
-89,79,,
-89,80,,
-89,83,,
-89,85,,
-89,87,,
-89,90,,
-89,93,,
-89,94,,
-89,95,,
-89,96,,
-89,99,,
-89,103,,
-89,104,,
-89,105,,
-89,108,,
-89,109,,
-89,111,,
-89,112,,
-89,114,,
-89,115,,
+89,12,"Välkommen till Villnore, staden av stål och handel!
+Vill du ha en blomma för att fira tillfället?",
+89,14,Jag är rädd att... det inte räcker...,
+89,15,"Jaså, okej då...",
+89,16,"Hälsningar <PART> ---- <PART> jag menar, hej <PART> ---- <PART> jag menar...
+Öh... Vad menar jag? Just det, öh...",
+89,17,"Där är du! Har du kommit för att köpa blommor idag?
+Män som uppskattar blommor är sällsynta!",
+89,18,"Öh... just det. Ja... Jag är här för att köpa blommor?
+Självklart! Jag är här för att köpa blommor! Ha ha!",
+89,20,"Öh... Hörde du på det där?
+Låt det stanna oss emellan.",
+89,21,"Den där blomsterflickan är skönheten själv.
+Du måste träffa henne medan du är i Villnore!",
+89,22,"Vill du veta något om ruinerna här?
+Hmm... Det finns ett heligt ställe på vattnet. <PART>
+---
+Men jag säger en sak, unga dam <PART> ---- <PART>
+jag skulle inte gå nära dit om jag var du. <PART>
+---
+Många gav sig ut för att söka skatter,
+men ingen kom tillbaka.",
+89,23,"Ruinerna här kallades en gång
+i tiden för vattnets tempel. <PART>
+---
+Men en enorm tsunami sänkte hälften av
+helgedomen i havet. <PART>
+---
+Du kanske kan tömma vattnet
+genom att öppna slussporten... <PART>
+---
+Men troligen skulle monstren där
+äta upp dig innan du hann chansen.",
+89,24,"Nåmen, det är den unga damen från förut!
+Du råkade väl inte besöka ruinerna?",
+89,27,"Du kom faktiskt ut därifrån levande?
+Det är inte dåligt! <PART>
+---
+Du är både förtjusande och tuff, ser det ut som.
+Här är en liten belöning till dig...",
+89,29,"Klart, så dumt av mig att tro att en skör
+sak som du någonsin skulle våga dig nära ett sådant ställe.",
+89,30,"Det verkar som Soldes fartyg fortfarande inte går.
+Jag antar att jag får handla med Crell Monferaigne.",
+89,31,"Är inte blomsterflickan en raritet?
+Så gärna jag skulle vilja bli hennes vän...",
+89,32,"Importen från Dipan har blivit sällsynt.
+Ryktet om skeppen måste vara sant. <PART>
+---
+Om något hänt Dipan kommer Artolia och
+Crell Monferaigne snart att agera. <PART>
+---
+Jag hoppas Villnore slipper det,
+men jag skulle inte räkna med det.",
+89,33,"När nerverna är slitna av stress
+gör en kopp kamomillte susen.",
+89,34,"Blommor lugnar den oroliga själen.
+Vill du ha en?",
+89,38,"Jaså, okej då...",
+89,39,"Jag kan inte tro det... Dipan har...
+Ett meddelande sattes upp på slottet...",
+89,40,"Ryktena var sanna, Dipan är helt...
+Den där dåren Barbarossa...",
+89,41,"Min vän som arbetar på slottet berättade att
+Dipan är under attack eller något liknande! <PART>
+---
+De såg rök stiga från hållet mot
+Dipan genom teleskopet.",
+89,42,"Vilket land skulle ha fräckheten att attackera
+en militär stormakt som Dipan?",
+89,43,"Rykten om att Dipan bedrev tvivelaktig forskning
+hade cirkulerat ett tag. <PART>
+---
+Vissa trodde att Dipan förberedde sig för
+krig. Det verkar som att de hade rätt.",
+89,44,"Jag misstänker att attacken mot Dipan var ett svar
+på deras tvivelaktiga forskning.",
+89,45,"Min pappa kallades plötsligt till slottet,
+trots att han var ledig... <PART>
+---
+Jag tror de sammankallade till krismöte för
+alla som arbetar på slottet.",
+89,46,"Vad i gudarnas namn har hänt med Dipan?
+Det gör alla på Villnore slott nervösa...",
+89,47,"Det är svårt att tro att en stad som Dipan
+förintades på en enda natt... <PART>
+---
+Det är som om gudarna gav ett exempel för
+vem som helst som motsätter sig dem...",
+89,48,"De har hållit rådslag i Villnore slott
+ända sedan Dipan föll. <PART>
+---
+Vad väntar den här staden?
+Jag vet att saker kommer att förändras...",
+89,49,"Var kan en vördad kung som Barbarossa
+möjligen ha hamnat på fel väg?",
+89,50,"Jag hoppas det inte blir krig med Dipan borta <PART> ---- <PART>
+jag skulle inte överleva länge i strid i min ålder.",
+89,51,"I tider som dessa vill jag
+finnas där för henne... <PART>
+---
+Men jag kan bara inte ta första steget.",
+89,52,"Det är viktigt att ha blommor för att skingra
+tankarna från allt tråkigt i nyheterna.",
+89,56,"Sugen på en blomma? Låt doften skölja
+bort alla bekymmer!",
+89,60,"Jaså, okej då...",
+89,61,"Folk frågar mig vad de ska göra, men
+jag vet inte ens själv vad jag ska göra!",
+89,62,"Regeringen tar över handeln.
+Det här blir slutet på mina vinster!",
+89,63,"Allt gick så smidigt, och nu
+måste slottet lägga sig i min affär?!",
+89,64,"Slottet meddelade häromdagen att
+de tar över stål och handel... <PART>
+---
+Allt på grund av Dipans fall.
+Så mycket för frihandeln i Villnore!",
+89,65,"Slottet driver på för militarisering.
+En del föreslår värnplikt.",
+89,66,"När han kom tillbaka från slottet
+såg min pappa väldigt dyster ut. <PART>
+---
+Ting kommer inte bli som förut och
+kriget kan bryta ut när som helst, sa han.",
+89,67,"Om det blir krig
+kommer jag kämpa för blomsterflickan! <PART>
+---",
+89,68,"Blommorna som säljs i butiken ändras
+beroende på årstid.",
+89,73,Ser hungrigt ut...,
+89,78,Ät upp!,
+89,81,"Hmm...
+Just det... Tack.",
+89,84,"Hmm...
+Just det... Tack.",
+89,86,"Hmm...
+Just det... Tack.",
+89,88,"Hmm...
+Just det... Tack.",
+89,89,"Förlåt...
+Jag har ingen mat att ge dig.",
+89,91,"Oj! Förstår du vad jag säger?
+Vilket märkligt mänskligt exemplar! <PART>
+---
+Jag har levt bland människor ett tag,
+men detta är en första gång! <PART>
+---
+Nåväl, om du förstår mig behöver jag
+inte gå runt och dansa... <PART>
+---
+Här är kärnan <PART> ---- <PART> jag vill ha mat.
+De snabba förändringarna har gjort alla snåla.",
+89,92,"Titta vem det är! Har du några kotletter?
+Jag kan inte betala tillbaka, jag är bara hungrig.",
+89,97,Här ska du få!,
+89,98,"Tack, jag uppskattar det verkligen.
+För att vara människa är du ganska cool.",
+89,100,"Förlåt...
+Jag har ingen mat att ge dig.",
+89,101,"Nåja... det går väl inte att göra något åt...
+Förlåt att jag frågade.",
+89,102,Jag tror inte att jag tycker särskilt mycket om dig.,
+89,106,Tack! Var snäll och ta väl hand om den.,
+89,107,"Åh, förlåt! Jag har inga blommor
+jag kan sälja till dig just nu...",
+89,110,"Tack! Hmm... Jag vet inte hur
+du känner dig, men försök pigga upp dig!",
+89,113,"Tack! Blomman är glad att
+du köpte den <PART> ---- <PART> lita på mig!",
+89,116,"Tack! Jag finns alltid här om du
+behöver blommor!",
+89,1,Värdshus,
+89,2,Hus,
+89,3,Hus,
+89,5,Villnore,
+89,6,Utgång,
+89,7,Lämna Villnore?,
+89,8,Ja,
+89,9,Nej,
+89,10,Jag köper.,
+89,11,Hej då.,
+89,13,Liten blomma: 10 OTH,
+89,19,Lyssna,
+89,25,Varit där.,
+89,26,Varit någon annanstans.,
+89,28,Erhöll <PART> Prismakristall,
+89,35,Lilja: 10 OTH,
+89,36,Jag köper.,
+89,37,Hej då.,
+89,53,Liljekonvalj: 10 OTH,
+89,54,Jag köper.,
+89,55,Hej då.,
+89,57,Gladiolus: 10 OTH,
+89,58,Jag köper.,
+89,59,Hej då.,
+89,74,Ge den köttkotletter?,
+89,75,Visst.,
+89,76,Inte.,
+89,77,Erhöll <PART> Köttkotletter,
+89,79,Erhöll <PART> Köttkotletter,
+89,80,Erhöll <PART> Urgnagt ben,
+89,83,Erhöll <PART> Tuggade skor,
+89,85,Erhöll <PART> Lumpet tyg,
+89,87,Erhöll <PART> Hundbajs,
+89,90,Erhöll <PART> Salomons ring,
+89,93,Ge den köttkotletter?,
+89,94,Visst.,
+89,95,Inte.,
+89,96,Erhöll <PART> Köttkotletter,
+89,99,Erhöll <PART> Köttkotletter,
+89,103,Erhöll <PART> Salomons ring,
+89,104,Erhöll <PART> Liten blomma,
+89,105,Erhöll <PART> Liten blomma,
+89,108,Erhöll <PART> Lilja,
+89,109,Erhöll <PART> Lilja,
+89,111,Erhöll <PART> Liljekonvalj,
+89,112,Erhöll <PART> Liljekonvalj,
+89,114,Erhöll <PART> Gladiolus,
+89,115,Erhöll <PART> Gladiolus,
 89,2488,,
-89,2879,,
-89,2880,,
-89,2881,,
-89,2882,,
-89,2883,,
-89,2884,,
+89,2879,Flicka,
+89,2880,Pojke,
+89,2881,Dam,
+89,2882,Herre,
+89,2883,Stadsbo,
+89,2884,Hund,

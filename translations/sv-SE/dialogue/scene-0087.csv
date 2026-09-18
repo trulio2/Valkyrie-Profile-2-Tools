@@ -1,64 +1,557 @@
 resource,message_id,translated,notes
-87,9,,
-87,10,,
-87,3,,
-87,4,,
-87,8,,
-87,11,,
-87,23,,
+87,9,"<Taktisk handbok>
+ <PART>
+I strid ligger bundsförvanternas liv i
+befälhavarens händer.
+Du som vill befalla, lär dig
+dessa hemligheter utantill...",
+87,10,"<Taktisk handbok>
+ <PART>
+Kom ihåg alltid:
+ens förmåga att befalla avgör
+om kamraterna lever eller dör.",
+87,3,"<Taktisk handbok>
+ <PART> Element <PART>
+Det finns fyra naturelement:
+eld, is, blixt och jord.
+Utöver dessa finns även
+de magiska elementen helig och mörker. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Element <PART>
+Eldteknikerna är effektiva mot
+monster som är svaga för värme, medan is
+fungerar bra mot eldelementmonster.
+Jordtekniker med gift är kraftfulla
+mot levande organismer, och blixten träffar
+metallmonster hårt. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Element <PART>
+Känner du till din fiendes egenskaper och
+använder lämpliga element för att attackera
+kan det vara en stor fördel i strid.",
+87,4,"<Taktisk handbok>
+ <PART> Magins egenskaper <PART>
+Magi har flera egenskaper.
+
+Eld: Betydligt påverkad av avsändarens
+MAG och målpersonens RST.
+Is: Styrs av avsändarens LV,
+nästan opåverkad av målpersonens RST. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Magins egenskaper <PART>
+Jord: Inga särskilda starka eller
+svaga sidor; standardmagi.
+Blixt: Inte särskilt stark, men
+brukar ge kritiska träffar.
+Helig: Kraftigt påverkad av avsändarens
+MAG och målpersonens RST.
+Mörker: Styrs av avsändarens LV,
+knappt påverkad av målpersonens RST. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Magins egenskaper <PART>
+För att bli en sann trollkarl måste du
+förstå dessa egenskaper och behärska
+flera attackmagier.
+De som inte kan det är inte värda
+att kallas trollkarlar.",
+87,8,"<Taktisk handbok>
+ <PART> Sprint <PART>
+Snabb rörelse är nyckeln till strid.
+Huruvida du behärskar <PART> sprint <PART> kan avgöra
+stridens utgång.
+
+Sprinta genom att använda <PART> . <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Sprint <PART>
+Det finns tre typer av sprint.
+Tryck snabbt på <PART> för en
+kort distans, håll in för en lång distans, eller
+tryck två gånger för en
+medeldistans. <PART>
+---
+<Taktisk handbok>
+ <PART> Sprint <PART>
+Du kan ta bort sprintens återhämtningstid
+genom att attackera i rörelse.
+
+Detta kallas <PART> sprintavbrytning <PART> .",
+87,11,"<Taktisk handbok>
+ <PART> Statusbesvär <PART>
+Allt kan slå till i strid, även statusbesvär.
+Håll i minnet att de kan vara dödliga om de
+inte behandlas. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+Följande statusbesvär uppstår
+endast i strid.
+
+<Förvirring>
+Förvirring gör en oförmögen att tänka
+klart och därmed oförmögen att attackera.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet.
+Har du inga medel att bota det med
+måste du bide din tid. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Förlamning>
+Förlamning orsakar domningar i hela
+kroppen, vilket omöjliggör rörelse.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet.
+Har du inga medel att bota det med
+måste du bide din tid. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Förstening>
+Offer för Förstening blir som statyer,
+helt oförmögna att agera.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet.
+Har du inga medel att bota det med
+måste du bide din tid. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Svimning>
+Svimning orsakar medvetslöshet,
+så att en blir oförmögen att agera.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet. Att ta emot en
+fiendeattack väcker en också. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Överföring>
+Överföring driver ut dig med våld från
+slagfältet, så att du inte kan ansluta till
+dina kamrater under en viss tid.
+Det kan inte botas med Normalisera.
+Använd ett lämpligt föremål för att bota det. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+Följande statusbesvär kvarstår även
+efter striden.
+
+<Gift>
+Gift tär på ens HP med vissa
+intervall.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Tystnad>
+Tystnad förbjuder användning av magi, och vissa
+fiendeattacker kan även bli
+neutraliserade.
+Använd Normalisera eller ett lämpligt föremål för
+att bota tillståndet. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Förbannelse>
+En Förbannelse förhindrar byte av utrustning.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Svaghet>
+Svaghet hämmar kroppens förmåga att
+återhämta sig, vilket gör läkning omöjlig.
+Det kan inte botas med Normalisera.
+Använd ett lämpligt föremål för att bota det. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Dödsdom>
+De som fått Dödsdom svävar på
+livets rand. Använd Åkalla fjäder
+eller ett lämpligt föremål för att bota det.
+
+
+Vissa tillbehör kan förhindra dessa statusbesvär,
+om du lyckas hitta dem.",
+87,23,"<Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+En sann trollkarl vet inte bara hur man
+kastar besvärjelser, utan även när och var. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+Vanligtvis kastar en karaktär en förinställd
+besvärjelse för att snabba på attacker och
+integreras smidigt med bundsförvanterna. Utan tid för
+rätt andlig koncentration når dock räckvidden och
+effekten av dessa besvärjelser inte upp till sin fulla
+potential. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+För att öka magins kraft bör man
+stå stilla, öppna trollformelsboken med
+<PART> och studera besvärjelsen man ska utföra.
+Detta förhindrar dock kombination med bundsförvanter.
+Vilken attackmetod du använder får du
+avgöra från situation till situation. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+Det finns Stor magi i denna värld som
+går utöver vanliga besvärjelser. Stor magi kan
+utplåna flera fiender på en gång.
+
+Men fiender kan också använda den. När du
+utsätts för Stor magi, håll koll på
+tillståndet hos dem bredvid målet.",
 87,419,,
 87,420,,
 87,421,,
-87,2267,,
-87,2268,,
-87,2272,,
-87,2307,,
-87,2308,,
-87,2312,,
-87,2347,,
-87,2348,,
-87,2352,,
-87,2387,,
-87,2388,,
-87,2392,,
-87,2427,,
-87,2428,,
-87,2432,,
-87,2467,,
-87,2468,,
-87,2472,,
-87,2555,,
-87,2556,,
-87,2560,,
-87,2595,,
-87,2596,,
-87,2600,,
-87,2904,,
-87,2903,,
-87,2902,,
-87,2901,,
-87,2906,,
-87,2907,,
-87,2908,,
-87,2910,,
-87,1,,
-87,2,,
-87,17,,
-87,18,,
-87,19,,
-87,20,,
-87,21,,
-87,22,,
-87,2896,,
-87,2897,,
-87,2898,,
-87,2899,,
-87,2900,,
-87,2905,,
-87,2909,,
-87,2911,,
-87,3028,,
-87,3029,,
-87,3031,,
-87,3032,,
-87,3036,,
+87,2267,"Den här byn är mycket fridfull.
+Den har hjälpt mig hitta inre frid. <PART>
+---
+Jag trodde aldrig att jag skulle
+beviljas ännu ett liv.",
+87,2268,"Det är märkligt att vara vid liv, när mitt liv
+redan en gång tagit slut.",
+87,2272,"Mina dagar är tysta och fridfulla. <PART>
+---
+Jag trodde aldrig att jag skulle få
+chansen att leva så här. <PART>
+---",
+87,2307,"Jag har fått ännu en chans.
+Jag måste leva mitt liv med stolthet.",
+87,2308,"Det smärtar mig att säga det, men jag saknar
+styrkan att tjäna dig nu.",
+87,2312,"Om jag fick önska mig något vore det att tillbringa
+dessa fridfulla dagar med en särskild person...",
+87,2347,"Alla som kände mig
+har redan gått vidare. <PART>
+---
+Jag vet att det är logiskt att förvänta sig,
+och ändå...",
+87,2348,"Landet jag kämpade för finns inte mer.
+Men mina handlingar var inte förgäves. <PART>
+---
+Jag kunde skydda många
+genom att svinga mitt svärd.",
+87,2352,"Jag har hört ryktena om Dipan. <PART>
+---
+Jag undrar vad herr Odin
+önskade för Midgard...",
+87,2387,"Tror du jag skulle kunna...?
+Hm, ingenting. Glöm det.",
+87,2388,"Nu känner jag att det är min plikt att skydda
+den här staden. <PART>
+---
+Jag ska skydda och tjäna mina vänner <PART> ---- <PART>
+folket i den här staden.",
+87,2392,"Jag undrar vad herr Odin ville? <PART>
+---
+Finns det något som är värt lidandet
+för så många människor, <PART>
+---
+som orsakats av kaoset i Midgard?",
+87,2427,"Jag har det bra nu. Det finns gott om
+folk här som skyddar mig.",
+87,2428,"Jag besökte Gohra-regionen nyligen. <PART>
+---
+Det var där jag och sir Roland, kapten
+för den kungliga brigaden, överfölls av lord Khanon. <PART>
+---
+Jag åkte för att visa min respekt för våra soldater.",
+87,2432,"Jag känner att Midgard suger åt sig ett kraftfullt
+kräft från fjärran. <PART>
+---
+Det är en ny kraft, annorlunda
+från den i Valhalla eller Nifleheim...",
+87,2467,"Hm, får jag ställa en fråga?
+Var kommer bebisar... hm... ifrån? <PART>
+---
+......
+.........",
+87,2468,"Många av mina soldater dog förgäves.
+Jag kunde inte göra något för dem. <PART>
+---
+Om jag bara haft styrka att göra
+något då... och nu.",
+87,2472,"Jag vet inte om denna nya kraft
+är ren eller ond. <PART>
+---
+Allt jag vet är att den kommer att orsaka förändring.
+Det är det som skrämmer mig.",
+87,2555,"Var snäll och ta emot detta som
+ett tecken på tacksamhet.",
+87,2556,"Jag kan inte längre kämpa vid din sida.
+Var snäll och ta detta. Det är det minsta jag kan göra.",
+87,2560,"Jag har inte längre kraft att hjälpa dig.
+Detta är allt jag kan göra för dig nu.",
+87,2595,"Hur mår ni alla?
+Jag är densamme som alltid.",
+87,2596,"Det är märkligt att vara vid liv, när mitt liv
+redan en gång tagit slut. <PART>
+---
+Det är tack vare att lady Silmeria valde mig
+som jag kan tala med dig på detta vis.",
+87,2600,"Livet är så fridfullt att dagarna som vi
+stred tillsammans nästan verkar som en dröm.",
+87,2904,"<Taktisk handbok>
+ <PART> Byt mål <PART>
+I strid kan målet för karaktärens attack
+ändras.
+
+Detta kallas <PART> att byta mål <PART> . <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Byt mål <PART>
+För att byta mål, använd först <PART> .
+Det nya målet kan sedan väljas.
+Detta är mycket användbart för mål som inte är
+fiender på slagfältet, som pelare.",
+87,2903,"<Taktisk handbok>
+ <PART> Magins egenskaper <PART>
+Magi har flera egenskaper.
+
+Eld: Betydligt påverkad av avsändarens
+MAG och målpersonens RST.
+Is: Styrs av avsändarens LV,
+nästan opåverkad av målpersonens RST. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Magins egenskaper <PART>
+Jord: Inga särskilda starka eller
+svaga sidor; standardmagi.
+Blixt: Inte särskilt stark, men
+brukar ge kritiska träffar.
+Helig: Kraftigt påverkad av avsändarens
+MAG och målpersonens RST.
+Mörker: Styrs av avsändarens LV,
+knappt påverkad av målpersonens RST. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Magins egenskaper <PART>
+För att bli en sann trollkarl måste du
+förstå dessa egenskaper och behärska
+flera attackmagier.
+
+De som inte kan det är inte värda
+att kallas trollkarlar.",
+87,2902,"<Taktisk handbok>
+ <PART> Element <PART>
+Det finns fyra naturelement:
+eld, is, blixt och jord.
+Utöver dessa finns även
+de magiska elementen helig och mörker. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Element <PART>
+Eldteknikerna är effektiva mot
+monster som är svaga för värme, medan is
+fungerar bra mot eldelementmonster.
+Jordtekniker med gift är kraftfulla
+mot levande organismer, och blixten träffar
+metallmonster hårt. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Element <PART>
+Känner du till din fiendes egenskaper och
+använder lämpliga element för att attackera
+kan det vara en stor fördel i strid.",
+87,2901,"<Taktisk handbok>
+ <PART> Sprint <PART>
+Snabb rörelse är nyckeln till strid.
+Huruvida du behärskar <PART> sprint <PART> kan avgöra
+stridens utgång.
+
+Sprinta genom att använda <PART> . <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Sprint <PART>
+Det finns tre typer av sprint.
+Tryck snabbt på <PART> för en
+kort distans, håll in för en lång distans, eller
+tryck två gånger för en
+medeldistans. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Sprint <PART>
+Dessutom kan du ta bort sprintens återhämtningstid
+genom att attackera i rörelse.
+
+Detta kallas <PART> sprintavbrytning <PART> .",
+87,2906,"<Taktisk handbok>
+ <PART> Statusbesvär <PART>
+Allt kan hända i strid, inklusive
+statusbesvär. Tänk på att de kan vara
+dödliga om de inte behandlas. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+Följande statusbesvär uppstår
+endast i strid.
+
+<Förvirring>
+Förvirring gör en oförmögen att tänka
+klart och därmed oförmögen att attackera.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet.
+Har du inga medel att bota det med
+måste du bide din tid. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Förlamning>
+Förlamning orsakar domningar i hela
+kroppen, vilket omöjliggör rörelse.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet.
+Har du inga medel att bota det med
+måste du bide din tid. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Förstening>
+Offer för Förstening blir som statyer,
+helt oförmögna att agera.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet.
+Har du inga medel att bota det med
+måste du bide din tid. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Svimning>
+Svimning orsakar medvetslöshet,
+så att en blir oförmögen att agera.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet. Att få en
+fiendeattack väcker en också. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Överföring>
+Överföring driver ut dig med våld från
+slagfältet, så att du inte kan ansluta till
+dina kamrater under en viss tid.
+Det kan inte botas med Normalisera.
+Använd ett lämpligt föremål för att bota det. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+Följande statusbesvär kvarstår även
+efter striden.
+
+<Gift>
+Gift tär på ens HP med regelbundna
+intervall.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Tystnad>
+Tystnad förbjuder användning av magi, och vissa
+fiendeattacker kan även bli
+neutraliserade.
+Använd Normalisera eller ett lämpligt föremål för
+att bota tillståndet. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Förbannelse>
+En Förbannelse förhindrar byte av utrustning.
+Använd Normalisera eller ett lämpligt föremål för att
+bota tillståndet. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Svaghet>
+Svaghet hämmar kroppens förmåga att
+återhämta sig, vilket gör läkning omöjlig.
+Det kan inte botas med Normalisera.
+Använd ett lämpligt föremål för att bota det. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Statusbesvär <PART>
+<Dödsdom>
+De som fått Dödsdom svävar på
+livets rand. Använd Åkalla fjäder
+eller ett lämpligt föremål för att bota det.
+
+
+Vissa tillbehör kan förhindra dessa statusbesvär,
+om du lyckas hitta dem.",
+87,2907,"<Taktisk handbok>
+ <PART>
+I strid ligger bundsförvanternas liv i
+befälhavarens händer.
+Du som vill befalla, lär dig
+dessa hemligheter utantill...",
+87,2908,"<Taktisk handbok>
+ <PART>
+Kom ihåg alltid:
+ens förmåga att befalla avgör
+om kamraterna lever eller dör.",
+87,2910,"<Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+En sann trollkarl vet inte bara hur man
+kastar besvärjelser, utan även när och var. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+Vanligtvis kastar en karaktär en förinställd
+besvärjelse för att snabba på attacker och
+integreras smidigt med bundsförvanterna. Utan tid för
+rätt andlig koncentration når dock räckvidden och
+effekten av dessa besvärjelser inte upp till sin fulla
+potential. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+För att öka magins kraft bör man
+stå stilla, öppna trollformelsboken med
+<PART> och studera besvärjelsen man ska utföra.
+Detta förhindrar dock kombination med bundsförvanter.
+Vilken attackmetod du använder får du
+avgöra från situation till situation. <PART>
+---
+ <PART> <Taktisk handbok>
+ <PART> Kasta besvärjelser <PART>
+Det finns Stor magi i denna värld som
+går utöver vanliga besvärjelser. Stor magi kan
+utplåna flera fiender på en gång.
+
+Men fiender kan också använda den. När du
+utsätts för Stor magi, håll koll på
+tillståndet hos dem bredvid målet.",
+87,1,Gå ut,
+87,2,Läs,
+87,17,<Taktisk handbok>,
+87,18,▪Element,
+87,19,▪Magins egenskaper,
+87,20,▪Sprint,
+87,21,▪Statusbesvär,
+87,22,▪Kasta besvärjelser,
+87,2896,<Taktisk handbok>,
+87,2897,▪Byt mål,
+87,2898,▪Magins egenskaper,
+87,2899,▪Element,
+87,2900,▪Sprint,
+87,2905,▪Statusbesvär,
+87,2909,▪Kasta besvärjelser,
+87,2911,Coriander,
+87,3028,Erhöll <PART> Expertens erfarenhet,
+87,3029,Erhöll <PART> Ymirs tår,
+87,3031,Jessica,
+87,3032,Richelle,
+87,3036,Sylphide,

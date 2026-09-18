@@ -1,54 +1,141 @@
 resource,message_id,translated,notes
-105,11,,
-105,10,,
-105,12,,
-105,13,,
-105,14,,
-105,15,,
-105,17,,
-105,16,,
-105,18,,
-105,19,,
-105,20,,
-105,21,,
-105,23,,
-105,22,,
-105,27,,
-105,28,,
-105,35,,
-105,34,,
-105,36,,
-105,37,,
-105,39,,
-105,40,,
-105,41,,
-105,42,,
-105,45,,
-105,46,,
-105,47,,
-105,48,,
-105,49,,
-105,50,,
-105,51,,
-105,52,,
-105,53,,
-105,54,,
-105,55,,
-105,56,,
-105,3,,
-105,4,,
-105,5,,
-105,6,,
-105,7,,
-105,8,,
-105,9,,
-105,26,,
-105,29,,
-105,30,,
-105,31,,
-105,32,,
-105,33,,
-105,38,,
+105,11,"Välkommen till Kalstad, ""oasen i sanden"".
+...Även om det mest är sand nu.",
+105,10,"Min familj driver ett vandrarhem i staden.
+Min syster är där nu om du behöver vila. <PART>
+---",
+105,12,"Om jag sopar mer, ramlar armarna av!
+Men om jag slutar, begraver sanden mig. <PART>
+---
+Vilket ve! Jag står inte ut längre!
+Men om jag slutar, bråkar gumman.",
+105,13,"Det var bättre förr, när jag var pojke...
+Numera reser dynerna över husen!",
+105,14,"Sanden sargar staden utan förbarmande.
+Om några år kanske staden inte finns! <PART>
+---
+Ett stopp på vägen till Villnore är praktiskt,
+men dessa förhållanden är outhärdliga!",
+105,15,"Jag stannade i en annan stad häromdan och
+hörde talas om en fågel som la guldägg.",
+105,17,"Kan magi ändra miljön? I så fall
+kunde vi bli av med den här öknen...",
+105,16,"Tydligen har båten som går från Solde
+till Dipan slagits in. <PART>
+---
+Det tar ett tag för nyheterna att nå oss
+här ute i ingenstans.",
+105,18,"Dipan är det där landet upp i norr, eller hur?
+Båtarna slutade gå och började sedan igen...",
+105,19,"Jag fattar inte. Är båtar så viktiga?
+Köpmän gör en höna av en fjäder...",
+105,20,"För länge sedan reste jag med en vän,
+men jag har inte hört från honom på sistone. <PART>
+---
+Jag hörde att han utforskade ruinerna här,
+så jag hoppas att han kom tillbaka...",
+105,21,"Ruinerna här är farliga, och många
+överlever dem inte. Stackars kille...",
+105,23,Vad vill du mig?,
+105,22,"Hans unge gjorde den här <PART> ---- <PART> den är en lyckobringare.
+I det här yrket kan vilken dag som helst vara den sista...",
+105,27,Det här...,
+105,28,"Det här var hans...!
+Var hittade du det!? <PART>
+---
+...Åh, så han är verkligen borta.
+Nu vet jag i alla fall säkert. <PART>
+---
+Jag måste lämna den här amuletten till hans familj.
+Ta det här för besväret...",
+105,35,...? Säg vad du vill eller ge dig i väg.,
+105,34,Vad är problemet med dig?,
+105,36,"Någonstans i den här världen ligger en av
+de legendariska Fyra Skatterna. <PART>
+---
+Bara att få se den vore en dröm
+för vilken skattjägare som helst.",
+105,37,"De säger att monster och odöda dras
+till makt och själsenergi, eller hur? <PART>
+---
+Om det stämmer, har platser med starkare
+monster säkert stora skatter...",
+105,39,"De kom hit efter sin kampanj <PART> ---- <PART>
+skrämda soldater från Crell Monferaigne, <PART>
+---
+pratade om saker i Dipan...
+Vad hände där?",
+105,40,"Vad hände egentligen i Dipan?
+Alla pratar bara om det.",
+105,41,"Hela dagen är det Dipan hit och Dipan dit...
+Vad skulle jag veta om Dipan? <PART>
+---
+Jag har fullt upp med att lista ut
+om öknen begraver oss!",
+105,42,"Vi har för mycket att göra här för att
+oroa oss för något annat land!",
+105,45,"Härifrån går du till Villnore, stannar i någon
+by, tar Kythenaslätten till Solde... <PART>
+---
+Det är vägen till Dipan, eller hur?
+Hm? Är det den långa vägen? <PART>
+---
+Tja, Sukaviaravinen är snabbare,
+men att korsa ett isigt berg är inget nöje.",
+105,46,"Nästan ingen använder Sukaviaravinen numera.
+Snön är helt enkelt för mycket!",
+105,47,"Det sägs att Dipan jämnades med marken på en dag.
+De gick äntligen för långt för gudarna. <PART>
+---
+Många flyktingar kommer nog att dyka upp,
+så jag måste förbereda vandrarhemmet!",
+105,48,"Flera flyktingar kommer att komma från Dipan.
+Jag hoppas bara att det inte leder till mer strid.",
+105,49,"Kul att se dig igen. Tack för senast.
+Jag gav minnessaken till hans familj. <PART>
+---
+De har förlorat sin familjeförsörjare, och nu
+kan Dipans fall vara ett förspel till krig...",
+105,50,"Även om du lyckas nå Valhalla,
+när du väl är död är det slut.",
+105,51,"Jag kanske är galen, men är Dipans fall
+verkligen så stor affär? <PART>
+---
+Att ett land försvinner betyder inte att
+den här öknen ska ta sig någonstans.",
+105,52,"Alla borde tänka mindre på Dipan och mer
+på att samla mat och sopa sand. <PART>
+---
+Människor måste sköta sitt eget liv
+innan de oroar sig för andras.",
+105,53,"Crell Monferaigne i öster, Villnore
+i väster och Artolia i söder... <PART>
+---
+Den här staden ligger strategiskt,
+men ignoreras ironiskt nog av alla.",
+105,54,"Vem skulle besvära sig med att slåss mot ett land
+som förr eller senare erövras av sanden, ändå?",
+105,55,"Så länge det inte blir krig här,
+vad spelar det för roll vilka länder som förstörs? <PART>
+---
+Tycker du att jag är kall? Det är bara naturligt
+att se till sig själv först. Håller du inte med?",
+105,56,"Vad som än händer med Dipan gör
+varken skillnad i våra liv eller för sanden.",
+105,3,Vandrarhem,
+105,4,Hus,
+105,5,Kalstad,
+105,6,Utgång,
+105,7,Lämna Kalstad?,
+105,8,Ja,
+105,9,Nej,
+105,26,Erhöll <PART> Amulett,
+105,29,Erhöll <PART> Felfri Talisman,
+105,30,Erhöll <PART> Amulett,
+105,31,Lämna över amuletten?,
+105,32,Ja,
+105,33,Nej,
+105,38,Erhöll <PART> Guldägg,
 105,57,,
-105,2800,,
-105,2801,,
+105,2800,Stadsbo,
+105,2801,Äventyrare,

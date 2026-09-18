@@ -1,21 +1,40 @@
 resource,message_id,translated,notes
-129,2,,
-129,3,,
-129,4,,
-129,18,,
-129,17,,
-129,16,,
-129,15,,
-129,14,,
-129,13,,
-129,1,,
-129,5,,
-129,6,,
-129,7,,
-129,8,,
-129,9,,
-129,10,,
-129,11,,
-129,12,,
-129,68,,
-129,2808,,
+129,2,"Välkomna! Det kanske inte ser mycket ut,
+men vi har ett urval som heter duga!",
+129,3,"Om du blir stammis hos oss
+kan pappa säkert smida något åt dig. <PART>
+---
+Det som skiljer oss från andra är sortimentet!
+Med rätt material kan vi smida vassa vapen!",
+129,4,"Tack så mycket!
+Välkommen åter!",
+129,18,"<Laddad Stjärtfjäder>
+ <PART> Åskfalk <PART> : Svans",
+129,17,"<Vingfjäder>
+ <PART> Grip <PART> : Vinge
+ <PART> Alvfalk <PART> : Vinge",
+129,16,"<Stålvinge>
+ <PART> Livstjuv <PART> : Vinge
+ <PART> Helprinsen <PART> : Vinge
+ <PART> Abessinsk Demon <PART> : Vinge",
+129,15,"<Fårets Framtand>
+ <PART> Satyr <PART> : Huvud
+ <PART> Getman <PART> : Huvud
+ <PART> Bafomet <PART> : Huvud",
+129,14,"<Giblifjäll>
+ <PART> Blixtdrake <PART> : Vinge
+ <PART> Drakfladdermus <PART> : Vinge",
+129,13,"<Blixtsten>
+ <PART> Skelettarme <PART> : Kropp
+ <PART> Motbjudande Snäcka <PART> : Huvud",
+129,1,Utgång,
+129,5,Läsa,
+129,6,<Handlarens anteckning>,
+129,7,Laddad Stjärtfjäder,
+129,8,Vingfjäder,
+129,9,Stålvinge,
+129,10,Fårets Framtand,
+129,11,Giblifjäll,
+129,12,Blixtsten,
+129,68,Crell Monferaigne,
+129,2808,Butiksbiträde,

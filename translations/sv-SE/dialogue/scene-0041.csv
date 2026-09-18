@@ -1,51 +1,96 @@
 resource,message_id,translated,notes
-41,6,,
-41,8,,
-41,9,,
-41,7,,
-41,10,,
-41,11,,
-41,12,,
-41,13,,
-41,14,,
-41,15,,
-41,16,,
-41,17,,
-41,2760,,
-41,2761,,
-41,2762,,
-41,2763,,
-41,2764,,
-41,2765,,
-41,2766,,
-41,2767,,
-41,2768,,
-41,2769,,
-41,2770,,
-41,2771,,
-41,2772,,
-41,2773,,
-41,2774,,
-41,2775,,
-41,2776,,
-41,2777,,
-41,2778,,
-41,2779,,
-41,2780,,
-41,2781,,
-41,2782,,
-41,2783,,
-41,2784,,
-41,2785,,
-41,2786,,
-41,2787,,
-41,2788,,
-41,2789,,
-41,1,,
-41,5,,
-41,2757,,
-41,2758,,
-41,2759,,
-41,2790,,
-41,2791,,
-41,2792,,
+41,6,"Jag behöver att du tar något från mina händer.
+Jag gick till Andarnas Skog för att få det!",
+41,8,"Jag tog med den skatt jag stal från en av de dödliga odödliga alverna. <PART>
+---
+Men av någon anledning känner jag mig väldigt kall...
+Det är inte kroppen, det är... själen.",
+41,9,"Prata inte med mig.
+Jag har råkat ut för svåra tider.",
+41,7,"Nå, hmm...
+Det är lite av ett problem, förstår du...",
+41,10,"Tja, jag borde ge mig av snart.
+Jag avskyr att behöva slåss mot monster igen. <PART>
+---
+Jag har aldrig mött något, men jag har hört att
+vissa monster är immuna mot vanliga vapen. <PART>
+---
+Och vad gör man då?
+Jag antar att magi är det enklaste.",
+41,11,"Om vapen inte skadar ett monster, använd magi.
+Vissa föremål kan användas i stället för magi.",
+41,12,"Vad står på där ute? Hände det något <PART> ---- <PART>
+Åh, jag menar, hur kan jag hjälpa till, frun?",
+41,13,"Så länge kunderna behöver en plats att bo, förblir Solde Inn öppet.",
+41,14,"Är det första gången du bor hos oss?
+Välkommen till hamnstaden Solde! <PART>
+---
+En snabb vila hos oss helar
+till och med den mest utmattade kroppen! <PART>
+---
+Även om du är på dödens brant,
+kommer du att vakna pigg som en mört!",
+41,15,"Jag behöver att du tar något från mina händer.
+Den här gången tror jag att du gillar det.",
+41,16,"Jag gick ner till sydost för att få den här, tillbaka in i Andarnas Skog. <PART>
+---
+Den gör att det känns riktigt kallt, som en snöstorm som virvlar i min själ.",
+41,17,Tala inte med mig. Jag har gått igenom svåra tider.,
+41,2760,"Vill ni övernatta?
+Vi har ett rum med utsikt ledigt.",
+41,2761,Välkommen. Vill du ha ett rum?,
+41,2762,"Åh, gäster som söker rum?",
+41,2763,"Ni är resenärer, eller hur? Ska ni stanna?",
+41,2764,"Välkomna. Ni ser ut att
+söka ett rum. Stämmer det?",
+41,2765,"Det är en ära att ta emot er.
+Ska jag boka ert rum?",
+41,2766,"Vad synd.
+Kom tillbaka om ni ångrar er.",
+41,2767,"Vänligen besök oss igen
+när ni får chansen.",
+41,2768,Jaha. Och jag som redan var eld och lågor.,
+41,2769,"Ge er i väg då, inget stå och hänga.",
+41,2770,"Nåväl, det är er förlust.
+Ni går miste om ett utmärkt bemötande.",
+41,2771,"Om tillfälle ges,
+kom gärna tillbaka.",
+41,2772,"Låt vågornas vaggvisa
+vara inbjudan till sömnen.",
+41,2773,Njut av er vistelse.,
+41,2774,"Så ni stannar ändå?
+Vila ut!",
+41,2775,"Jag har just bytt lakan.
+Ni kommer att sova som små barn!",
+41,2776,"Balanserad frukost på husets räkning!
+Sov gott.",
+41,2777,"Ni är säkert utmattade.
+Var snälla och gör det bekvämt för er.",
+41,2778,"Kom hit snart igen!
+Må havets välsignelser följa er.",
+41,2779,"Tack för att ni besökte oss.
+Var försiktiga.",
+41,2780,Titta in när ni är i närheten.,
+41,2781,"Ni sov gott, eller hur?
+Se upp där ute!",
+41,2782,"He he, sov ni gott? Kom snart igen!",
+41,2783,"Ni vilade säkert gott.
+Vi ser fram emot att tjäna er snart igen.",
+41,2784,"Hoppsan, ni har inte tillräckligt med pengar.",
+41,2785,"Tyvärr vore det omöjligt att låta
+er stanna utan att betala rätt avgift.",
+41,2786,"Oj, det går inte. Ni har inte råd.",
+41,2787,"Det räcker inte! Vad sysslar ni med?
+Det här är en affärsrörelse, vet ni!",
+41,2788,"Hmm... Det verkar som ni saknar lite.
+Kom tillbaka när ni har pengarna!",
+41,2789,"Tyvärr kräver vi full betalning
+i förskott för att tilldela rum.",
+41,1,Gå ut,
+41,5,Prat,
+41,2757,Rumskostnad: <PART> OTH,
+41,2758,Ja,
+41,2759,Nej,
+41,2790,Solde,
+41,2791,Äventyrare,
+41,2792,Värdshusvärd,

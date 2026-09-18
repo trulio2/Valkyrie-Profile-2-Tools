@@ -3,45 +3,103 @@ resource,message_id,translated,notes
 1155,281,,
 1155,282,,
 1155,2773,Jessica <PART> har anslutit sig till gruppen.,
-1155,2788,,
-1155,2789,,
-1155,2791,,
-1155,2417,,
-1155,2420,,
-1155,2457,,
-1155,2460,,
-1155,2497,,
-1155,2500,,
-1155,2537,,
-1155,2540,,
-1155,2577,,
-1155,2580,,
-1155,2617,,
-1155,2620,,
+1155,2788,Aaron <PART> har anslutit sig till gruppen.,
+1155,2789,Dyn <PART> har anslutit sig till gruppen.,
+1155,2791,Zunde <PART> har anslutit sig till gruppen.,
+1155,2417,"Trots att jag föddes på nytt finns mina synder
+fortfarande kvar hos mig. <PART>
+---
+Så länge jag lever ska jag
+sona dem.",
+1155,2420,"Jag drevs ut ur mitt land. Jag har inget hem.
+Det finns ingen att besöka, ingenstans att ta vägen. <PART>
+---
+Jag vandrar bara runt i länderna och letar efter en plats
+där jag kan leva i lugn och ro.",
+1155,2457,"Att födas på nytt hundra gånger
+utplånar ändå inte mina synder.",
+1155,2460,"Jag skulle inte ångra det ens om detta land
+blev min sista viloplats.",
+1155,2497,"Midgard kommer aldrig att förstöras. <PART>
+---
+Finns det någon bonde som skulle bränna sin skörd
+utan att först ta in den?",
+1155,2500,"Även fast jag har befriats
+finns det inget för mig att göra. <PART>
+---
+Kanske hade det varit bättre för
+mig att förbli einherjar.",
+1155,2537,"Dipan är bara en varning till oss alla. <PART>
+---
+Det är en varning från gudarna, orsakad av
+fru Silmerias och dina handlingar, prinsessan Alicia.",
+1155,2540,"Även fast jag har befriats
+finns det inget för mig att göra. <PART>
+---
+Kanske hade jag varit lyckligare
+om jag tjänade dig som einherjar.",
+1155,2577,"Odin sprider kaosets frön
+över Midgard. <PART>
+---
+Manuskriptet i mina händer
+är ett exempel på sådana frön. <PART>
+---
+Det var fyllt av den högste gudens
+vilja och kraft. <PART>
+---
+Jag försökte ena Midgard med den kraften
+för att få slut på krigets dagar i detta land...",
+1155,2580,"Att lita för lätt utsätter en för svek.
+Ändå är tillit en del av den mänskliga naturen. <PART>
+---
+Det är prat från en som
+blev förrådd av en nära vän. Ursäkta mig.",
+1155,2617,"Jag använde den kraften för att utmana
+Valhallas gudar. <PART>
+---
+Jag tog med mig Rosettas ledare, halvguden Ehlen,
+Crescent och Krigarprinsessan Celes. <PART>
+---
+Många vänner kämpade vid min sida
+för att de trodde på min sak. <PART>
+---
+Men allt var en del
+av Odins plan.",
+1155,2620,"Det här är vad jag lärde mig förr:
+kvinnor ska man inte lita på.",
 1155,2623,"Om det finns något sätt jag kan tjäna er,
 skulle det vara mig ett nöje.",
-1155,2638,,
-1155,2639,,
-1155,2641,,
-1155,2663,,
-1155,2669,,
-1155,2705,,
-1155,2708,,
-1155,2745,,
-1155,2748,,
-1155,1,,
-1155,2,,
-1155,3,,
-1155,4,,
-1155,5,,
+1155,2638,Det är min plikt att skydda.,
+1155,2639,Jag räddar Midgard från faran!,
+1155,2641,"Okej! Min tid att glänsa, baby!",
+1155,2663,En tung krigares själ emanerar från svärdet.,
+1155,2669,"Materialisering är omöjlig
+utan Silmeria...",
+1155,2705,"Ta med dig det här.
+Jag hoppas att det kommer till nytta.",
+1155,2708,"Jag har inte kraften att hjälpa dig.
+Det här är allt jag har att ge. <PART>
+---",
+1155,2745,"Allt jag kan göra nu är att slåss mot monster
+för att rädda människorna omkring mig. <PART>
+---
+Att födas på nytt utplånar inte
+mina synder från det förflutna.",
+1155,2748,"Jag drevs ut ur mitt land. Jag har inget hem.
+Jag vandrar och letar efter ett fredligt land som jag kan kalla mitt.",
+1155,1,Sahmaöknen,
+1155,2,Utgång,
+1155,3,Lämna Sahmaöknen?,
+1155,4,Ja,
+1155,5,Nej,
 1155,2666,Utför materialisering?,
 1155,2667,Ja,
 1155,2668,Nej,
-1155,2750,,
-1155,2751,,
-1155,2812,,
-1155,2827,,
-1155,2828,,
-1155,2830,,
-1155,2846,,
-1155,2849,,
+1155,2750,Sahmaöknen,
+1155,2751,Erhöll <PART> Elixir Prime,
+1155,2812,Jessica,
+1155,2827,Aaron,
+1155,2828,Dyn,
+1155,2830,Zunde,
+1155,2846,Xehnon,
+1155,2849,Masato,

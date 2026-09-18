@@ -1,49 +1,141 @@
 resource,message_id,translated,notes
-43,2,,
-43,3,,
-43,4,,
-43,5,,
-43,6,,
-43,7,,
-43,8,,
-43,9,,
-43,11,,
-43,12,,
-43,13,,
-43,15,,
-43,16,,
-43,17,,
-43,18,,
-43,26,,
-43,30,,
-43,29,,
-43,28,,
-43,31,,
-43,27,,
-43,37,,
-43,43,,
-43,44,,
-43,45,,
-43,1,,
-43,10,,
-43,14,,
-43,19,,
-43,20,,
-43,21,,
-43,22,,
-43,23,,
-43,24,,
-43,25,,
-43,32,,
-43,33,,
-43,34,,
-43,35,,
-43,36,,
-43,38,,
-43,39,,
-43,40,,
-43,41,,
-43,42,,
-43,385,,
-43,2787,,
-43,2788,,
+43,2,"Det här är första gången du är i min butik, va?
+Jag slår vad om att du inte känner igen en del av mina varor. <PART>
+---
+De här säljs inte normalt i affärer, och
+de kräver vissa material för att tillverkas. <PART>
+---
+Om du säljer mig de nödvändiga materialen,
+kan jag göra många sällsynta artiklar åt dig. <PART>
+---
+Du får bara vänta och se!
+Men att tillverka är inte samma sak som att sälja! <PART>
+---
+Och jag gör det bara för mina bästa kunder,
+så kom ihåg det!",
+43,3,Våra artiklar är de bästa! Kom snart igen!,
+43,4,"Jag förstår... Nå, nå... Tänka sig!
+Vill du också ta en titt? <PART>
+---
+Jag lånade den av butiksägaren. Den heter
+""Så gör du stamkundsartiklar"".",
+43,5,"Vill du också titta?
+""Så gör du stamkundsartiklar"".",
+43,6,Stig på! Bara de finaste varorna!,
+43,7,Stig på! Bara de finaste varorna!,
+43,8,"Jag kom hit med sista båten från Dipan. <PART>
+---
+Dipans stad var full av trupper.
+Visste de att gudarna skulle attackera?",
+43,9,Hur kunde de vilja ha krig? Människor har ingen chans mot gudarna!,
+43,11,"Det låter som att Dipan är i trubbel. <PART>
+---
+De borde ha förberett sig bättre för krig.",
+43,12,"Åh, en kund! Stig på!",
+43,13,"Kul att se dig!
+Det är tufft nuförtiden, eller hur?",
+43,15,Våra artiklar är de bästa! Kom snart igen!,
+43,16,Ta det lugnt där ute!,
+43,17,"Jag vet inte vad som kommer att hända med Solde, men min butik kommer alltid att finnas här!",
+43,18,"Det är kanske knappt någon kvar i Solde, men jag håller butiken igång!",
+43,26,"<Ondögats Juvel>
+<PART> Dryad <PART> : Kropp
+<PART> Slask <PART> : Huvud
+<PART> Malström <PART> : Kropp",
+43,30,"<Helig Spinel>
+<PART> Tear Soul <PART> : Kärna
+<PART> Koboldkung <PART> : Huvud
+<PART> Fantomsmygare <PART> : Vålnad",
+43,29,"<Spegelskärva>
+<PART> Fantomsmygare <PART> : Spegel
+<PART> Spektralriddare <PART> : Rustning",
+43,28,"<Polerad Rödmalm>
+<PART> Vildtroll <PART> : Stångvapen
+<PART> Muskulös Stalker <PART> : Vapen",
+43,31,"<Jättepärla>
+<PART> Slugkung <PART> : Skal
+<PART> Jättemal <PART> : Skal",
+43,27,"<Obsidianklo>
+<PART> Vintervarg <PART> : Ben
+<PART> Vildvarg <PART> : Ben",
+43,37,"<Så gör du stamkundsartiklar>
+ <PART> Vad är en stamkundsartikel? <PART>
+Som namnet antyder är stamkundsartiklar reserverade för stamkunder.
+
+Bland dem finns artiklar som är svåra att få tag på och artiklar som inte finns någon annanstans.",
+43,43,"<Så gör du stamkundsartiklar>
+ <PART> Hur ser jag artiklarna till salu? <PART>
+Artikelns namn som visas som ""?"" blir synliga när du blir stamkund.
+
+Om du inte ser namnen beror det på att butiksägaren bedömer att din stamkundsnivå är för låg. <PART>
+---
+ <PART> <Så gör du stamkundsartiklar>
+ <PART> Hur ser jag artiklarna till salu? <PART>
+Ju mer du köper i en butik, desto högre blir ditt stamkundsvärde, och desto fler artiklar blir synliga.",
+43,44,"<Så gör du stamkundsartiklar>
+ <PART> Tala om vilka material jag behöver! <PART>
+När du vet vilken artikel det rör sig om,
+är det dags att samla materialen. Materialen anges för varje artikel,
+så du behöver bara samla dem.
+
+De flesta materialen kan fås genom att besegra monster. <PART>
+---
+ <PART> <Så gör du stamkundsartiklar>
+ <PART> Tala om vilka material jag behöver! <PART>
+Vad du får beror på vilka monsterdelar som slits av.
+
+Vilka delar som ger vilka material finns med i <PART> <Butiksägarens Anteckningar> <PART> någonstans i butiken.",
+43,45,"<Så gör du stamkundsartiklar>
+ <PART> Gör min artikel! <PART>
+När du har de föremål som krävs
+för att skapa en stamkundsartikel,
+visas materialen som <PART> gula <PART> när
+du säljer dem. <PART>
+---
+ <PART> <Så gör du stamkundsartiklar>
+ <PART> Gör min artikel! <PART>
+När namnet på den artikel du vill ha är synligt, och du har sålt
+det nödvändiga materialet till butiksägaren, blir artikel gjord. <PART>
+---
+ <PART> <Så gör du stamkundsartiklar>
+ <PART> Gör min artikel! <PART>
+När stamkundsartiklarna
+visas i en mörkare gul nyans
+betyder det att materialet ännu
+inte sålts till butiksägaren.
+
+Det betyder också att kunden redan
+har de nödvändiga föremålen. <PART>
+---
+ <PART> <Så gör du stamkundsartiklar>
+ <PART> Gör min artikel! <PART>
+Antalet artiklar som kan göras
+av det sålda materialet visas inom
+parentes efter köpkvantiteten.
+ <PART> Exempel: Elixir 1000 X 0 / 99 <PART> (10) <PART>
+
+I det här exemplet kan 10 elixir
+göras av det sålda materialet.",
+43,1,Gå ut,
+43,10,Prat,
+43,14,Läsa,
+43,19,<Butiksägarens Anteckningar>,
+43,20,Ondögats Juvel,
+43,21,Helig Spinel,
+43,22,Spegelskärva,
+43,23,Polerad Rödmalm,
+43,24,Jättepärla,
+43,25,Obsidianklo,
+43,32,<Så gör du stamkundsartiklar>,
+43,33,Vad är en stamkundsartikel?,
+43,34,Hur ser jag artiklarna till salu?,
+43,35,Tala om vilka material jag behöver!,
+43,36,Gör min artikel!,
+43,38,<Så gör du stamkundsartiklar>,
+43,39,Vad är en stamkundsartikel?,
+43,40,Hur ser jag artiklarna till salu?,
+43,41,Tala om vilka material jag behöver!,
+43,42,Gör min artikel!,
+43,385,Solde,
+43,2787,Butiksägare,
+43,2788,Äventyrare,

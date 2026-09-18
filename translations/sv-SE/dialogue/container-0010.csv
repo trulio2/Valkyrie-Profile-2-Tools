@@ -1,41 +1,124 @@
 resource,message_id,translated,notes
-10,1,,
-10,0,,
-10,2,,
-10,3,,
-10,4,,
-10,5,,
-10,6,,
-10,7,,
-10,10,,
-10,11,,
-10,90,,
-10,100,,
-10,101,,
-10,102,,
-10,1000,,
-10,1001,,
-10,1002,,
-10,1003,,
-10,1004,,
-10,1005,,
-10,1006,,
-10,1007,,
-10,1008,,
-10,1009,,
-10,1010,,
-10,1011,,
-10,1012,,
-10,1013,,
-10,1014,,
-10,1015,,
-10,1016,,
+10,1,"<8084:01>Aktivera progressiv rasterisering?
+<8099:08>Ja (16:9)  <8099:07>Ja (4:3)  <8099:06>Nej
+<0065>
+<808A:CDCC4C3FCDCC4C3F>Komponent AV-kabel (för PlayStation<0066>2) och en TV som
+stöder (525p) krävs för progressiv rasterisering.
+<0065>
+<8088:04>Om den progressiva bilden inte visas inom 10 sekunder
+återvänder du automatiskt till den här menyn.
+ 
+Tryck <8099:08> för att aktivera widescreen.
+Ställ in din TV på rätt visningsläge.
+Se din TVs bruksanvisning för mer information.",
+10,0,"<8084:01>Aktivera progressiv rasterisering?
+<8099:08>Ja (16:9)  <8099:07>Ja (4:3)  <8099:06>Nej
+<0065>
+<808A:CDCC4C3FCDCC4C3F>Komponent AV-kabel (för PlayStation<0066>2) och en TV som
+stöder (525p) krävs för progressiv rasterisering.
+<0065>
+<8088:04>Om den progressiva bilden inte visas inom 10 sekunder
+återvänder du automatiskt till den här menyn.
+ 
+Tryck <8099:08> för att aktivera widescreen.
+Ställ in din TV på rätt visningsläge.
+Se din TVs bruksanvisning för mer information.",
+10,2,"<8084:01>Progressiv rasterisering (16:9) aktiverad.
+Fortsätta med spelet i det här visningsläget?
+<8099:21>Ja <8099:22>Nej
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Du återvänder till menyn om inget svar
+kommer inom 10 sekunder.",
+10,3,"<8084:01>Progressiv visning (4:3) inställd.
+Fortsätta med spelet i det här visningsläget?
+<8099:21>Ja <8099:22>Nej
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Du återvänder till menyn om inget svar
+kommer inom 10 sekunder.",
+10,4,"<8084:01>Inget minneskort (8MB)(för PlayStation<0066>2) är isatt
+ i kortplats 1 eller 2.
+Valkyrie Profile<0066>2 kräver <8094:00><CONT> KB ledigt utrymme för att spara.
+ 
+Vill du fortsätta ändå?",
+10,5,"<8084:01>Otillräckligt ledigt utrymme på
+minneskortet (8MB)(för PlayStation<0066>2) i
+kortplats <8094:01><CONT>. Valkyrie Profile<0066>2
+kräver <8094:00><CONT> KB ledigt utrymme för att spara.<8082> 
+Vill du fortsätta ändå?",
+10,6,"<8084:01>Otillräckligt ledigt utrymme på
+minneskorten (8MB)(för PlayStation<0066>2) i
+kortplats 1 och 2.
+ Valkyrie Profile<0066>2 kräver <8094:00><CONT> KB ledigt utrymme för att spara.<8082> 
+Vill du fortsätta ändå?",
+10,7,"<8084:01>Läser in konfigurationsdata.
+<0065>
+Ta inte bort minneskortet (8MB)(för PlayStation<0066>2)
+ur kortplats <8094:01><CONT>.",
+10,10,"<8084:01>Välj bildformat:
+<8099:08>16:9<0065><8099:07>4:3
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Tryck <8099:08> för att aktivera widescreen.
+Ställ in din TV på rätt visningsläge.
+Se din TVs bruksanvisning för mer information.",
+10,11,"<8084:01>Aktivera 1080i-läget.
+Det här läget fungerar bara med HDTV-apparater som
+stöder visningsläget 1080i.
+<0065>
+<808A:CDCC4C3FCDCC4C3F><8088:04>Det här läget stöds inte.
+Fortsätt spelet på egen risk.<8089><808B>
+ 
+Fortsätta med spelet?
+<8099:21>Ja <8099:22>Nej",
+10,90,"<8084:01>DUALSHOCK<0066>2-analogkontrollen kunde inte hittas.
+Sätt i DUALSHOCK<0066>2-analogkontrollen
+i kontrolluttag 1.
+ 
+Tryck <8099:21> för att fortsätta.",
+10,100,Ja,
+10,101,Nej,
+10,102,Hoppa över denna sekvens?,
+10,1000,"<808C:0000A040><8084:01><808A:3333333F9A99593F>Speldesign
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Masaki Norimoto",
+10,1001,"<808C:0000A040><808A:3333333F9A99593F>Planering
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Masahiro Nishida
+Takashi Sato",
+10,1002,"<808C:0000A040><808A:3333333F9A99593F>Huvudprogrammerare
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Shigeru Ueki",
+10,1003,"<808C:0000A040><808A:3333333F9A99593F>Stridsprogrammerare
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Yuichiro Kitao",
+10,1004,"<808C:0000A040><808A:3333333F9A99593F>Chefsprogrammerare för F&U
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Yoshiharu Gotanda",
+10,1005,"<808C:0000A040><808A:3333333F9A99593F>Ljud
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Yusaburo Shimojyo",
+10,1006,"<808C:0000A040><808A:3333333F9A99593F>Art Direction
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Eiko Sawamura",
+10,1007,"<808C:0000A040><808A:3333333F9A99593F>Bakgrunder och Modellering
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Kentaro Kagami
+Miyuki Yamamoto",
+10,1008,"<808C:0000A040><808A:3333333F9A99593F>Karaktärer och Modellering
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Masashi Nakagawa",
+10,1009,"<808C:0000A040><808A:3333333F9A99593F>Visuella Effekter
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Mariko Kamiya",
+10,1010,"<808C:0000A040><808A:3333333F9A99593F>3D-animation
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Masaaki Yamashima",
+10,1011,"<808C:0000A040><808A:3333333F9A99593F>Manus
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Yasushi Otake",
+10,1012,"<808C:0000A040><808A:3333333F9A99593F>Events-Regi
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Kazuki Hayashitani",
+10,1013,"<808C:0000A040><808A:3333333F9A99593F>FMV-Regi
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Kenichi Kanekura",
+10,1014,"<808C:0000A040><808A:3333333F9A99593F>FMV
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Yukinori Masuda",
+10,1015,"<808C:0000A040><808A:3333333F9A99593F>Musik
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Motoi Sakuraba",
+10,1016,"<808C:0000A040><8084:01><808A:3333333F9A99593F>Regi
+<808A:6666863FCDCCAC3F><808C:0000C040><808E:0000C0C0>Takayuki Suguro",
 10,2000,Fara.,
 10,2001,Från vad?,
-10,2002,Kan du inte se det?,
-10,2003,"Hur vet du?
+10,2002,Känner du det inte?,
+10,2003,"Hur vet du det?
                                  Jag känner ingenting.",
-10,2004,"Om hon säger att vi är i fara, så är vi det!",
+10,2004,"Säger hon att vi är i fara, så är vi det!",
 10,2005,Han har rätt!,
 10,2006,"Öppna ögonen,",
 10,2007,Alicia.,
@@ -43,14 +126,14 @@ resource,message_id,translated,notes
 10,2010,"Den här vägen, snabbt!",
 10,2011,Skynda dig!,
 10,2012,Snabbt!,
-10,2013,Jag vet! Skynda inte på oss!,
-10,2014,Dit borta!,
-10,2015,"Silmeria, återvänd genast!",
-10,2016,Jag ska inte...,
-10,2017,Jag ska inte återvända till Valhall!,
-10,2019,Du kommer att vara olydig Oden till ditt sista andetag.,
-10,2020,Så må det vara.,
+10,2013,Jag vet! Stressa oss inte!,
+10,2014,Där bort!,
+10,2015,"Silmeria, återvänd omedelbart!",
+10,2016,Jag tänker inte...,
+10,2017,Jag återvänder inte till Valhalla!,
+10,2019,Du tänker trotsa Oden till sista andetaget.,
+10,2020,Så ske det.,
 10,2021,Men var varnad<808A:000080400000803F>-<808B>Dipan kommer inte att skonas.,
 10,2022,Tack.,
-10,2023,Det finns ingen återvändo nu.,
-10,2024,Nu går vi...,
+10,2023,Nu finns det ingen återvändo.,
+10,2024,Vi går...,

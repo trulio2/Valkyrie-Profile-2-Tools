@@ -1,30 +1,77 @@
 resource,message_id,translated,notes
-135,4,,
-135,3,,
-135,5,,
-135,6,,
+135,4,Något är skrivet i kanten av en sida.,
+135,3,"O <PART> det förflutnas spår i tiden,
+ <PART> o <PART> ch känslorna återvänder till en svunnen tid.",
+135,5,Ser ut som något provskrivet.,
+135,6,"Just det, jag tror jag såg liknande text
+någonstans i Solde...",
 135,351,,
 135,352,,
 135,353,,
-135,2451,,
-135,2454,,
-135,2491,,
-135,2494,,
-135,2531,,
-135,2534,,
-135,2571,,
-135,2574,,
-135,2611,,
-135,2614,,
-135,2651,,
-135,2654,,
-135,2739,,
-135,2742,,
-135,2779,,
-135,2782,,
-135,1,,
-135,2,,
-135,2795,,
-135,2796,,
-135,2821,,
-135,2824,,
+135,2451,"Jag vill leva mitt liv här
+och dö i den här staden. <PART>
+---
+Jag är inte stark nog att överleva
+på en plats där ingen vet ett dyft om mig.",
+135,2454,"I det här livet litar jag inte på någon.
+Jag är trött på att bli lurad och utnyttjad. <PART>
+---
+Om jag får träffa min syster igen vill
+jag kunna se henne i ögonen.",
+135,2491,"Jag är inte stark nog att överleva
+på en plats där ingen känner mig.",
+135,2494,"Bättre att inte lita på någon
+än att bli lurad igen.",
+135,2531,"I mitt förra liv såg jag den här staden
+bara som ett näste fullt av monster. <PART>
+---
+Den tidens kung fick upp ögonen för mig och
+tog mig hit under förespegling av helgon. <PART>
+---
+Mina föräldrar sålde mig, för jag kunde
+ändå inte vägra.",
+135,2534,"Om det gick skulle jag ge mitt liv för att
+låta min syster och hennes man leva nya liv. <PART>
+---
+Det är det enda sättet jag
+kan gottgöra henne.",
+135,2571,"När man ser det så är det ändå en vacker stad.
+Invånarna är helt vanliga, utan varken horn eller huggtänder.",
+135,2574,"Vad ska jag göra nu...? Det var
+skönt att vara vid prinsessan Alicias sida.",
+135,2611,"Det gör mig fortfarande ont att tänka på
+dottern. Då ändade jag mitt liv och övergav henne. <PART>
+---
+Som mor finner jag inga ord
+som kan be om hennes förlåtelse.",
+135,2614,"Nästa gång jag möter min syster vill jag
+kunna se henne i ögonen. <PART>
+---
+Därför tänker jag gå den väg jag valt
+av egen vilja.",
+135,2651,"I mitt förra liv övergav jag min lilla
+dotter och tog mitt liv. <PART>
+---
+Som mor finner jag inga ord
+som kan be om hennes förlåtelse.",
+135,2654,"Först vill jag göra något bra
+för världen. <PART>
+---
+Vad tror du jag borde göra?",
+135,2739,"Just det, jag tänkte ge dig det här.
+Kan du ta emot det?",
+135,2742,"Det här är tacken för att du gav mig hopp.
+Använd det som du vill.",
+135,2779,"Efter mycket funderande bestämde jag mig för
+att fullborda ett nytt liv i den här staden. <PART>
+---
+Min enda koppling till det förflutna är den här
+platsen, så full av sorgliga minnen.",
+135,2782,"Att vi skulle mötas igen...
+Det känns nästan overkligt.",
+135,1,Utgång,
+135,2,Undersök,
+135,2795,Crell Monferaigne,
+135,2796,Erhöll <PART> Jordjuvel,
+135,2821,Lylia,
+135,2824,Millidia,

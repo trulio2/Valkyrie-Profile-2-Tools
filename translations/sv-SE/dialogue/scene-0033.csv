@@ -1,50 +1,138 @@
 resource,message_id,translated,notes
-33,14,,
-33,15,,
-33,16,,
-33,17,,
-33,18,,
-33,19,,
-33,20,,
-33,21,,
-33,22,,
-33,23,,
-33,24,,
-33,25,,
-33,26,,
-33,27,,
-33,28,,
-33,29,,
-33,30,,
-33,31,,
-33,32,,
-33,33,,
-33,34,,
-33,35,,
-33,36,,
-33,37,,
-33,38,,
-33,39,,
-33,40,,
-33,41,,
-33,42,,
-33,43,,
-33,44,,
-33,45,,
-33,46,,
-33,47,,
-33,48,,
-33,1,,
-33,3,,
-33,4,,
-33,5,,
-33,7,,
-33,8,,
-33,11,,
-33,12,,
-33,13,,
-33,628,,
-33,2741,,
-33,2742,,
-33,2743,,
-33,2744,,
+33,14,"Visste du? Dipan är upplyst av magiskt ljus,
+så det är ljust även efter solnedgången. <PART>
+---
+Om jag var där, skulle de säkert
+bara få mig att plugga ännu senare...",
+33,15,"Jag skulle älska att studera magi i Dipan. Det
+finns bara så mycket man kan lära sig i Solde.",
+33,16,"Jag fick faktiskt en glimt av killarna
+som anföll skeppen. <PART>
+---
+De såg mer ut som legosoldater
+än pirater för mig.",
+33,17,"Pirater är de skäggiga killarna som
+bär stora hattar, eller hur?",
+33,18,"Hela lasten har sjunkit!
+Jag kommer att svälta ihjäl! <PART>
+---
+Undra om något annat land ligger bakom
+det här, som försöker förstöra Dipans handel.",
+33,19,"Jag behöver ett sätt att sätta mat på bordet
+tills handeln återupptas. Förbannade pirater!",
+33,20,"Det här är inte bra.
+När kommer båtarna att segla igen egentligen? <PART>
+---
+Det kostar mig att lagra lasten här.
+Får jag den inte till Dipan går jag i konkurs.",
+33,21,"Solde behöver Dipans handel för att blomstra.
+Vad ska vi göra utan den?",
+33,22,"Jag tror att det är dags för Dipan att höra av sig
+med någon form av uppdatering. <PART>
+---
+Vad gör kung Barbarossa?
+Folk där borta lär också vara oroliga.",
+33,23,"Har de blivit av med piraterna än?
+Det var en stor karl med ett enormt svärd.",
+33,24,"Det tjänar ingenting till <PART> ---- <PART> de säger ingenting till oss.
+Om vi bara hade en landsväg, åtminstone... <PART>
+---",
+33,25,"Just när båtarna skulle avgå igen,
+införde Dipan ett reseförbud. <PART>
+---
+Vad tänker kung Barbarossa egentligen på?
+Solde kommer att vara förstörd!",
+33,26,"Om handeln förblir stoppad, är Solde förstört.
+Vad i helsike tänker Dipan på!?",
+33,27,"De har stoppat båtarna igen...
+och just när de hade börjat gå igen. <PART>
+---
+Kanske kommer Dipan att stänga sina gränser.
+Ha! Visst, det skulle de aldrig göra!",
+33,28,"Varför skulle Dipan stänga sina gränser?
+Kunde det vara... ett krig eller något?",
+33,29,"Ett skepp lämnade faktiskt Dipan nyligen,
+men nu har de alla stannat igen.",
+33,30,"Det är första gången Dipan förbjuder resor.
+De avbryter i praktiken utrikeshandeln. <PART>
+---
+Den här typen av situationer på marknaden är
+praktiskt taget ett tydligt tecken på krig. <PART>
+---
+Men mot vem skulle de slåss?
+Ingen i Midgard kan mäta sig med dem.",
+33,31,"Jag minns rykten om konstig forskning
+i Dipan, men har det med förbudet att göra?",
+33,32,"Röken som stiger från andra sidan <PART> ---- <PART>
+det är Dipan, eller hur? Bli de attackerade?",
+33,33,"Om Dipan försvinner,
+vad kommer att hända med Solde? <PART>
+---
+Vilka andra alternativ har vi än handel?
+Det finns inget sätt för oss att överleva!",
+33,34,"Jag såg det <PART> ---- <PART> en plötslig blixt över Dipan! Det
+var gudarnas kraft... gudarnas vrede!",
+33,35,"Det fanns en väg som bara
+kungafamiljen i Dipan kände till. <PART>
+---
+Kung Barbarossa avslöjade den i
+förväg så att folket kunde fly. <PART>
+---",
+33,36,"Kung Barbarossa var verkligen en stor kung,
+men att trotsa gudarna är vansinne.",
+33,37,"Hur stolt mannen än är, kommer den som
+försöker gå bortom det mänskliga att straffas. <PART>
+---
+Kungen var för stor för dödligheten.
+Ändå är gudarnas herravälde absolut.",
+33,38,"Dipan är i princip borta.
+Och med det följer Solde snart efter.",
+33,39,"Den här staden byggdes på handel med Dipan.
+Vi sitter bokstavligen i samma båt som de. <PART>
+---
+Vår handel med andra länder är ynklig.
+Vi kan inte leva på det.",
+33,40,"Den här staden har inte en chans.
+Handeln med Dipan var allt den hade.",
+33,41,"Jag lämnar Solde för Villnore.
+Jag tror inte att det finns ett liv för mig här. <PART>
+---
+Det var gott medan det varade,
+men om Dipan är borta finns det inget hopp.",
+33,42,"Alla förbereder sig för att lämna Solde.
+Utan handel finns det ingenting för oss här.",
+33,43,"Håll dig ur vägen!
+Jag håller på att förbereda mig för att sticka. <PART>
+---
+Om Dipan är slut, är Solde också det.
+Det finns ingen anledning för mig att vara här.",
+33,44,"Alla flyttar för ett bättre liv.
+En dag kommer det inte ens finnas en stad här.",
+33,45,"Solde finns tack vare handeln med Dipan.
+Hur skulle en hamn som den här annars kunna frodas? <PART>
+---
+Och nu har det kommit till det här.
+Vad ska jag göra nu?",
+33,46,"De unga åker först, men snart åker alla.
+Jag antar att det är slutet för Solde.",
+33,47,"De enda som är kvar i staden nu är
+patrioter och äldre utan någonstans att ta vägen. <PART>
+---
+Alla försvann så plötsligt.
+Det är vad som händer när ett land faller.",
+33,48,"Dipan föll, och nu blåser anarkins vindar
+som om det inte fanns någon morgondag.",
+33,1,Till hamnen,
+33,3,Vandrarhem,
+33,4,Vapenhus,
+33,5,Hus,
+33,7,Solde <PART> Själagatan,
+33,8,Utgång,
+33,11,Lämna Solde?,
+33,12,Ja,
+33,13,Nej,
+33,628,Solde,
+33,2741,Pojke,
+33,2742,Herr,
+33,2743,Stadsbo,
+33,2744,Dama,

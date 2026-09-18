@@ -1,64 +1,173 @@
 resource,message_id,translated,notes
-91,8,,
-91,65,,
-91,9,,
-91,10,,
-91,11,,
-91,12,,
-91,14,,
-91,15,,
-91,16,,
-91,17,,
-91,18,,
-91,51,,
-91,25,,
-91,26,,
-91,28,,
-91,29,,
-91,31,,
-91,30,,
-91,32,,
-91,33,,
-91,34,,
-91,35,,
-91,36,,
-91,37,,
-91,38,,
-91,39,,
-91,40,,
-91,42,,
-91,41,,
-91,44,,
-91,45,,
-91,46,,
-91,49,,
-91,50,,
-91,55,,
-91,59,,
-91,60,,
-91,64,,
-91,1,,
-91,2,,
-91,3,,
-91,4,,
-91,5,,
-91,6,,
-91,7,,
-91,13,,
-91,27,,
-91,43,,
-91,47,,
-91,48,,
-91,52,,
-91,53,,
-91,54,,
-91,56,,
-91,57,,
-91,58,,
-91,61,,
-91,62,,
-91,63,,
-91,182,,
-91,2924,,
-91,2925,,
-91,2926,,
+91,8,"Var det ni som drev bort monstren
+ur gruvan? Bra gjort! <PART>
+---
+Det är inte mycket, men vårt gille samlade ihop en
+belöning. Vi gruvarbetare hoppas du gillar den!",
+91,65,Erhöll <PART> OTH,
+91,9,"Det är farligt där nere i gruvorna.
+Det krävs muskler och mod för att överleva. <PART>
+---
+Ena stunden gräver du, och nästa <PART> ---- <PART>
+BOOM <PART> ---- <PART> spränger bort monster med sprängmedel!",
+91,10,"Alla hyllar handeln medan
+borgliga affärsmän räknar sina vinster. <PART>
+---
+De glömmer att vi gruvarbetare är anledningen
+till att den här staden överhuvudtaget har handel!",
+91,11,"Monster har setts nära staden.
+Det måste finnas ett näste i närheten.",
+91,12,"Konstiga monster kom ut ur gruvorna.
+Min son jobbar med handel, så han är säker. <PART>
+---
+Min son säger att han håller på att slutföra en affär
+med Crell Monferaigne. <PART>
+---
+Pengarna kommer rulla in så fort att
+vi inte hinner räkna dem!",
+91,14,"Det är farligt där nere i gruvorna.
+Det krävs muskler och mod för att överleva. <PART>
+---
+Ena stunden gräver du, och nästa <PART> ---- <PART>
+BOOM <PART> ---- <PART> spränger monster med dynamit!",
+91,15,"Någon tog hand om monstren i gruvorna.
+Jag skulle vilja träffa den personen och tacka.",
+91,16,"En av min sons klienter berättade att
+Dipan har betett sig underligt. <PART>
+---
+Något om hemsk forskning och
+förberedelser för krig...",
+91,17,"Ryktet om Dipans misstänkta experiment
+har nått Crell Monferaigne vid det här laget.",
+91,18,"Soldes fartyg har ännu inte återupptagit
+trafiken helt. Vad är det med Dipan?",
+91,51,"Du dyker upp i rättan tid!
+Dipan har sina problem, men vi har våra! <PART>
+---
+Monster har krupit tillbaka in i gruvorna.
+Magisk kraft lockar magiska väsen... <PART>
+---
+Vad säger du? Ska du försöka igen?
+Det ska bli värt besväret...",
+91,25,"Den som anföll mäktiga Dipan var antingen
+verkligt orädd eller verkligt tokig! <PART>
+---
+Tror du det var Crell Monferaigne, eller
+sväljer du det där om gudarna?",
+91,26,"Så du tog dig tillbaka, va?
+Det ser ut som du kom undan helskinnad. <PART>
+---
+Jag kan verkligen inte tacka dig nog!
+Det här är det minsta jag kan göra...",
+91,28,"Visste du att det brukade finnas en annan
+gruvarbetargille här? Det är bara en aning, <PART>
+---
+men jag tror de första monstren som dök upp
+faktiskt var... äh, glöm det, det är galet...",
+91,29,"Det här är inte bra! Om Dipan förlorar,
+mister jag min största klient!",
+91,31,"Det har inte varit några riktiga strider på ett tag,
+men det kommer att ändras om Dipan faller.",
+91,30,"Nu är Dipan under attack och det finns monster
+i gruvorna... Inget lyckas någonsin!",
+91,32,"Jag kan fortfarande inte tro <PART> ---- <PART>
+Dipan utplånades på en enda natt! <PART>
+---
+Kontinentens jätte är bara
+en mus inför gudarna.",
+91,33,"När kontinentens makt är borta
+står alla territorier på spel.",
+91,34,"Överallt pratar folk om
+Dipan. Det visar hur stor sak det är!",
+91,35,"Lämna mig ifred! Jag måste lista ut hur
+jag ska hitta nya klienter utan Dipan.",
+91,36,"Så gudarna finns verkligen ändå.
+Jag har bara aldrig sett en med egna ögon. <PART>
+---
+Det vi lärde oss i teologi var på riktigt...
+Vilken chock!",
+91,37,"Jag vet inte om andra, men jag tyckte alltid
+teologi bara var spökhistorier!",
+91,38,"Om det blir krig, så säg till! <PART>
+---
+Vi är vana vid explosioner i gruvorna, så vi
+spränger helt enkelt bort våra fiender!",
+91,39,"Underskatta inte en gruvarbetares kunskap om
+sprängning! Den slår dåliga pilbågar!",
+91,40,"De kommer att bli strängare med skatter nu,
+bara för att utöka militären... Vilket slöseri.",
+91,42,"När Dipans dämpande inflytande
+avlägsnats kommer krig att sluka kontinenten. <PART>
+---
+Vi har inget val än att förstärka
+vår militär om vi ska överleva.",
+91,41,"Efterträdaren till Dipans tron dog som
+barn. Kungaätten är slut.",
+91,44,"Min husse sa åt mig att inte umgås med byrackor,
+så jag är rädd att det aldrig skulle fungera oss emellan.",
+91,45,"Du har en vacker man på dig <PART> ---- <PART>
+kanske vi kan gå på promenad någon gång?",
+91,46,"Jag tänker inte vovva mig härifrån!
+En dag ska jag ta ut dig på promenad!",
+91,49,"Är du allvarlig? Menar du det verkligen!?
+Du får tårar av glädje i mina ögon! <PART>
+---
+Lycka till där ute, och
+fortsätt med det goda arbetet!",
+91,50,"Åh, jag förstår... Du har säkert
+problem av ditt eget att hantera... <PART>
+---
+Glöm att jag nämnde det!
+Vi ordnar det här själva!",
+91,55,"Du dyker upp i rättan tid!
+Dipan har sina problem, men vi har våra! <PART>
+---
+Monster har krupit tillbaka in i gruvorna.
+Magisk kraft lockar magiska väsen... <PART>
+---
+Vad säger du? Ska du försöka igen?
+Det ska bli värt besväret...",
+91,59,"Är du allvarlig, menar du det verkligen!?
+Du får tårar av glädje i mina ögon! <PART>
+---
+Lycka till där ute och
+fortsätt med det goda arbetet!",
+91,60,"Du dyker upp i rättan tid!
+Dipan har sina problem, men vi har våra! <PART>
+---
+Monster har krupit tillbaka in i gruvorna.
+Magisk kraft lockar magiska väsen... <PART>
+---
+Vad säger du? Ska du försöka igen?
+Det ska bli värt besväret...",
+91,64,"Är du allvarlig? Menar du det verkligen!?
+Du får tårar av glädje i mina ögon! <PART>
+---
+Lycka till där ute, och
+fortsätt med det goda arbetet!",
+91,1,Krog,
+91,2,Vapenförråd,
+91,3,Hus,
+91,4,Utgång,
+91,5,Lämna Villnore?,
+91,6,Ja,
+91,7,Nej,
+91,13,"Crell Monferaigne skriker efter blod
+sedan Villnores senaste utbredning.",
+91,27,Erhöll <PART> Metaboliserare,
+91,43,Erhöll <PART> Salomons ring,
+91,47,Erhöll <PART> Salomons ring,
+91,48,Erhöll <PART> Salomons ring,
+91,52,Kör på det.,
+91,53,Strunta i det.,
+91,54,Besöka gruvorna igen?,
+91,56,Besöka gruvorna igen?,
+91,57,Kör på det.,
+91,58,Strunta i det.,
+91,61,Besöka gruvorna igen?,
+91,62,Kör på det.,
+91,63,Strunta i det.,
+91,182,Villnore,
+91,2924,Stadsbo,
+91,2925,Matrona,
+91,2926,Hund,

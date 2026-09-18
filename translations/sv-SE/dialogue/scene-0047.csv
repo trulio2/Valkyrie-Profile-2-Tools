@@ -1,40 +1,125 @@
 resource,message_id,translated,notes
-47,2,,
-47,3,,
-47,4,,
-47,5,,
-47,6,,
-47,7,,
-47,9,,
-47,10,,
+47,2,"Jag tänkte att jag skulle be om trygghet här innan jag begav mig ut på min resa. <PART>
+---
+Det är märkligt att be om trygghet hos en Stridsjungfru som för med sig döden. <PART>
+---
+För krigare är det en ära att bli utvald, och jag hoppas få träffa henne en dag. <PART>
+---
+Men det innebär ju att man faktiskt dör, eller hur? Jag antar att jag helst inte tänker på det.",
+47,3,Evigt liv i himlen utlovas till dem som väljs ut att bli einherjar.,
+47,4,"Är det verkligen du, prinsessan Alicia!?
+Vilken överraskning att träffa dig här! <PART>
+---
+Jag flydde från Dipan, men vart ska jag nu ta vägen?
+Jag lever på detta kapells allmosor. <PART>
+---
+Livet jag levde för några dagar sedan känns som en dröm.
+Jag vet inte hur jag ska överleva.",
+47,5,"Gudarna vi dyrkar har övergett oss,
+men ändå knäpper jag händerna i bön.",
+47,6,"Jag förstår inte vem min mamma ber till.
+Hon sade själv att gudarna övergett oss. <PART>
+---
+Om jag skulle be, så skulle det vara för de stackars själarna
+som blev kvar i Dipan.",
+47,7,"Jag tror Dipan ligger i den riktningen.
+Låt oss be att de alla får vila i frid.",
+47,9,"<Teologi> <PART>
+Stridsjungfru, de fallnas beskyddare... Valkyrian är känd under många namn. På Odins, asarnas kungs, befallning väljer valkyrian ut modiga själar och leder dem till Valhalla för att förbereda dem för den kommande gudarnas krig. <PART>
+---
+<PART> <Teologi> <PART>
+Hon sägs uppenbara sig som en skönhetssyn för krigare som dör hjältemodigt.
+
+De hon valt vandrar i himlen som einherjar, gudarnas soldater.",
+47,10,"<Teologi> <PART>
+...Efter det långa krigets slut var det asarnas hövding Odin som intog gudarnas tron. Men kriget förstörde allt och lämnade ingenting att styra.
+Så skapade Odin människosläktet på nytt på Midgard och blev därmed alltets fader.",
 47,347,,
 47,348,,
 47,349,,
-47,2215,,
-47,2223,,
-47,2255,,
-47,2263,,
-47,2295,,
-47,2303,,
-47,2335,,
-47,2343,,
-47,2375,,
-47,2383,,
-47,2415,,
-47,2423,,
-47,2503,,
-47,2511,,
-47,2543,,
-47,2551,,
-47,1,,
-47,8,,
-47,11,,
-47,12,,
-47,13,,
-47,2562,,
-47,2754,,
-47,2755,,
-47,2756,,
-47,2757,,
-47,2779,,
-47,2787,,
+47,2215,"Vilka planer har du för framtiden? Vad vill du
+göra? Det är bara du som kan bestämma det, vet du.",
+47,2223,"Jag har inget att säga dig.
+Jag kommer aldrig att tillåta dig att använda mig igen. <PART>
+---
+Om du vet vad som är bäst för dig
+så ger du dig av härifrån. Nu!",
+47,2255,"Jag kan inte använda mina kontakter eftersom
+ingen kommer att tro på vem jag är. <PART>
+---
+Och om jag försöker göra något på egen hand,
+dröjer det åratal innan jag nått en maktposition. <PART>
+---
+Det är bara du som kan göra det.",
+47,2263,"Jag sa åt dig att försvinna!
+Vill du smaka på mitt svärd!?",
+47,2295,"Den där Odin-typen är verkligen envis
+med att ställa till med oreda i Midgard. <PART>
+---
+Jag antar att jag var likadan när jag fick till
+undertecknandet av fredsfördraget. <PART>
+---
+...Men det höll bara i tjugo år,
+tack vare gudarna... <PART>
+---
+Jag blev så rasande! Han är bara en ond varelse
+iklädd löjliga pyjamasoveraller!",
+47,2303,"Du tog mina svagheter och använde
+dem mot mig för att göra mig till din slav. <PART>
+---
+Jag har gjort tillräckligt för dig.
+Jag borde inte behöva göra något mer.",
+47,2335,"Om bara människor kunde leva för evigt
+skulle vi kunna bjuda upp till bättre kamp. <PART>
+---
+Jag känner några som gick till underjorden
+eftersom de föraktade gudarna. Vilken röra!",
+47,2343,"Vad vill du mer ha av mig?
+Du har använt mig tillräckligt!",
+47,2375,"Va? Är allt okej nu? <PART>
+---
+Om du fick det du ville,
+så är jag glad för din skull. <PART>
+---
+Om du inte fick det, kan du alltid
+försöka i nästa liv.",
+47,2383,"Du tycker att alla borde tjäna dig.
+Jag avskyr ditt slags folk. <PART>
+---
+Tro inte att alla där ute kommer att kyssa
+dina fötter med glädje!",
+47,2415,"Gör vad du vill nu. Låt dig inte
+dras in i någonting.",
+47,2423,"Tro inte att bara för att du är gud,
+så ska alla tjäna dig.",
+47,2503,"Åh, nästan glömt! <PART>
+---
+Du kom ända hit. Jag kan inte låta
+dig gå utan att ge dig något.",
+47,2511,"Jag ger dig det här, om du bara
+försvinner ur min åsyn!",
+47,2543,"Vad har hänt här? Det ser mycket värre ut
+än vad jag minns från min tid. <PART>
+---
+Hur som helst, prinsessan Alicia, vad
+tänker du göra nu? <PART>
+---
+Det kommer att gå bra. Du är ju min brors...
+barns... jag minns inte... <PART>
+---
+Hur som helst går det bra, vad du än gör!
+...Hörru, ge mig inte den där blicken!",
+47,2551,"Jag behöver inte tjäna dig längre.
+Så vad vill du?",
+47,1,Gå ut,
+47,8,Läsa,
+47,11,<Teologi>,
+47,12,Om människans ursprung,
+47,13,Om valkyrior,
+47,2562,Solde,
+47,2754,Erhöll <PART> Guldägg,
+47,2755,Äventyrare,
+47,2756,Stadsbo,
+47,2757,Flicka,
+47,2779,Phyress,
+47,2787,Ehrde,

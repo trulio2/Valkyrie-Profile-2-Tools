@@ -130,6 +130,7 @@ requirements, and legacy dub-kit compatibility.
 - [Translation-pack format](docs/translation-format.md)
 - [Drawing new glyphs](docs/authoring-glyphs.md)
 - [Known issues](docs/issues.md)
+- [Important Scenes](docs/scenes.md)
 - [Contributing](docs/CONTRIBUTING.md)
 
 ## License and game data

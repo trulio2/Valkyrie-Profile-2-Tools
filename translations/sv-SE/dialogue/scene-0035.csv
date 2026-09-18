@@ -1,51 +1,138 @@
 resource,message_id,translated,notes
-35,3,,
-35,4,,
-35,5,,
-35,6,,
-35,7,,
-35,8,,
-35,9,,
-35,10,,
-35,11,,
-35,12,,
-35,13,,
-35,14,,
-35,15,,
-35,16,,
-35,17,,
-35,18,,
-35,19,,
-35,20,,
-35,21,,
-35,22,,
-35,23,,
-35,24,,
-35,25,,
-35,26,,
-35,27,,
-35,28,,
-35,29,,
-35,30,,
-35,31,,
-35,32,,
-35,33,,
-35,35,,
-35,36,,
-35,37,,
-35,38,,
-35,39,,
-35,40,,
-35,41,,
-35,55,,
-35,56,,
-35,1,,
-35,2,,
-35,34,,
-35,42,,
-35,2739,,
-35,2742,,
-35,2743,,
-35,2744,,
-35,2745,,
-35,2746,,
+35,3,"Var är piraterna? Jag kom för att se dem!
+Undra om de redan gett sig av.",
+35,4,"Inga avgångar förrän det är helt säkert <PART> ---- <PART>
+man vill ju inte sjunka direkt utanför hamnen. <PART>
+---
+Det vore bra om kung Barbarossa av
+Dipan gjorde något åt saken.",
+35,5,"Otroligt. Jag har seglat länge i Solde, men jag har aldrig sänkts av pirater förrän nu!",
+35,6,"Hörde du om piraterna?
+Första gången de syns i de här vattnen! <PART>
+---
+En del av mig vill ta reda på om det är
+snygga killar eller skrumpna gamla gubbar.",
+35,7,"Kanske ser jag piraterna om jag seglar nära
+hamnen. Men om de ser mig, är det kört.",
+35,8,"Väntar du på att båtarna ska avgå?
+Glöm det! De här skeppen går ingenstans. <PART>
+---
+Jag har hört att piraterna bränner skepp.
+Måste du verkligen iväg, bygg en flotte!",
+35,9,"Jag är fast! Min last är bara livsmedel. Om
+båtarna inte avgår snart, förstörs allt.",
+35,10,"Nu har de verkligen gått för långt!
+Det enda sättet att nå Dipan är med båt. <PART>
+---
+Min affärsverksamhet är förstörd!
+Odugliga pirater!",
+35,11,"Piratangrepp? Det var bara en kille!
+Han tog inte ens något. Konstigt.",
+35,12,"Jag skaffade allt det här stålet från Villnore,
+men situationen har inte förändrats alls! <PART>
+---
+Jag har fått många stålbeställningar på sistone.
+Tja, det är inte som att de startar ett krig.",
+35,13,"Det görs gott stål i Villnore.
+Det är där Crell Monferaigne får sitt.",
+35,14,"Jag har läst alla mina böcker.
+Jag vill skaffa nya, <PART>
+---
+men med det här läget lär det dröja.
+Jag antar att jag beställer från någon annan stans.",
+35,15,"Man kan bara göra så mycket i Solde. Jag
+vill ha ett ställe där vanligt folk lär sig magi.",
+35,16,"Först piraterna och nu det här förbudet!
+Vad tjänar de på att stänga landet?",
+35,17,"Dipans reseförbud har gjort
+hela staden bekymrad. <PART>
+---
+Och det är inte bara vi <PART> ---- <PART> andra
+länder är oroliga över Dipans agerande.",
+35,18,"Folk som kom tillbaka med sista båten sa att
+de kände spänningen i luften i Dipan. <PART>
+---
+Så länge de har kung Barbarossa och
+de Tre Visarna kommer de att klara sig. Ändå...",
+35,19,"Undra vad som kommer att hända i Dipan?
+Jag hoppas bara att det inte skadar Solde mer.",
+35,20,"Om jag var du, skulle jag inte gå runt
+och skvallra om att du vill se piraterna.",
+35,21,"Det är inte så att vi aldrig kan
+ta oss till Dipan igen... eller är det?",
+35,22,"Berätta, vad hände i Dipan?
+Mår alla där bra?",
+35,23,"Dipan har de Tre Visarna, så jag är säker
+på att de har någon magi i rockärmen.",
+35,24,"Det är självmord att korsa till Dipan nu!
+Ingen seglar! <PART>
+---
+Om du verkligen vill dit,
+börja simma. Jag är inte med!",
+35,25,"Om det här är gudarnas vrede,
+darrar jag bara jag tänker på Dipans öde.",
+35,26,"Jag lämnar staden. Ta den här boken.
+Jag vet inte om du gillar den eller inte.",
+35,27,"Tack! Jag kan inte läsa så bra,
+men jag ska försöka!",
+35,28,"Hör på. Om du läser hela grejen,
+skickar jag en ny till dig. Lova!",
+35,29,Grymt! Jag väntar på den!,
+35,30,"Låt mig veta när du hittar en plats att bo på.
+Jag ska lära mig skriva och skicka ett brev!",
+35,31,"Jag ser fram emot det.
+Skriv prydligt så att jag kan läsa!",
+35,32,"Alla jobben försvann. Vad ska jag göra nu? Jag har inte en aning. <PART>
+---
+Allt jag gjort är att arbeta för Dipan. Jag kan inte lära mig ett nytt yrke i min ålder.",
+35,33,"Jag måste göra mig av med den här båten.
+Jag har inte råd att underhålla den.",
+35,35,"Dipan fick gudarnas vrede,
+men vi får också lida.",
+35,36,"Straffade gudarna verkligen kungen
+och drottningen av Dipan?",
+35,37,"Pappa sa att om Dipan faller, kan vi
+inte bo i Solde, så vi måste ge oss av.",
+35,38,"Alla säger att utan Dipan,
+kommer det troligen att bli krig. <PART>
+---
+De säger att i Solde finns inga medel att
+leva på, än mindre att slåss, så det är dags att ge sig av. <PART>
+---
+Men hur är det med de utan
+pengar och utan ställe att ta vägen?",
+35,39,"Alla har lämnat staden.
+Undra vad det blir av Solde.",
+35,40,"Jag vet att även om jag stannar,
+finns det inget arbete. <PART>
+---
+Men hur sorgligt det än låter, förutom att segla,
+kan jag inte göra någonting.",
+35,41,"Jag kanske beger mig till Crell Monferaigne.
+Jag hörde att de har en flotta!",
+35,55,"Mjaumiau!
+Förstår du vad jag säger!? <PART>
+---
+Vilken intressant person!
+Hur bär du dig åt? <PART>
+---
+Min husse är nere eftersom
+alla lämnar staden. <PART>
+---
+Det tog hårt på henne när
+den där pojken försvann.",
+35,56,"Det är gott att vara ung!
+Kärleken finns överallt! <PART>
+---
+Du bör hitta någon!
+Bara tappa inte huvudet i stunden!",
+35,1,Väntrum,
+35,2,Solde <PART> Loguns Hamn,
+35,34,Prat,
+35,42,Erhöll <PART> Salomons Ring,
+35,2739,Solde,
+35,2742,Flicka,
+35,2743,Sjöman,
+35,2744,Stadsbo,
+35,2745,Pojke,
+35,2746,Katt,

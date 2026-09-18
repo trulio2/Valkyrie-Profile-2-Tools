@@ -1,51 +1,106 @@
 resource,message_id,translated,notes
-119,8,,
-119,9,,
-119,14,,
-119,15,,
-119,16,,
-119,17,,
-119,18,,
-119,19,,
-119,29,,
-119,22,,
-119,20,,
-119,21,,
-119,23,,
-119,26,,
-119,27,,
-119,28,,
-119,30,,
-119,31,,
-119,32,,
-119,33,,
-119,34,,
-119,35,,
-119,36,,
-119,37,,
-119,38,,
-119,39,,
-119,41,,
-119,42,,
-119,40,,
-119,43,,
-119,44,,
-119,45,,
-119,46,,
-119,47,,
-119,48,,
-119,49,,
-119,1,,
-119,2,,
-119,3,,
-119,6,,
-119,7,,
-119,10,,
-119,11,,
-119,12,,
-119,13,,
-119,630,,
-119,2790,,
-119,2791,,
-119,2792,,
-119,2793,,
+119,8,"Nej! Gudarna ser oss alltid...
+Det är så att vi inte ska göra onda saker.",
+119,9,"Jag tror inte att gudarna straffar mig
+för att jag ibland skippar kapellet.",
+119,14,"Gudarna ler mot Crell Monferaigne.
+En dag kommer vi att härska över kontinenten.",
+119,15,"Jag hör mycket om Dipan på sistone.
+De håller på med något, tro mig.",
+119,16,"Dipan är ett stort land, men det
+ryktet är inget att vara stolt över.",
+119,17,"Du kommer i dag, och så är det med det!
+Det har gått fyra dagar sedan du bad. <PART>
+---
+Fortsätter du skolka från kapellet, kommer
+gudarna att straffa dig till slut!",
+119,18,"Jag tar dig med mig, vad som än händer!",
+119,19,"Ju mer du pratar med mig så där,
+desto mindre vill jag gå!",
+119,29,"Prästen säger att ljuset som riktades
+mot Dipan var gudarnas vrede.",
+119,22,"Varför fortsätter striderna
+fastän vi ber varje dag?",
+119,20,"Åh, kära pappa...
+Kommer han inte hem från kampanjen? <PART>
+---
+Varför fortsätter striderna
+fastän vi ber varje dag?",
+119,21,"Pappa har ansvaret för att föra ut
+gudarnas lära till onda människor. <PART>
+---
+Så länge vi fortsätter att be,
+kommer striderna att ta slut, säkert.",
+119,23,"Så länge vi fortsätter att be,
+kommer striderna att ta slut, säkert.",
+119,26,"Alla katter och hundar gömmer sig.
+Något har skrämt slag på dem!",
+119,27,"Innan alla hundar och katter sprang iväg,
+ljöd en glimt på himlen. Det var overkligt.",
+119,28,"Pappa kom tillbaka från kampanjen, men
+for sedan direkt tillbaka till slottet. <PART>
+---
+Jag hörde att något hände i Dipan...
+Kan det ha något med det att göra?",
+119,30,"Vårt land är nu i tillfälligt alarmtillstånd.
+Gå vidare. Inget lufsande.",
+119,31,"Som jag misstänkte är bara ett fromt
+och rättfärdigt folk värdigt att härska över Midgard. <PART>
+---
+Crell Monferaigne skulle aldrig
+göra som Dipan gjorde.",
+119,32,"Det är bara naturligt att Dipan föll.
+De gjorde uppror mot gudarna!",
+119,33,Gudarnas vrede krossade Dipan.,
+119,34,Straff är vad hädare förtjänar!,
+119,35,"Gudarna ser oss alltid.
+Dipan glömde tydligen det.",
+119,36,"Jag hörde att de Tre Magikerna förvandlade
+sig till monster vid avrättningarna. <PART>
+---
+Var det så deras gudomliga uppror slutade?
+De må vara magiker, men det är patetiskt.",
+119,37,"Våra fromma landsmän vördar gudarna.
+Vi skulle aldrig drabbas av Dipans öde.",
+119,38,Varför? Fanns det onda människor där?,
+119,39,"Hörru syster, lyssna!
+Jag anmälde mig till juniorriddarna!",
+119,41,"Jag ska förgöra alla som trotsar våra
+gudar eller dyrkar andra!",
+119,42,"Jag ska förgöra alla
+som trotsar våra gudar!",
+119,40,Vad fint.,
+119,43,"Ja... fint, det.",
+119,44,"Nu kommer det att hända grejer!
+Crell Monferaignes guldålder är här!",
+119,45,"Villnore och Artolia är inga konkurrenter.
+Den sanna vägen är bara öppen för oss.",
+119,46,"Vad tänkte kungen av Dipan på,
+när han försökte göra uppror mot gudarna? <PART>
+---
+Var han förblindad av maktbegär?
+Vad orsaken än är, är det dumhet.",
+119,47,"Jag kan bara beklaga folket i Dipan,
+förbannade med en sådan kung.",
+119,48,"Alla säger att Dipan är under attack!
+Men ingen vet vem som attackerar.",
+119,49,"Att hänge sig åt ära är en synd.
+Dipan har straffats av gudarna.",
+119,1,Krog,
+119,2,Hus,
+119,3,Vapenhus,
+119,6,Crell Monferaigne <PART> Huvudgatan,
+119,7,Utgång,
+119,10,Lämna Crell Monferaigne?,
+119,11,Ja,
+119,12,Nej,
+119,13,"Resenärer, eller hur? Har ni varit i Villnore?
+Hur är det där? <PART>
+---
+Villnore har blivit starkt genom
+handel... De är inga lättviktare!",
+119,630,Crell Monferaigne,
+119,2790,Flicka,
+119,2791,Pojke,
+119,2792,Stadsbo,
+119,2793,Soldat,
