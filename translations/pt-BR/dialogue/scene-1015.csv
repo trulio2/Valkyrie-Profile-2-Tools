@@ -149,19 +149,19 @@ Voltem quando estiverem mais perto da verdade! <PART>
 1015,142,"Partes Desmembradas <PART> Modo Break Ativado <PART> vezes
  <PART> Dano Acumulado <PART> Batalha Mais Rápida <PART> 0: <PART> 1: <PART> 1
  <PART> Batalha Mais Longa <PART> 0: <PART> 1: <PART> 1",
-1015,1,Saída,not displayed by the event script
+1015,1,Saída,
 1015,2,"Sair do Portal Seráfico?
-(As pedras de selo voltarão às posições originais.)",not displayed by the event script
-1015,3,Sim,not displayed by the event script
-1015,4,Não,not displayed by the event script
-1015,7,Portal Seráfico,not displayed by the event script
-1015,10,Lutar novamente?,not displayed by the event script
-1015,11,Quero lutar!,not displayed by the event script
-1015,12,Já chega!,not displayed by the event script
-1015,18,Enfrentar um oponente mais forte?,not displayed by the event script
-1015,19,Quero enfrentá-lo!,not displayed by the event script
-1015,20,Me dê um tempo!,not displayed by the event script
-1015,22,Lutar?,not displayed by the event script
+(As pedras de selo voltam aos lugares originais.)",
+1015,3,Sim,
+1015,4,Não,
+1015,7,Portal Seráfico,
+1015,10,Lutar novamente?,
+1015,11,Quero lutar!,
+1015,12,Já chega!,
+1015,18,Enfrentar um oponente mais forte?,
+1015,19,Quero enfrentá-lo!,
+1015,20,Me dê um tempo!,
+1015,22,Lutar?,
 1015,23,Sim,
 1015,24,Não,
 1015,28,"Lutar novamente?
@@ -185,4 +185,4 @@ Voltem quando estiverem mais perto da verdade! <PART>
 1015,45,Manda ver!,
 1015,46,Me dá um tempo!,
 1015,149,Portal Seráfico,
-1015,150,Dirna Hamilton,not displayed by the event script
+1015,150,Dirna Hamilton,
