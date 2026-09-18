@@ -21,7 +21,7 @@ The application never modifies a source disc image.
 | Language | Cutscenes | NPC Dialogues | Menus | Images |
 | -------- | --------- | ------------- | ----- | ------ |
 | pt-BR    | 100%      | 100%          | 99%   | 10%    |
-| sv-SE    | 100%      | 5%            | 1%    | 0%     |
+| sv-SE    | 100%      | 100%          | 100%  | 25%    |
 
 ## Requirements
 
@@ -82,7 +82,7 @@ the optional Japanese reference, and language-pack usage.
    so changing offsets are not necessary.
 3. Remove the anticheat functions directly from the translated iso, so it can't trigger regardless of the changes we make.
 
-Options 3 is being used by default. The last step of the translation build patches the "disable-anti-cheat" directly into the iso, so this new generated iso can have any offset changes or cheats enabled, and the anticheat will not trigger.
+Options 3 is being used by default. The last step of the translation build patches the "disable-anti-cheat" directly into the iso, so this new generated iso can have any offset changes or cheats enabled, and the anticheat will not trigger. This also means that the translated iso will not freeze/crash even on broken/corrupted save files.
 
 ## Cheat Patcher
 
