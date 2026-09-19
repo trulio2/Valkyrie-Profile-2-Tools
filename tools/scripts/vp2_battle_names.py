@@ -3,6 +3,8 @@
 
 """Translate the compact character names drawn by the battle HUD."""
 
+import struct
+
 from .overlay_edits import Edit
 
 
@@ -10,6 +12,7 @@ KEY_PREFIX = "battle_name_"
 TABLE_OFFSET = 0x1A1974
 RECORD_SIZE = 24
 NAME_CAPACITY = 20
+LENGTH_PREFIX = 4
 TERMINATOR = 0xFF
 HYPHEN = 0xFE
 
@@ -74,6 +77,12 @@ def translations(values):
 def edits(values):
     changes = []
     for index, translated in translations(values).items():
+        changes.append(Edit(
+            TABLE_OFFSET + index * RECORD_SIZE - LENGTH_PREFIX,
+            struct.pack("<I", len(ORIGINAL_NAMES[index])),
+            struct.pack("<I", len(translated)),
+            "battle character name length %s" % key(index),
+        ))
         changes.append(Edit(
             TABLE_OFFSET + index * RECORD_SIZE,
             encode_name(ORIGINAL_NAMES[index]),

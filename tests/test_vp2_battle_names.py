@@ -54,8 +54,9 @@ def usa_overlay():
     struct.pack_into("<I", output, 8, overlay_edits.LOAD_ADDRESS)
     for index, original in enumerate(names.ORIGINAL_NAMES):
         start = names.TABLE_OFFSET + index * names.RECORD_SIZE
+        struct.pack_into("<I", output, start - names.LENGTH_PREFIX,
+                         len(original))
         output[start:start + names.NAME_CAPACITY] = names.encode_name(original)
-        output[start + names.NAME_CAPACITY:start + names.RECORD_SIZE] = b"META"
     return bytes(output)
 
 
@@ -68,10 +69,22 @@ class BattleNameEditTests(unittest.TestCase):
         expected = bytearray(original)
         expected[start:start + names.NAME_CAPACITY] = names.encode_name(
             "VALQUIRIA")
+        struct.pack_into("<I", expected, start - names.LENGTH_PREFIX, 9)
         self.assertEqual(bytes(expected), patched)
-        self.assertEqual(7, changed)
-        self.assertEqual(b"META", patched[start + names.NAME_CAPACITY:
-                                           start + names.RECORD_SIZE])
+        self.assertEqual(8, changed)
+        self.assertEqual(struct.pack("<I", len(names.ORIGINAL_NAMES[11])),
+                         patched[start + names.NAME_CAPACITY:
+                                 start + names.RECORD_SIZE])
+
+    def test_a_shorter_name_shrinks_its_length_prefix(self):
+        edits = names.edits({"battle_name_1F": "Dio"})
+        patched, _ = overlay_edits.edit_output(usa_overlay(), edits)
+        start = names.TABLE_OFFSET + 0x1F * names.RECORD_SIZE
+        self.assertEqual(struct.pack("<I", 3), patched[start -
+                                                       names.LENGTH_PREFIX:
+                                                       start])
+        self.assertEqual(names.encode_name("DIO"),
+                         patched[start:start + names.NAME_CAPACITY])
 
     def test_applying_the_same_name_twice_is_harmless(self):
         edits = names.edits({"battle_name_0A": "Valquiria"})
@@ -92,9 +105,10 @@ class BattleNameEditTests(unittest.TestCase):
             self.assertEqual({10: "VALQUIRIA"},
                              vp2_build.battle_name_translations([row]))
             edits = vp2_build.battle_overlay_edits([row])
-            self.assertEqual(1, len(edits))
-            self.assertEqual(names.TABLE_OFFSET + 10 * names.RECORD_SIZE,
-                             edits[0].offset)
+            name_start = names.TABLE_OFFSET + 10 * names.RECORD_SIZE
+            self.assertEqual(
+                {name_start, name_start - names.LENGTH_PREFIX},
+                {edit.offset for edit in edits})
 
 
 if __name__ == "__main__":
