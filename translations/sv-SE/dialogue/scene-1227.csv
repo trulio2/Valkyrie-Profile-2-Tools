@@ -1,24 +1,24 @@
 resource,message_id,translated,notes
+1227,14,...Det verkar som att utgången är nära.,
+1227,8,"Som alltid, du pratar som om det vore någon annans problem.",
 1227,1,"Håll käften! Våga inte
 förolämpa prinsessen så där...",
 1227,2,Det är outhärdligt att lyssna på dig!,
+1227,10,Jag blev ju bara ombedd.,
 1227,3,"Om du inte svär trohet till prinsessen, vänd genast!",
+1227,9,Sluta!,
+1227,11,"Jag känner ett vaktdjur. Jag förväntar
+mig mycket av er i striden.",
 1227,4,"Väktarbestar? Håller kungen av Dipan
 fram monster som sällskapsdjur?",
+1227,12,Det har inget med kungafamiljen att göra.,
 1227,5,"Det är själar som svurit trohet till Dipan,
 som älskar sitt land även i döden",
+1227,13,"De tar formen av djur för att skydda
+sitt land från inkräktare.",
 1227,6,"Jag hoppas att du inte blir skakad av detta.
 Jag vill inte gärna tro att jag misstagit mig.",
 1227,7,Tsk...,
-1227,8,"Som alltid, du pratar som om det vore någon annans problem.",
-1227,9,Sluta!,
-1227,10,Jag blev ju bara ombedd.,
-1227,11,"Jag känner ett vaktdjur. Jag förväntar
-mig mycket av er i striden.",
-1227,12,Det har inget med kungafamiljen att göra.,
-1227,13,"De tar formen av djur för att skydda
-sitt land från inkräktare.",
-1227,14,...Det verkar som att utgången är nära.,
 1227,486,"Tjena, länge sedan.",
 1227,507,...Vem är du?,
 1227,488,"Låtsas inte som om du inte känner mig!
@@ -26,12 +26,13 @@ Det är jag, Ull av Asarna.",
 1227,497,"Jag blev ombedd att hjälpa Hrist... Jag ska
 se till att ingen kommer nära Dipan.",
 1227,498,"Silmeria, vad roligt att se dig.",
-1227,500,( Vänta... Låt mig prata med honom. ),
 1227,499,Har du bytt frisyr? Den klär dig riktigt bra.,
+1227,500,( Vänta... Låt mig prata med honom. ),
 1227,489,Var snäll och flytta på dig.,
 1227,490,"Glöm det! Jag eskorterar dig
 till Valhall.",
 1227,491,Flytta på dig.,
+1227,495,Du vet att jag inte kan det...,
 1227,496,"Om Oden fick veta att jag smitit
 skulle jag få smörj. Dessutom är Dipan
 så gott som förstört ändå.",
@@ -46,7 +47,6 @@ att säga dig. Hämta Silmeria!",
 1227,504,...Vill du slåss?,
 1227,505,"Förstår du inte Hrists omtanke?
 Hon ville bespara dig onödigt lidande.",
-1227,495,Du vet att jag inte kan det...,
 1227,2752,,
 1227,2753,,
 1227,2754,,

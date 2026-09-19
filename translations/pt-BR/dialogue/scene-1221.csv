@@ -3,6 +3,7 @@ resource,message_id,translated,notes
 1221,2,Você quer me explicar?,
 1221,3,"O que exatamente você fez agora?
 Quem era aquele outro cara?",
+1221,15,Materialização.,
 1221,4,"O retorno dos einherjar às suas formas vivas
 através de um objeto que contém seus
 pensamentos remanescentes.",
@@ -11,6 +12,7 @@ pensamentos remanescentes.",
 para a guerra dos deuses <PART> ---- <PART> ficam
 flutuando por aqui?",
 1221,7,Não. Elas existem dentro de mim.,
+1221,16,Satisfeito?,
 1221,8,"( Ele vai vir com nós daqui pra
 frente? )",
 1221,9,"Se eu não fortalecer o espírito dele,
@@ -26,8 +28,6 @@ quando sai da jaula pela primeira vez.",
 recuperem a força de espírito.",
 1221,14,"Esse é o meu dever como selecionador de almas.
 Ajude-me a honrá-lo.",
-1221,15,Materialização.,
-1221,16,Satisfeito?,
 1221,2752,,
 1221,2753,,
 1221,2754,,

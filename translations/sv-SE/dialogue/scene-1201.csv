@@ -1,19 +1,10 @@
 resource,message_id,translated,notes
-1201,20,"Ah, men det betyder inte nödvändigtvis
-att du är hans fiende!",
-1201,27,Visserligen har jag inget sätt att bevisa det.,
-1201,21,Sköt om dig.,
-1201,25,"Vänta! Jag säger inte att jag
-inte tror dig.",
-1201,22,"Säg mig bara en sak: Vad ska du göra
-när du träffar kungen?",
-1201,23,"Jag tänker bedöma kungens uppriktighet,
-och sedan förbereda Dipan för krig mot gudarna.",
-1201,28,Jag hänger på.,
 1201,1,Så detta är Dipan.,
+1201,29,Mitt hem.,
 1201,2,Vilket innebär att min tid här är slut.,
 1201,3,"Jag tar vad jag har rätt till och tar
 farväl av Hennes Majestät.",
+1201,30,"Snälla, kan ni eskortera mig till slottet?",
 1201,4,Till fader <PART> ----,
 1201,5,"Jag menar, till kungen?",
 1201,6,"Som en trogen riddare av Dipan följer
@@ -41,14 +32,23 @@ som människor <PART> ---- <PART>
 utan anledning.",
 1201,17,"Jag har hört att Dipan planerar
 ett uppror mot gudarna...",
+1201,31,"Du måste vara här för att hitta
+bevis och föra dem tillbaka till Oden!",
 1201,18,Vad du än har hört är denna valkyria inte längre i Odins tjänst.,
 1201,19,"Jag borde ha återfötts som kungens
 dotter Alicia, men Odins misstag
 väckte mig.",
-1201,30,"Snälla, kan ni eskortera mig till slottet?",
-1201,29,Mitt hem.,
-1201,31,"Du måste vara här för att hitta
-bevis och föra dem tillbaka till Oden!",
+1201,20,"Ah, men det betyder inte nödvändigtvis
+att du är hans fiende!",
+1201,27,Visserligen har jag inget sätt att bevisa det.,
+1201,21,Sköt om dig.,
+1201,25,"Vänta! Jag säger inte att jag
+inte tror dig.",
+1201,22,"Säg mig bara en sak: Vad ska du göra
+när du träffar kungen?",
+1201,23,"Jag tänker bedöma kungens uppriktighet,
+och sedan förbereda Dipan för krig mot gudarna.",
+1201,28,Jag hänger på.,
 1201,2752,,
 1201,2753,,
 1201,2754,,

@@ -1,4 +1,6 @@
 resource,message_id,translated,notes
+1299,732,Bra jobbat.,
+1299,733,Men ändå...,
 1299,720,"Människorna kunde av någon anledning utföra
 herreskarens rit.",
 1299,721,Kommer du att låta detta passera?,
@@ -7,32 +9,30 @@ herreskarens rit.",
 varför följa dem?",
 1299,723,"Hade jag inte stoppat dem kunde de ha
 lyckats.",
+1299,734,Och vi vet inte var Silmeria är...,
 1299,724,"Två valkyrior ska inte existera
 samtidigt i vår värld från början.",
+1299,735,"Magikernas falska herreskarens rit lossade
+henne. Säkert lyckades hennes själavandring
+denna gång.",
+1299,736,I slutändan besparade de oss besväret.,
 1299,741,Tror du det?,
 1299,726,Vad menar du?,
+1299,738,"De odödas härskare utförde någon form av
+besvärjelse. När han gjorde det kände jag något...
+underligt.",
 1299,727,Någon form av förvrängning.,
 1299,728,"Är du säker på att du inte blivit lurad av den här
 onda anden?",
+1299,739,Du låter inte som dig själv.,
 1299,730,"Med klotet nu i mina händer, ökar
 Midgårds förfall mer och
 mer.",
 1299,729,"Jag hade planerat att stabilisera det genom att använda
 den uslingens själ som kraftkälla,",
-1299,737,"Ack, mitt eftertraktade pris är nu värdelöst.",
-1299,734,Och vi vet inte var Silmeria är...,
-1299,735,"Magikernas falska herreskarens rit lossade
-henne. Säkert lyckades hennes själavandring
-denna gång.",
-1299,736,I slutändan besparade de oss besväret.,
-1299,732,Bra jobbat.,
-1299,733,Men ändå...,
-1299,738,"De odödas härskare utförde någon form av
-besvärjelse. När han gjorde det kände jag något...
-underligt.",
-1299,739,Du låter inte som dig själv.,
 1299,740,"men det är bättre att låta Midgård gå under tillsammans med
 all kunskap om herreskarens rit.",
+1299,737,"Ack, mitt eftertraktade pris är nu värdelöst.",
 1299,937,"Midgård kommer snart att vara på gränsen
 till undergång.",
 1299,938,"Om inte Brahms själ används omedelbart,
@@ -58,16 +58,16 @@ närmar sig min domän.",
 1299,1197,Vad!? Av vem!?,
 1299,1198,En människa du känner väl.,
 1299,1199,Lezard Valeth.,
+1299,1204,"Magikern i Dipan?
+Men hur skulle det vara möjligt?",
 1299,1200,Det är det jag vill veta!,
 1299,1201,Förlåt mig.,
+1299,1205,"Han stal också Gungnir. Asgård kommer att möta
+stor fara om vi inte gör något.",
 1299,1202,"Vi upprätthåller jämvikten, knappt,
 med Drakklotet och Brahms själ.",
 1299,1203,"Jag tar einherjarna och förföljer honom
 omedelbart. Var är Lezard nu?",
-1299,1204,"Magikern i Dipan?
-Men hur skulle det vara möjligt?",
-1299,1205,"Han stal också Gungnir. Asgård kommer att möta
-stor fara om vi inte gör något.",
 1299,1206,Det kanske är svårt att förklara.,
 1299,2134,Detta är onekligen en av de fyra skatterna.,
 1299,2135,"Att jag kommit att besitta en sådan härlighet
@@ -78,7 +78,12 @@ så snabbt är enbart tack vare ditt arbete.",
 1299,2164,Vi anfaller Dipan.,
 1299,2140,Vad är det?,
 1299,2141,Min herre...,
+1299,2165,"Ursäkta att jag får ställa en
+enda fråga till dig.",
 1299,2143,Jag ska höra det.,
+1299,2163,"Vad tänker Ers Majestät göra
+med Midgård?",
+1299,2161,Du är orolig för Drakklotet.,
 1299,2144,Ja.,
 1299,2145,"Om klotet förblir borta för länge,
 kommer Midgård att utplånas.",
@@ -92,7 +97,11 @@ de dödligas värld.",
 på att anfalla Dipan.",
 1299,2151,"Dipans upproriska avsikter är tydliga.
 Deras plan överstiger vår vildaste fantasi.",
+1299,2167,"Men så länge klotet är i våra händer
+behöver vi inte frukta dem.",
 1299,2160,Ska jag följa med dig?,
+1299,2162,"Nej, tack.",
+1299,2168,"Så, då.",
 1299,2166,Vad är det du egentligen försöker göra?,
 1299,2154,"Vi vet var vi kan hitta de odödas härskare.
 Han kommer säkert att bege sig mot Dipan.",
@@ -104,15 +113,6 @@ slå två flugor i en smäll.",
 klotet och de odödas härskare inte är
 förvirrade.",
 1299,2159,Var inte rädd.,
-1299,2163,"Vad tänker Ers Majestät göra
-med Midgård?",
-1299,2165,"Ursäkta att jag får ställa en
-enda fråga till dig.",
-1299,2162,"Nej, tack.",
-1299,2161,Du är orolig för Drakklotet.,
-1299,2167,"Men så länge klotet är i våra händer
-behöver vi inte frukta dem.",
-1299,2168,"Så, då.",
 1299,2752,,
 1299,2753,,
 1299,2763,,

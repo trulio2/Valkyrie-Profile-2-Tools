@@ -23,7 +23,9 @@ import tomllib
 from collections.abc import Iterable
 from pathlib import Path
 
-from .paths import BUILD_DIR, PROJECT_ROOT, WORKSPACE_DIR, output_root
+from .paths import (
+    BUILD_DIR, FROZEN, PROJECT_ROOT, WORKSPACE_DIR, output_root,
+)
 from . import row_cache
 from .workspace_extract import generate_workspace
 from .translation_layout import rename_tree
@@ -755,7 +757,8 @@ def build_iso(
     if not workspace_is_ready(workspace):
         print("workspace: not prepared yet; reading the disc first",
               flush=True)
-        generate_workspace(list(images) if images else [source], workspace)
+        generate_workspace(list(images) if images else [source], workspace,
+                           reference=not FROZEN)
         print("workspace: prepared", flush=True)
     compiled = compile_build_workspace(workspace, resolve_pack(pack),
                                        only=only)

@@ -10,6 +10,7 @@ import contextlib
 import io
 import json
 import os
+import re
 import shutil
 import struct
 import uuid
@@ -18,6 +19,7 @@ from types import SimpleNamespace
 
 from . import disc_identity
 from . import encrypted_entry
+from . import fis_images
 from . import resource_classify
 from . import scene_sheet_export
 from . import triace_ps2_unpack as triace
@@ -49,6 +51,11 @@ CONTAINER_CLASSES = frozenset({
     "container_sle",
     "container_nested",
 })
+
+REFERENCE_IMAGES = "reference-images.csv"
+REFERENCE_IMAGE_DIR = "images"
+_REFERENCE_IMAGE_NAME = re.compile(
+    r"^fis-(\d+)-.+-([0-9A-F]+)\.png$", re.IGNORECASE)
 
 
 def _entry_type(raw: bytes, allocated: int) -> str:
@@ -317,6 +324,34 @@ def _export_dragon_hall_prompts(
     return sheets, lines
 
 
+def _export_reference_images(
+    usa_image: Path,
+    wanted: dict[int, list[str]],
+    output: Path,
+) -> int:
+    """Lift the named FIS pictures out of the disc into *output*."""
+    output.mkdir(parents=True, exist_ok=True)
+    written = 0
+    with usa_image.open("rb") as handle:
+        _game, total, table = triace.load_table(handle)
+        for resource, names in sorted(wanted.items()):
+            raw = bytes(dcms.read_entry(handle, table, total, resource))
+            found: dict[str, bytes] = {}
+            for route, blob, _write in fis_images.views(raw, resource):
+                for at, item in fis_images.items_in(blob):
+                    found.setdefault(
+                        fis_images.pack_name(resource, route, at), item)
+            missing = [name for name in names if name not in found]
+            if missing:
+                raise PackError(
+                    f"{REFERENCE_IMAGES}: resource {resource} has no "
+                    f"{', '.join(missing)} on this disc")
+            for name in names:
+                fis_images.render(found[name], output / name)
+                written += 1
+    return written
+
+
 def _export_chapters(
     usa_image: Path,
     records_path: Path,
@@ -479,18 +514,53 @@ def _remembered_sources(workspace) -> dict[str, Path]:
             if isinstance(path, str)}
 
 
+def load_reference_images(data_dir) -> dict[int, list[str]]:
+    """The FIS filenames to lift from the disc, grouped by resource."""
+    path = Path(data_dir) / REFERENCE_IMAGES
+    fields, rows = _read_csv(path)
+    required = {"resource", "file"}
+    if not required.issubset(fields):
+        raise PackError(
+            f"{path}: expected columns {', '.join(sorted(required))}")
+    grouped: dict[int, list[str]] = {}
+    for row in rows:
+        name = (row.get("file") or "").strip()
+        match = _REFERENCE_IMAGE_NAME.fullmatch(name)
+        try:
+            resource = int((row.get("resource") or "").strip())
+        except ValueError:
+            resource = None
+        if match is None or resource is None:
+            raise PackError(
+                f"{path}: {name or '<blank>'} is not a fis-NNNN-*.png name")
+        if int(match.group(1)) != resource:
+            raise PackError(
+                f"{path}: {name} names resource {int(match.group(1))}, "
+                f"not {resource}")
+        grouped.setdefault(resource, []).append(name)
+    return grouped
+
+
 def generate_workspace(
     images,
     workspace: str | os.PathLike[str],
     *,
     japanese_image: str | os.PathLike[str] | None = None,
     data_root: str | os.PathLike[str] | None = None,
+    reference: bool = True,
 ) -> dict[str, int | bool]:
-    """Generate local reference and internal state with rollback on error."""
+    """Generate local reference and internal state with rollback on error.
+
+    ``reference`` builds the translator-facing tables, pictures and Japanese
+    columns. A build that only writes an ISO needs none of them, so the
+    packaged application turns it off.
+    """
     if isinstance(images, (str, os.PathLike)):
         images = [images]
     usa, japanese = resolve_sources(tuple(images) + (japanese_image,),
                                    workspace)
+    if not reference:
+        japanese = None
     root = Path(workspace).expanduser().resolve()
     public_data = (Path(data_root).resolve() if data_root else
                    Path(__file__).resolve().parents[2] / "data")
@@ -498,9 +568,13 @@ def generate_workspace(
     japanese_names = public_data / "glyph-names" / "jp.csv"
     chapter_records = public_data / "chapter-records.csv"
     menu_layout = public_data / "menu-layout.csv"
-    for path in (english_names, japanese_names, chapter_records, menu_layout):
+    required = [english_names, japanese_names, chapter_records, menu_layout]
+    if reference:
+        required.append(public_data / REFERENCE_IMAGES)
+    for path in required:
         if not path.is_file():
             raise PackError(f"required public data is missing: {path}")
+    wanted_images = (load_reference_images(public_data) if reference else {})
 
     root.mkdir(parents=True, exist_ok=True)
     staging = root / (".generate-" + uuid.uuid4().hex)
@@ -542,10 +616,12 @@ def generate_workspace(
             usa, records_dir / "containers", japanese)
         container_sheets += dragon_sheets
         container_lines += dragon_lines
-        print("tables: exporting chapter titles", flush=True)
-        chapter_lines = _export_chapters(
-            usa, chapter_records, records_dir / "chapters.csv",
-            japanese, japanese_glyphs, japanese_names)
+        chapter_lines = 0
+        if reference:
+            print("tables: exporting chapter titles", flush=True)
+            chapter_lines = _export_chapters(
+                usa, chapter_records, records_dir / "chapters.csv",
+                japanese, japanese_glyphs, japanese_names)
 
         metadata = {
             "format": 2,
@@ -566,23 +642,32 @@ def generate_workspace(
             json.dumps(metadata, indent=2, sort_keys=True) + "\n",
             encoding="utf-8")
 
-        print("reference: arranging translator-facing tables", flush=True)
-        reference_metadata = write_reference_tree(
-            records_dir, menu_layout, staging / "reference")
-        metadata.update({
-            "reference_rows": (
-                reference_metadata["chapter_rows"]
-                + reference_metadata["dialogue_rows"]
-                + reference_metadata["menu_rows"]),
-            "reference_menu_occurrences":
-                reference_metadata["menu_occurrences"],
-        })
-        (generated / "generation.json").write_text(
-            json.dumps(metadata, indent=2, sort_keys=True) + "\n",
-            encoding="utf-8")
+        if reference:
+            print("reference: arranging translator-facing tables", flush=True)
+            reference_metadata = write_reference_tree(
+                records_dir, menu_layout, staging / "reference")
+            if wanted_images:
+                print("reference: lifting original pictures from the disc",
+                      flush=True)
+            image_count = _export_reference_images(
+                usa, wanted_images,
+                staging / "reference" / REFERENCE_IMAGE_DIR)
+            metadata.update({
+                "reference_rows": (
+                    reference_metadata["chapter_rows"]
+                    + reference_metadata["dialogue_rows"]
+                    + reference_metadata["menu_rows"]),
+                "reference_menu_occurrences":
+                    reference_metadata["menu_occurrences"],
+                "reference_images": image_count,
+            })
+            (generated / "generation.json").write_text(
+                json.dumps(metadata, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8")
 
         _replace_generated_tree(root / "internal", generated)
-        _replace_generated_tree(root / "reference", staging / "reference")
+        if reference:
+            _replace_generated_tree(root / "reference", staging / "reference")
     finally:
         if staging.exists():
             shutil.rmtree(staging)

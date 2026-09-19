@@ -100,6 +100,42 @@ def record_voice(record):
     return (struct.unpack_from("<H", record, 2)[0],
             struct.unpack_from("<H", record, 4)[0])
 
+def _voice_bank(message_id, voice_of):
+    return voice_of.get(message_id, (None, None))[0]
+
+
+def _first_offset(lines):
+    offsets = [line[1] for line in lines if line[1] is not None]
+    return min(offsets) if offsets else None
+
+
+def order_scenes(scenes, voice_of):
+    voiced, unvoiced = {}, []
+    for scene in scenes:
+        banks = {_voice_bank(line[0], voice_of) for line in scene["lines"]}
+        banks.discard(None)
+        if not banks:
+            unvoiced.append(scene)
+            continue
+        stray = [line for line in scene["lines"]
+                 if _voice_bank(line[0], voice_of) is None]
+        if stray:
+            unvoiced.append({"first_offset": _first_offset(stray),
+                             "lines": stray})
+        for line in scene["lines"]:
+            bank = _voice_bank(line[0], voice_of)
+            if bank is not None:
+                voiced.setdefault(bank, []).append(line)
+    result = []
+    for lines in voiced.values():
+        lines.sort(key=lambda line: voice_of[line[0]][1])
+        result.append({"first_offset": _first_offset(lines), "lines": lines})
+    result.extend(unvoiced)
+    result.sort(key=lambda scene: (scene["first_offset"] is None,
+                                   scene["first_offset"] or 0))
+    return result
+
+
 def manifest_voice_scene(manifest, english_by_scene):
     """Decide which voice scene a dub manifest describes."""
     wanted = {subtitles.normalized(row.get("en_text", ""))
@@ -155,6 +191,7 @@ def sheet_rows(source, table, total, resource, manifest_path=None,
         scenes = [{"first_offset": 0,
                    "lines": [(message_id, 0, 0)
                              for message_id in sorted(records)]}]
+    scenes = order_scenes(scenes, dict(ordered))
 
     displayed = {message_id for scene in scenes for message_id, _, _ in scene["lines"]}
     leftover = sorted(set(records) - displayed - set(titles))

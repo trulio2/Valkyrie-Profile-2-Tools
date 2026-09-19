@@ -492,8 +492,9 @@ class AutomaticWorkspaceTests(unittest.TestCase):
         generated = []
         with mock.patch.object(
                 public_build, "generate_workspace",
-                side_effect=lambda images, where: generated.append(
-                    ([Path(image) for image in images], Path(where)))), \
+                side_effect=lambda images, where, **kwargs: generated.append({
+                    "images": [Path(image) for image in images],
+                    "workspace": Path(where), **kwargs})), \
                 mock.patch.object(public_build, "compile_build_workspace",
                                   side_effect=RuntimeError("far enough")):
             with self.assertRaises(RuntimeError):
@@ -510,9 +511,30 @@ class AutomaticWorkspaceTests(unittest.TestCase):
             self.assertFalse(workspace_is_ready(workspace))
             generated = self._build(workspace, source)
         self.assertEqual(1, len(generated))
-        images, where = generated[0]
-        self.assertEqual([source], images)
-        self.assertEqual(workspace, where)
+        self.assertEqual([source], generated[0]["images"])
+        self.assertEqual(workspace, generated[0]["workspace"])
+
+    def test_a_packaged_build_skips_the_translator_tables(self):
+        import tempfile
+        from unittest import mock
+        from tools.scripts import public_build
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "disc.iso"
+            source.write_bytes(b"not really an iso")
+            with mock.patch.object(public_build, "FROZEN", True):
+                generated = self._build(Path(folder) / "workspace", source)
+        self.assertIs(False, generated[0]["reference"])
+
+    def test_a_source_build_asks_for_the_translator_tables(self):
+        import tempfile
+        from unittest import mock
+        from tools.scripts import public_build
+        with tempfile.TemporaryDirectory() as folder:
+            source = Path(folder) / "disc.iso"
+            source.write_bytes(b"not really an iso")
+            with mock.patch.object(public_build, "FROZEN", False):
+                generated = self._build(Path(folder) / "workspace", source)
+        self.assertIs(True, generated[0]["reference"])
 
     def test_a_prepared_workspace_is_left_alone(self):
         import tempfile

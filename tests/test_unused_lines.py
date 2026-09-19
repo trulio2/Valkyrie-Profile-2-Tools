@@ -45,8 +45,14 @@ class LoaderTests(unittest.TestCase):
 
 class HiddenTests(unittest.TestCase):
     def test_a_never_loaded_resource_is_hidden_but_kept(self):
-        rows = [_row(1311, 1184)]
-        self.assertEqual(undrawn_records.hidden_message_ids(rows), {"1184"})
+        rows = [_row(1387, 1044)]
+        self.assertEqual(undrawn_records.hidden_message_ids(rows), {"1044"})
+        self.assertEqual(undrawn_records.reclaimable_message_ids(rows), set())
+
+    def test_a_named_run_hides_without_spending_the_drawn_lines(self):
+        rows = [_row(1311, 2734), _row(1311, 2763), _row(1311, 1178)]
+        self.assertEqual(undrawn_records.hidden_message_ids(rows),
+                         {"2734", "2763"})
         self.assertEqual(undrawn_records.reclaimable_message_ids(rows), set())
 
     def test_a_built_scene_spends_its_unused_run(self):

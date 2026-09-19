@@ -8,6 +8,9 @@ resource,message_id,translated,notes
 1277,43,Klotet tillhör Odin!,
 1277,7,Tvinga mig inte att döda Alicia!,
 1277,8,Så allt var en lögn.,
+1277,55,"Om jag inte hindrar att klotet faller i
+händerna på dåraktiga dödliga, kommer det att bli
+mycket värre.",
 1277,9,"( Var det det här du varnade mig för, Silmeria? )",
 1277,10,"( Förlåt, jag borde ha förstått... )",
 1277,11,"Leone, vad gör du?",
@@ -19,6 +22,7 @@ med gudarnas planer.",
 1277,16,Sluta!,
 1277,17,"Nej, vänta!",
 1277,44,Uaaaj!,
+1277,56,Tänker du aldrig innan du handlar?,
 1277,18,"När jag vet att min arbetsgivare gör fel mot mig
 tvekar jag inte att rätta till det!",
 1277,19,Så är en legoknekt.,
@@ -51,20 +55,18 @@ tomt <PART> ---- <PART> kanske Alicias tankar tog över.",
 1277,36,"Du kunde åtminstone ha tagit tillbaka klotet
 istället för att bara stå där!",
 1277,37,Det fanns inget hon kunde ha gjort.,
+1277,57,Hrist Valkyria menade allvar.,
 1277,38,"Om hon tyckte att hon var tvungen, skulle hon
 ha satt palatset i brand med klotet.",
 1277,39,"Du gjorde allt du kunde under
 omständigheterna.",
 1277,53,Förlåt så mycket.,
+1277,52,"Jag kan inte tro det.
+Leone var en valkyria...",
 1277,40,( Hrist skonade ditt liv. ),
 1277,41,( Det finns kanske fortfarande hopp för oss. ),
 1277,54,"Nu när de har klotet kommer gudarna snart
 i massor för att krossa Dipan.",
-1277,49,"Om du är villig att ta den risken kommer jag
-att skydda dig med all min makt.",
-1277,50,Detsamma gäller mig!,
-1277,51,"( Ha mod, Alicia. )",
-1277,42,Låt oss gå.,
 1277,45,"Vill du att vi smyger tillbaka till Dipan och
 börjar om från början?",
 1277,46,"Jag tror att vi inte har något annat val.
@@ -73,13 +75,11 @@ Silmeria?",
 kommer de också att sätta ut
 en fälla.",
 1277,48,Vi får gå i den då...,
-1277,52,"Jag kan inte tro det.
-Leone var en valkyria...",
-1277,55,"Om jag inte hindrar att klotet faller i
-händerna på dåraktiga dödliga, kommer det att bli
-mycket värre.",
-1277,56,Tänker du aldrig innan du handlar?,
-1277,57,Hrist Valkyria menade allvar.,
+1277,49,"Om du är villig att ta den risken kommer jag
+att skydda dig med all min makt.",
+1277,50,Detsamma gäller mig!,
+1277,51,"( Ha mod, Alicia. )",
+1277,42,Låt oss gå.,
 1277,2752,,
 1277,2753,,
 1277,2754,,

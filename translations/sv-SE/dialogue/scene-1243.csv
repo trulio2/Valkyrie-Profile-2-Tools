@@ -1,30 +1,30 @@
 resource,message_id,translated,notes
+1243,15,Var är klotet?,
 1243,1,Det är inte säkert att det är här.,
 1243,19,Menar du allvar!?,
 1243,2,"Stammen som vaktade det flyttade ofta
 kring klotet för att skydda det...",
 1243,18,Men de sista av väktarna har dött ut.,
+1243,24,Bra. Vad gör vi då här egentligen?,
 1243,4,Silmeria?,
 1243,5,Jag ska försöka.,
+1243,21,Mer objektläsning?,
 1243,6,"Vi kanske kan hitta klotet genom att följa ett
 spår av psykisk energi.",
 1243,7,"Ett problem <PART> ---- <PART> Jag ser inga
 objekt att läsa.",
-1243,8,"Ja, ma'am.",
-1243,20,...!,
-1243,9,( Du får inte tala med mig nu. ),
-1243,10,...?,
-1243,13,Jag ropar på dig när vi hittar piedestalen.,
-1243,11,Vad är det?,
-1243,12,"Åh, det var ingenting.",
-1243,15,Var är klotet?,
 1243,16,"Om de placerade klotet här för förvaring
 behövde de en stadig piedestal
 att hålla det på.",
 1243,22,Sök.,
-1243,21,Mer objektläsning?,
+1243,8,"Ja, ma'am.",
+1243,20,...!,
+1243,11,Vad är det?,
+1243,9,( Du får inte tala med mig nu. ),
+1243,10,...?,
 1243,23,Vad är det?,
-1243,24,Bra. Vad gör vi då här egentligen?,
+1243,12,"Åh, det var ingenting.",
+1243,13,Jag ropar på dig när vi hittar piedestalen.,
 1243,2654,*gäspar*,
 1243,2655,"Sluta slöa. Vi måste ge oss av mot
 Villnore medan det fortfarande är ljust.",
@@ -32,6 +32,8 @@ Villnore medan det fortfarande är ljust.",
 som honom, va?",
 1243,2657,Vad kallade du mig?,
 1243,2658,"Lugna dig, Arngrim!",
+1243,2683,"Vi är inte här för att ge order, och jag
+ber om ursäkt om vi förolämpade er.",
 1243,2677,"Arngrim påpekade bara att vägarna
 kan vara farliga nattetid.",
 1243,2659,Gjorde du inte?,
@@ -39,6 +41,7 @@ kan vara farliga nattetid.",
 ingen kallar mig gravplundrare!",
 1243,2686,"För dem är det samma sak. Dessutom är det
 inte likt dig att bli så här upprörd.",
+1243,2682,"Inte likt mig, va?",
 1243,2662,Känner jag misstro mot oss?,
 1243,2663,För den tanken <PART> ---- <PART> inget sådant.,
 1243,2664,Och du?,
@@ -51,6 +54,7 @@ människors tankar?",
 1243,2670,"Om det skingrar misstankar ställer vi
 gärna upp. Eller hur, Arngrim?",
 1243,2679,Visst. Varför inte?,
+1243,2685,Det hjälper inte.,
 1243,2671,Det finns inget för mig att läsa.,
 1243,2672,Vad? Ingenting alls?,
 1243,2673,"Åh, jag förstår!
@@ -62,10 +66,6 @@ Så ni MISSTÄNKTE oss?",
 valkyrior kunde läsa tankar i föremål.",
 1243,2681,"Det är inte en valkyrias kraft. Den är
 min egen.",
-1243,2682,"Inte likt mig, va?",
-1243,2683,"Vi är inte här för att ge order, och jag
-ber om ursäkt om vi förolämpade er.",
-1243,2685,Det hjälper inte.,
 1243,2752,,
 1243,2753,,
 1243,2754,,

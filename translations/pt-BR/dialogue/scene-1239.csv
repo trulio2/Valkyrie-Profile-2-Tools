@@ -1,10 +1,14 @@
 resource,message_id,translated,notes
 1239,33,Onde estamos?,
 1239,1,O castelo desabou?,
+1239,37,Acho que estamos do lado de fora.,
 1239,2,"Foi um feitiço de teletransporte.
 Alicia, Sua Majestade.",
+1239,3,"Perdoem-me. Não tive escolha a não ser
+recorrer a métodos tão grosseiros.",
 1239,41,E você é...?,
 1239,42,,
+1239,38,"Lezard Valeth, ao seu dispor.",
 1239,4,"Eu estava ajudando os Três Sábios
 em suas pesquisas como aprendiz.",
 1239,5,"Desculpe, mas por que nos resgatou?",
@@ -15,6 +19,8 @@ pesquisas perigosas?",
 1239,8,O rei...,
 1239,9,"...busca transcender a condição mortal
 criando uma linha do tempo fechada.",
+1239,34,"Uma nova árvore-mundo que não veio do
+céu, do submundo, nem do reino dos homens.",
 1239,11,"Em outras palavras, independência dos deuses.",
 1239,12,"Isso vai além da transcendência. O que ele procura
 é um poder que só Odin possui.",
@@ -32,15 +38,6 @@ da natureza e gozaria de prosperidade eterna.",
 suficiente para incendiar o mundo inteiro.",
 1239,26,"Até os deuses são impotentes diante dele.
 O plano do rei pode ser viável.",
-1239,21,O juramento que fiz a Dipan ainda vale.,
-1239,22,"Você diz isso agora, mas talvez só
-pegue o orbe e corra pra Odin!",
-1239,23,Vou te mostrar que sou sincero!,
-1239,24,"Vamos então partir da floresta para
-Coriander antes que o pursuit se aproxime.",
-1239,31,Foi o último santuário registrado do orbe...,
-1239,3,"Perdoem-me. Não tive escolha a não ser
-recorrer a métodos tão grosseiros.",
 1239,27,"Não vai pensar em achar o orbe
 para Dipan, vai!?",
 1239,28,Para Dipan? Não. Para todo Midgard.,
@@ -48,18 +45,21 @@ para Dipan, vai!?",
 a Guardiã.",
 1239,30,"Isso colocaria fim nas pesquisas perigosas
 do rei <PART> ---- <PART> não colocaria?",
-1239,32,"Então, é lá que vamos achar o Orbe do Dragão?",
-1239,34,"Uma nova árvore-mundo que não veio do
-céu, do submundo, nem do reino dos homens.",
+1239,39,Você é tudo que eu esperava que fosse.,
+1239,21,O juramento que fiz a Dipan ainda vale.,
+1239,22,"Você diz isso agora, mas talvez só
+pegue o orbe e corra pra Odin!",
 1239,36,"Bem, se essa é sua teoria, então venha
 conosco e impeça que aconteça.",
 1239,35,"Mas se não forem sinceros sobre lutar
 contra Odin, não terão chance.",
-1239,37,Acho que estamos do lado de fora.,
-1239,38,"Lezard Valeth, ao seu dispor.",
-1239,39,Você é tudo que eu esperava que fosse.,
+1239,23,Vou te mostrar que sou sincero!,
 1239,40,"Vamos precisar da força de todos para
 passar por isso. Conto com todos vocês.",
+1239,24,"Vamos então partir da floresta para
+Coriander antes que o pursuit se aproxime.",
+1239,32,"Então, é lá que vamos achar o Orbe do Dragão?",
+1239,31,Foi o último santuário registrado do orbe...,
 1239,2758,Lezard <PART> entrou para o grupo.,
 1239,2752,,
 1239,2753,,

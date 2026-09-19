@@ -692,17 +692,21 @@ class App:
         ttk.Label(card, text="Required · clean USA image used for every build",
                   style="CardMuted.TLabel").grid(
             row=2, column=1, columnspan=2, sticky="w", pady=(5, 10))
-        ttk.Label(card, text="Japanese", style="Card.TLabel").grid(
-            row=3, column=0, sticky="w", padx=(0, 10))
-        self._lockable(ttk.Entry(card, textvariable=self.jp_var)).grid(
-            row=3, column=1, sticky="ew", padx=(0, 10))
-        self._lockable(ttk.Button(
-            card, text="Browse…",
-            command=lambda: self._pick_disc("japan"))).grid(row=3, column=2,
-                                                            sticky="e")
-        ttk.Label(card, text="Optional · adds the original script to reference tables",
-                  style="CardMuted.TLabel").grid(
-            row=4, column=1, columnspan=2, sticky="w", pady=(5, 0))
+        if self.picks_resources:
+            ttk.Label(card, text="Japanese", style="Card.TLabel").grid(
+                row=3, column=0, sticky="w", padx=(0, 10))
+            self.jp_entry = self._lockable(
+                ttk.Entry(card, textvariable=self.jp_var))
+            self.jp_entry.grid(row=3, column=1, sticky="ew", padx=(0, 10))
+            self.jp_btn = self._lockable(ttk.Button(
+                card, text="Browse…",
+                command=lambda: self._pick_disc("japan")))
+            self.jp_btn.grid(row=3, column=2, sticky="e")
+            ttk.Label(card,
+                      text="Optional · adds the original script to reference "
+                           "tables",
+                      style="CardMuted.TLabel").grid(
+                row=4, column=1, columnspan=2, sticky="w", pady=(5, 0))
         return card
 
     def _build_settings_card(self):
@@ -861,7 +865,7 @@ class App:
     def _images(self, usa):
         """The discs to read, if this build has to read them."""
         images = [usa]
-        jp = self.jp_var.get().strip()
+        jp = self.jp_var.get().strip() if self.picks_resources else ""
         if jp:
             japanese = Path(jp)
             level, note = describe_disc(japanese, "japan")

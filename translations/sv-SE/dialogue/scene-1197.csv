@@ -3,11 +3,17 @@ resource,message_id,translated,notes
 1197,2,"Tänk att Dipan bara är en kort
 resa över havet från där vi
 är...",
+1197,24,"( Det är därför vi är här.
+För att åka till Dipan. )",
 1197,3,Vad!?,
 1197,33,( Du måste återvända hem. Vi måste be kungen att omedelbart förbereda sig för krig. ),
 1197,34,Krig?,
+1197,31,( Gudarna kommer att anfalla Dipan bara för att locka oss ut. ),
+1197,35,Ett krig? På grund av oss?,
 1197,36,( Det är hans sätt <PART> ---- <PART> ),
 1197,5,( Odens väg. ),
+1197,32,"Men min pappa kommer aldrig att lyssna på
+något jag har att säga.",
 1197,6,"Då ska jag få honom att lyssna! Jag kommer inte att
 tolerera gudarnas arrogans,
 än mindre några kungars!",
@@ -16,53 +22,47 @@ tolerera gudarnas arrogans,
 1197,25,(Jag trodde det var att springa iväg.),
 1197,8,Där?,
 1197,23,( Någonstans...långt bort. ),
-1197,9,Det är förbjudet för två valkyrior att existera på Midgård samtidigt.,
-1197,10,Och jag har flera einherjar med mig. Oden vill att de ska överföras.,
-1197,11,Kom ihåg. Vi är i fara.,
-1197,12,Jag vet redan!,
-1197,13,Men jag kan inte slåss!,
-1197,14,"Jag sa ju det förut, det är långt bortom min fattning...",
-1197,15,( Då är det bäst att vi hittar sällskap som kan. ),
-1197,16,"( Oroa dig inte för det <PART> ---- <PART>
-gör bara som jag säger ett tag. )",
-1197,17,(Bara för att du också är en valkyria?),
 1197,19,Naiv.,
 1197,20,Hrist följer oss vart vi än går.,
-1197,21,"( Vi måste förbereda oss innan
-vi åker till Dipan. Vi kan ha strider
-framför oss. )",
-1197,22,Vem?,
-1197,24,"( Det är därför vi är här.
-För att åka till Dipan. )",
-1197,28,Ja.,
 1197,29,"Hon kommer att döda dig bara för att kalla
 tillbaka min ande till Valhall.",
+1197,17,(Bara för att du också är en valkyria?),
+1197,28,Ja.,
+1197,9,Det är förbjudet för två valkyrior att existera på Midgård samtidigt.,
+1197,10,Och jag har flera einherjar med mig. Oden vill att de ska överföras.,
 1197,30,"Även om jag bara existerar som tankar i
 din själ, bryter jag mot
 gudarnas lagar.",
-1197,35,Ett krig? På grund av oss?,
-1197,31,( Gudarna kommer att anfalla Dipan bara för att locka oss ut. ),
-1197,32,"Men min pappa kommer aldrig att lyssna på
-något jag har att säga.",
+1197,11,Kom ihåg. Vi är i fara.,
+1197,12,Jag vet redan!,
+1197,21,"( Vi måste förbereda oss innan
+vi åker till Dipan. Vi kan ha strider
+framför oss. )",
+1197,13,Men jag kan inte slåss!,
+1197,14,"Jag sa ju det förut, det är långt bortom min fattning...",
+1197,15,( Då är det bäst att vi hittar sällskap som kan. ),
+1197,22,Vem?,
+1197,16,"( Oroa dig inte för det <PART> ---- <PART>
+gör bara som jag säger ett tag. )",
 1197,37,(Skynda er nu till hamnen!),
 1197,78,( Jag ska guida dig till den kungliga tunnelbanestigen. ),
+1197,93,Kunglig? Som i Dipan kunglig?,
 1197,79,"( Lustigt att jag, en utomstående, skulle
 berätta om det för dig, prinsessa. )",
+1197,91,"( Gå mot skogen. En ingång till den underjordiska
+stigen ligger djupt inne. )",
 1197,80,"Hallå, vem pratar du med?",
 1197,81,"Hm? Åh, ingen.",
 1197,83,"Bara nyfiken, men du sa att du är prinsessan av Dipan, eller hur?",
 1197,82,Vad för Hennes Majestät hit helt ensam?,
 1197,84,Och var har du varit hela den här tiden?,
+1197,92,"De säger att kung Barbarossas enda dotter
+dog för några år sedan.",
 1197,86,Hur är det med dig? Var har du varit? Vad tänker du göra i Dipan?,
 1197,87,...,
 1197,88,När jag tänker efter har du inte ens sagt vad du heter.,
 1197,89,Namnet är Rufus.,
 1197,90,"Ett nöje att träffa dig, herr Rufus.",
-1197,91,"( Gå mot skogen. En ingång till den underjordiska
-stigen ligger djupt inne. )",
-1197,92,"De säger att kung Barbarossas enda dotter
-dog för några år sedan.",
-1197,93,Kunglig? Som i Dipan kunglig?,
 1197,2755,,
 1197,2756,,
 1197,2757,,

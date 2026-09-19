@@ -10,12 +10,14 @@ from types import SimpleNamespace
 from unittest import mock
 
 from tools.scripts import vp2_container_text, workspace_extract
-from tools.scripts.translation_pack import _read_csv
+from tools.scripts.translation_pack import PackError, _read_csv
 from tools.scripts.workspace_extract import (
     _export_chapters,
+    _export_reference_images,
     _looks_like_stream_chain,
     _normalize_source_sheet,
     _replace_generated_tree,
+    load_reference_images,
 )
 
 
@@ -174,6 +176,146 @@ class WorkspaceExtractTests(unittest.TestCase):
             self.assertEqual("defiers of the Gods", rows[0]["original_en"])
             self.assertEqual(
                 "\u795e\u306b\u53db\u304d\u3057\u8005", rows[0]["original_jp"])
+
+    def test_reference_image_table_groups_by_resource(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_csv(root / "reference-images.csv", [
+                "resource", "file", "note",
+            ], [
+                {"resource": "10", "note": "",
+                 "file": "fis-0010-slz-0x2D04-4CE80.png"},
+                {"resource": "10", "note": "",
+                 "file": "fis-0010-slz-0x2D04-55180.png"},
+                {"resource": "24", "note": "",
+                 "file": "fis-0024-slz-0x437C0-0.png"},
+            ])
+            grouped = load_reference_images(root)
+            self.assertEqual([10, 24], sorted(grouped))
+            self.assertEqual(2, len(grouped[10]))
+            self.assertEqual("fis-0024-slz-0x437C0-0.png", grouped[24][0])
+
+    def test_reference_image_table_rejects_a_mismatched_resource(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_csv(root / "reference-images.csv", [
+                "resource", "file", "note",
+            ], [{"resource": "24", "note": "",
+                 "file": "fis-0010-slz-0x2D04-4CE80.png"}])
+            with self.assertRaisesRegex(PackError, "names resource 10"):
+                load_reference_images(root)
+
+    def test_reference_image_table_rejects_a_stray_name(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            write_csv(root / "reference-images.csv", [
+                "resource", "file", "note",
+            ], [{"resource": "10", "note": "", "file": "picture.png"}])
+            with self.assertRaisesRegex(PackError, "fis-NNNN"):
+                load_reference_images(root)
+
+    def test_reference_image_export_renders_the_listed_item(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            usa = root / "usa.iso"
+            usa.touch()
+            rendered = []
+            with (
+                mock.patch.object(
+                    workspace_extract.triace, "load_table",
+                    return_value=("VP2", 1, [])),
+                mock.patch.object(
+                    workspace_extract.dcms, "read_entry", return_value=b"raw"),
+                mock.patch.object(
+                    workspace_extract.fis_images, "views",
+                    return_value=[("slz@0x0", b"blob", None)]),
+                mock.patch.object(
+                    workspace_extract.fis_images, "items_in",
+                    return_value=[(0, b"item")]),
+                mock.patch.object(
+                    workspace_extract.fis_images, "render",
+                    side_effect=lambda item, path: rendered.append(
+                        (item, path))),
+            ):
+                count = _export_reference_images(
+                    usa, {24: ["fis-0024-slz-0x0-0.png"]}, root / "images")
+            self.assertEqual(1, count)
+            self.assertEqual(b"item", rendered[0][0])
+            self.assertEqual("fis-0024-slz-0x0-0.png", rendered[0][1].name)
+
+    def test_reference_image_export_names_what_the_disc_lacks(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            usa = root / "usa.iso"
+            usa.touch()
+            with (
+                mock.patch.object(
+                    workspace_extract.triace, "load_table",
+                    return_value=("VP2", 1, [])),
+                mock.patch.object(
+                    workspace_extract.dcms, "read_entry", return_value=b"raw"),
+                mock.patch.object(
+                    workspace_extract.fis_images, "views",
+                    return_value=[("slz@0x0", b"blob", None)]),
+                mock.patch.object(
+                    workspace_extract.fis_images, "items_in",
+                    return_value=[(0, b"item")]),
+            ):
+                with self.assertRaisesRegex(
+                        PackError, "fis-0024-slz-0x0-8.png"):
+                    _export_reference_images(
+                        usa, {24: ["fis-0024-slz-0x0-8.png"]},
+                        root / "images")
+
+    def test_reference_off_skips_the_translator_tables(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            data = root / "data"
+            (data / "glyph-names").mkdir(parents=True)
+            for relative in ("glyph-names/en.csv", "glyph-names/jp.csv",
+                             "chapter-records.csv", "menu-layout.csv"):
+                (data / relative).write_text("x", encoding="utf-8")
+            usa = root / "usa.iso"
+            usa.write_bytes(b"")
+            called = []
+
+            def refuse(*_args, **_kwargs):
+                called.append(True)
+                raise AssertionError("translator work ran with reference off")
+
+            with (
+                mock.patch.object(
+                    workspace_extract, "resolve_sources",
+                    return_value=(usa, None)),
+                mock.patch.object(
+                    workspace_extract, "write_inventory", return_value=[]),
+                mock.patch.object(
+                    workspace_extract, "_export_scenes",
+                    return_value=(0, 0)),
+                mock.patch.object(
+                    workspace_extract, "_export_containers",
+                    return_value=(0, 0, 0)),
+                mock.patch.object(
+                    workspace_extract, "_export_container_subresources",
+                    return_value=(0, 0)),
+                mock.patch.object(
+                    workspace_extract, "_export_dragon_hall_prompts",
+                    return_value=(0, 0)),
+                mock.patch.object(
+                    workspace_extract, "_export_chapters", side_effect=refuse),
+                mock.patch.object(
+                    workspace_extract, "write_reference_tree",
+                    side_effect=refuse),
+                mock.patch.object(
+                    workspace_extract, "_export_reference_images",
+                    side_effect=refuse),
+            ):
+                details = workspace_extract.generate_workspace(
+                    [usa], root / "ws", data_root=data, reference=False)
+            self.assertEqual([], called)
+            self.assertFalse((root / "ws" / "reference").exists())
+            self.assertNotIn("reference_rows", details)
+            self.assertNotIn("reference_images", details)
 
     def test_source_snapshot_replacement_is_complete(self):
         with tempfile.TemporaryDirectory() as temporary:

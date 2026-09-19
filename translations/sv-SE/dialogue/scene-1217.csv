@@ -1,9 +1,4 @@
 resource,message_id,translated,notes
-1217,7,Längre fram lär det komma fler.,
-1217,8,Var försiktig.,
-1217,9,...Ja.,
-1217,10,( Alicia. Det bör du också komma ihåg. ),
-1217,11,Ja...,
 1217,1,Hm... det verkar fortfarande finnas något kvar?,
 1217,2,Liket som hyste fiendens kvarvarande tankar.,
 1217,3,"Reningen av de kvarvarande tankarna är avklarad,
@@ -13,7 +8,13 @@ så den borde snart försvinna.",
 men utan att strida kan man inte veta dess verkliga natur.",
 1217,6,"Det här liket är i praktiken ett kärl
 som utnyttjats av de kvarvarande tankarna.",
+1217,7,Längre fram lär det komma fler.,
+1217,8,Var försiktig.,
+1217,9,...Ja.,
+1217,10,( Alicia. Det bör du också komma ihåg. ),
+1217,11,Ja...,
 1217,1894,Kyt... Där är de!,
+1217,1882,( Bli inte nervös. Här kan jag använda min kraft... ),
 1217,1883,...Vad var det där!?,
 1217,1884,"Jag besköt monstret med heligt ljus och
 har tillfälligt fängslat det i en kristall.",
@@ -27,7 +28,6 @@ av världsträdet Yggdrasil och förvandlar den till ljus.",
 1217,1891,Vad är det?,
 1217,1892,Det verkar som att vi måste strida för att rena den...,
 1217,1893,"Vad menar du, det fungerar ju inte alls!",
-1217,1882,( Bli inte nervös. Här kan jag använda min kraft... ),
 1217,1895,Sa jag inte det? Det är en tillfällig fångenskap.,
 1217,1896,Vill du se stridsgenomgången?,not displayed by the event script
 1217,1897,Ja,not displayed by the event script

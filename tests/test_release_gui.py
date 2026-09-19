@@ -315,6 +315,18 @@ class PackagedReleaseTests(unittest.TestCase):
         self.frozen(True)
         self.assertIsNone(self.app().only)
 
+    def test_a_source_checkout_offers_the_japanese_image(self):
+        self.frozen(False)
+        app = self.app()
+        self.assertTrue(hasattr(app, "jp_entry"))
+        self.assertTrue(hasattr(app, "jp_btn"))
+
+    def test_a_packaged_release_hides_the_japanese_image(self):
+        self.frozen(True)
+        app = self.app()
+        self.assertFalse(hasattr(app, "jp_entry"))
+        self.assertFalse(hasattr(app, "jp_btn"))
+
 
 class ResourcePickerTests(unittest.TestCase):
     ENTRIES = [
