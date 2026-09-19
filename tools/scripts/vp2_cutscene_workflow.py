@@ -606,29 +606,6 @@ def cmd_scenes(args):
 EN_NAMES_DEFAULT = os.path.join("data", "vp2", "vp2-en-glyphs.csv")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 from .scene_sheet_export import (
     SHEET_FIELDS, VOICE_HEADER, align_japanese, cmd_sheet, cmd_sheet_all,
     japanese_for, manifest_voice_scene, name_unfingerprinted,

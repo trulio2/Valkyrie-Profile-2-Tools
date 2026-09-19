@@ -453,7 +453,6 @@ def _replace_generated_tree(target: Path, generated: Path) -> None:
 
 
 def resolve_sources(images, workspace):
-    """Sort disc images into their roles, remembering earlier ones."""
     found: dict[str, Path] = {}
     for image in images:
         if image is None:
@@ -502,7 +501,6 @@ def resolve_sources(images, workspace):
 
 
 def _remembered_sources(workspace) -> dict[str, Path]:
-    """Disc images a previous run of ``generate`` recorded, if any."""
     stamp = Path(workspace).expanduser().resolve() / "internal" / "generation.json"
     try:
         recorded = json.loads(stamp.read_text(encoding="utf-8")).get("sources")
@@ -515,7 +513,6 @@ def _remembered_sources(workspace) -> dict[str, Path]:
 
 
 def load_reference_images(data_dir) -> dict[int, list[str]]:
-    """The FIS filenames to lift from the disc, grouped by resource."""
     path = Path(data_dir) / REFERENCE_IMAGES
     fields, rows = _read_csv(path)
     required = {"resource", "file"}
@@ -549,12 +546,6 @@ def generate_workspace(
     data_root: str | os.PathLike[str] | None = None,
     reference: bool = True,
 ) -> dict[str, int | bool]:
-    """Generate local reference and internal state with rollback on error.
-
-    ``reference`` builds the translator-facing tables, pictures and Japanese
-    columns. A build that only writes an ISO needs none of them, so the
-    packaged application turns it off.
-    """
     if isinstance(images, (str, os.PathLike)):
         images = [images]
     usa, japanese = resolve_sources(tuple(images) + (japanese_image,),

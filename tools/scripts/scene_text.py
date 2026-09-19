@@ -282,6 +282,12 @@ def run_frames_shared_heading(tokens, metadata, alphabet):
     """Whether a run's only local glyphs are the chevrons around a heading."""
     return local_run_characters(tokens, metadata, alphabet) <= {"<", ">"}
 
+def run_local_face_is_ornament(tokens, metadata, alphabet):
+    """Whether a run's local glyphs are punctuation the shared text wears."""
+    characters = local_run_characters(tokens, metadata, alphabet)
+    return bool(characters) and not any(character.isalnum()
+                                        for character in characters)
+
 def run_mixes_faces(tokens, metadata, alphabet):
     """Whether a run draws from both its local font and the shared face."""
     shared = any(
@@ -858,6 +864,8 @@ def run_replacements(expanded, metadata, alphabet, glyph_base, rows,
             layout_runs.append(
                 (from_codepage
                  or run_frames_shared_heading(
+                     source_run, source_meta, search)
+                 or run_local_face_is_ornament(
                      source_run, source_meta, search))
                 if source_run else None)
 
