@@ -27,6 +27,8 @@ SUBTITLE_CUT_FIRST_SLOT = 49
 CODEPAGE_SHIFT = 0x1F
 CODEPAGE_SPACE = 0x0E
 CODEPAGE_TAG = re.compile(r"<[0-9A-Fa-f]{4}(?::[0-9A-Fa-f]+)?>")
+
+TIGHT_TAG = re.compile(r"<808C(?::[0-9A-Fa-f]+)?>(.*?)<808D>")
 CONTINUATION_MARKER = "<CONT>"
 
 CODEPAGE_CHARACTERS = {
@@ -846,20 +848,21 @@ def rebuild_codepage_records(blob, resource, translations,
         message = by_id[key]
         offset = message["offset"]
         text = row["translated"]
+        squeezed = TIGHT_TAG.sub(lambda match: match.group(1), text)
         previous = replacements.get(offset)
-        if previous is not None and previous[0] != text:
+        if previous is not None and previous[0] != squeezed:
             aliases = ", ".join(str(item["message_id"])
                                 for item in messages_by_offset[offset])
             raise ValueError("resource #%d messages %s share one record but "
                              "their translations differ" % (resource, aliases))
         wanted = message["original_en"].count(CONTINUATION_MARKER)
-        written = text.count(CONTINUATION_MARKER)
+        written = squeezed.count(CONTINUATION_MARKER)
         if written != wanted:
             raise ValueError(
                 "resource #%d message %s needs %d %s to match the record it "
                 "replaces and has %d; the source shows where each one goes"
                 % (resource, key, wanted, CONTINUATION_MARKER, written))
-        replacements[offset] = (text, message["byte_length"])
+        replacements[offset] = (squeezed, message["byte_length"])
 
     runs_by_offset, recut = {}, []
     if alphabet is not None:
@@ -873,17 +876,15 @@ def rebuild_codepage_records(blob, resource, translations,
                      "" if row["released"] is None
                      else ", reusing the slot %r had" % row["released"]))
 
-    encoded = {
-        offset: encode_codepage(
-            text,
-            "resource #%d message %s" % (
-                resource,
-                ",".join(str(item["message_id"])
-                         for item in messages_by_offset[offset])),
-            accent_tokens=accent_tokens,
+    encoded = {}
+    for offset, (text, _) in replacements.items():
+        label = "resource #%d message %s" % (
+            resource,
+            ",".join(str(item["message_id"])
+                     for item in messages_by_offset[offset]))
+        encoded[offset] = encode_codepage(
+            text, label, accent_tokens=accent_tokens,
             local_tokens=runs_by_offset.get(offset))
-        for offset, (text, _) in replacements.items()
-    }
     if all(len(encoded[offset]) <= old_length
            for offset, (_, old_length) in replacements.items()):
         for offset, payload in encoded.items():
@@ -896,10 +897,11 @@ def rebuild_codepage_records(blob, resource, translations,
             alphabet=alphabet)
         check_by_id = {str(message["message_id"]): message for message in check}
         failures = []
-        for key, row in translations.items():
+        for key in translations:
+            offset = by_id[key]["offset"]
             expected = codepage_semantic_text(
-                row["translated"], accent_tokens=accent_tokens,
-                local_tokens=runs_by_offset.get(by_id[key]["offset"]),
+                replacements[offset][0], accent_tokens=accent_tokens,
+                local_tokens=runs_by_offset.get(offset),
                 meta=meta, alphabet=alphabet)
             if check_by_id.get(key, {}).get("original_en") != expected:
                 failures.append(key)
@@ -998,12 +1000,13 @@ def rebuild_codepage_records(blob, resource, translations,
         alphabet=alphabet)
     check_by_id = {str(message["message_id"]): message for message in check}
     failures = []
-    for key, row in translations.items():
-        if by_id[key]["offset"] not in replacements:
+    for key in translations:
+        offset = by_id[key]["offset"]
+        if offset not in replacements:
             continue
         expected = codepage_semantic_text(
-            row["translated"], accent_tokens=accent_tokens,
-            local_tokens=runs_by_offset.get(by_id[key]["offset"]),
+            replacements[offset][0], accent_tokens=accent_tokens,
+            local_tokens=runs_by_offset.get(offset),
             meta=meta, alphabet=alphabet)
         if check_by_id.get(key, {}).get("original_en") != expected:
             failures.append(key)

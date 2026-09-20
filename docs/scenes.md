@@ -377,7 +377,7 @@ Mithra => 1219
 
 Dylan => 1223 (and 1345 - Seraphic Gate)
 
-Lezard => 1239 and 1307 (and 1341 - Seraphic Gate)
+Lezard => 1229 and 1239 and 1307 (and 1341 - Seraphic Gate)
 
 Leone => 1245 (and 1345 - Seraphic Gate)
 
@@ -387,7 +387,7 @@ Hrist => 1313 (and 1339 - Seraphic Gate)
 
 Brahms => 1313
 
-Lenneth => 1351 (and 1339 - Seraphic Gate)
+Lenneth => 1315 and 1351 (and 1339 - Seraphic Gate)
 
 Silmeria => 1317 (and 1339 - Seraphic Gate)
 
