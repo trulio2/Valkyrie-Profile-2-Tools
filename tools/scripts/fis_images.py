@@ -320,12 +320,38 @@ def payloads(raw, resource=None):
     return out
 
 
+_CHANNELS = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}
+
+
+def _rgba_row(line, width, colour, depth, palette, alpha):
+    """One unfiltered PNG scanline as RGBA bytes."""
+    if colour == 6:
+        return line
+    entries = len(palette) // 3
+    out = bytearray(width * 4)
+    for x in range(width):
+        if depth == 8:
+            index = line[x]
+        else:
+            per = 8 // depth
+            shift = 8 - depth * (x % per + 1)
+            index = (line[x // per] >> shift) & ((1 << depth) - 1)
+        if index >= entries:
+            raise FisError("palette index %d has no PLTE entry" % index)
+        red, green, blue = palette[index * 3:index * 3 + 3]
+        alpha_byte = (alpha[index]
+                      if alpha is not None and index < len(alpha) else 255)
+        out[x * 4:x * 4 + 4] = bytes((red, green, blue, alpha_byte))
+    return out
+
+
 def read_png(path):
     with open(path, "rb") as handle:
         blob = handle.read()
     if blob[:8] != b"\x89PNG\r\n\x1a\n":
         raise FisError("%s is not a PNG" % path)
     width = height = None
+    palette = alpha = None
     data, at = bytearray(), 8
     while at + 8 <= len(blob):
         length, tag = struct.unpack_from(">I4s", blob, at)
@@ -334,19 +360,27 @@ def read_png(path):
         if tag == b"IHDR":
             width, height, depth, colour, _c, _f, interlace = \
                 struct.unpack(">2I5B", body)
-            if (depth, colour, interlace) != (8, 6, 0):
+            if interlace or not ((colour == 6 and depth == 8)
+                                 or (colour == 3 and depth in (1, 2, 4, 8))):
                 raise FisError(
                     "%s is depth %d colour type %d interlace %d; this reads "
-                    "only 8-bit RGBA, uninterlaced" % (path, depth, colour,
-                                                       interlace))
+                    "8-bit RGBA or an indexed PNG" % (path, depth, colour,
+                                                      interlace))
+        elif tag == b"PLTE":
+            palette = body
+        elif tag == b"tRNS":
+            alpha = body
         elif tag == b"IDAT":
             data += body
         elif tag == b"IEND":
             break
     if width is None:
         raise FisError("%s has no IHDR" % path)
+    if colour == 3 and palette is None:
+        raise FisError("%s is indexed but has no PLTE" % path)
     raw = zlib.decompress(bytes(data))
-    stride = width * 4
+    step = max(1, _CHANNELS[colour] * depth // 8)
+    stride = (width * _CHANNELS[colour] * depth + 7) // 8
     if len(raw) != (stride + 1) * height:
         raise FisError("%s: %d bytes of pixel data, expected %d"
                        % (path, len(raw), (stride + 1) * height))
@@ -356,9 +390,9 @@ def read_png(path):
         filt = raw[head]
         line = bytearray(raw[head + 1:head + 1 + stride])
         for x in range(stride):
-            left = line[x - 4] if x >= 4 else 0
+            left = line[x - step] if x >= step else 0
             up = previous[x]
-            upleft = previous[x - 4] if x >= 4 else 0
+            upleft = previous[x - step] if x >= step else 0
             if filt == 1:
                 line[x] = (line[x] + left) & 0xFF
             elif filt == 2:
@@ -374,7 +408,7 @@ def read_png(path):
                 line[x] = (line[x] + nearest) & 0xFF
             elif filt != 0:
                 raise FisError("%s row %d uses filter %d" % (path, y, filt))
-        rows.append(line)
+        rows.append(_rgba_row(line, width, colour, depth, palette, alpha))
         previous = line
     return width, height, rows
 
@@ -390,7 +424,12 @@ def encode(item, path):
     for index, (red, green, blue, alpha) in enumerate(colours):
         exact.setdefault((red, green, blue, min(alpha * 2, 255)), index)
 
+    memo = {}
+
     def nearest(pixel):
+        cached = memo.get(pixel)
+        if cached is not None:
+            return cached
         best, score = 0, None
         for index, (red, green, blue, alpha) in enumerate(colours):
             here = ((pixel[0] - red) ** 2 + (pixel[1] - green) ** 2
@@ -402,6 +441,7 @@ def encode(item, path):
             raise FisError(
                 "no palette entry is near rgba%s; this item draws only its "
                 "own 16 colours, so paint with them" % (pixel,))
+        memo[pixel] = best
         return best
 
     values = bytearray(width * height)

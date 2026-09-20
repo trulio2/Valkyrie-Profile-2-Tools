@@ -31,8 +31,6 @@ MIXED_ALPHABET = {0: "a", 1: "b"}
 
 
 class CodepageLocalNamingTests(unittest.TestCase):
-    """Naming a slot is safe only where the record draws nothing shared."""
-
     def test_a_wholly_local_record_is_named(self):
         record = bytes([0x65, 0x66, 0x00])
         blob = mixed_container(record)
@@ -43,19 +41,34 @@ class CodepageLocalNamingTests(unittest.TestCase):
         self.assertEqual(text, "ab")
 
     def test_a_record_that_also_spells_shared_text_is_not(self):
-        shared = container_text.encode_codepage("b")[:-1]
-        record = bytes([0x65]) + shared + bytes(1)
+        shared_b = container_text.encode_codepage("b")[:-1]
+        shared_c = container_text.encode_codepage("c")[:-1]
+        record = shared_b + bytes([0x65]) + shared_c + bytes(1)
         blob = mixed_container(record)
         meta = container_text.layout(blob)
         self.assertFalse(container_text.codepage_record_is_local(blob, meta, 0))
+        self.assertFalse(
+            container_text.codepage_record_begins_local(blob, meta, 0))
         text, _length = container_text.render_codepage(
             blob, meta, 0, alphabet=MIXED_ALPHABET)
-        self.assertEqual(text, "<0065>b")
+        self.assertEqual(text, "b<0065>c")
 
         runs = container_text.codepage_run_tokens(blob, meta, 0, MIXED_ALPHABET)
         self.assertEqual(runs, [{}])
         self.assertEqual(
             container_text.encode_codepage(text, local_tokens=runs), record)
+
+    def test_a_leading_local_record_is_named(self):
+        shared = container_text.encode_codepage("b")[:-1]
+        record = bytes([0x65]) + shared + bytes(1)
+        blob = mixed_container(record)
+        meta = container_text.layout(blob)
+        self.assertFalse(container_text.codepage_record_is_local(blob, meta, 0))
+        self.assertTrue(
+            container_text.codepage_record_begins_local(blob, meta, 0))
+        text, _length = container_text.render_codepage(
+            blob, meta, 0, alphabet=MIXED_ALPHABET)
+        self.assertEqual(text, "ab")
 
     def test_a_record_the_shared_codepage_spells_needs_no_face(self):
         record = container_text.encode_codepage("Yes")
@@ -80,13 +93,13 @@ class CodepageLocalNamingTests(unittest.TestCase):
 
     def test_a_mixed_record_keeps_the_slots_its_tags_still_name(self):
         """Its local glyphs travel back as <XXXX>, so they are still drawn."""
-        record = (bytes([0x65]) + container_text.encode_codepage("b")[:-1]
-                  + bytes(1))
+        record = (container_text.encode_codepage("b")[:-1] + bytes([0x65])
+                  + container_text.encode_codepage("c")[:-1] + bytes(1))
         blob = mixed_container(record)
         meta = container_text.layout(blob)
         text, _length = container_text.render_codepage(
             blob, meta, 0, alphabet=MIXED_ALPHABET)
-        self.assertEqual(text, "<0065>b")
+        self.assertEqual(text, "b<0065>c")
         _grown, _meta, _alphabet, runs, recut = (
             container_text.grow_codepage_font(
                 blob, meta, MIXED_ALPHABET, {0: "<0065>a"}, 10))

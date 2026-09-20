@@ -44,6 +44,16 @@ BATTLE_NAME = re.compile(
     r"(?P<clip>[0-9a-fA-F]{4})-(?P<zone>\d+)\.wav$",
     re.IGNORECASE,
 )
+FIELD_NAME = re.compile(
+    r"^field-(?P<entry>\d{4})-(?P<group>\d{2})-(?P<sample>\d{3})-"
+    r"(?P<clip>[0-9a-fA-F]{4})-(?P<zone>\d+)\.wav$",
+    re.IGNORECASE,
+)
+LEZARD_NAME = re.compile(
+    r"^lezard-(?P<entry>\d{4})-(?P<group>\d{2})-(?P<sample>\d{3})-"
+    r"(?P<clip>[0-9a-fA-F]{4})-(?P<zone>\d+)\.wav$",
+    re.IGNORECASE,
+)
 
 BATTLE_SEEDS = {
     0x9E636CDE: 0x00E6373A,
@@ -88,6 +98,7 @@ class UnmappedVoice:
     sample: int
     clip_id: int
     zone: int
+    resource: int | None = None
 
 
 @dataclass(frozen=True)
@@ -129,12 +140,8 @@ def load_bank_map(path=None):
             if owner.category not in {"cutscene", "alternate"}:
                 raise ValueError("unknown voice-bank category: %s"
                                  % owner.category)
-            if ((owner.category == "cutscene") !=
-                    (owner.resource is not None)):
-                raise ValueError(
-                    "cutscene banks need a resource and alternate banks must "
-                    "remain unmapped"
-                )
+            if owner.category == "cutscene" and owner.resource is None:
+                raise ValueError("cutscene banks need a resource")
             if owner.category == "alternate" and owner.voice_scene is not None:
                 raise ValueError("alternate banks cannot claim a voice scene")
             owners[owner.bank] = owner
@@ -147,11 +154,13 @@ def load_unmapped_map(path=None):
     voices = {}
     with path.open(encoding="utf-8", newline="") as source:
         for row in csv.DictReader(source):
+            resource = (row.get("resource") or "").strip()
             voice = UnmappedVoice(
                 entry=int(row["entry"]),
                 sample=int(row["sample"]),
                 clip_id=int(row["clip_id"], 16),
                 zone=int(row["zone"]),
+                resource=int(resource) if resource else None,
             )
             identity = (voice.entry, voice.sample)
             if identity in voices:
@@ -160,6 +169,8 @@ def load_unmapped_map(path=None):
                 )
             if voice.entry < 0 or voice.sample < 0 or voice.zone < 0:
                 raise ValueError("unmapped-voice values must be non-negative")
+            if voice.resource is not None and voice.resource <= 0:
+                raise ValueError("unmapped-voice resource must be positive")
             voices[identity] = voice
     return voices
 
@@ -384,3 +395,33 @@ def parse_battle_filename(path):
         return None
     return tuple(int(match.group(name), 16 if name == "clip" else 10)
                  for name in ("entry", "sample", "clip", "zone"))
+
+
+def _grouped_filename(prefix, entry, group, clip):
+    return "%s-%04d-%02d-%03d-%04x-%d.wav" % (
+        prefix, entry, group, clip.sample_index, clip.clip_id, clip.zone
+    )
+
+
+def _parse_grouped_filename(pattern, path):
+    match = pattern.match(Path(path).name)
+    if not match:
+        return None
+    return tuple(int(match.group(name), 16 if name == "clip" else 10)
+                 for name in ("entry", "group", "sample", "clip", "zone"))
+
+
+def field_filename(entry, group, clip):
+    return _grouped_filename("field", entry, group, clip)
+
+
+def parse_field_filename(path):
+    return _parse_grouped_filename(FIELD_NAME, path)
+
+
+def lezard_filename(entry, group, clip):
+    return _grouped_filename("lezard", entry, group, clip)
+
+
+def parse_lezard_filename(path):
+    return _parse_grouped_filename(LEZARD_NAME, path)

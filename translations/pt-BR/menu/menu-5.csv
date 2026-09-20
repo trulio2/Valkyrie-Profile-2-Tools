@@ -1305,7 +1305,11 @@ Restaura 80% do HP máximo do alvo.",
 641,36,,
 643,78,,
 643,79,,
-645,73,,
+645,73,"<808C:000080C0>ATK<808D> = Attack   <808C:000080C0>AVD<808D> = Avoid
+<808C:000080C0>MAG<808D> = Magic    <808C:000080C0>RDM<808D> = Reduce Damage
+<808C:000080C0>HIT<808D> = Hit Rate <808C:000080C0>RST<808D> = Magic Resist
+
+Acima estão as abreviações usadas.",
 651,44,,
 651,45,,
 651,46,,

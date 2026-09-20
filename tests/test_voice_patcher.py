@@ -38,6 +38,10 @@ BATTLE_OFFSET = 0x211800
 BATTLE_LENGTH = 0x800
 BATTLE_SIGNATURE = 0x5D63FC57
 BATTLE_SEED = 0x0006107D
+FIELD_ENTRY = 24
+FIELD_OFFSET = 0x212000
+TAIL_ENTRY = 1011
+TAIL_OFFSET = 0x220000
 
 
 def synthetic_bank():
@@ -85,7 +89,8 @@ def synthetic_battle_entry():
 
 
 def synthetic_streamed_scene(tail_flag, extra_tail_sectors=0,
-                             indexed_marker=b"TARGET"):
+                             indexed_marker=b"TARGET",
+                             clip_ids=(0x0A89, 0x0A8A)):
     data = bytearray(layout.SECTOR)
     struct.pack_into("<III", data, 0, 0, 1, 0x20)
     data[0x10:0x14] = b"PAM\0"
@@ -94,7 +99,7 @@ def synthetic_streamed_scene(tail_flag, extra_tail_sectors=0,
     struct.pack_into("<III", data, 0x24, 0, 0x10, 0)
     data[0x30:0x30 + len(indexed_marker)] = indexed_marker
     tail = bytearray(0x120)
-    for clip_id in (0x0A89, 0x0A8A):
+    for clip_id in clip_ids:
         entry = bytearray(synthetic_unmapped_entry(tail_flag))
         struct.pack_into("<H", entry, 0xA2, clip_id)
         tail.extend(entry)
@@ -138,7 +143,7 @@ def synthetic_indexed_audio_scene(tail_flag, extra_audio_sectors=0,
     return bytes(data)
 
 
-def encrypted_index(include_battle=False):
+def encrypted_index(include_battle=False, scenes=None):
     decoded = [0] * (TOTAL * 3)
     decoded[BANK] = BANK_OFFSET // layout.SECTOR
     decoded[TOTAL + BANK] = BANK_LENGTH // layout.SECTOR
@@ -147,6 +152,9 @@ def encrypted_index(include_battle=False):
     if include_battle:
         decoded[BATTLE_ENTRY] = BATTLE_OFFSET // layout.SECTOR
         decoded[TOTAL + BATTLE_ENTRY] = BATTLE_LENGTH // layout.SECTOR
+    for entry, (offset, payload) in (scenes or {}).items():
+        decoded[entry] = offset // layout.SECTOR
+        decoded[TOTAL + entry] = len(payload) // layout.SECTOR
     raw = decoded[:]
     key = SEED
     for index in range(TOTAL):
@@ -160,15 +168,15 @@ def encrypted_index(include_battle=False):
     return struct.pack("<%dI" % len(raw), *raw)
 
 
-def synthetic_iso(path, boot="SLUS_214.52", battle=False):
-    image_length = max(
-        BANK_OFFSET + BANK_LENGTH,
-        UNMAPPED_OFFSET + UNMAPPED_LENGTH,
-        BATTLE_OFFSET + BATTLE_LENGTH if battle else 0,
-    )
-    image = bytearray(image_length)
+def synthetic_iso(path, boot="SLUS_214.52", battle=False, scenes=None):
+    spans = [BANK_OFFSET + BANK_LENGTH, UNMAPPED_OFFSET + UNMAPPED_LENGTH]
+    if battle:
+        spans.append(BATTLE_OFFSET + BATTLE_LENGTH)
+    spans.extend(offset + len(payload)
+                 for offset, payload in (scenes or {}).values())
+    image = bytearray(max(spans))
     image[0x1000:0x1000 + len(boot)] = boot.encode("ascii")
-    index = encrypted_index(battle)
+    index = encrypted_index(battle, scenes)
     image[TABLE_OFFSET:TABLE_OFFSET + len(index)] = index
     image[BANK_OFFSET:BANK_OFFSET + BANK_LENGTH] = synthetic_bank()
     image[UNMAPPED_OFFSET:UNMAPPED_OFFSET + UNMAPPED_LENGTH] = (
@@ -178,6 +186,8 @@ def synthetic_iso(path, boot="SLUS_214.52", battle=False):
         image[BATTLE_OFFSET:BATTLE_OFFSET + BATTLE_LENGTH] = (
             synthetic_battle_entry()
         )
+    for offset, payload in (scenes or {}).values():
+        image[offset:offset + len(payload)] = payload
     path.write_bytes(image)
 
 
@@ -212,14 +222,19 @@ class LayoutTests(unittest.TestCase):
         )
         self.assertEqual(set(layout.VOICE_BANKS), set(owners))
         self.assertEqual(
-            (None, None, 21, "alternate"),
+            (1337, None, 21, "cutscene"),
             (owners[1520].resource, owners[1520].voice_scene,
              owners[1520].slot_count, owners[1520].category),
         )
         self.assertEqual(
-            (None, None, 16, "alternate"),
+            (1323, None, 16, "alternate"),
             (owners[1562].resource, owners[1562].voice_scene,
              owners[1562].slot_count, owners[1562].category),
+        )
+        self.assertEqual(
+            (1337, 402, 2, "cutscene"),
+            (owners[1524].resource, owners[1524].voice_scene,
+             owners[1524].slot_count, owners[1524].category),
         )
 
     def test_unmapped_map_and_standalone_sample_identity_are_exact(self):
@@ -355,6 +370,29 @@ class ExtractionTests(unittest.TestCase):
             self.assertEqual("alternate", row["kind"])
             self.assertEqual("", row["resource"])
 
+    def test_scene_owned_alternate_bank_goes_under_its_resource(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "jp.iso"
+            synthetic_iso(source, "SLPM_664.19")
+            owner = layout.BankOwner(
+                BANK, 1323, None, 1, "alternate"
+            )
+            with mock.patch.object(build, "VOICE_BANKS", (BANK,)), \
+                    mock.patch.object(build, "load_bank_map",
+                                      return_value={BANK: owner}), \
+                    mock.patch.object(build, "load_unmapped_map",
+                                      return_value={}):
+                result = build.extract_voices(source, root / "voices")
+            wav = (result.output / "1323" / "alternate-takes" /
+                   "1483-000-8028.wav")
+            self.assertTrue(wav.is_file())
+            with (result.output / "manifest.csv").open(
+                    encoding="utf-8") as manifest:
+                row = next(csv.DictReader(manifest))
+            self.assertEqual("alternate", row["kind"])
+            self.assertEqual("1323", row["resource"])
+
     def test_extracts_language_dependent_samples_to_unmapped_folder(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -378,7 +416,31 @@ class ExtractionTests(unittest.TestCase):
                 rows = list(csv.DictReader(manifest))
             self.assertEqual("unmapped", rows[0]["kind"])
 
-    def test_extracts_encrypted_battle_samples_to_unmapped_folder(self):
+    def test_owned_unmapped_sample_goes_to_its_resource_folder(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            synthetic_iso(source)
+            voice = layout.UnmappedVoice(
+                UNMAPPED_ENTRY, 0, UNMAPPED_CLIP_ID, 0, resource=1195
+            )
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_bank_map",
+                                      return_value={}), \
+                    mock.patch.object(build, "load_unmapped_map",
+                                      return_value={(UNMAPPED_ENTRY, 0): voice}):
+                result = build.extract_voices(source, root / "voices")
+            target = (result.output / "1195" /
+                      "unmapped-0685-000-0b00-0.wav")
+            self.assertTrue(target.is_file())
+            self.assertFalse((result.output / "unmapped" /
+                              "unmapped-0685-000-0b00-0.wav").exists())
+            with (result.output / "manifest.csv").open(
+                    encoding="utf-8") as manifest:
+                row = next(csv.DictReader(manifest))
+            self.assertEqual("1195", row["resource"])
+
+    def test_extracts_encrypted_battle_samples_to_battle_folder(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             source = root / "usa.iso"
@@ -389,7 +451,7 @@ class ExtractionTests(unittest.TestCase):
                     mock.patch.object(build, "load_unmapped_map",
                                       return_value={}):
                 result = build.extract_voices(source, root / "voices")
-            target = (result.output / "unmapped" /
+            target = (result.output / "battle" /
                       "battle-2138-000-0b00-0.wav")
             self.assertTrue(target.is_file())
             self.assertEqual(1, result.battle_clips)
@@ -397,6 +459,57 @@ class ExtractionTests(unittest.TestCase):
                     encoding="utf-8") as manifest:
                 rows = list(csv.DictReader(manifest))
             self.assertEqual("battle", rows[0]["kind"])
+
+    def test_extracts_field_and_tower_audio_to_their_folders(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            field = synthetic_indexed_audio_scene(tail_flag=7)
+            tower = synthetic_streamed_scene(
+                tail_flag=7, clip_ids=(0x0A89, 0x0A9C)
+            )
+            synthetic_iso(source, scenes={
+                FIELD_ENTRY: (FIELD_OFFSET, field),
+                TAIL_ENTRY: (TAIL_OFFSET, tower),
+            })
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_bank_map",
+                                      return_value={}), \
+                    mock.patch.object(build, "load_unmapped_map",
+                                      return_value={}):
+                result = build.extract_voices(source, root / "voices")
+            self.assertTrue((result.output / "field" /
+                             "field-0024-00-000-0a80-0.wav").is_file())
+            self.assertTrue((result.output / "field" /
+                             "field-0024-01-000-0a83-0.wav").is_file())
+            self.assertTrue((result.output / "lezard" /
+                             "lezard-1011-00-000-0a89-0.wav").is_file())
+            self.assertTrue((result.output / "lezard" /
+                             "lezard-1011-01-000-0a9c-0.wav").is_file())
+            with (result.output / "manifest.csv").open(
+                    encoding="utf-8") as manifest:
+                kinds = {row["kind"] for row in csv.DictReader(manifest)}
+            self.assertEqual({"field", "lezard"}, kinds)
+
+    def test_field_and_lezard_filenames_round_trip(self):
+        field = layout.parse_standalone(
+            build._indexed_audio_groups(
+                synthetic_indexed_audio_scene(tail_flag=7))[0][4])[0]
+        name = layout.field_filename(FIELD_ENTRY, 0, field)
+        self.assertEqual("field-0024-00-000-0a80-0.wav", name)
+        self.assertEqual(
+            (FIELD_ENTRY, 0, 0, 0x0A80, 0),
+            layout.parse_field_filename(name),
+        )
+        tower = layout.parse_standalone(
+            build._streamed_audio_groups(
+                synthetic_streamed_scene(tail_flag=7))[1][0][1])[0]
+        name = layout.lezard_filename(TAIL_ENTRY, 0, tower)
+        self.assertEqual("lezard-1011-00-000-0a89-0.wav", name)
+        self.assertEqual(
+            (TAIL_ENTRY, 0, 0, 0x0A89, 0),
+            layout.parse_lezard_filename(name),
+        )
 
 
 class PatchingTests(unittest.TestCase):
@@ -529,6 +642,60 @@ class PatchingTests(unittest.TestCase):
                 {"cutscene", "battle"},
                 {replacement.kind for replacement in result.replacements},
             )
+
+    def test_replaces_field_sample_in_place(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "source.iso"
+            output = root / "output.iso"
+            voices = root / "voices"
+            voices.mkdir()
+            field = synthetic_indexed_audio_scene(tail_flag=7)
+            synthetic_iso(source, scenes={
+                FIELD_ENTRY: (FIELD_OFFSET, field),
+            })
+            write_wav(
+                voices / "field-0024-00-000-0a80-0.wav", [900, -900] * 14
+            )
+            before = source.read_bytes()
+            result = build.patch_iso(source, voices, output)
+            after = output.read_bytes()
+            groups = build._indexed_audio_groups(field)
+            clip = layout.parse_standalone(groups[0][4])[0]
+            start = FIELD_OFFSET + groups[0][2] + clip.payload_offset
+            end = start + clip.payload_length
+            self.assertEqual(before[:start], after[:start])
+            self.assertNotEqual(before[start:end], after[start:end])
+            self.assertEqual(before[end:], after[end:])
+            self.assertEqual("field", result.replacements[0].kind)
+
+    def test_replaces_lezard_sample_in_place(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "source.iso"
+            output = root / "output.iso"
+            voices = root / "voices"
+            voices.mkdir()
+            tower = synthetic_streamed_scene(
+                tail_flag=7, clip_ids=(0x0A89, 0x0A9C)
+            )
+            synthetic_iso(source, scenes={
+                TAIL_ENTRY: (TAIL_OFFSET, tower),
+            })
+            write_wav(
+                voices / "lezard-1011-00-000-0a89-0.wav", [700, -700] * 14
+            )
+            before = source.read_bytes()
+            result = build.patch_iso(source, voices, output)
+            after = output.read_bytes()
+            position, _payload, clips = build._streamed_audio_groups(tower)[1][0]
+            clip = clips[0]
+            start = TAIL_OFFSET + position + clip.payload_offset
+            end = start + clip.payload_length
+            self.assertEqual(before[:start], after[:start])
+            self.assertNotEqual(before[start:end], after[start:end])
+            self.assertEqual(before[end:], after[end:])
+            self.assertEqual("lezard", result.replacements[0].kind)
 
     def test_legacy_dub_kit_manifest_makes_clip_id_names_reversible(self):
         with tempfile.TemporaryDirectory() as folder:

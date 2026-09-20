@@ -17,9 +17,11 @@ from .layout import (
     JAPAN_BOOT, JAPANESE_AUDIO_TARGET_BOOTS, SUPPORTED_BOOTS,
     VOICE_BANKS, VOICE_SOURCE_BOOTS, entry_span,
     battle_filename, battle_signature, decode_battle_entry,
-    encode_battle_entry, exported_filename, load_bank_map, load_unmapped_map,
-    parse_bank, parse_battle_filename, parse_exported_filename,
-    parse_standalone, parse_unmapped_filename, read_index, unmapped_filename,
+    encode_battle_entry, exported_filename, field_filename,
+    lezard_filename, load_bank_map, load_unmapped_map, parse_bank,
+    parse_battle_filename, parse_exported_filename, parse_field_filename,
+    parse_lezard_filename, parse_standalone, parse_unmapped_filename,
+    read_index, unmapped_filename,
 )
 from ..cheat_patcher import battle_overlay
 from ..scripts import (
@@ -33,6 +35,8 @@ COPY_CHUNK = 8 * 1024 * 1024
 PROTECTED_STREAM_MAGIC = bytes.fromhex("77522267")
 GLOBAL_BATTLE_RESOURCE = 1781
 BATTLE_RESULT_ASSET_FLAG = 0x5400
+FIELD_AUDIO_MARKERS = (0x0A80, 0x0A83)
+LEZARD_AUDIO_MARKERS = (0x0A89, 0x0A9C)
 MANIFEST_FIELDS = (
     "kind", "region", "resource", "voice_scene", "bank", "sub", "entry",
     "sample", "zone", "clip_id", "relative_path", "slot_bytes",
@@ -184,6 +188,38 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
     mapped = 0
     root.mkdir(parents=True, exist_ok=True)
     partial.mkdir()
+
+    def emit(kind, folder, filename, clip_id, zone, pcm, slot_bytes,
+             entry="", sample="", bank="", sub=""):
+        folder.mkdir(exist_ok=True)
+        target = folder / filename
+        audio.write_wav(target, pcm)
+        peak, rms, voiced = audio.statistics(pcm)
+        rows.append({
+            "kind": kind,
+            "region": region,
+            "resource": "",
+            "voice_scene": "",
+            "bank": bank,
+            "sub": sub,
+            "entry": entry,
+            "sample": sample,
+            "zone": zone,
+            "clip_id": "%04x" % clip_id,
+            "relative_path": target.relative_to(partial).as_posix(),
+            "slot_bytes": slot_bytes,
+            "max_seconds": "%.4f" % (
+                slot_bytes // audio.FRAME
+                * audio.SAMPLES_PER_FRAME / audio.SAMPLE_RATE
+            ),
+            "seconds": "%.4f" % (len(pcm) // 2 / audio.SAMPLE_RATE),
+            "target_rms": int(rms),
+            "peak": peak,
+            "voiced_pct": "%.1f" % (100 * voiced),
+            "silent": "yes" if rms == 0 else "",
+            "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
+        })
+
     try:
         with source.open("rb") as handle:
             total, table = read_index(handle)
@@ -204,6 +240,8 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                     if owner.category == "cutscene":
                         folder = partial / str(owner.resource)
                         mapped += 1
+                    elif owner.resource is not None:
+                        folder = partial / str(owner.resource) / "alternate-takes"
                     else:
                         folder = partial / "unmapped" / "alternate-takes"
                 else:
@@ -286,14 +324,23 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                         clip.payload_offset + clip.payload_length
                     ]
                     pcm = audio.decode_adpcm(payload)
-                    target = unmapped_folder / unmapped_filename(entry, clip)
+                    if voice.resource is not None:
+                        folder = partial / str(voice.resource)
+                        folder.mkdir(parents=True, exist_ok=True)
+                    else:
+                        folder = unmapped_folder
+                    target = folder / unmapped_filename(entry, clip)
                     audio.write_wav(target, pcm)
                     peak, rms, voiced = audio.statistics(pcm)
                     relative = target.relative_to(partial).as_posix()
                     rows.append({
                         "kind": "unmapped",
                         "region": region,
-                        "resource": "",
+                        "resource": (
+                            voice.resource
+                            if voice.resource is not None
+                            else ""
+                        ),
                         "voice_scene": "",
                         "bank": "",
                         "sub": "",
@@ -324,6 +371,8 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                     % (entry, len(VOICE_BANKS) + position,
                        extraction_steps, len(expected))
                 )
+            battle_folder = partial / "battle"
+            battle_folder.mkdir(exist_ok=True)
             battle_count = 0
             for position, entry in enumerate(battle_entries, 1):
                 _offset, stored = _read_entry(handle, table, total, entry)
@@ -335,7 +384,7 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                         clip.payload_offset + clip.payload_length
                     ]
                     pcm = audio.decode_adpcm(payload)
-                    target = unmapped_folder / battle_filename(entry, clip)
+                    target = battle_folder / battle_filename(entry, clip)
                     audio.write_wav(target, pcm)
                     peak, rms, voiced = audio.statistics(pcm)
                     relative = target.relative_to(partial).as_posix()
@@ -373,6 +422,51 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                     % (entry, len(VOICE_BANKS) + len(by_entry) + position,
                        extraction_steps, len(clips))
                 )
+            field_folder = partial / "field"
+            lezard_folder = partial / "lezard"
+            for entry in _scene_audio_entries(handle, table, total):
+                _offset, entry_data = _read_entry(handle, table, total, entry)
+                groups = _indexed_audio_groups(entry_data)
+                if _has_markers(
+                        {clip for group in groups
+                         for clip, _zone in group[3]},
+                        FIELD_AUDIO_MARKERS):
+                    for group_index, group in enumerate(groups):
+                        for clip in parse_standalone(group[4]):
+                            payload = group[4][
+                                clip.payload_offset:
+                                clip.payload_offset + clip.payload_length
+                            ]
+                            emit(
+                                "field", field_folder,
+                                field_filename(entry, group_index, clip),
+                                clip.clip_id, clip.zone,
+                                audio.decode_adpcm(payload),
+                                clip.payload_length, entry=entry,
+                                sample=clip.sample_index, sub=group_index,
+                            )
+                found = _streamed_audio_groups(entry_data)
+                if found is not None:
+                    _tail_start, tail_groups = found
+                    if _has_markers(
+                            {clip.clip_id for _position, _payload, clips
+                             in tail_groups for clip in clips},
+                            LEZARD_AUDIO_MARKERS):
+                        for group_index, (position, payload, clips) in enumerate(
+                                tail_groups):
+                            for clip in clips:
+                                sample = payload[
+                                    clip.payload_offset:
+                                    clip.payload_offset + clip.payload_length
+                                ]
+                                emit(
+                                    "lezard", lezard_folder,
+                                    lezard_filename(entry, group_index, clip),
+                                    clip.clip_id, clip.zone,
+                                    audio.decode_adpcm(sample),
+                                    clip.payload_length, entry=entry,
+                                    sample=clip.sample_index, sub=group_index,
+                                )
         with (partial / "manifest.csv").open(
                 "w", encoding="utf-8", newline="") as manifest:
             writer = csv.DictWriter(manifest, fieldnames=MANIFEST_FIELDS)
@@ -383,11 +477,15 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
             "Cutscene files are named <bank>-<subfile>-<clip-id>.wav.\n"
             "Unmapped files are named unmapped-<entry>-<sample>-<clip-id>-"
             "<zone>.wav.\n"
-            "Battle files in unmapped/ are named battle-<entry>-<sample>-"
-            "<clip-id>-<zone>.wav.\n"
-            "Folders named by number are cutscene resources. Banks containing "
-            "unverified alternate performances remain under unmapped/"
-            "alternate-takes/.\n"
+            "Battle files are named battle-<entry>-<sample>-<clip-id>-"
+            "<zone>.wav.\n"
+            "Field files are named field-<entry>-<group>-<sample>-<clip-id>-"
+            "<zone>.wav, and lezard/ files use the same shape.\n"
+            "Folders named by number are cutscene resources; unmapped files "
+            "with a known scene owner are placed there too. Banks holding an "
+            "unverified alternate performance go under that scene's "
+            "alternate-takes/ when its owner is known, otherwise under "
+            "unmapped/alternate-takes/.\n"
             % (source.name, boot),
             encoding="utf-8",
         )
@@ -455,7 +553,16 @@ def discover_replacements(folder):
             identity = parse_unmapped_filename(path)
         if identity is None:
             battle = parse_battle_filename(path)
-            identity = (("battle",) + battle) if battle else None
+            if battle:
+                identity = ("battle",) + battle
+        if identity is None:
+            field = parse_field_filename(path)
+            if field:
+                identity = ("field",) + field
+        if identity is None:
+            lezard = parse_lezard_filename(path)
+            if lezard:
+                identity = ("lezard",) + lezard
         if identity is None:
             stem = path.stem.lower().removeprefix("id_").removeprefix("0x")
             identity = legacy.get(stem)
@@ -626,8 +733,8 @@ def _indexed_audio_hybrids(base_handle, base_values, donor_handle,
     return hybrids, group_count
 
 
-def _streamed_audio_tail(data):
-    """Return ``(tail offset, clip identities)`` for a PK1 audio tail."""
+def _streamed_audio_groups(data):
+    """Return ``(tail offset, groups)`` for SEQW streams after PK1 content."""
     entries = vp2_dcms.parse_pk1(data)
     if not entries:
         return None
@@ -637,7 +744,7 @@ def _streamed_audio_tail(data):
     )
     if tail_start >= len(data):
         return None
-    identities = []
+    groups = []
     position = tail_start
     while True:
         position = data.find(b"SEQW", position)
@@ -649,13 +756,48 @@ def _streamed_audio_tail(data):
             except ValueError:
                 pass
             else:
-                identities.append(tuple(
-                    (clip.clip_id, clip.zone) for clip in clips
-                ))
+                groups.append((position, data[position:], clips))
         position += 4
-    if not identities:
+    if not groups:
         return None
-    return tail_start, tuple(identities)
+    return tail_start, tuple(groups)
+
+
+def _streamed_audio_tail(data):
+    """Return ``(tail offset, clip identities)`` for a PK1 audio tail."""
+    found = _streamed_audio_groups(data)
+    if found is None:
+        return None
+    tail_start, groups = found
+    return tail_start, tuple(
+        tuple((clip.clip_id, clip.zone) for clip in clips)
+        for _position, _payload, clips in groups
+    )
+
+
+def _has_markers(identities, markers):
+    return all(marker in identities for marker in markers)
+
+
+def _scene_audio_entries(handle, table, total):
+    """Return every entry whose first words form a PK1 table header."""
+    entries = []
+    for entry in range(1, total):
+        if not table[total + entry]:
+            continue
+        handle.seek(table[entry] * layout.SECTOR)
+        header = handle.read(12)
+        if len(header) < 12:
+            continue
+        if struct.unpack_from("<I", header, 0)[0] != 0:
+            continue
+        count = struct.unpack_from("<I", header, 4)[0] + 1
+        if not 1 <= count <= 4096:
+            continue
+        if struct.unpack_from("<I", header, 8)[0] != count * 16:
+            continue
+        entries.append(entry)
+    return entries
 
 
 def _merge_streamed_audio_tail(base, donor):
@@ -1102,14 +1244,17 @@ def patch_iso(source, voices, output=None, progress=None,
         banks = {}
         entries = {}
         battle_entries = {}
+        scene_entries = {}
         allowed_unmapped = {
             (voice.entry, voice.sample, voice.clip_id, voice.zone)
             for voice in load_unmapped_map().values()
         }
+        prefix_rank = {"battle": 2, "field": 3, "lezard": 4}
+
         def identity_order(item):
             identity = item[0]
-            if identity[0] == "battle":
-                return (2, *identity[1:])
+            if identity[0] in prefix_rank:
+                return (prefix_rank[identity[0]], *identity[1:])
             return (0 if len(identity) == 3 else 1, *identity)
 
         for identity, path in sorted(selected.items(), key=identity_order):
@@ -1154,6 +1299,72 @@ def patch_iso(source, voices, output=None, progress=None,
                     slot_bytes=clip.payload_length,
                 )
                 label = "battle entry %d sample %d" % (entry, sample_index)
+            elif identity[0] in ("field", "lezard"):
+                kind, entry, group_index, sample_index, clip_id, zone = (
+                    identity
+                )
+                if entry not in scene_entries:
+                    entry_offset, entry_data = _read_entry(
+                        handle, table, total, entry
+                    )
+                    found = _streamed_audio_groups(entry_data)
+                    scene_entries[entry] = {
+                        "offset": entry_offset,
+                        "data": entry_data,
+                        "indexed": _indexed_audio_groups(entry_data),
+                        "streamed": found[1] if found else (),
+                    }
+                current = scene_entries[entry]
+                if kind == "field":
+                    if group_index >= len(current["indexed"]):
+                        raise ValueError(
+                            "%s targets missing indexed group %d in "
+                            "entry %d" % (path.name, group_index, entry)
+                        )
+                    absolute = current["offset"] + current["indexed"][
+                        group_index
+                    ][2]
+                    clips = parse_standalone(
+                        current["indexed"][group_index][4]
+                    )
+                else:
+                    if group_index >= len(current["streamed"]):
+                        raise ValueError(
+                            "%s targets missing lezard group %d in entry %d"
+                            % (path.name, group_index, entry)
+                        )
+                    absolute = current["offset"] + current["streamed"][
+                        group_index
+                    ][0]
+                    clips = current["streamed"][group_index][2]
+                clip = {item.sample_index: item for item in clips}.get(
+                    sample_index
+                )
+                if clip is None:
+                    raise ValueError(
+                        "%s targets missing sample %d in %s entry %d group %d"
+                        % (path.name, sample_index, kind, entry, group_index)
+                    )
+                if (clip.clip_id, clip.zone) != (clip_id, zone):
+                    raise ValueError(
+                        "%s says clip %04x/%d, but %s entry %d group %d "
+                        "sample %d is %04x/%d"
+                        % (path.name, clip_id, zone, kind, entry, group_index,
+                           sample_index, clip.clip_id, clip.zone)
+                    )
+                absolute += clip.payload_offset
+                original_payload = current["data"][
+                    absolute - current["offset"]:
+                    absolute - current["offset"] + clip.payload_length
+                ]
+                replacement = Replacement(
+                    path=path, kind=kind, entry=entry, sub=group_index,
+                    sample=sample_index, zone=zone, clip_id=clip_id,
+                    slot_bytes=clip.payload_length,
+                )
+                label = "%s entry %d group %d sample %d" % (
+                    kind, entry, group_index, sample_index
+                )
             elif len(identity) == 3:
                 bank, sub_index, clip_id = identity
                 if bank not in VOICE_BANKS:
@@ -1248,7 +1459,7 @@ def patch_iso(source, voices, output=None, progress=None,
                     "%s is %.3fs but its game slot is %.3fs: %s"
                     % (path.name, duration, maximum, exc)
                 ) from exc
-            if replacement.kind in ("unmapped", "battle"):
+            if replacement.kind in ("unmapped", "battle", "field", "lezard"):
                 fitted = bytearray(fitted)
                 for offset in range(0, len(fitted), audio.FRAME):
                     fitted[offset + 1] = original_payload[offset + 1]

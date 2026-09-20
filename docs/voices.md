@@ -34,16 +34,24 @@ identifies the game slot the file is patched back into. The adjacent
 `manifest.csv` records the region, resource, slot limit, duration, loudness
 and hash.
 
-Audio without a cutscene or text-line folder goes under `unmapped/`. Battle
-files have names such as:
+Audio without a cutscene or text-line folder goes under `unmapped/`, and
+battle files go under `battle/` with names such as:
 
 ```text
-voices/en/unmapped/battle-2189-000-1c49-0.wav
+voices/en/battle/battle-2189-000-1c49-0.wav
 ```
 
 The name is `battle-<entry>-<sample>-<clip-id>-<zone>.wav`. Keep all five
 parts unchanged so the file can be patched back into its original slot.
-Alternate performances are kept under `unmapped/alternate-takes/`.
+Alternate performances are kept under a scene's `alternate-takes/`, or under
+`unmapped/alternate-takes/` when their owner is unknown.
+
+Audio stored inside a scene resource rather than a voice bank goes under
+`field/` (the field action calls) and `lezard/` (the background speech in the
+last two Tower of Lezard areas). Their names are
+`field-<entry>-<group>-<sample>-<clip-id>-<zone>.wav` and
+`lezard-<entry>-<group>-<sample>-<clip-id>-<zone>.wav`; keep every part for
+patching.
 
 ## Patch replacement voices
 
@@ -117,5 +125,6 @@ the `bank` and `sub` columns.
 - Fixed-slot replacement does not enlarge a line, so generated delivery must
   fit the recorded slot. Use the separate Japanese-audio import for a complete
   Japanese-audio conversion of any supported target.
-- Keep files in `unmapped/` even when they have no direct text-line equivalent;
-  their exported names are their patch identities.
+- Keep every file's exported name; it is its patch identity. A background line
+  whose scene owner is known is placed in that scene's numbered folder but
+  keeps its `unmapped-` name. Files with no known owner stay in `unmapped/`.

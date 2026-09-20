@@ -20,6 +20,8 @@ from . import vp2_container_text as container_text
 from . import vp2_map_names as map_names
 from . import vp2_battle_target as battle_target
 from . import vp2_battle_names as battle_names
+from . import vp2_item_sort as item_sort
+from . import vp2_sealstone_sort as sealstone_sort
 from . import fis_images
 from . import fis_screen_layout
 from . import overlay_edits
@@ -165,10 +167,6 @@ def battle_overlay_edits(rows):
 
 
 def apply_battle_overlay_edits(iso, rows):
-    """Apply every battle overlay edit in one recompression.
-
-    The overlay's anti-cheat words go in with them, so every build runs this.
-    """
     edits = battle_overlay_edits(rows)
     label = battle_target_label(rows)
     checks = []
@@ -202,6 +200,54 @@ def apply_anti_cheat(iso):
     changed = anti_cheat.apply_to_iso(iso)
     print("anti-cheat: " + ("turned off in " + ", ".join(changed)
                             if changed else "already off everywhere else"))
+
+
+def apply_item_name_sort(iso, rows, primary_lookup=None):
+    """Rewrite the resident item ranks from the translated name bank."""
+    matches = [
+        row for row in rows
+        if (row.get('kind') == 'container'
+            and str(row.get('resource')).strip() == str(item_sort.NAME_RESOURCE))
+    ]
+    if not matches:
+        return None
+    if len(matches) != 1:
+        raise ValueError(f"multiple item-name rows for resource "
+                         f"{item_sort.NAME_RESOURCE}")
+    sheet_rows = _read_sheet_with_dedupe(
+        matches[0]['sheet'], primary_lookup=primary_lookup)
+    if not item_sort.has_translated_names(sheet_rows):
+        return None
+    names = item_sort.names_from_rows(sheet_rows)
+    result = item_sort.apply_to_iso(iso, names)
+    print(f"item order: {result.changed} alphabetical rank(s) changed, "
+          f"{result.room} byte(s) of room left in resource {item_sort.RESOURCE}")
+    return result
+
+
+def apply_sealstone_name_sort(iso, rows, primary_lookup=None):
+    """Rewrite resident Sealstone ranks from the translated name bank."""
+    matches = [
+        row for row in rows
+        if (row.get('kind') == 'container'
+            and str(row.get('resource')).strip()
+            == str(sealstone_sort.NAME_RESOURCE))
+    ]
+    if not matches:
+        return None
+    if len(matches) != 1:
+        raise ValueError(f"multiple Sealstone-name rows for resource "
+                         f"{sealstone_sort.NAME_RESOURCE}")
+    sheet_rows = _read_sheet_with_dedupe(
+        matches[0]['sheet'], primary_lookup=primary_lookup)
+    if not sealstone_sort.has_translated_names(sheet_rows):
+        return None
+    names = sealstone_sort.names_from_rows(sheet_rows)
+    result = sealstone_sort.apply_to_iso(iso, names)
+    print(f"Sealstone order: {result.changed} alphabetical rank(s) changed, "
+          f"{result.room} byte(s) of room left in resource "
+          f"{sealstone_sort.RESOURCE}")
+    return result
 
 
 def _copy_source_image(source_iso, partial):
@@ -503,11 +549,14 @@ def main():
             sys.exit(1)
         try:
             with iso_buffer.IsoFile(str(output_iso)) as merged:
+                apply_item_name_sort(merged, rows, primary_lookup)
+                apply_sealstone_name_sort(merged, rows, primary_lookup)
                 apply_battle_overlay_edits(merged, rows)
                 apply_anti_cheat(merged)
                 merged.commit()
         except Exception as exc:
-            print(f"battle overlay or anti-cheat edits failed: {exc}", file=sys.stderr)
+            print(f"final resident-data or overlay edits failed: {exc}",
+                  file=sys.stderr)
             sys.exit(1)
         if args.keep_working_iso:
             iso = iso_buffer.IsoBuffer.from_path(str(output_iso))
@@ -692,10 +741,12 @@ def main():
         print(f"{step} ok ({elapsed:.1f}s){suffix}")
 
     try:
+        apply_item_name_sort(iso, rows, primary_lookup)
+        apply_sealstone_name_sort(iso, rows, primary_lookup)
         apply_battle_overlay_edits(iso, rows)
         apply_anti_cheat(iso)
     except Exception as exc:
-        _fail(f"battle overlay or anti-cheat edits failed: {exc}")
+        _fail(f"final resident-data or overlay edits failed: {exc}")
 
     if not args.no_map_names:
         try:

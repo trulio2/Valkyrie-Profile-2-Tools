@@ -44,7 +44,9 @@ RESOURCE_10_SLOTS = list(
     " wht?Yuc'lHdy"
     "kIsif,!OpARETqQvSVbB-L")
 
-SLOT_NAMES = {10: RESOURCE_10_SLOTS}
+RESOURCE_645_SLOTS = list("ATK =AtackVDvoidMGMgRReuDmHIHSs")
+
+SLOT_NAMES = {10: RESOURCE_10_SLOTS, 645: RESOURCE_645_SLOTS}
 
 RESOURCE_10_EXACT_ACCENT_DONORS = frozenset("àáâçéêíó")
 
@@ -151,13 +153,56 @@ def codepage_record_is_local(blob, meta, offset):
     return True
 
 
+def codepage_record_begins_local(blob, meta, offset):
+    from . import vp2_cutscene_subtitles as subtitles
+
+    position = meta["text_start"] + offset
+    base = meta.get("glyph_base", 0)
+    count = meta.get("glyph_count", 0)
+    shared_seen = False
+    while position < meta["text_end"]:
+        byte = blob[position]
+        if byte == 0:
+            break
+        if byte < 0x80:
+            token, position = byte, position + 1
+        else:
+            if position + 1 >= meta["text_end"]:
+                break
+            token, position = byte | (blob[position + 1] << 8), position + 2
+        if subtitles.token_slot(token, base, count) is not None:
+            if shared_seen:
+                return False
+            continue
+        width = subtitles.RECORD_PARAMETERS.get(token, 0)
+        if width:
+            position += width
+            continue
+        text = dcms.decode_english_tokens([token])
+        if (text and text.strip()
+                and not (len(text) > 1 and text[0] == "<" and text[-1] == ">")):
+            shared_seen = True
+    return True
+
+
+def token_record_starts_here(blob, meta, offset):
+    from . import vp2_cutscene_subtitles as subtitles
+
+    at = meta["text_start"] + offset
+    if at + 1 >= len(blob):
+        return False
+    first = struct.unpack_from("<H", blob, at)[0]
+    return subtitles.token_slot(
+        first, meta.get("glyph_base", 0), meta.get("glyph_count", 0)) is not None
+
+
 def render_codepage(blob, meta, offset, accent_tokens=None, alphabet=None):
     """Decode a container record, returning ``(text, byte length)``."""
     from . import vp2_cutscene_subtitles as subtitles
 
     start = meta["text_start"] + offset
     position = start
-    if alphabet and not codepage_record_is_local(blob, meta, offset):
+    if alphabet and not codepage_record_begins_local(blob, meta, offset):
         alphabet = None
     accents = {token: character for character, token in
                (accent_tokens or {}).items()}
@@ -229,8 +274,6 @@ def codepage_run_tokens(blob, meta, offset, alphabet):
     from . import vp2_cutscene_subtitles as subtitles
 
     base = meta["glyph_base"]
-    # The same rule `render_codepage` decodes by: a mixed record's local
-    # glyphs came back as <XXXX> tags, which re-encode on their own.
     local = codepage_record_is_local(blob, meta, offset)
     runs = []
     for run in codepage_record_runs(blob, meta, offset):
@@ -1093,11 +1136,9 @@ def read_messages(blob, resource, slots=None, codepage_accents=None,
     for message_id, offset in entries(blob, meta):
         if offset >= meta["text_end"] - meta["text_start"]:
             continue
-        start = meta["text_start"] + offset
-        # A token record's first byte is the low half of 0x01xx, so the byte
-        # after it is 0x01.  A codepage record never has that shape.
-        token_like = (start + 1 < len(blob) and blob[start + 1] == 0x01)
-        if token_like and slots:
+        token_like = bool(slots) and token_record_starts_here(
+            blob, meta, offset)
+        if token_like:
             text, length = render_tokens(blob, meta, offset, slots)
             kind = "token"
         else:
@@ -1142,8 +1183,7 @@ def walk_block(blob, meta, slots):
     for message_id, offset in entries(blob, meta):
         referenced.setdefault(offset, message_id)
     first = min((o for o in referenced
-                 if meta["text_start"] + o + 1 < len(blob)
-                 and blob[meta["text_start"] + o + 1] == 0x01), default=None)
+                 if token_record_starts_here(blob, meta, o)), default=None)
     if first is None:
         return []
     out, position = [], meta["text_start"] + first
