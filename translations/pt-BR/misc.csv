@@ -1,5 +1,6 @@
 key,translated,offset_x,notes
 battle_target,"Alvo",,Floating label above the selected enemy
+battle_name_00,Vazio,,Empty (unassigned party slot)
 battle_name_01,,,Silmeria
 battle_name_02,,,Brahms
 battle_name_03,,,Rufus

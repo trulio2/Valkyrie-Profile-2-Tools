@@ -86,6 +86,16 @@ class BattleNameEditTests(unittest.TestCase):
         self.assertEqual(names.encode_name("DIO"),
                          patched[start:start + names.NAME_CAPACITY])
 
+    def test_the_empty_slot_word_is_row_zero(self):
+        self.assertEqual("battle_name_00", names.key(0))
+        edits = names.edits({"battle_name_00": "Vazio"})
+        patched, _ = overlay_edits.edit_output(usa_overlay(), edits)
+        start = names.TABLE_OFFSET
+        self.assertEqual(struct.pack("<I", 5),
+                         patched[start - names.LENGTH_PREFIX:start])
+        self.assertEqual(names.encode_name("VAZIO"),
+                         patched[start:start + names.NAME_CAPACITY])
+
     def test_applying_the_same_name_twice_is_harmless(self):
         edits = names.edits({"battle_name_0A": "Valquiria"})
         patched, _ = overlay_edits.edit_output(usa_overlay(), edits)

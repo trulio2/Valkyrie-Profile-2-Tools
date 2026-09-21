@@ -106,6 +106,9 @@ quarters are accepted where a label reads it.
   unaccented letters. Left blank, the word is centred over the arrow below it
   the way `Target` is; an `offset_x` of `0` starts it where `Target` starts,
   and any other value nudges the centred position.
+- `battle_name_00` is the word shown in an empty party slot in battle, and
+  `battle_name_01` through `battle_name_37` are the character names there.
+  They use the same face: letters A-Z and a hyphen, at most 19.
 - `battle_status_00` through `battle_status_10` are the short battle labels
   (status effects and battle events) drawn by the battle overlay, in the same
   face as `battle_target`.

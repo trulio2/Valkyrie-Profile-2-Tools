@@ -32,8 +32,8 @@ ORIGINAL_NAMES = (
 
 
 def key(index):
-    if not 0 < index < len(ORIGINAL_NAMES):
-        raise ValueError("battle name index must be 1..%d" %
+    if not 0 <= index < len(ORIGINAL_NAMES):
+        raise ValueError("battle name index must be 0..%d" %
                          (len(ORIGINAL_NAMES) - 1))
     return "%s%02X" % (KEY_PREFIX, index)
 
@@ -60,7 +60,7 @@ def encode_name(name):
 
 
 def translations(values):
-    known = {key(index): index for index in range(1, len(ORIGINAL_NAMES))}
+    known = {key(index): index for index in range(len(ORIGINAL_NAMES))}
     result = {}
     for misc_key, value in values.items():
         if not misc_key.startswith(KEY_PREFIX):
