@@ -138,7 +138,7 @@ class BattleStatusEditTests(unittest.TestCase):
         sheet = ROOT / "translations" / "pt-BR" / "misc.csv"
         values = vp2_build.read_misc(sheet)
         translated = status.translations(values)
-        self.assertEqual("StãtusAlto", translated[13])
+        self.assertEqual("StatusAlto", translated[13])
         for text in translated.values():
             self.assertEqual(text, status.decode(status.encode(text)))
         self.assertTrue(status.edits(values))
