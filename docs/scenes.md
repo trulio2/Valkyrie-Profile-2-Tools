@@ -414,3 +414,52 @@ Water Mirror => 1313
 1307 message ids 1527 to 1530 are never used, the correct scene for these lines is 1337
 
 1337 messsage ids 1351 to 1367 are never used, the correct scene for these lines is 1323.
+
+### Cutscenes without speaker
+
+by message_id in cutscene 1299
+
+734 => Freya
+
+by message_id in cutscene 1337
+
+1255 => Lezard
+1256 => Lezard
+1257 => Lezard
+1258 => Alicia
+1259 => Alicia
+1260 => Lezard
+1261 => Lezard
+1262 => Lezard
+1263 => Arngrim
+1264 => Lezard
+1265 => Lezard
+1266 => Lezard
+1267 => Rufus
+1273 => Brahms
+1268 => Brahms
+1274 => Lezard
+1276 => Lezard
+1271 => Lezard
+
+1 => Barbarossa
+2 => Arngrim
+7 => Barbarossa
+4 => Dallas
+21 => Walther
+22 => Walther
+28 => Dallas
+24 => Barbarossa
+8 => Arngrim
+9 => Hrist
+10 => Arngrim
+11 => Hrist
+12 => Arngrim
+13 => Hrist
+14 => Hrist
+15 => Hrist
+16 => Alicia
+17 => Barbarossa
+25 => Dallas
+19 => Hrist
+26 => Hrist

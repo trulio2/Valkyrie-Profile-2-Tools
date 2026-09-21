@@ -8,8 +8,11 @@ import struct
 from . import triace_ps2_unpack as triace
 from . import vp2_dcms as dcms
 from . import vp2_cutscene_subtitles as subtitles
+from .paths import DATA_DIR
 
 SPEAKER_AFTER_DISPLAY = 12
+SCENE_LINE_ORDERS = DATA_DIR / "scene-line-orders.csv"
+SCENE_SPEAKER_OVERRIDES = DATA_DIR / "scene-speaker-overrides.csv"
 
 
 def _workflow_helper(name):
@@ -136,6 +139,75 @@ def order_scenes(scenes, voice_of):
     return result
 
 
+def load_scene_line_orders(path=SCENE_LINE_ORDERS):
+    orders = {}
+    if not os.path.isfile(path):
+        return orders
+    with open(path, newline="", encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            resource = int(row["resource"])
+            message_ids = tuple(int(value) for value in row["message_ids"].split())
+            orders.setdefault(resource, []).append(message_ids)
+    return orders
+
+
+def apply_scene_line_orders(rows, resource, orders=None):
+    sequences = (orders if orders is not None else load_scene_line_orders()).get(
+        int(resource), ())
+    result = [dict(row) for row in rows]
+    for sequence in sequences:
+        wanted = set(sequence)
+        positions = [index for index, row in enumerate(result)
+                     if int(row["message_id"]) in wanted]
+        if not positions:
+            continue
+        found = {int(result[index]["message_id"]) for index in positions}
+        if found != wanted:
+            continue
+        by_id = {int(result[index]["message_id"]): result[index]
+                 for index in positions}
+        slots = [(result[index].get("scene"), result[index].get("scene_line"))
+                 for index in positions]
+        for index, message_id, (scene, scene_line) in zip(
+                positions, sequence, slots):
+            row = by_id[message_id]
+            if "scene" in row:
+                row["scene"] = scene
+            if "scene_line" in row:
+                row["scene_line"] = scene_line
+            result[index] = row
+    return result
+
+
+def load_scene_speaker_overrides(path=SCENE_SPEAKER_OVERRIDES):
+    overrides = {}
+    if not os.path.isfile(path):
+        return overrides
+    with open(path, newline="", encoding="utf-8-sig") as handle:
+        for row in csv.DictReader(handle):
+            resource = int(row["resource"])
+            message_id = int(row["message_id"])
+            speaker = row["speaker"].strip()
+            key = (resource, message_id)
+            if not speaker:
+                raise ValueError("blank scene speaker override: %d/%d" % key)
+            if key in overrides:
+                raise ValueError("duplicate scene speaker override: %d/%d" % key)
+            overrides[key] = speaker
+    return overrides
+
+
+def apply_scene_speaker_overrides(rows, resource, overrides=None):
+    overrides = (load_scene_speaker_overrides()
+                 if overrides is None else overrides)
+    result = [dict(row) for row in rows]
+    for row in result:
+        key = (int(resource), int(row["message_id"]))
+        if key in overrides and not (row.get("speaker") or "").strip():
+            row["speaker"] = overrides[key]
+    return result
+
+
 def manifest_voice_scene(manifest, english_by_scene):
     """Decide which voice scene a dub manifest describes."""
     wanted = {subtitles.normalized(row.get("en_text", ""))
@@ -257,6 +329,8 @@ def sheet_rows(source, table, total, resource, manifest_path=None,
                     "" if offset is not None else
                     "not displayed by the event script"])),
             })
+    rows = apply_scene_line_orders(rows, resource)
+    rows = apply_scene_speaker_overrides(rows, resource)
     return rows, scenes, matched_scene
 
 def write_sheet(path, rows):

@@ -97,8 +97,8 @@ class BattleNameEditTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             misc = Path(folder, "misc.csv")
             misc.write_text(
-                "key,translated,notes\n"
-                "battle_name_0A,Valquiria,VALKYRIE\n",
+                "key,translated,offset_x,notes\n"
+                "battle_name_0A,Valquiria,,VALKYRIE\n",
                 encoding="utf-8")
             row = {"kind": "misc", "resource": "1781",
                    "sheet": str(misc)}

@@ -64,6 +64,13 @@ class PackProfileTests(unittest.TestCase):
         from tools.scripts.translation_pack import load_pack
         load_pack(ROOT / "translations" / "sv-SE")
 
+    def test_every_installed_pack_loads(self):
+        """A duplicate id or stray column is a build-breaking pack defect."""
+        from tools.scripts.translation_pack import load_pack
+        for pack in self._packs():
+            with self.subTest(pack=pack.name):
+                load_pack(pack)
+
     def test_a_pack_without_a_profile_says_so(self):
         import shutil
         import tempfile
@@ -127,8 +134,8 @@ class PackProfileTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             pack = Path(folder)
             (pack / "misc.csv").write_text(
-                "key,translated,notes\n"
-                "battle_target,Alvo,Floating label\n",
+                "key,translated,offset_x,notes\n"
+                "battle_target,Alvo,,Floating label\n",
                 encoding="utf-8")
             self.assertEqual("Alvo", _pack_battle_target(pack))
 
@@ -139,8 +146,8 @@ class PackProfileTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             pack = Path(folder)
             (pack / "misc.csv").write_text(
-                "key,translated,notes\n"
-                "battle_name_0A,VALQUÍRIA,VALKYRIE\n",
+                "key,translated,offset_x,notes\n"
+                "battle_name_0A,VALQUÍRIA,,VALKYRIE\n",
                 encoding="utf-8")
             with self.assertRaisesRegex(PackError, "A-Z or hyphen"):
                 _validated_misc(pack)
@@ -191,7 +198,8 @@ class UnlistedFolderTests(unittest.TestCase):
                               encoding="utf-8")
             misc = pack / "misc.csv"
             misc.write_text(
-                "key,translated,notes\nbattle_target,Target,Label\n",
+                "key,translated,offset_x,notes\n"
+                "battle_target,Target,,Label\n",
                 encoding="utf-8")
             image = pack / "images" / "fis-1781-raw-0.png"
             image.parent.mkdir()
@@ -389,10 +397,10 @@ class PackFileRowTests(unittest.TestCase):
                       [{"resource": "60", "message_id": "51",
                         "translated": "KAPITEL", "notes": ""}])
             write_csv(
-                pack / "misc.csv", ["key", "translated", "notes"],
+                pack / "misc.csv", ["key", "translated", "offset_x", "notes"],
                 misc_rows if misc_rows is not None else
                 [{"key": "battle_target", "translated": "Sikta",
-                  "notes": ""}])
+                  "offset_x": "", "notes": ""}])
             menu_layout = root / "menu-layout.csv"
             write_csv(menu_layout, ["menu", "unit", "resource",
                                     "message_id", "message_index"], [])
@@ -431,7 +439,7 @@ class PackFileRowTests(unittest.TestCase):
                  "sheet": "misc.csv", "flags": "", "verify": ""}]
         compiled, manifest = self.compile(
             rows, [{"key": "battle_name_0A", "translated": "VALQUIRIA",
-                    "notes": "VALKYRIE"}])
+                    "offset_x": "", "notes": "VALKYRIE"}])
         self.assertEqual([("scene", "43"), ("misc", "1781")],
                          [(row["kind"], row["resource"]) for row in manifest])
         self.assertIsNone(compiled["battle_target"])

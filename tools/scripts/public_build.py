@@ -33,6 +33,7 @@ from . import chapter_label
 from . import overlay_edits
 from . import vp2_battle_target
 from . import vp2_battle_names
+from . import vp2_battle_status
 from .translation_pack import (
     PACK_CHAPTERS,
     PACK_MISC,
@@ -199,21 +200,18 @@ def _pack_locale(pack: Path) -> str:
 
 def _validated_misc(pack: Path) -> dict[str, dict[str, str]]:
     misc = load_misc(pack)
-    offset = misc.get(vp2_battle_target.X_KEY)
-    if offset is not None:
-        try:
-            vp2_battle_target.parse_x(offset["translated"])
-        except ValueError as exc:
-            raise PackError(f"{pack / PACK_MISC}: {exc}") from exc
     row = misc.get("battle_target")
     if row is not None:
         try:
-            vp2_battle_target.encode_label(row["translated"])
+            vp2_battle_target.parse_x(row["offset_x"])
+            if row["translated"]:
+                vp2_battle_target.encode_label(row["translated"])
         except ValueError as exc:
             raise PackError(f"{pack / PACK_MISC}: {exc}") from exc
     try:
         vp2_battle_names.translations(
             {key: value["translated"] for key, value in misc.items()})
+        vp2_battle_status.translations(misc)
     except ValueError as exc:
         raise PackError(f"{pack / PACK_MISC}: {exc}") from exc
     return misc

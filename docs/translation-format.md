@@ -72,15 +72,19 @@ it today.
 
 ## Misc labels
 
-`misc.csv` holds text that is not a message record, one `key` per row:
+`misc.csv` holds text that is not a message record, one `key` per row. The
+columns are `key`, `translated`, `offset_x` and `notes`. `offset_x` is this
+row's horizontal nudge in screen pixels, negative to the left and positive to
+the right; left blank, the label keeps its own position. Whole numbers and
+quarters are accepted where a label reads it.
 
 - `battle_target` is the word over the selected enemy in battle, at most eight
-  unaccented letters.
-- `battle_target_x` moves that word left or right, in screen pixels: negative
-  to the left, positive to the right. Left blank, the word is centred over the
-  arrow below it the way `Target` is; `0` starts it where `Target` starts.
-  Set it only to nudge the centred position. Whole numbers and quarters are
-  accepted.
+  unaccented letters. Left blank, the word is centred over the arrow below it
+  the way `Target` is; an `offset_x` of `0` starts it where `Target` starts,
+  and any other value nudges the centred position.
+- `battle_status_00` through `battle_status_10` are the short battle labels
+  (status effects and battle events) drawn by the battle overlay, in the same
+  face as `battle_target`.
 
 ## Shared-font slots
 
@@ -96,37 +100,9 @@ character,token
 ä,0x3D
 ```
 
-One row per character, one code point in `character`, and a `token` no two
-rows share. Only characters the pack's text actually uses are installed, so
-listing one costs nothing until it is written.
-
-The tokens `0x60` to `0x64` are five more slots past the end of the font,
-and `0x0880` to `0x089B` are 28 more, drawn with two bytes. The build grows
-the font to reach one when the text uses its character.
-
-A token below `0x60` replaces the character that slot drew, and the build
-refuses text that still writes it: in pt-BR, `0x3F` holds `Ó`, so `^` cannot
-be written. Keep the characters your language needs, such as `+` and `=`, and
-put the letters past the end instead.
-
-A build reads its own pack's file, so two languages may put different letters
-in the same slot. A pack without the file uses the packaged default.
-
 ## Menu units
 
 Menu text is highly duplicated, and identical English labels can require
 different translations in different contexts. The pack's menu files use one
 row per distinct unit, and the builder expands that translation to every
 matching record.
-
-## Validation
-
-`check-pack` rejects English or Japanese source columns, extra or missing CSV
-columns, paths outside the pack's `chapter.csv`, `dialogue/`, and `menu/`
-files, dialogue filenames whose resource disagrees with their rows, and
-duplicate stable identities. `build-profile.csv` and `shared-font-slots.csv`
-are configuration rather than translation, and are not checked against the
-translation columns.
-
-A translated build only works on the supported USA game revision; the build
-itself checks compatibility.

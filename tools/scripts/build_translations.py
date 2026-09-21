@@ -135,12 +135,17 @@ def _build_dedupe_lookup(scenes_dir=None, *, en_only=False, conflicts=None,
     return lookup
 
 def read_misc(path):
-    """``key -> translated`` from a misc sheet, leaving out blank rows."""
+    rows = {}
     with open(path, encoding="utf-8-sig", newline="") as handle:
-        return {(row.get("key") or "").strip():
-                (row.get("translated") or "").strip()
-                for row in csv.DictReader(handle)
-                if (row.get("translated") or "").strip()}
+        for row in csv.DictReader(handle):
+            translated = (row.get("translated") or "").strip()
+            offset_x = (row.get("offset_x") or "").strip()
+            if translated or offset_x:
+                rows[(row.get("key") or "").strip()] = {
+                    "translated": translated,
+                    "offset_x": offset_x,
+                }
+    return rows
 
 CHAPTERS_CSV = WORKSPACE_DIR / "chapters.csv"
 

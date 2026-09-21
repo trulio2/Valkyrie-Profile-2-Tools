@@ -20,6 +20,8 @@ from . import vp2_container_text as container_text
 from . import vp2_map_names as map_names
 from . import vp2_battle_target as battle_target
 from . import vp2_battle_names as battle_names
+from . import vp2_battle_status as battle_status
+from . import vp2_battle_label_font as battle_label_font
 from . import vp2_item_sort as item_sort
 from . import vp2_sealstone_sort as sealstone_sort
 from . import fis_images
@@ -129,26 +131,33 @@ def _battle_misc(rows):
 
 def battle_target_label(rows):
     """The Target label a ``misc`` row names, or ``None``."""
-    label = _battle_misc(rows).get(battle_target.KEY)
+    row = _battle_misc(rows).get(battle_target.KEY)
+    label = row["translated"] if row else ""
     return battle_target.validate_label(label) if label else None
 
 
 def battle_target_x(rows):
     """The Target label's horizontal offset a ``misc`` row names, or ``None``."""
-    return battle_target.parse_x(
-        _battle_misc(rows).get(battle_target.X_KEY))
+    row = _battle_misc(rows).get(battle_target.KEY)
+    return battle_target.parse_x(row["offset_x"] if row else None)
 
 
 def battle_name_translations(rows):
     """The compact battle-HUD names requested by ``misc.csv``."""
-    return battle_names.translations(_battle_misc(rows))
+    return battle_names.translations(
+        {key: value["translated"] for key, value in _battle_misc(rows).items()})
 
 
 def battle_overlay_edits(rows):
     """Every edit this build makes to the battle overlay's code and data."""
     edits = list(battle_target.edits(battle_target_label(rows),
                                      battle_target_x(rows)))
-    edits += battle_names.edits(_battle_misc(rows))
+    values = _battle_misc(rows)
+    edits += battle_names.edits(values)
+    statuses = battle_status.translations(values)
+    glyphs = battle_label_font.required_characters(statuses.values())
+    edits += battle_label_font.renderer_edits(glyphs)
+    edits += battle_status.edits(values)
     folders = []
     for row in rows:
         folder = (row.get('sheet') or '').strip()
@@ -176,8 +185,14 @@ def apply_battle_overlay_edits(iso, rows):
         return checks
 
     result = overlay_edits.apply_to_iso(iso, edits, turn_off_checks)
+    statuses = battle_status.translations(_battle_misc(rows))
+    glyphs = battle_label_font.required_characters(statuses.values())
+    font = battle_label_font.patch_resource_in_memory(iso, glyphs)
     print("anti-cheat: battle overlay "
           + ("turned off" if checks else "already off"))
+    if glyphs:
+        print("battle labels: installed %s in appended font slots (%d byte(s) "
+              "changed)" % (" ".join(glyphs), font["changed_bytes"]))
     if label:
         print(f"battle target: Target -> {label} "
               f"({battle_target.encode_label(label).hex(' ')})")
@@ -189,6 +204,9 @@ def apply_battle_overlay_edits(iso, rows):
     names = battle_name_translations(rows)
     if names:
         print(f"battle names: {len(names)} character name(s) translated")
+    statuses = battle_status.translations(_battle_misc(rows))
+    if statuses:
+        print(f"battle statuses: {len(statuses)} label(s) translated")
     print(f"battle overlay: {len(edits) + len(checks)} edit(s), "
           f"{result.changed} byte(s) changed, {result.room} byte(s) of room "
           f"left")

@@ -8,12 +8,15 @@ from __future__ import annotations
 import argparse
 import sys
 
-from tools.voice_patcher import audio
+from tools.voice_patcher import audio, movie
 from tools.voice_patcher.build import (
     default_japanese_audio_output, default_patch_output, default_voice_root,
     extract_voices, import_japanese_audio, patch_iso,
 )
 from tools.voice_patcher.layout import load_bank_map, load_unmapped_map
+from tools.voice_patcher.mapping import (
+    load_battle_groups, load_cutscene_map, map_existing_extraction,
+)
 
 
 def _parser():
@@ -29,6 +32,12 @@ def _parser():
     extract.add_argument("source", help="USA or Japan Valkyrie Profile 2 ISO")
     extract.add_argument(
         "-o", "--output", help="voice root (default: voices; en/jp is added)"
+    )
+    map_command = commands.add_parser(
+        "map", help="write review CSVs for an existing en or jp extraction"
+    )
+    map_command.add_argument(
+        "folder", help="extracted language folder containing manifest.csv"
     )
     patch = commands.add_parser(
         "patch", help="patch a folder of identified WAV files into a new ISO"
@@ -72,12 +81,36 @@ def self_check(stream=None):
     except Exception as exc:
         problems.append("unmapped-voice map does not load: %r" % exc)
     try:
+        cutscenes = load_cutscene_map()
+        notes.append("cutscene voice map: %d slot(s)" % len(cutscenes))
+    except Exception as exc:
+        problems.append("cutscene voice map does not load: %r" % exc)
+    try:
+        battles, slots = load_battle_groups()
+        notes.append(
+            "battle voice map  : %d group(s), %d slot(s)"
+            % (len(battles), len(slots))
+        )
+    except Exception as exc:
+        problems.append("battle voice map does not load: %r" % exc)
+    try:
         encoded = audio.encode_adpcm(b"\0\0" * 28)
         if len(encoded) != audio.FRAME:
             raise ValueError("unexpected encoded frame length")
         notes.append("audio codec       : %d Hz PCM/PS-ADPCM" % audio.SAMPLE_RATE)
     except Exception as exc:
         problems.append("audio codec self-test failed: %r" % exc)
+    try:
+        pad = movie.load_xor_pad()
+        header = movie.xor_bytes(bytes.fromhex("77522267"), pad)
+        if header != b"\x00\x00\x01\xba":
+            raise ValueError("protected movie header does not decode")
+        notes.append(
+            "movie audio codec : %d Hz PCM/TAC, %d-byte pad"
+            % (movie.SAMPLE_RATE, len(pad))
+        )
+    except Exception as exc:
+        problems.append("movie audio self-test failed: %r" % exc)
     for note in notes:
         print(note, file=output)
     for problem in problems:
@@ -103,10 +136,17 @@ def main(argv=None):
                 args.source, args.output or default_voice_root(), progress=print
             )
             print(
-                "Extracted %d cutscene clips from %d banks and %d unmapped "
-                "samples to %s"
-                % (result.clips - result.unmapped_clips, result.banks,
-                   result.unmapped_clips, result.output)
+                "Extracted %d audio files from %d voice banks, including "
+                "%d unmapped samples, %d battle samples, and %d movie "
+                "track(s), to %s"
+                % (result.clips, result.banks, result.unmapped_clips,
+                   result.battle_clips, result.movie_tracks, result.output)
+            )
+        elif args.command == "map":
+            cutscenes, battles = map_existing_extraction(args.folder)
+            print(
+                "Mapped %d cutscene clips and %d deduplicated battle groups "
+                "under %s" % (cutscenes, battles, args.folder)
             )
         elif args.command == "patch":
             result = patch_iso(

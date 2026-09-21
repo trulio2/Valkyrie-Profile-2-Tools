@@ -12,8 +12,6 @@ The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases)
   patches identified replacement WAV files into a copy of either release. It
   can also create a Japanese-audio edition of the USA and PAL releases.
 
-The application never modifies a source disc image.
-
 ![](images/gui.jpg)
 
 ## Status
@@ -30,15 +28,8 @@ The application never modifies a source disc image.
   replacement.
 - A Japanese disc image plus a supported USA or PAL disc image to create a
   Japanese-audio edition.
-- About 12 GB of free disk space for the source image, output image, and
-  generated workspace.
 - Optionally, a Japanese disc image (`SLPM_664.19`) if you want Japanese text
   in the translator's local reference files.
-
-The downloadable Windows and Linux application includes its runtime and does
-not require Python. Download the archive for your platform, unpack it, and
-open `ValkyrieProfile2-Tools`. Its left sidebar switches between Translate,
-Voices, and Cheats.
 
 To run from source, install Python 3.11 or newer with pip and Tkinter/Tcl-Tk,
 then run:

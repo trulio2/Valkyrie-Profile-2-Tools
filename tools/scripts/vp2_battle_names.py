@@ -67,6 +67,8 @@ def translations(values):
             continue
         if misc_key not in known:
             raise ValueError("unknown battle character name key %r" % misc_key)
+        if isinstance(value, dict):
+            value = value.get("translated") or ""
         if value:
             index = known[misc_key]
             encode_name(value)

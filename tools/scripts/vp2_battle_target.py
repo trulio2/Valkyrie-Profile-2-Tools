@@ -1,10 +1,5 @@
 # SPDX-FileCopyrightText: 2026 Valkyrie Profile 2 Translation Tools contributors
 # SPDX-License-Identifier: GPL-3.0-only
-"""Translate the floating battle target label in resource 1781.
-
-``battle_target_x`` moves the label horizontally, positive to the right;
-left blank, the label is centred where "Target" is.
-"""
 
 import string
 import struct
@@ -13,7 +8,6 @@ from .overlay_edits import Edit, word
 
 
 KEY = "battle_target"
-X_KEY = "battle_target_x"
 LABEL_OFFSET = 0x1A2490
 LABEL_CAPACITY = 8
 ORIGINAL_LABEL = bytes.fromhex("3f 0a 19 0c 0e 1f 00 00")
@@ -25,7 +19,6 @@ ORIGINAL_TARGET_CALL = 0x0C132954       # jal 0x004CA550
 LABEL_X_OFFSET = 0x19134
 ORIGINAL_LABEL_X = 0x3C084210           # lui t0, 0x4210 (36.0)
 LABEL_X_MARGIN = 36.0
-#: Pixel width of each letter the label can draw, A-Z then a-z.
 LETTER_WIDTHS = dict(zip(
     string.ascii_uppercase + string.ascii_lowercase,
     bytes.fromhex("0d0e0c100f0c0c0f09080f0c120f0d0d0d0d0a0d100e140c0e0d"
@@ -35,7 +28,6 @@ GLYPH_GAP = 0.1
 
 
 def encode_label(label):
-    """Encode a label with the compact font alphabet used by this routine."""
     if not isinstance(label, str) or not label:
         raise ValueError("battle target label must be a non-empty string")
     if len(label) > LABEL_CAPACITY:
@@ -53,30 +45,22 @@ def encode_label(label):
 
 
 def validate_label(label):
-    """Validate an argparse/config label while preserving its spelling."""
     encode_label(label)
     return label
 
 
 def label_advance(label):
-    """How far the label's glyphs advance in total, in screen pixels."""
     encode_label(label)
     return sum(GLYPH_SCALE * LETTER_WIDTHS[character] + GLYPH_GAP
                for character in label)
 
 
 def centred_x(label):
-    """The offset that centres ``label`` where "Target" is centred."""
     offset = (label_advance("Target") - label_advance(label)) / 2
     return round(offset * 4) / 4
 
 
 def parse_x(value):
-    """The label's horizontal offset as a float; blank is ``None``.
-
-    Whole numbers and quarters are accepted; other fractions cannot be
-    placed exactly and are refused.
-    """
     if value is None or not str(value).strip():
         return None
     try:
@@ -93,7 +77,6 @@ def parse_x(value):
 
 
 def label_x(label=None, x=None):
-    """The offset a build writes: ``x`` if given, else the label centred."""
     offset = parse_x(x)
     if offset is None:
         offset = centred_x(label) if label else 0.0
@@ -101,10 +84,6 @@ def label_x(label=None, x=None):
 
 
 def edits(label=None, x=None):
-    """The overlay edits that set the Target label and its horizontal offset.
-
-    A blank ``x`` centres the label; ``0`` keeps "Target"'s start.
-    """
     changes = []
     if label:
         encoded = encode_label(label)

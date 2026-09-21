@@ -12,7 +12,7 @@ from pathlib import Path
 import shutil
 import struct
 
-from . import audio, layout
+from . import audio, layout, mapping, movie
 from .layout import (
     JAPAN_BOOT, JAPANESE_AUDIO_TARGET_BOOTS, SUPPORTED_BOOTS,
     VOICE_BANKS, VOICE_SOURCE_BOOTS, entry_span,
@@ -54,6 +54,7 @@ class ExtractionResult:
     mapped_banks: int
     unmapped_clips: int
     battle_clips: int
+    movie_tracks: int
 
 
 @dataclass(frozen=True)
@@ -224,8 +225,12 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
         with source.open("rb") as handle:
             total, table = read_index(handle)
             battle_entries = _battle_entries(handle, table, total)
+            protected_entries = _protected_stream_entries(
+                handle, table, total
+            )
             extraction_steps = (
-                len(VOICE_BANKS) + len(by_entry) + len(battle_entries)
+                len(VOICE_BANKS) + len(by_entry) + len(battle_entries) +
+                len(protected_entries)
             )
             for position, bank in enumerate(VOICE_BANKS, 1):
                 _offset, bank_data = _read_bank(handle, table, total, bank)
@@ -467,11 +472,98 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                                     clip.payload_length, entry=entry,
                                     sample=clip.sample_index, sub=group_index,
                                 )
+            movie_count = 0
+            xor_pad = movie.load_xor_pad() if protected_entries else None
+            for position, entry in enumerate(protected_entries, 1):
+                _offset, stored = _read_entry(handle, table, total, entry)
+                clear = movie.xor_bytes(stored, xor_pad)
+                tracks = movie.parse_audio_tracks(clear)
+                scene_resource = movie.SCENE_RESOURCES.get(entry)
+                folder = (
+                    partial / ("%04d" % scene_resource)
+                    if scene_resource is not None else
+                    partial / "fmv" / ("entry-%04d" % entry)
+                )
+                folder.mkdir(parents=True, exist_ok=True)
+                for track in tracks:
+                    if track.codec == movie.PCM_CODEC:
+                        target = folder / movie.exported_filename(
+                            entry, track.movie
+                        )
+                        movie.write_pcm_wav(target, track.data)
+                        peak, rms, voiced = audio.statistics(track.data)
+                        seconds = (
+                            len(track.data) // movie.PCM_FRAME_BYTES /
+                            movie.SAMPLE_RATE
+                        )
+                        maximum = (
+                            track.capacity // movie.PCM_FRAME_BYTES /
+                            movie.SAMPLE_RATE
+                        )
+                        kind = "fmv-pcm"
+                        silent = "yes" if rms == 0 else ""
+                    else:
+                        target = folder / movie.exported_filename(
+                            entry, track.movie, "laac"
+                        )
+                        info = movie.tac_info(track.data)
+                        if info is None:
+                            raise ValueError(
+                                "FMV entry %d track %d does not form a "
+                                "complete TAC stream" % (entry, track.movie)
+                            )
+                        target.write_bytes(track.data)
+                        seconds = info.samples / movie.SAMPLE_RATE
+                        maximum = seconds
+                        peak = rms = voiced = 0
+                        kind = "fmv-tac"
+                        silent = ""
+                    rows.append({
+                        "kind": kind,
+                        "region": region,
+                        "resource": (
+                            scene_resource
+                            if scene_resource is not None else entry
+                        ),
+                        "voice_scene": "",
+                        "bank": "",
+                        "sub": "",
+                        "entry": entry,
+                        "sample": track.movie,
+                        "zone": "",
+                        "clip_id": "",
+                        "relative_path": target.relative_to(
+                            partial
+                        ).as_posix(),
+                        "slot_bytes": track.capacity,
+                        "max_seconds": "%.4f" % maximum,
+                        "seconds": "%.4f" % seconds,
+                        "target_rms": int(rms),
+                        "peak": peak,
+                        "voiced_pct": "%.1f" % (100 * voiced),
+                        "silent": silent,
+                        "sha256": hashlib.sha256(
+                            target.read_bytes()
+                        ).hexdigest(),
+                    })
+                    movie_count += 1
+                say(
+                    "extract: FMV entry %d (%d/%d), %d audio track(s)"
+                    % (
+                        entry,
+                        len(VOICE_BANKS) + len(by_entry) +
+                        len(battle_entries) + position,
+                        extraction_steps, len(tracks),
+                    )
+                )
         with (partial / "manifest.csv").open(
                 "w", encoding="utf-8", newline="") as manifest:
             writer = csv.DictWriter(manifest, fieldnames=MANIFEST_FIELDS)
             writer.writeheader()
             writer.writerows(rows)
+        mapped_cutscenes, mapped_battles = mapping.write_voice_maps(
+            partial, rows
+        )
         (partial / "README.txt").write_text(
             "Extracted from %s (%s).\n"
             "Cutscene files are named <bank>-<subfile>-<clip-id>.wav.\n"
@@ -481,11 +573,21 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
             "<zone>.wav.\n"
             "Field files are named field-<entry>-<group>-<sample>-<clip-id>-"
             "<zone>.wav, and lezard/ files use the same shape.\n"
+            "FMV packet candidates are named fmv-<entry>-<movie> under "
+            "fmv/. Confirmed scene entries 11, 14, and 20 are grouped "
+            "under 0010, 1337, and 1323. These WAV and .laac files are "
+            "diagnostic only: one protected-stream transform remains "
+            "unresolved, so they are not valid playback or replacement "
+            "sources.\n"
             "Folders named by number are cutscene resources; unmapped files "
             "with a known scene owner are placed there too. Banks holding an "
             "unverified alternate performance go under that scene's "
             "alternate-takes/ when its owner is known, otherwise under "
             "unmapped/alternate-takes/.\n"
+            "Each cutscene folder and battle/ contains a generated "
+            "voice-map.csv. These maps add speakers, scene coordinates, "
+            "deduplicated battle identities, confidence, and evidence without "
+            "changing the patch identity in any WAV filename.\n"
             % (source.name, boot),
             encoding="utf-8",
         )
@@ -493,7 +595,10 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
     except Exception:
         shutil.rmtree(partial, ignore_errors=True)
         raise
-    say("wrote %d clips to %s" % (len(rows), destination))
+    say(
+        "wrote %d clips, %d cutscene map rows, and %d battle groups to %s"
+        % (len(rows), mapped_cutscenes, mapped_battles, destination)
+    )
     return ExtractionResult(
         output=destination,
         region=region,
@@ -502,6 +607,7 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
         mapped_banks=mapped,
         unmapped_clips=unmapped_count,
         battle_clips=battle_count,
+        movie_tracks=movie_count,
     )
 
 
@@ -564,6 +670,10 @@ def discover_replacements(folder):
             if lezard:
                 identity = ("lezard",) + lezard
         if identity is None:
+            fmv = movie.parse_exported_filename(path)
+            if fmv:
+                identity = ("fmv",) + fmv
+        if identity is None:
             stem = path.stem.lower().removeprefix("id_").removeprefix("0x")
             identity = legacy.get(stem)
         if identity is None:
@@ -576,7 +686,7 @@ def discover_replacements(folder):
     if unknown:
         preview = ", ".join(str(path.relative_to(folder)) for path in unknown[:5])
         raise ValueError(
-            "%d WAV file(s) have no cutscene/unmapped/battle identity: %s%s"
+            "%d WAV file(s) have no recognized voice/FMV identity: %s%s"
             % (len(unknown), preview, " ..." if len(unknown) > 5 else "")
         )
     return found
@@ -1249,7 +1359,7 @@ def patch_iso(source, voices, output=None, progress=None,
             (voice.entry, voice.sample, voice.clip_id, voice.zone)
             for voice in load_unmapped_map().values()
         }
-        prefix_rank = {"battle": 2, "field": 3, "lezard": 4}
+        prefix_rank = {"battle": 2, "field": 3, "lezard": 4, "fmv": 5}
 
         def identity_order(item):
             identity = item[0]
@@ -1258,6 +1368,12 @@ def patch_iso(source, voices, output=None, progress=None,
             return (0 if len(identity) == 3 else 1, *identity)
 
         for identity, path in sorted(selected.items(), key=identity_order):
+            if identity[0] == "fmv":
+                raise ValueError(
+                    "%s targets movie audio; replacement is disabled until "
+                    "the protected-stream payload transform is recovered"
+                    % path.name
+                )
             if identity[0] == "battle":
                 _kind, entry, sample_index, clip_id, zone = identity
                 if entry not in battle_entries:

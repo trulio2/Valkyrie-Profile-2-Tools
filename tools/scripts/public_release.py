@@ -16,6 +16,7 @@ PAYLOAD_TREES = (
     ("data", "**/*.csv"),
     ("data", "**/*.json"),
     ("data", "**/*.md"),
+    ("data", "**/*.txt"),
     ("translations", "**/*.csv"),
     ("translations", "*/fis-image-layouts.json"),
     ("translations", "*/images/*.png"),
@@ -80,9 +81,12 @@ def self_check(stream=None) -> int:
                      "authored-marks.csv", "authored-glyphs.csv",
                      "einherjar-rosters.csv", "story-events.csv",
                      "duplicate-lines.csv", "unused-lines.csv",
-                     "unused-menu-lines.csv", "reference-images.csv"):
+                     "unused-menu-lines.csv", "reference-images.csv",
+                     "scene-speaker-overrides.csv"):
         if required not in tables:
             problems.append(f"missing structural table: {required}")
+    if not (DATA_DIR / "fmv-xor-pad.txt").is_file():
+        problems.append("missing structural table: fmv-xor-pad.txt")
     packs = _packs(PROJECT_ROOT)
     if not packs:
         problems.append("no language pack is bundled")

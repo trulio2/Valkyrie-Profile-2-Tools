@@ -3,7 +3,9 @@
 
 import unittest
 
-from tools.scripts.scene_sheet_export import order_scenes
+from tools.scripts.scene_sheet_export import (
+    apply_scene_line_orders, apply_scene_speaker_overrides, order_scenes,
+)
 
 
 def ids(scenes):
@@ -56,6 +58,38 @@ class OrderScenesTests(unittest.TestCase):
         voice = {1: (10, 1), 2: (10, 0)}
         self.assertEqual([(2, 20, 0), (1, 10, 2)],
                          order_scenes(scenes, voice)[0]["lines"])
+
+    def test_manual_order_covers_records_without_voice_headers(self):
+        rows = [
+            {"message_id": "1", "scene": "4", "scene_line": "1"},
+            {"message_id": "2", "scene": "4", "scene_line": "2"},
+            {"message_id": "4", "scene": "4", "scene_line": "3"},
+            {"message_id": "7", "scene": "4", "scene_line": "4"},
+        ]
+        ordered = apply_scene_line_orders(
+            rows, 1337, {1337: [(1, 2, 7, 4)]})
+        self.assertEqual(["1", "2", "7", "4"],
+                         [row["message_id"] for row in ordered])
+        self.assertEqual(["1", "2", "3", "4"],
+                         [row["scene_line"] for row in ordered])
+
+    def test_partial_region_specific_manual_order_is_ignored(self):
+        rows = [{"message_id": "1"}, {"message_id": "2"}]
+        self.assertEqual(
+            rows,
+            apply_scene_line_orders(
+                rows, 1337, {1337: [(1, 2, 7)]}),
+        )
+
+    def test_curated_speaker_fills_only_its_resource_and_message(self):
+        rows = [
+            {"message_id": "1", "speaker": ""},
+            {"message_id": "2", "speaker": "From script"},
+        ]
+        overrides = {(1337, 1): "Barbarossa", (1337, 2): "Other"}
+        result = apply_scene_speaker_overrides(rows, 1337, overrides)
+        self.assertEqual("Barbarossa", result[0]["speaker"])
+        self.assertEqual("From script", result[1]["speaker"])
 
 
 if __name__ == "__main__":

@@ -51,7 +51,20 @@ def edit_output(output, edits):
     claimed = {}
     for edit in edits:
         size = len(edit.original)
-        if size == 0 or len(edit.replacement) != size:
+        if size == 0:
+            if not edit.replacement:
+                raise ValueError("%s: an edit must change something"
+                                 % edit.what)
+            if edit.offset == len(patched):
+                patched[edit.offset:edit.offset] = edit.replacement
+                continue
+            end = edit.offset + len(edit.replacement)
+            if (edit.offset <= len(patched) and end <= len(patched)
+                    and bytes(patched[edit.offset:end]) == edit.replacement):
+                continue
+            raise ValueError("%s: an append edit must start at the overlay "
+                             "end" % edit.what)
+        if len(edit.replacement) != size:
             raise ValueError("%s: original and replacement must be the same "
                              "non-zero length" % edit.what)
         if edit.offset < 0 or edit.offset + size > len(output):
@@ -71,6 +84,7 @@ def edit_output(output, edits):
                                 found.hex(" ")))
         patched[edit.offset:edit.offset + size] = edit.replacement
     changed = sum(before != after for before, after in zip(output, patched))
+    changed += abs(len(patched) - len(output))
     return bytes(patched), changed
 
 

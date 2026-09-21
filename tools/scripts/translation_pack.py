@@ -37,9 +37,9 @@ PACK_PROFILE = "build-profile.csv"
 PACK_SLOTS = "shared-font-slots.csv"
 PACK_MISC = "misc.csv"
 PACK_CHAPTERS = "chapter.csv"
-MISC_FIELDS = ("key", "translated", "notes")
+MISC_FIELDS = ("key", "translated", "offset_x", "notes")
 MISC_KEY_RE = re.compile(
-    r"^(?:[a-z][a-z0-9_]*|battle_name_[0-9A-F]{2})$")
+    r"^(?:[a-z][a-z0-9_]*|battle_name_[0-9A-F]{2}|battle_status_[0-9A-F]{2})$")
 
 
 class PackError(ValueError):
@@ -123,9 +123,11 @@ def load_misc(directory: str | os.PathLike[str]) -> dict[str, dict[str, str]]:
         if key in rows:
             raise PackError(f"{where}: duplicate misc key {key!r}")
         translated = (row.get("translated") or "").strip()
-        if translated:
+        offset_x = (row.get("offset_x") or "").strip()
+        if translated or offset_x:
             rows[key] = {
                 "translated": translated,
+                "offset_x": offset_x,
                 "notes": row.get("notes") or "",
             }
     return rows

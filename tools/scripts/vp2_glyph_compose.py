@@ -263,7 +263,8 @@ def capital_mark(character):
 
 
 def compose_character(body_block, character, mark_grid, mark_rows,
-                      donor_bottom=None, body_from=None, capital=False):
+                      donor_bottom=None, body_from=None, capital=False,
+                      horizontal_shift=0):
     """Compose ``character`` with its recipe-specific placement.
 
     ``body_from`` overrides a replacement recipe's face-specific boundary.
@@ -276,10 +277,11 @@ def compose_character(body_block, character, mark_grid, mark_rows,
             raise ValueError("%r takes no capital mark" % character)
         return compose(body_block, mark_grid, mark_rows,
                        clearance=DEFAULT_CLEARANCE - CAPITAL_MARK_OVERLAP,
-                       dx_shift=CAPITAL_MARK_HORIZONTAL_SHIFTS.get(cap, 0),
+                       dx_shift=(CAPITAL_MARK_HORIZONTAL_SHIFTS.get(cap, 0)
+                                 + horizontal_shift),
                        over_ink=cap in CAPITAL_OVER_INK_MARKS)
     shift = MARK_VERTICAL_SHIFTS.get(donor, 0)
-    sideways = MARK_HORIZONTAL_SHIFTS.get(donor, 0)
+    sideways = MARK_HORIZONTAL_SHIFTS.get(donor, 0) + horizontal_shift
     if base.islower() and donor not in NO_LOWERCASE_OVERLAP:
         shift += LOWERCASE_EXTRA_OVERLAP
     if position == "replace":

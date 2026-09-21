@@ -133,8 +133,8 @@ class BuildStepTests(unittest.TestCase):
             images = write_pack(folder, {IMAGE: {"screen": {"groups": [
                 {"records": [5, 6, 7], "from": [225, 358], "to": [188, 358]}]}}})
             misc = Path(folder, "misc.csv")
-            misc.write_text("key,translated,notes\nbattle_target,Alvo,\n",
-                            encoding="utf-8")
+            misc.write_text("key,translated,offset_x,notes\n"
+                            "battle_target,Alvo,,\n", encoding="utf-8")
             rows = [
                 {"kind": "image", "resource": "1781", "sheet": str(images)},
                 {"kind": "image", "resource": "10", "sheet": str(images)},
@@ -152,8 +152,8 @@ class BuildStepTests(unittest.TestCase):
     def test_the_label_is_written_only_when_a_misc_row_asks(self):
         with tempfile.TemporaryDirectory() as folder:
             misc = Path(folder, "misc.csv")
-            misc.write_text("key,translated,notes\nbattle_target,Alvo,\n",
-                            encoding="utf-8")
+            misc.write_text("key,translated,offset_x,notes\n"
+                            "battle_target,Alvo,,\n", encoding="utf-8")
             row = {"kind": "misc", "resource": "1781", "sheet": str(misc)}
             self.assertEqual("Alvo", vp2_build.battle_target_label([row]))
             self.assertIsNone(vp2_build.battle_target_label(
@@ -164,8 +164,8 @@ class BuildStepTests(unittest.TestCase):
     def test_a_blank_label_edits_nothing(self):
         with tempfile.TemporaryDirectory() as folder:
             misc = Path(folder, "misc.csv")
-            misc.write_text("key,translated,notes\nbattle_target,,\n",
-                            encoding="utf-8")
+            misc.write_text("key,translated,offset_x,notes\n"
+                            "battle_target,,,\n", encoding="utf-8")
             self.assertEqual([], vp2_build.battle_overlay_edits(
                 [{"kind": "misc", "resource": "1781", "sheet": str(misc)}]))
 

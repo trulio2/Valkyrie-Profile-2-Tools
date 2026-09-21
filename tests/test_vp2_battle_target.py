@@ -127,8 +127,8 @@ class BattleTargetEditTests(unittest.TestCase):
     def test_the_build_reads_the_offset_from_the_misc_sheet(self):
         with tempfile.TemporaryDirectory() as folder:
             misc = Path(folder, "misc.csv")
-            misc.write_text("key,translated,notes\nbattle_target,Alvo,\n"
-                            "battle_target_x,-3,\n", encoding="utf-8")
+            misc.write_text("key,translated,offset_x,notes\n"
+                            "battle_target,Alvo,-3,\n", encoding="utf-8")
             row = {"kind": "misc", "resource": "1781", "sheet": str(misc)}
             self.assertEqual(-3.0, vp2_build.battle_target_x([row]))
             self.assertEqual("Alvo", vp2_build.battle_target_label([row]))

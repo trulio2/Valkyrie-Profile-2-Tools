@@ -17,7 +17,7 @@ from unittest import mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from tools.voice_patcher import audio, build, gui, layout  # noqa: E402
+from tools.voice_patcher import audio, build, gui, layout, mapping, movie  # noqa: E402
 
 
 TABLE_OFFSET = 0x200000
@@ -42,6 +42,8 @@ FIELD_ENTRY = 24
 FIELD_OFFSET = 0x212000
 TAIL_ENTRY = 1011
 TAIL_OFFSET = 0x220000
+MOVIE_ENTRY = 11
+MOVIE_OFFSET = 0x230000
 
 
 def synthetic_bank():
@@ -143,6 +145,76 @@ def synthetic_indexed_audio_scene(tail_flag, extra_audio_sectors=0,
     return bytes(data)
 
 
+def synthetic_movie_stream():
+    def pack():
+        return b"\x00\x00\x01\xba" + bytes(10)
+
+    def private(codec, payload):
+        body = b"\x80\x00\x00\xff\x90\x00" + bytes((codec,)) + payload
+        return (b"\x00\x00\x01\xbd" + len(body).to_bytes(2, "big") +
+                body)
+
+    def video(payload):
+        body = b"\x80\x00\x00" + payload
+        return (b"\x00\x00\x01\xe0" + len(body).to_bytes(2, "big") +
+                body)
+
+    pcm = struct.pack("<8h", *range(-4, 4))
+    tac = bytearray(0x40)
+    struct.pack_into("<I", tac, 0x00, 0x20)
+    struct.pack_into("<HH", tac, 0x0C, 1, 99)
+    struct.pack_into("<I", tac, 0x14, 0x4E000)
+    clear = (
+        pack() + video(b"\x00\x00\x01\xb3FIRST") +
+        private(movie.PCM_CODEC, pcm[:8]) +
+        private(movie.PCM_CODEC, pcm[8:]) +
+        video(b"LAST\x00\x00\x01\xb7") +
+        pack() + video(b"\x00\x00\x01\xb3SECOND") +
+        private(movie.TAC_CODEC, bytes(tac)) +
+        video(b"DONE\x00\x00\x01\xb7") +
+        b"\x00\x00\x01\xb9"
+    )
+    clear += bytes(-len(clear) % layout.SECTOR)
+    return movie.xor_bytes(clear, movie.load_xor_pad()), pcm, bytes(tac)
+
+
+def synthetic_disc_movie_stream():
+    data = bytearray(movie.DISC_UNIT * 5)
+    data[:14] = b"\x00\x00\x01\xba" + bytes(10)
+    pcm = struct.pack("<8h", *range(-4, 4))
+
+    pcm_base = movie.DISC_UNIT
+    data[pcm_base + movie.DISC_AUDIO_MARKER_OFFSET:
+         pcm_base + movie.DISC_AUDIO_MARKER_OFFSET + 2] = (
+        movie.DISC_AUDIO_MARKER
+    )
+    data[pcm_base + movie.DISC_WRAPPER_OFFSET:
+         pcm_base + movie.DISC_WRAPPER_OFFSET + 5] = (
+        movie.DISC_WRAPPER + bytes((movie.PCM_CODEC,))
+    )
+    data[pcm_base + movie.DISC_DATA_OFFSET:
+         pcm_base + movie.DISC_DATA_OFFSET + len(pcm)] = pcm
+    data[pcm_base + movie.DISC_UNIT:
+         pcm_base + movie.DISC_UNIT + 4] = b"TAIL"
+
+    tac = bytearray(0x40)
+    struct.pack_into("<I", tac, 0x00, 0x20)
+    struct.pack_into("<HH", tac, 0x0C, 1, 99)
+    struct.pack_into("<I", tac, 0x14, 0x4E000)
+    tac_base = movie.DISC_UNIT * 3
+    data[tac_base + movie.DISC_AUDIO_MARKER_OFFSET:
+         tac_base + movie.DISC_AUDIO_MARKER_OFFSET + 2] = (
+        movie.DISC_AUDIO_MARKER
+    )
+    data[tac_base + movie.DISC_WRAPPER_OFFSET:
+         tac_base + movie.DISC_WRAPPER_OFFSET + 5] = (
+        movie.DISC_WRAPPER + bytes((movie.TAC_CODEC,))
+    )
+    data[tac_base + movie.DISC_DATA_OFFSET:
+         tac_base + movie.DISC_DATA_OFFSET + len(tac)] = tac
+    return bytes(data), pcm, bytes(tac)
+
+
 def encrypted_index(include_battle=False, scenes=None):
     decoded = [0] * (TOTAL * 3)
     decoded[BANK] = BANK_OFFSET // layout.SECTOR
@@ -197,6 +269,121 @@ def write_wav(path, samples):
         output.setsampwidth(2)
         output.setframerate(audio.SAMPLE_RATE)
         output.writeframes(struct.pack("<%dh" % len(samples), *samples))
+
+
+class MovieAudioTests(unittest.TestCase):
+    def test_demuxes_japanese_leading_disc_pes_packet(self):
+        tac = bytearray(0x40)
+        struct.pack_into("<I", tac, 0x00, 0x20)
+        struct.pack_into("<HH", tac, 0x0C, 1, 99)
+        struct.pack_into("<I", tac, 0x14, 0x4E000)
+        body = (
+            b"\x83\x80\x0a" + bytes(10) +
+            movie.DISC_PES_WRAPPER + bytes((movie.TAC_CODEC,)) + tac
+        )
+        clear = (
+            b"\x00\x00\x01" + bytes((movie.DISC_PES_STREAM,)) +
+            len(body).to_bytes(2, "big") + body
+        )
+
+        tracks = movie.parse_audio_tracks(clear)
+
+        self.assertEqual(1, len(tracks))
+        self.assertEqual(movie.TAC_CODEC, tracks[0].codec)
+        self.assertEqual(bytes(tac), tracks[0].data)
+
+    def test_demuxes_real_disc_units_and_preserves_cross_unit_tail(self):
+        clear, pcm, tac = synthetic_disc_movie_stream()
+        tracks = movie.parse_audio_tracks(clear)
+
+        self.assertEqual(
+            [(0, movie.PCM_CODEC), (1, movie.TAC_CODEC)],
+            [(track.movie, track.codec) for track in tracks],
+        )
+        self.assertEqual(pcm, tracks[0].data[:len(pcm)])
+        self.assertEqual(
+            movie.DISC_UNIT - movie.DISC_DATA_OFFSET +
+            movie.DISC_NEXT_HEADER_OFFSET,
+            tracks[0].capacity,
+        )
+        tail = movie.DISC_UNIT - movie.DISC_DATA_OFFSET
+        self.assertEqual(b"TAIL", tracks[0].data[tail:tail + 4])
+        self.assertEqual(tac, tracks[1].data[:len(tac)])
+        self.assertEqual(100, movie.tac_info(tracks[1].data).samples)
+
+    def test_demuxes_pcm_and_tac_from_concatenated_programs(self):
+        stored, pcm, tac = synthetic_movie_stream()
+        clear = movie.xor_bytes(stored, movie.load_xor_pad())
+        tracks = movie.parse_audio_tracks(clear)
+
+        self.assertEqual(
+            [(0, movie.PCM_CODEC), (1, movie.TAC_CODEC)],
+            [(track.movie, track.codec) for track in tracks],
+        )
+        self.assertEqual(pcm, tracks[0].data)
+        self.assertEqual(tac, tracks[1].data)
+        self.assertEqual(100, movie.tac_info(tracks[1].data).samples)
+        self.assertEqual(
+            (MOVIE_ENTRY, 0),
+            movie.parse_exported_filename("fmv-0011-000.wav"),
+        )
+
+    def test_pcm_replacement_only_changes_audio_spans(self):
+        stored, _pcm, _tac = synthetic_movie_stream()
+        clear = movie.xor_bytes(stored, movie.load_xor_pad())
+        track = movie.parse_audio_tracks(clear)[0]
+        replacement = struct.pack("<4h", 100, -100, 200, -200)
+        rebuilt = movie.replace_pcm_track(clear, track, replacement)
+        changed = {
+            offset for span in track.spans
+            for offset in range(span.offset, span.offset + span.length)
+        }
+        self.assertTrue(all(
+            before == after or offset in changed
+            for offset, (before, after) in enumerate(zip(clear, rebuilt))
+        ))
+        checked = movie.parse_audio_tracks(rebuilt)[0]
+        self.assertEqual(
+            replacement + bytes(track.capacity - len(replacement)),
+            checked.data,
+        )
+        with self.assertRaisesRegex(ValueError, "packet slots"):
+            movie.replace_pcm_track(
+                clear, track, bytes(track.capacity + movie.PCM_FRAME_BYTES)
+            )
+
+    def test_extracts_movie_candidates_but_refuses_replacement(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            output = root / "patched.iso"
+            stored, pcm, _tac = synthetic_movie_stream()
+            synthetic_iso(source, scenes={
+                MOVIE_ENTRY: (MOVIE_OFFSET, stored),
+            })
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_bank_map", return_value={}), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}):
+                result = build.extract_voices(source, root / "voices")
+            pcm_path = (
+                result.output / "0010" /
+                "fmv-0011-000.wav"
+            )
+            tac_path = (
+                result.output / "0010" /
+                "fmv-0011-001.laac"
+            )
+            self.assertTrue(pcm_path.is_file())
+            self.assertTrue(tac_path.is_file())
+            self.assertEqual(2, result.movie_tracks)
+            replacement = struct.pack("<4h", 20, -20, 30, -30)
+            movie.write_pcm_wav(pcm_path, replacement)
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}):
+                with self.assertRaisesRegex(
+                        ValueError, "replacement is disabled"):
+                    build.patch_iso(source, result.output, output=output)
+            self.assertFalse(output.exists())
 
 
 class LayoutTests(unittest.TestCase):
@@ -257,6 +444,49 @@ class LayoutTests(unittest.TestCase):
         )
         self.assertEqual(64, clip.payload_length)
         self.assertEqual(7, clip.tail_flag)
+
+    def test_review_maps_cover_every_cutscene_and_battle_slot(self):
+        cutscenes = mapping.load_cutscene_map()
+        groups, battle_slots = mapping.load_battle_groups()
+        self.assertEqual(1625, len(cutscenes))
+        self.assertEqual(680, len(groups))
+        self.assertEqual(4067, len(battle_slots))
+        self.assertEqual("Alicia", cutscenes[(1483, 0)]["speaker"])
+        self.assertEqual("Freya", cutscenes[(1526, 7)]["speaker"])
+        self.assertEqual("Barbarossa", cutscenes[(1520, 0)]["speaker"])
+        self.assertEqual("Lezard", cutscenes[(1559, 0)]["speaker"])
+        self.assertEqual(
+            "background ritual speech",
+            cutscenes[(1541, 5)]["context"],
+        )
+
+    def test_review_csvs_do_not_change_patch_filenames(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            rows = [{
+                "kind": "cutscene", "relative_path": "1197/1483-000-8028.wav",
+                "bank": "1483", "sub": "0", "clip_id": "8028",
+                "entry": "", "sample": "", "zone": "",
+            }, {
+                "kind": "battle",
+                "relative_path": "battle/battle-2138-000-1836-0.wav",
+                "bank": "", "sub": "", "clip_id": "1836",
+                "entry": "2138", "sample": "0", "zone": "0",
+            }]
+            cutscene_count, battle_count = mapping.write_voice_maps(root, rows)
+            self.assertEqual((1, 1), (cutscene_count, battle_count))
+            with (root / "1197" / "voice-map.csv").open(
+                    encoding="utf-8") as source:
+                cutscene = next(csv.DictReader(source))
+            with (root / "battle" / "voice-map.csv").open(
+                    encoding="utf-8") as source:
+                battle = next(csv.DictReader(source))
+            self.assertEqual("1483-000-8028.wav", cutscene["file"])
+            self.assertEqual("Alicia", cutscene["speaker"])
+            self.assertEqual(
+                "battle/battle-2138-000-1836-0.wav",
+                battle["example_file"],
+            )
 
     def test_battle_transform_and_filename_are_reversible(self):
         stored = synthetic_battle_entry()
