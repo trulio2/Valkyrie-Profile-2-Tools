@@ -19,6 +19,7 @@ translations/<locale>/
     menu-4.csv
     menu-5.csv
   images/
+  fis-image-layouts.json
 ```
 
 `pack.toml` declares `format = 2`, a BCP 47 `locale`, and a display `name`.
@@ -64,6 +65,29 @@ drawn rather than written, and its `sheet` column names the pack directory
 holding repainted copies of them, `images/` by default. See
 [translator.md](translator.md) for how to get a picture out and put one
 back.
+
+```json
+{
+  "version": 1,
+  "images": {
+    "fis-1721-decrypted-slz-0x0-80.png": {
+      "mode": "canvas",
+      "name": "Battle victory labels",
+      "size": [512, 256],
+      "dtt": {
+        "records": [
+          {
+            "index": 10,
+            "name": "Nível",
+            "from": [342, 154, 389, 193],
+            "to": [338, 154, 397, 193]
+          }
+        ]
+      }
+    }
+  }
+}
+```
 
 A resource may hold more than one bank of text. Where it does, the row's
 `subresource` column names the one it means, and a row that leaves it blank

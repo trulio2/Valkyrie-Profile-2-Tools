@@ -174,6 +174,20 @@ class KeyTests(unittest.TestCase):
         self.assertIsNone(
             row_cache.inputs_digest(self._row(sheet=self.sheet + ".gone")))
 
+    def test_editing_the_image_layout_changes_the_digest(self):
+        images = os.path.join(self.root, "pack", "images")
+        os.makedirs(images)
+        with open(os.path.join(images, "fis-1781-a.png"), "wb") as handle:
+            handle.write(b"png")
+        layout = os.path.join(self.root, "pack", "fis-image-layouts.json")
+        row = self._row(kind="image", resource="1781", sheet=images)
+        with open(layout, "w", encoding="utf-8") as handle:
+            handle.write('{"version": 1, "images": {}}')
+        before = row_cache.inputs_digest(row)
+        with open(layout, "w", encoding="utf-8") as handle:
+            handle.write('{"version": 1, "images": {"a": {}}}')
+        self.assertNotEqual(before, row_cache.inputs_digest(row))
+
     def test_the_store_can_be_turned_off(self):
         with mock.patch.dict(os.environ, {"VP2_ROW_CACHE": "0"}):
             self.assertEqual("", row_cache.resolve_store())

@@ -740,10 +740,13 @@ def _checked_screen(screen, where):
                                % (where, records, label))
 
 
-def load_layout(folder):
-    """``(path, {image name: entry})`` from the pack beside ``folder``, validated."""
+def layout_path(folder):
     pack = os.path.dirname(os.path.normpath(os.fspath(folder)))
-    path = os.path.join(pack, LAYOUT_FILE)
+    return os.path.join(pack, LAYOUT_FILE)
+
+
+def load_layout(folder):
+    path = layout_path(folder)
     if not os.path.isfile(path):
         return path, {}
     try:
@@ -800,8 +803,7 @@ def screen_layouts(folder):
     return path, layouts
 
 
-def _patch_dtt_layout(blob, folder, name, size):
-    """Apply *name*'s guarded DTT registry entry in its decoded view."""
+def _patch_dtt_layout(blob, folder, name, size, missing_ok=False):
     configured = _layout_records(folder, name, size)
     if configured is None:
         return bytes(blob), 0
@@ -812,6 +814,8 @@ def _patch_dtt_layout(blob, folder, name, size):
                and _dtt_box(blob, records[index - 1]) in (before, after)
                for index, before, after in wanted):
             matches.append((table_at, records))
+    if not matches and missing_ok:
+        return bytes(blob), None
     if len(matches) != 1:
         raise FisError(
             "%s matched %d DTT tables; expected exactly one table carrying "
@@ -837,8 +841,39 @@ def _patch_dtt_layout(blob, folder, name, size):
     return bytes(out), changed
 
 
+def _dtt_elsewhere(current, resource, folder, name, size):
+    found = []
+    for route, blob, write in views(current, resource):
+        patched, changed = _patch_dtt_layout(blob, folder, name, size,
+                                             missing_ok=True)
+        if changed is not None:
+            found.append((route, patched, changed, write))
+    if not found:
+        raise FisError("%s matched 0 DTT tables in resource %s; expected "
+                       "exactly one table carrying the guarded source boxes"
+                       % (name, resource))
+    route, patched, changed, write = max(found, key=lambda row: len(row[0]))
+    if any(other != route and not route.startswith(other + "/")
+           for other, _patched, _changed, _write in found):
+        raise FisError("%s: DTT tables in unrelated views carry the guarded "
+                       "source boxes" % name)
+    return (write(patched) if changed else current), changed
+
+
+def _write_with_layout(current, resource, folder, name, size, blob, patched,
+                       write):
+    patched, moved = _patch_dtt_layout(patched, folder, name, size,
+                                       missing_ok=True)
+    changed = sum(1 for a, b in zip(blob, patched) if a != b)
+    if changed:
+        current = write(patched)
+    if moved is None:
+        current, moved = _dtt_elsewhere(current, resource, folder, name, size)
+        changed += moved
+    return current, changed
+
+
 def _by_shape(current, resource, folder, wanted, applied, offset=False):
-    """Place a file whose name matched nothing, if one item fits it."""
     for name in wanted:
         path = os.path.join(folder, name)
         try:
@@ -868,13 +903,9 @@ def _by_shape(current, resource, folder, wanted, applied, offset=False):
             continue
         patched = bytearray(blob)
         patched[at:at + len(built)] = built
-        patched, _layout_changed = _patch_dtt_layout(
-            bytes(patched), folder, name, (width, height))
-        changed = sum(1 for a, b in zip(blob, patched) if a != b)
-        if not changed:
-            applied.append((name, 0))
-            continue
-        current = write(patched)
+        current, changed = _write_with_layout(
+            current, resource, folder, name, (width, height), blob,
+            bytes(patched), write)
         applied.append((name, changed))
     return current
 
@@ -899,15 +930,13 @@ def apply_pack(raw, resource, folder):
                 patched = bytearray(blob)
                 patched[at:at + len(built)] = built
                 meta = descriptor(item)
-                patched, _layout_changed = _patch_dtt_layout(
-                    bytes(patched), folder, name,
-                    (meta["width"], meta["height"]))
-                changed = sum(1 for a, b in zip(blob, patched) if a != b)
-                if not changed:
-                    applied.append((name, 0))
-                    continue
-                current = write(patched)
+                current, changed = _write_with_layout(
+                    current, resource, folder, name,
+                    (meta["width"], meta["height"]), blob, bytes(patched),
+                    write)
                 applied.append((name, changed))
+                if not changed:
+                    continue
                 progressed = True
                 break
             if progressed:

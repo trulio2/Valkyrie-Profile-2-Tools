@@ -361,6 +361,7 @@ class MovieAudioTests(unittest.TestCase):
             synthetic_iso(source, scenes={
                 MOVIE_ENTRY: (MOVIE_OFFSET, stored),
             })
+            source_before = source.read_bytes()
             with mock.patch.object(build, "VOICE_BANKS", ()), \
                     mock.patch.object(build, "load_bank_map", return_value={}), \
                     mock.patch.object(build, "load_unmapped_map", return_value={}):
@@ -376,6 +377,18 @@ class MovieAudioTests(unittest.TestCase):
             self.assertTrue(pcm_path.is_file())
             self.assertTrue(tac_path.is_file())
             self.assertEqual(2, result.movie_tracks)
+            with (result.output / "manifest.csv").open(
+                    encoding="utf-8", newline="") as manifest:
+                movie_rows = [
+                    row for row in csv.DictReader(manifest)
+                    if row["entry"] == str(MOVIE_ENTRY)
+                ]
+            self.assertEqual(
+                [("fmv-pcm", "10", "0"),
+                 ("fmv-tac", "10", "1")],
+                [(row["kind"], row["resource"], row["sample"])
+                 for row in movie_rows],
+            )
             replacement = struct.pack("<4h", 20, -20, 30, -30)
             movie.write_pcm_wav(pcm_path, replacement)
             with mock.patch.object(build, "VOICE_BANKS", ()), \
@@ -383,6 +396,7 @@ class MovieAudioTests(unittest.TestCase):
                 with self.assertRaisesRegex(
                         ValueError, "replacement is disabled"):
                     build.patch_iso(source, result.output, output=output)
+            self.assertEqual(source_before, source.read_bytes())
             self.assertFalse(output.exists())
 
 

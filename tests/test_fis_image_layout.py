@@ -31,11 +31,9 @@ class FisImageLayoutTests(unittest.TestCase):
         configured = {row["index"]: row for row in rows}
 
         originals = [
-            (4, 9, 400, 60),
-            tuple(configured[2]["from"]),
-            tuple(configured[3]["from"]),
-            (4, 113, 174, 141),
-            tuple(configured[5]["from"]),
+            tuple(configured[index]["from"]) if index in configured
+            else (4, 9, 400, 60)
+            for index in range(1, max(configured) + 1)
         ]
         body = b"".join(dtt_record(box) for box in originals)
         table = struct.pack("<4sI8x", b"DTT\0", len(body)) + body
@@ -56,6 +54,16 @@ class FisImageLayoutTests(unittest.TestCase):
             patched, images, name, (512, 256))
         self.assertEqual(patched, same)
         self.assertEqual(0, changed)
+
+    def test_a_view_without_the_table_defers_to_another_view(self):
+        images = Path(__file__).parents[1] / "translations" / "pt-BR" / "images"
+        name = "fis-1781-unprotected-slz-0x1826C0-0.png"
+        blob = b"no table here"
+
+        self.assertEqual((blob, None), fis_images._patch_dtt_layout(
+            blob, images, name, (512, 256), missing_ok=True))
+        with self.assertRaises(fis_images.FisError):
+            fis_images._patch_dtt_layout(blob, images, name, (512, 256))
 
     def test_full_scale_dtt_geometry_remains_supported(self):
         record = dtt_record((2, 59, 67, 81), 32, 32)

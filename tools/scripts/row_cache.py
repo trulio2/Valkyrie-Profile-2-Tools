@@ -127,8 +127,13 @@ def inputs_digest(row, primary_lookup=None):
         row.get("chapter_title") or "",
         row.get("chapter_title_message") or "")).encode("utf-8"))
     if kind == "image":
+        from .fis_images import layout_path
         digest.update(b"images\0")
         _tree_digest(digest, sheet)
+        layout = layout_path(sheet)
+        if os.path.isfile(layout):
+            digest.update(b"layout\0")
+            _file_digest(digest, layout)
         return digest.hexdigest()
     if not sheet or not os.path.isfile(sheet):
         return None
