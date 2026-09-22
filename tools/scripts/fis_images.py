@@ -424,12 +424,16 @@ def encode(item, path):
     for index, (red, green, blue, alpha) in enumerate(colours):
         exact.setdefault((red, green, blue, min(alpha * 2, 255)), index)
 
+    clearest = min(range(len(colours)), key=lambda index: colours[index][3])
     memo = {}
 
     def nearest(pixel):
         cached = memo.get(pixel)
         if cached is not None:
             return cached
+        if pixel[3] == 0:
+            memo[pixel] = clearest
+            return clearest
         best, score = 0, None
         for index, (red, green, blue, alpha) in enumerate(colours):
             here = ((pixel[0] - red) ** 2 + (pixel[1] - green) ** 2
