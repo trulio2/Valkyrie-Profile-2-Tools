@@ -2,7 +2,7 @@
 
 ### Build Time
 
-A full cold build could take up to 30 minutes to complete. Next builds will be warm, and will take around 2 minutes.
+A full cold build could take over 40 minutes to complete. Next builds will be warm, and will take around 2 minutes.
 The release windows/linux builds have no way around that at the moment.
 
 ### Authored Glyphs

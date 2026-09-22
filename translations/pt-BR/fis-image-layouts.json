@@ -1,6 +1,111 @@
 {
   "version": 1,
   "images": {
+    "fis-0010-slz-0x2D04-4CE80.png": {
+      "mode": "canvas",
+      "name": "Title screen copyright line",
+      "size": [512, 128],
+      "mesh": {
+        "vertices": [
+          {
+            "index": 1,
+            "name": "© 2006 SQUARE ENIX CO., | bottom right",
+            "from": [269.125, 64, -41.342, 94.847],
+            "to": [245.5, 64, -48.835, 94.847]
+          },
+          {
+            "index": 2,
+            "name": "© 2006 SQUARE ENIX CO., | top right",
+            "from": [268.875, 38.3125, -41.431, 86.942],
+            "to": [245.5, 38.3125, -48.835, 86.942]
+          },
+          {
+            "index": 3,
+            "name": "© 2006 SQUARE ENIX CO., | bottom left",
+            "from": [20, 64, -136.012, 94.847],
+            "to": [0, 64, -142.125, 94.847]
+          },
+          {
+            "index": 4,
+            "name": "© 2006 SQUARE ENIX CO., | top left",
+            "from": [20, 38.3125, -136.012, 86.942],
+            "to": [0, 38.3125, -142.125, 86.942]
+          },
+          {
+            "index": 5,
+            "name": "Desenvolvido pela tri-Ace Inc. | bottom left",
+            "from": [21.5, 87.46875, 50.244, 94.847],
+            "to": [0, 88, 56.235, 95.026]
+          },
+          {
+            "index": 6,
+            "name": "Desenvolvido pela tri-Ace Inc. | bottom right",
+            "from": [245.25, 87.46875, 135.242, 94.847],
+            "to": [224, 88, 141.355, 95.026]
+          },
+          {
+            "index": 7,
+            "name": "Desenvolvido pela tri-Ace Inc. | top left",
+            "from": [21.5, 64, 50.244, 86.942],
+            "to": [0, 64, 56.235, 86.942]
+          },
+          {
+            "index": 8,
+            "name": "Desenvolvido pela tri-Ace Inc. | top right",
+            "from": [245.25, 64, 135.242, 86.942],
+            "to": [224, 64, 141.355, 86.942]
+          },
+          {
+            "index": 9,
+            "name": "Todos os Direitos Reservados. | top left",
+            "from": [308.75, 38.3125, -18.763, 86.942],
+            "to": [285.5, 38.3125, -29.835, 86.942]
+          },
+          {
+            "index": 10,
+            "name": "Todos os Direitos Reservados. | bottom left",
+            "from": [309, 64, -18.689, 94.847],
+            "to": [285.5, 64, -29.835, 94.847]
+          },
+          {
+            "index": 11,
+            "name": "Todos os Direitos Reservados. | top right",
+            "from": [490.375, 38.3125, 50.244, 86.942],
+            "to": [512, 38.3125, 56.235, 86.942]
+          },
+          {
+            "index": 12,
+            "name": "Todos os Direitos Reservados. | bottom right",
+            "from": [490.375, 64, 50.244, 94.847],
+            "to": [512, 64, 56.235, 94.847]
+          },
+          {
+            "index": 13,
+            "name": "LTD. | bottom right",
+            "from": [309, 64, -22.166, 94.847],
+            "to": [285.5, 64, -31.735, 94.847]
+          },
+          {
+            "index": 14,
+            "name": "LTD. | top right",
+            "from": [308.75, 38.3125, -22.24, 86.942],
+            "to": [285.5, 38.3125, -31.735, 86.942]
+          },
+          {
+            "index": 15,
+            "name": "LTD. | bottom left",
+            "from": [269.125, 64, -37.291, 94.847],
+            "to": [245.5, 64, -46.935, 94.847]
+          },
+          {
+            "index": 16,
+            "name": "LTD. | top left",
+            "from": [268.875, 38.3125, -37.38, 86.942],
+            "to": [245.5, 38.3125, -46.935, 86.942]
+          }
+        ]
+      }
+    },
     "fis-1781-unprotected-slz-0xDD740-98C80.png": {
       "mode": "canvas",
       "name": "Guard Break banner",

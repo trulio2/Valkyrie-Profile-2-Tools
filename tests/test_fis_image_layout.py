@@ -65,6 +65,46 @@ class FisImageLayoutTests(unittest.TestCase):
         with self.assertRaises(fis_images.FisError):
             fis_images._patch_dtt_layout(blob, images, name, (512, 256))
 
+    def test_title_copyright_mesh_moves_uvs_and_positions_together(self):
+        root = Path(__file__).parents[1]
+        pack = root / "translations" / "pt-BR"
+        images = pack / "images"
+        name = "fis-0010-slz-0x2D04-4CE80.png"
+        document = json.loads(
+            (pack / "fis-image-layouts.json").read_text(encoding="utf-8"))
+        rows = sorted(document["images"][name]["mesh"]["vertices"],
+                      key=lambda row: row["index"])
+        self.assertEqual(list(range(1, 17)), [row["index"] for row in rows])
+
+        count = len(rows)
+        uv = b"".join(struct.pack("<2H", int(row["from"][0] * 8),
+                                  int(row["from"][1] * 32)) for row in rows)
+        xyz = b"".join(struct.pack("<3f", row["from"][2], row["from"][3],
+                                   9.08) for row in rows)
+        colour = struct.pack("<BBBB", 0, 0, count, 0x6E) + b"\x80" * 4 * count
+        mesh = (struct.pack("<BBBB", 0, 0x80, count, 0x75) + uv + colour
+                + struct.pack("<BBBB", 0, 0x80, count, 0x68) + xyz)
+
+        patched, changed = fis_images._patch_mesh_layout(
+            mesh, images, name, (512, 128))
+
+        uv_at, xyz_at = 4, 4 + len(uv) + len(colour) + 4
+        for row in rows:
+            u, v, x, y = fis_images._mesh_vertex(patched, uv_at, xyz_at,
+                                                 row["index"])
+            self.assertEqual(tuple(row["to"][:2]), (u / 8, v / 32))
+            self.assertAlmostEqual(row["to"][2], x, places=3)
+            self.assertAlmostEqual(row["to"][3], y, places=3)
+            self.assertEqual(9.08, round(struct.unpack_from(
+                "<f", patched, xyz_at + 12 * (row["index"] - 1) + 8)[0], 2))
+        self.assertEqual(len(mesh), len(patched))
+        self.assertGreater(changed, 0)
+
+        self.assertEqual((patched, 0), fis_images._patch_mesh_layout(
+            patched, images, name, (512, 128)))
+        with self.assertRaises(fis_images.FisError):
+            fis_images._patch_mesh_layout(b"no mesh", images, name, (512, 128))
+
     def test_full_scale_dtt_geometry_remains_supported(self):
         record = dtt_record((2, 59, 67, 81), 32, 32)
         self.assertEqual(((2, 59, 67, 81), 32, 32),

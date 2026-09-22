@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 r"""Read and write the disc's `FIS` image container."""
+import bisect
 import functools
 import json
 import os
@@ -99,17 +100,18 @@ def descriptor(item):
     }
 
 
+def _clut_slots(bits):
+    if bits == 4:
+        return CSM1_4
+    return [(i & 0xE7) | ((i & 0x08) << 1) | ((i & 0x10) >> 1)
+            for i in range(256)]
+
+
 def palette(item, meta):
     """The CLUT in index order, de-interleaved for its depth."""
     at = meta["clut_offset"]
-
-    def entry(slot):
-        return tuple(item[at + slot * 4: at + slot * 4 + 4])
-
-    if meta["bits"] == 4:
-        return [entry(slot) for slot in CSM1_4]
-    return [entry((i & 0xE7) | ((i & 0x08) << 1) | ((i & 0x10) >> 1))
-            for i in range(256)]
+    return [tuple(item[at + slot * 4: at + slot * 4 + 4])
+            for slot in _clut_slots(meta["bits"])]
 
 
 def upload(item, meta):
@@ -413,13 +415,88 @@ def read_png(path):
     return width, height, rows
 
 
-def encode(item, path):
+FAR = 4 * 96 * 96
+
+
+def _distance(pixel, colour):
+    return ((pixel[0] - colour[0]) ** 2 + (pixel[1] - colour[1]) ** 2
+            + (pixel[2] - colour[2]) ** 2
+            + (pixel[3] - min(colour[3] * 2, 255)) ** 2)
+
+
+def _spread(box):
+    weight = sum(count for _colour, count in box)
+    best = (-1, 0)
+    for channel in range(4):
+        values = [colour[channel] for colour, _count in box]
+        best = max(best, ((max(values) - min(values)) ** 2 * weight, channel))
+    return best
+
+
+def _mean(box):
+    weight = sum(count for _colour, count in box)
+    return tuple((sum(colour[channel] * count for colour, count in box)
+                  + weight // 2) // weight for channel in range(4))
+
+
+def _choose_palette(counts, entries):
+    """``entries`` CLUT colours for visible pixel ``counts``, entry 0 clear."""
+    items = sorted(counts.items())
+    wanted = entries - 1
+    if len(items) <= wanted:
+        centres = [colour for colour, _count in items]
+    else:
+        boxes = [(_spread(items), items)]
+        while len(boxes) < wanted:
+            number = max(range(len(boxes)), key=lambda at: boxes[at][0][0])
+            (score, channel), box = boxes[number]
+            if score <= 0:
+                break
+            box = sorted(box, key=lambda entry: entry[0][channel])
+            half, seen, cut = sum(count for _c, count in box) / 2, 0, 1
+            for cut in range(1, len(box)):
+                seen += box[cut - 1][1]
+                if seen >= half:
+                    break
+            boxes[number:number + 1] = [(_spread(box[:cut]), box[:cut]),
+                                        (_spread(box[cut:]), box[cut:])]
+        centres = [_mean(box) for _score, box in boxes]
+        rounds = min(4, 2000000 // (len(items) * len(centres)))
+        for _round in range(rounds):
+            groups = [[] for _centre in centres]
+            for colour, count in items:
+                closest = min(range(len(centres)), key=lambda at: sum(
+                    (colour[c] - centres[at][c]) ** 2 for c in range(4)))
+                groups[closest].append((colour, count))
+            centres = [_mean(group) if group else centres[at]
+                       for at, group in enumerate(groups)]
+    chosen = [(0, 0, 0, 0)]
+    chosen += [(red, green, blue, min((alpha + 1) // 2, 128))
+               for red, green, blue, alpha in centres]
+    return chosen + [(0, 0, 0, 0)] * (entries - len(chosen))
+
+
+def encode(item, path, new_palette=True):
     meta = descriptor(item)
     width, height, rows = read_png(path)
     if (width, height) != (meta["width"], meta["height"]):
         raise FisError("%s is %dx%d; the item is %dx%d"
                        % (path, width, height, meta["width"], meta["height"]))
     colours = palette(item, meta)
+    visible = {}
+    for line in rows:
+        for x in range(width):
+            pixel = tuple(line[x * 4:x * 4 + 4])
+            if pixel[3]:
+                visible[pixel] = visible.get(pixel, 0) + 1
+    shown = {(red, green, blue, min(alpha * 2, 255))
+             for red, green, blue, alpha in colours}
+    repaint = new_palette and any(
+        min(_distance(pixel, colour) for colour in colours) > FAR
+        for pixel in visible if pixel not in shown)
+    if repaint:
+        colours = _choose_palette(visible, len(colours))
+
     exact = {}
     for index, (red, green, blue, alpha) in enumerate(colours):
         exact.setdefault((red, green, blue, min(alpha * 2, 255)), index)
@@ -434,17 +511,12 @@ def encode(item, path):
         if pixel[3] == 0:
             memo[pixel] = clearest
             return clearest
-        best, score = 0, None
-        for index, (red, green, blue, alpha) in enumerate(colours):
-            here = ((pixel[0] - red) ** 2 + (pixel[1] - green) ** 2
-                    + (pixel[2] - blue) ** 2
-                    + (pixel[3] - min(alpha * 2, 255)) ** 2)
-            if score is None or here < score:
-                best, score = index, here
-        if score > 4 * 96 * 96:
+        best = min(range(len(colours)),
+                   key=lambda index: _distance(pixel, colours[index]))
+        if _distance(pixel, colours[best]) > FAR:
             raise FisError(
-                "no palette entry is near rgba%s; this item draws only its "
-                "own 16 colours, so paint with them" % (pixel,))
+                "no palette entry is near rgba%s; this item draws only %d "
+                "colours" % (pixel, len(colours)))
         memo[pixel] = best
         return best
 
@@ -472,6 +544,10 @@ def encode(item, path):
                                | (values[texel] << shift))
     out = bytearray(item)
     out[start:start + len(data)] = data
+    if repaint:
+        at = meta["clut_offset"]
+        for index, slot in enumerate(_clut_slots(meta["bits"])):
+            out[at + slot * 4:at + slot * 4 + 4] = bytes(colours[index])
     if len(out) != len(item):
         raise FisError("the item changed length")
     return bytes(out), approximated
@@ -674,11 +750,13 @@ def _dtt_box(blob, at):
 LAYOUT_FILE = "fis-image-layouts.json"
 _LAYOUT_KEYS = {
     "file": {"version", "images"},
-    "image": {"mode", "name", "size", "regions", "dtt", "screen"},
+    "image": {"mode", "name", "size", "regions", "dtt", "screen", "mesh"},
     "dtt": {"records"},
     "dtt record": {"index", "name", "from", "to"},
     "screen": {"groups"},
     "screen group": {"name", "records", "from", "to"},
+    "mesh": {"vertices"},
+    "mesh vertex": {"index", "name", "from", "to"},
 }
 
 
@@ -744,6 +822,32 @@ def _checked_screen(screen, where):
                                % (where, records, label))
 
 
+def _numbers(value, count):
+    return (isinstance(value, list) and len(value) == count
+            and all(isinstance(item, (int, float)) and not isinstance(item, bool)
+                    for item in value))
+
+
+def _checked_mesh(mesh, where):
+    _object(mesh, "mesh", where)
+    vertices = mesh.get("vertices")
+    if not isinstance(vertices, list) or not vertices:
+        raise FisError("%s: mesh.vertices must be a non-empty list" % where)
+    seen = set()
+    for row in vertices:
+        _object(row, "mesh vertex", where)
+        index = row.get("index")
+        if (not isinstance(index, int) or isinstance(index, bool) or index < 1
+                or index in seen):
+            raise FisError("%s: invalid or repeated mesh vertex index %r"
+                           % (where, index))
+        seen.add(index)
+        for label in ("from", "to"):
+            if not _numbers(row.get(label), 4):
+                raise FisError("%s: mesh vertex %d needs four numeric %s "
+                               "values [u, v, x, y]" % (where, index, label))
+
+
 def layout_path(folder):
     pack = os.path.dirname(os.path.normpath(os.fspath(folder)))
     return os.path.join(pack, LAYOUT_FILE)
@@ -771,6 +875,8 @@ def load_layout(folder):
             _checked_dtt(image["dtt"], where)
         if "screen" in image:
             _checked_screen(image["screen"], where)
+        if "mesh" in image:
+            _checked_mesh(image["mesh"], where)
     return path, images
 
 
@@ -845,6 +951,88 @@ def _patch_dtt_layout(blob, folder, name, size, missing_ok=False):
     return bytes(out), changed
 
 
+VIF_UV, VIF_XYZ = 0x65, 0x68
+VIF_ONE = 0x1000
+MESH_REACH = 0x100
+MESH_TOLERANCE = 0.001
+
+
+def _mesh_blocks(blob):
+    """``(count, uv at, xyz at)`` for each UV unpack and the positions after it."""
+    uvs, positions = [], []
+    for at in range(0, len(blob) - 3, 4):
+        count, command = blob[at + 2], blob[at + 3] & 0x6F
+        if not count or command not in (VIF_UV, VIF_XYZ):
+            continue
+        size = count * (4 if command == VIF_UV else 12)
+        if at + 4 + size <= len(blob):
+            (uvs if command == VIF_UV else positions).append((at + 4, count))
+    starts = [at for at, _count in positions]
+    for uv_at, count in uvs:
+        end = uv_at + 4 * count
+        first = bisect.bisect_left(starts, end + 4)
+        for xyz_at, other in positions[first:]:
+            if xyz_at > end + 4 + MESH_REACH:
+                break
+            if other == count:
+                yield count, uv_at, xyz_at
+                break
+
+
+def _mesh_texel(value, extent, path, index):
+    raw = value * VIF_ONE / extent
+    if raw != int(raw) or not 0 <= raw <= 0xFFFF:
+        raise FisError("%s mesh vertex %d: %r is not a texture coordinate in "
+                       "1/%d-pixel steps" % (path, index, value,
+                                             VIF_ONE // extent))
+    return int(raw)
+
+
+def _mesh_vertex(blob, uv_at, xyz_at, index):
+    u, v = struct.unpack_from("<2H", blob, uv_at + 4 * (index - 1))
+    x, y = struct.unpack_from("<2f", blob, xyz_at + 12 * (index - 1))
+    return u, v, x, y
+
+
+def _mesh_matches(current, wanted):
+    return (current[:2] == wanted[:2]
+            and all(abs(a - b) <= MESH_TOLERANCE
+                    for a, b in zip(current[2:], wanted[2:])))
+
+
+def _patch_mesh_layout(blob, folder, name, size):
+    path, images = load_layout(folder)
+    mesh = (images.get(name) or {}).get("mesh")
+    if mesh is None:
+        return bytes(blob), 0
+    wanted = []
+    for row in mesh["vertices"]:
+        index = row["index"]
+        before, after = [
+            (_mesh_texel(values[0], size[0], path, index),
+             _mesh_texel(values[1], size[1], path, index),
+             float(values[2]), float(values[3]))
+            for values in (row["from"], row["to"])]
+        wanted.append((index, before, after))
+    matches = [
+        (uv_at, xyz_at) for count, uv_at, xyz_at in _mesh_blocks(blob)
+        if all(index <= count and any(
+            _mesh_matches(_mesh_vertex(blob, uv_at, xyz_at, index), guard)
+            for guard in (before, after))
+            for index, before, after in wanted)]
+    if len(matches) != 1:
+        raise FisError(
+            "%s matched %d meshes for %s; expected exactly one carrying the "
+            "guarded vertices" % (path, len(matches), name))
+    uv_at, xyz_at = matches[0]
+    out = bytearray(blob)
+    for index, _before, (u, v, x, y) in wanted:
+        struct.pack_into("<2H", out, uv_at + 4 * (index - 1), u, v)
+        struct.pack_into("<2f", out, xyz_at + 12 * (index - 1), x, y)
+    changed = sum(a != b for a, b in zip(blob, out))
+    return bytes(out), changed
+
+
 def _dtt_elsewhere(current, resource, folder, name, size):
     found = []
     for route, blob, write in views(current, resource):
@@ -866,6 +1054,7 @@ def _dtt_elsewhere(current, resource, folder, name, size):
 
 def _write_with_layout(current, resource, folder, name, size, blob, patched,
                        write):
+    patched, _meshed = _patch_mesh_layout(patched, folder, name, size)
     patched, moved = _patch_dtt_layout(patched, folder, name, size,
                                        missing_ok=True)
     changed = sum(1 for a, b in zip(blob, patched) if a != b)
@@ -902,7 +1091,7 @@ def _by_shape(current, resource, folder, wanted, applied, offset=False):
             continue
         route, at, item, blob, write = matches[0]
         try:
-            built, _approximated = encode(item, path)
+            built, _approximated = encode(item, path, new_palette=offset)
         except FisError:
             continue
         patched = bytearray(blob)

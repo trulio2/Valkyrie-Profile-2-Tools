@@ -170,6 +170,10 @@ def patch_container_resource_in_memory(iso, row, *, primary_lookup=None):
         for r in sheet_rows
         if (r.get('translated') or '').strip()
     }
+    from . import staff_roll
+    for key, text in staff_roll.section_defaults(int(row['resource'])).items():
+        supplied.setdefault(key, {'message_id': key, 'translated': text,
+                                  'record_kind': 'codepage'})
     if not supplied:
         return {"written": 0, "details": {"wrapper": "unchanged"},
                 "font_patch": None}

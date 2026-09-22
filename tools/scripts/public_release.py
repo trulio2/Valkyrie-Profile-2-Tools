@@ -82,7 +82,7 @@ def self_check(stream=None) -> int:
                      "einherjar-rosters.csv", "story-events.csv",
                      "duplicate-lines.csv", "unused-lines.csv",
                      "unused-menu-lines.csv", "reference-images.csv",
-                     "scene-speaker-overrides.csv"):
+                     "scene-speaker-overrides.csv", "roll-sections.csv"):
         if required not in tables:
             problems.append(f"missing structural table: {required}")
     if not (DATA_DIR / "fmv-xor-pad.txt").is_file():

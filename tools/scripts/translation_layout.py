@@ -172,13 +172,15 @@ def _copy_reference_rows(
     target: Path,
     fields: tuple[str, ...],
     hidden=None,
+    offered=frozenset(),
 ) -> int:
     _source_fields, rows = _read_csv(source)
     skipped = hidden(rows) if hidden else set()
     visible = [
         {field: row.get(field) or "" for field in fields}
         for row in rows
-        if (row.get("original_en") or row.get("original_jp"))
+        if (row.get("original_en") or row.get("original_jp")
+            or row.get("message_id") in offered)
         and row.get("message_id") not in skipped
     ]
     _write_csv_atomic(target, list(fields), visible)
@@ -294,13 +296,17 @@ def write_reference_tree(
                 source, staging / "dialogue" / f"scene-{resource:04d}.csv",
                 SCENE_REFERENCE_FIELDS, undrawn_records.hidden_message_ids)
 
+        from . import staff_roll
+        sections = staff_roll.load_sections()
         for resource in sorted(int(item) for item in DIALOGUE_CONTAINERS):
             source = (original_dir / "containers"
                       / f"container-{resource:04d}.csv")
             if source.is_file():
                 dialogue_rows += _copy_reference_rows(
                     source, staging / "dialogue" / f"container-{resource:04d}.csv",
-                    CONTAINER_REFERENCE_FIELDS)
+                    CONTAINER_REFERENCE_FIELDS,
+                    offered={str(message_id) for message_id, _part, _text
+                             in sections.get(resource, ())})
 
         chapter_rows = _copy_reference_rows(
             original_dir / "chapters.csv", staging / "chapter.csv",

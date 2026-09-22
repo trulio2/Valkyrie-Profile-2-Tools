@@ -23,6 +23,7 @@ from . import vp2_battle_names as battle_names
 from . import vp2_battle_status as battle_status
 from . import vp2_battle_label_font as battle_label_font
 from . import vp2_item_sort as item_sort
+from . import staff_roll
 from . import vp2_sealstone_sort as sealstone_sort
 from . import fis_images
 from . import fis_screen_layout
@@ -218,6 +219,14 @@ def apply_anti_cheat(iso):
     changed = anti_cheat.apply_to_iso(iso)
     print("anti-cheat: " + ("turned off in " + ", ".join(changed)
                             if changed else "already off everywhere else"))
+
+
+def apply_staff_roll_headings(iso):
+    """Centre every heading the translated end roll now has."""
+    added = staff_roll.apply_to_iso(iso)
+    if added:
+        print("staff roll: centred %d new heading(s): %s"
+              % (len(added), ", ".join(str(item) for item in added)))
 
 
 def apply_item_name_sort(iso, rows, primary_lookup=None):
@@ -569,6 +578,7 @@ def main():
             with iso_buffer.IsoFile(str(output_iso)) as merged:
                 apply_item_name_sort(merged, rows, primary_lookup)
                 apply_sealstone_name_sort(merged, rows, primary_lookup)
+                apply_staff_roll_headings(merged)
                 apply_battle_overlay_edits(merged, rows)
                 apply_anti_cheat(merged)
                 merged.commit()
@@ -761,6 +771,7 @@ def main():
     try:
         apply_item_name_sort(iso, rows, primary_lookup)
         apply_sealstone_name_sort(iso, rows, primary_lookup)
+        apply_staff_roll_headings(iso)
         apply_battle_overlay_edits(iso, rows)
         apply_anti_cheat(iso)
     except Exception as exc:

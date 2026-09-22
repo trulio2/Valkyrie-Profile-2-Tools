@@ -89,6 +89,25 @@ back.
 }
 ```
 
+Some pictures are drawn as textured quads rather than through `dtt` boxes. For
+those, a `mesh` entry lists vertices by one-based `index`, each as
+`[u, v, x, y]`: `u` and `v` in texture pixels, `x` and `y` in screen units, to
+three decimals. `from` must match the original disc and `to` is written; a
+build that finds no single matching mesh stops.
+
+```json
+"mesh": {
+  "vertices": [
+    {
+      "index": 3,
+      "name": "left edge, bottom",
+      "from": [20, 64, -136.012, 94.847],
+      "to": [0, 64, -142.125, 94.847]
+    }
+  ]
+}
+```
+
 A resource may hold more than one bank of text. Where it does, the row's
 `subresource` column names the one it means, and a row that leaves it blank
 takes the resource's only bank. The end-credits roll is the one that needs

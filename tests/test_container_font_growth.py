@@ -252,5 +252,130 @@ class CodepageFontGrowthTests(unittest.TestCase):
         self.assertEqual(by_id[1]["original_en"], "ba")
 
 
+def blank_cell_container():
+    """A lettered record, ``ab``, then a cell drawing only a blank glyph."""
+    table_start = 0x80
+    text_start = table_start + 2 * 8
+    text_end = text_start + 0x20
+    font_start = text_end + 0x20
+    blob = bytearray(font_start + 3 * 448)
+    blob[:13] = b"mcps2lib 1.50"
+    struct.pack_into("<6I", blob, 0x20, len(blob), table_start, text_start,
+                     text_end, font_start, 3)
+    struct.pack_into("<I", blob, 0x50, 0x65)
+    first, second = bytes([0x65, 0x66, 0x00]), bytes([0x67, 0x00])
+    struct.pack_into("<II", blob, table_start, 0, 0)
+    struct.pack_into("<II", blob, table_start + 8, 1, len(first))
+    blob[text_start:text_start + len(first) + len(second)] = first + second
+    for slot in range(3):
+        blob[text_end + slot * 2] = 12
+    return blob
+
+
+BLANK_CELL_ALPHABET = {0: "a", 1: "b", 2: " "}
+
+
+class BlankCellTests(unittest.TestCase):
+    def test_a_blank_cell_writes_in_the_face_of_the_line_before_it(self):
+        blob = blank_cell_container()
+        meta = container_text.layout(blob)
+        _grown, _meta, _alphabet, runs, recut = (
+            container_text.grow_codepage_font(
+                blob, meta, BLANK_CELL_ALPHABET, {3: "ba"}, 31))
+        self.assertEqual(recut, [])
+        self.assertEqual(runs[3][0]["a"], 0x65)
+        patched, written = container_text.rebuild_codepage_records(
+            blob, 31, {"1": {"translated": "ba"}},
+            alphabet=BLANK_CELL_ALPHABET)
+        self.assertEqual(written, 1)
+        _meta, messages = container_text.read_messages(
+            bytes(patched), 31, alphabet=BLANK_CELL_ALPHABET)
+        by_id = {message["message_id"]: message for message in messages}
+        self.assertEqual(by_id[0]["original_en"], "ab")
+        self.assertEqual(by_id[1]["original_en"], "ba")
+
+    def test_a_blank_cell_with_no_lettered_line_before_it_is_refused(self):
+        blob = blank_cell_container()
+        meta = container_text.layout(blob)
+        with self.assertRaises(ValueError):
+            container_text.grow_codepage_font(
+                blob, meta, {2: " "}, {3: "ba"}, 31)
+
+
+def roll_container():
+    """ids 0-6: nothing, heading ``a``, blank, name ``b``, nothing, blank, blank."""
+    records = [bytes(1), bytes([0x65, 0x00]), bytes([0x67, 0x80, 0x80, 0x00]),
+               bytes([0x66, 0x00]), bytes(1), bytes([0x67, 0x80, 0x80, 0x00]),
+               bytes([0x67, 0x80, 0x80, 0x00])]
+    table_start = 0x80
+    text_start = table_start + len(records) * 8
+    text_end = text_start + 0x40
+    font_start = text_end + 0x20
+    blob = bytearray(font_start + 3 * 448)
+    blob[:13] = b"mcps2lib 1.50"
+    struct.pack_into("<6I", blob, 0x20, len(blob), table_start, text_start,
+                     text_end, font_start, 3)
+    struct.pack_into("<I", blob, 0x50, 0x65)
+    offset = 0
+    for message_id, record in enumerate(records):
+        struct.pack_into("<II", blob, table_start + message_id * 8,
+                         message_id, offset)
+        blob[text_start + offset:text_start + offset + len(record)] = record
+        offset += len(record)
+    for slot in range(3):
+        blob[text_end + slot * 2] = 12
+    return blob
+
+
+ROLL_ALPHABET = {0: "a", 1: "b", 2: " "}
+
+
+class RollLayoutTests(unittest.TestCase):
+    def read(self, blob):
+        _meta, messages = container_text.read_messages(
+            bytes(blob), 31, alphabet=ROLL_ALPHABET)
+        return {message["message_id"]: message["original_en"]
+                for message in messages}
+
+    def test_a_blank_cell_takes_the_face_of_a_line_shaped_like_it(self):
+        """Id 5 sits where a heading sits, so it draws the heading's cut."""
+        blob = roll_container()
+        patched, written = container_text.rebuild_codepage_records(
+            blob, 31, {"5": {"translated": "a"}}, alphabet=ROLL_ALPHABET)
+        self.assertEqual(written, 1)
+        meta = container_text.layout(patched)
+        offset = dict(container_text.entries(patched, meta))[5]
+        self.assertEqual(container_text.codepage_record_runs(
+            patched, meta, offset), [[0]])
+
+    def test_from_draws_another_record_at_this_id(self):
+        blob = roll_container()
+        patched, written = container_text.rebuild_codepage_records(
+            blob, 31, {"6": {"translated": "<FROM:3>"}},
+            alphabet=ROLL_ALPHABET)
+        self.assertEqual(written, 1)
+        text = self.read(patched)
+        self.assertEqual(text[6], "b")
+        self.assertEqual(text[3], " \n")
+
+    def test_text_after_from_translates_the_moved_record(self):
+        blob = roll_container()
+        patched, _written = container_text.rebuild_codepage_records(
+            blob, 31, {"6": {"translated": "<FROM:3>bb"},
+                       "3": {"translated": "a"}},
+            alphabet=ROLL_ALPHABET)
+        text = self.read(patched)
+        self.assertEqual(text[6], "bb")
+        self.assertEqual(text[3], "a")
+
+    def test_an_id_takes_part_in_one_move(self):
+        blob = roll_container()
+        with self.assertRaises(ValueError):
+            container_text.rebuild_codepage_records(
+                blob, 31, {"6": {"translated": "<FROM:3>"},
+                           "5": {"translated": "<FROM:3>"}},
+                alphabet=ROLL_ALPHABET)
+
+
 if __name__ == "__main__":
     unittest.main()

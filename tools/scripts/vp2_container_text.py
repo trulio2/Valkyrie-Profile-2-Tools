@@ -22,13 +22,14 @@ from .slz import decompress
 
 TOKEN_BASE = 0x0165          # 0x0100 | (slot + 0x65)
 LINE_BREAK = 0x8080          # the record's own line break
-# Where resource 10's cutscene cut starts; 0-48 are the credits face.
 SUBTITLE_CUT_FIRST_SLOT = 49
 CODEPAGE_SHIFT = 0x1F
 CODEPAGE_SPACE = 0x0E
 CODEPAGE_TAG = re.compile(r"<[0-9A-Fa-f]{4}(?::[0-9A-Fa-f]+)?>")
 
 TIGHT_TAG = re.compile(r"<808C(?::[0-9A-Fa-f]+)?>(.*?)<808D>")
+
+FROM_TAG = re.compile(r"^<FROM:(\d+)>")
 CONTINUATION_MARKER = "<CONT>"
 
 CODEPAGE_CHARACTERS = {
@@ -749,6 +750,52 @@ def grow_codepage_font(blob, meta, alphabet, replacements, resource):
             out.append(last)
         return out
 
+    lettered = {cut_id for cut_id, table in cuts.items()
+                if any(character.strip() for character in table)}
+    blank = {cut_id for cut_id, table in cuts.items()
+             if table and cut_id not in lettered}
+    sequence = [offset for _message_id, offset in entries(blob, meta)]
+    index_of = {}
+    for index, offset in enumerate(sequence):
+        index_of.setdefault(offset, index)
+
+    def kind(offset):
+        if offset in replacements and replacements[offset].strip():
+            return "letters"
+        own = [cut_id for cut_id in faces(record_runs[offset])
+               if cut_id is not None]
+        if own and all(cut_id in blank for cut_id in own):
+            return "blank"
+        if own or blob[meta["text_start"] + offset]:
+            return "letters"
+        return "empty"
+
+    def shape(index):
+        before = kind(sequence[index - 1]) if index else None
+        after = (kind(sequence[index + 1])
+                 if index + 1 < len(sequence) else None)
+        return before, after
+
+    def record_faces(offset):
+        own = faces(record_runs[offset])
+        if not any(cut_id in blank for cut_id in own):
+            return own
+        index = index_of[offset]
+        wanted, nearest = shape(index), None
+        for earlier in range(index - 1, -1, -1):
+            drawn = [cut_id for cut_id in faces(record_runs[sequence[earlier]])
+                     if cut_id in lettered]
+            if not drawn:
+                continue
+            if nearest is None:
+                nearest = drawn[-1]
+            if shape(earlier) == wanted:
+                nearest = drawn[-1]
+                break
+        if nearest is None:
+            return own
+        return [nearest if cut_id in blank else cut_id for cut_id in own]
+
     drawn_locally = {offset: (codepage_record_is_local(blob, meta, offset)
                               and any(record_runs[offset]))
                      for offset in record_runs}
@@ -765,7 +812,7 @@ def grow_codepage_font(blob, meta, alphabet, replacements, resource):
                 "resource #%d record at 0x%X draws %d run(s) and its "
                 "translation has %d: a run-boundary tag was added or lost"
                 % (resource, offset, len(runs), len(text_runs)))
-        for text_run, cut_id in zip(text_runs, faces(runs)):
+        for text_run, cut_id in zip(text_runs, record_faces(offset)):
             for character in text_run:
                 if character == "\n":
                     continue
@@ -817,8 +864,43 @@ def grow_codepage_font(blob, meta, alphabet, replacements, resource):
             {} if cut_id is None else
             {character: subtitles.slot_token(slot, base)
              for character, slot in cuts[cut_id].items()}
-            for cut_id in faces(record_runs[offset])]
+            for cut_id in record_faces(offset)]
     return blob, meta, alphabet, runs_by_offset, recut
+
+
+def apply_record_moves(blob, resource, translations):
+    meta = layout(bytes(blob))
+    positions = {}
+    for position in range(meta["table_start"], meta["text_start"], 8):
+        message_id = struct.unpack_from("<I", blob, position)[0]
+        positions.setdefault(str(message_id), []).append(position)
+    remaining, used, moves = {}, set(), 0
+    for key, row in translations.items():
+        text = row["translated"]
+        match = FROM_TAG.match(text)
+        if match is None:
+            remaining[key] = row
+            continue
+        source = str(int(match.group(1)))
+        if key not in positions or source not in positions:
+            raise ValueError("resource #%d message %s names %s in <FROM>, "
+                             "which the bank does not index"
+                             % (resource, key, source))
+        if source == key or {source, key} & used:
+            raise ValueError("resource #%d message %s: each id may take part "
+                             "in one <FROM> move, and not with itself"
+                             % (resource, key))
+        used |= {source, key}
+        here = struct.unpack_from("<I", blob, positions[key][0] + 4)[0]
+        there = struct.unpack_from("<I", blob, positions[source][0] + 4)[0]
+        for position in positions[key]:
+            struct.pack_into("<I", blob, position + 4, there)
+        for position in positions[source]:
+            struct.pack_into("<I", blob, position + 4, here)
+        moves += 1
+        if text[match.end():]:
+            remaining[key] = dict(row, translated=text[match.end():])
+    return remaining, moves
 
 
 def rebuild_codepage_records(blob, resource, translations,
@@ -828,6 +910,12 @@ def rebuild_codepage_records(blob, resource, translations,
     if not translations:
         return bytearray(blob), 0
     blob = bytearray(blob)
+    from . import staff_roll
+    translations = staff_roll.lay_out_section(bytes(blob), resource,
+                                              translations)
+    translations, moves = apply_record_moves(blob, resource, translations)
+    if not translations:
+        return blob, moves
     meta, messages = read_messages(
         bytes(blob), resource, codepage_accents=accent_tokens)
     by_id = {str(message["message_id"]): message for message in messages}
@@ -1224,8 +1312,23 @@ def cmd_export(args):
         alphabet=resource_alphabet(blob, args.resource))
     slots = SLOT_NAMES.get(args.resource, [])
     keep = [dict(row, key=str(row["message_id"]))
-            for row in rows if row["original_en"].strip()
-            and row["kind"] != "token"]
+            for row in rows if row["kind"] != "token"
+            and (row["original_en"].strip()
+                 or any(codepage_record_runs(blob, meta, row["offset"])))]
+    from . import staff_roll
+    section = staff_roll.load_sections().get(args.resource)
+    region = staff_roll.section_region(blob, args.resource) if section else None
+    if region:
+        start, end = region
+        defaults = {message_id: text for message_id, part, text in section
+                    if part != "follow"}
+        keep = [row for row in keep
+                if row["message_id"] in defaults
+                or not start <= row["message_id"] < end
+                or row["original_en"].strip()]
+        for row in keep:
+            if row["message_id"] in defaults:
+                row["original_en"] = defaults[row["message_id"]]
     if slots:
         for record in walk_block(blob, meta, slots):
             if record["original_en"].strip():
