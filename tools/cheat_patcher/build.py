@@ -127,11 +127,8 @@ def _copy_with_progress(source, target, say):
                 last = percent
 
 
-def build_iso(source, output=None, selected=None, progress=None):
-    """Copy an ISO once, apply selected patches, and verify it from disk.
-
-    *progress* is called with single-line status messages if given.
-    """
+def build_iso(source, output=None, selected=None, progress=None,
+              extra_patchers=()):
     say = progress if progress is not None else (lambda message: None)
     source = Path(source).expanduser().resolve()
     output = (Path(output).expanduser().resolve()
@@ -151,7 +148,8 @@ def build_iso(source, output=None, selected=None, progress=None):
     pending = []
     with source.open("rb") as source_handle:
         source_index = triace.read_index(source_handle)
-        for name, patcher in _selected_patchers(selected):
+        for name, patcher in (_selected_patchers(selected)
+                              + list(extra_patchers)):
             say("patch: reading and rebuilding %s" % name)
             resource_details = []
             file_details = []

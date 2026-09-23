@@ -69,6 +69,10 @@ def _parser() -> argparse.ArgumentParser:
              "has played, instead of recording it as a candidate and "
              "carrying on",
     )
+    build.add_argument(
+        "--glyph-textures", metavar="DIR",
+        help="also write high-resolution text textures for PCSX2 here",
+    )
     return parser
 
 
@@ -115,6 +119,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.usa_image, args.language, workspace=args.workspace,
                 output=args.output, no_verify=args.no_verify,
                 strict_extents=args.strict_extents,
+                glyph_textures=args.glyph_textures,
             )
             print(f"built {output}")
         else:

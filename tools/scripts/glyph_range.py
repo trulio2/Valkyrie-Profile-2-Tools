@@ -137,10 +137,30 @@ def _resident_stream(resource):
     return found
 
 
+def resident_overlay(resource):
+    """``(offset, expanded)`` of resource 3's resident overlay."""
+    offset, _end, output = _resident_stream(bytes(resource))
+    return offset, output
+
+
+def replace_resident(resource, offset, patched):
+    """``resource`` with the overlay at ``offset`` re-encoded from ``patched``."""
+    resource = bytes(resource)
+    encoded = sle.conceal(slz3.compress(bytes(patched)))
+    if offset + len(encoded) > len(resource):
+        raise ValueError("resource 3's resident overlay no longer fits")
+    rebuilt = bytearray(resource)
+    rebuilt[offset:] = bytes(len(resource) - offset)
+    rebuilt[offset:offset + len(encoded)] = encoded
+    if _resident_stream(bytes(rebuilt))[2] != bytes(patched):
+        raise ValueError("resource 3's resident overlay did not read back")
+    return bytes(rebuilt)
+
+
 def patch_renderer(resource):
     """``resource`` with the renderer rewrite in; unchanged if already there."""
     resource = bytes(resource)
-    offset, _end, output = _resident_stream(resource)
+    offset, output = resident_overlay(resource)
     at = START - LOAD_ADDRESS
     block = renderer_block()
     present = struct.unpack_from("<%dI" % len(ORIGINAL), output, at)
@@ -152,12 +172,4 @@ def patch_renderer(resource):
             % START)
     patched = bytearray(output)
     patched[at:at + 4 * len(block)] = _pack(block)
-    encoded = sle.conceal(slz3.compress(bytes(patched)))
-    if offset + len(encoded) > len(resource):
-        raise ValueError("resource 3's resident overlay no longer fits")
-    rebuilt = bytearray(resource)
-    rebuilt[offset:] = bytes(len(resource) - offset)
-    rebuilt[offset:offset + len(encoded)] = encoded
-    if _resident_stream(bytes(rebuilt))[2] != bytes(patched):
-        raise ValueError("resource 3's resident overlay did not read back")
-    return bytes(rebuilt)
+    return replace_resident(resource, offset, patched)

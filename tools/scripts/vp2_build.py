@@ -29,6 +29,8 @@ from . import fis_images
 from . import fis_screen_layout
 from . import overlay_edits
 from . import anti_cheat
+from . import glyph_slots
+from . import glyph_textures
 from . import vp2_shared_font as shared_font
 from . import row_cache
 from .build_config import (
@@ -177,7 +179,7 @@ def battle_overlay_edits(rows):
 
 
 def apply_battle_overlay_edits(iso, rows):
-    edits = battle_overlay_edits(rows)
+    edits = battle_overlay_edits(rows) + glyph_slots.battle_edits()
     label = battle_target_label(rows)
     checks = []
 
@@ -219,6 +221,23 @@ def apply_anti_cheat(iso):
     changed = anti_cheat.apply_to_iso(iso)
     print("anti-cheat: " + ("turned off in " + ", ".join(changed)
                             if changed else "already off everywhere else"))
+
+
+def apply_glyph_slots(iso):
+    original = bytes(iso.read_entry(glyph_slots.RESOURCE))
+    rebuilt = glyph_slots.patch_resource(original)
+    if rebuilt != original:
+        iso.write_entry(glyph_slots.RESOURCE, rebuilt)
+    print("glyph draw: " + ("one texture per glyph" if rebuilt != original
+                            else "already one texture per glyph"))
+
+
+def write_glyph_textures(output_iso, rows, out_dir):
+    scenes = sorted({int(row['resource']) for row in rows
+                     if row['kind'] == 'scene'})
+    with iso_buffer.IsoFile(str(output_iso), "rb") as iso:
+        written = glyph_textures.write_pack(iso, scenes, out_dir)
+    print(f"glyph textures: {written} replacement(s) in {out_dir}")
 
 
 def apply_staff_roll_headings(iso):
@@ -376,6 +395,9 @@ def main():
                              'the gate proves the writers against a checkout, '
                              'and re-running it per row roughly doubles the '
                              'work for a user rebuilding tested data.')
+    parser.add_argument('--glyph-textures', metavar='DIR',
+                        help='Also write a PCSX2 replacement pack for '
+                             'every glyph the built image draws.')
     parser.add_argument('--keep-working-iso', action='store_true',
                         help='Leave the working ISO on disk after success '
                              'instead of moving it to output_iso.')
@@ -581,6 +603,7 @@ def main():
                 apply_staff_roll_headings(merged)
                 apply_battle_overlay_edits(merged, rows)
                 apply_anti_cheat(merged)
+                apply_glyph_slots(merged)
                 merged.commit()
         except Exception as exc:
             print(f"final resident-data or overlay edits failed: {exc}",
@@ -590,6 +613,8 @@ def main():
             iso = iso_buffer.IsoBuffer.from_path(str(output_iso))
             iso.commit(str(working_iso))
             print(f"working ISO retained: {working_iso}")
+        if args.glyph_textures:
+            write_glyph_textures(output_iso, rows, args.glyph_textures)
         total = time.time() - started
         _report_candidate_extents()
         print(f"done. {len(rows)} resources in {total:.1f}s -> {output_iso}")
@@ -774,6 +799,7 @@ def main():
         apply_staff_roll_headings(iso)
         apply_battle_overlay_edits(iso, rows)
         apply_anti_cheat(iso)
+        apply_glyph_slots(iso)
     except Exception as exc:
         _fail(f"final resident-data or overlay edits failed: {exc}")
 
@@ -796,6 +822,9 @@ def main():
         print(f"row cache: {row_hits}/{len(rows)} row(s) replayed; "
               f"{held / 2**20:.0f} MB held"
               + (f", {dropped} dropped" if dropped else ""))
+
+    if args.glyph_textures:
+        write_glyph_textures(output_iso, rows, args.glyph_textures)
 
     total = time.time() - started
     _report_candidate_extents()

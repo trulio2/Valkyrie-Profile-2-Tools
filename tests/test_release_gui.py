@@ -24,10 +24,12 @@ class LauncherLogicTests(unittest.TestCase):
         import contextlib
         import io
         import vp2_cheats
+        import vp2_glyphs
         import vp2_translate
         import vp2_voices
 
-        for module in (vp2_translate, vp2_cheats, vp2_voices):
+        for module in (vp2_translate, vp2_cheats, vp2_voices,
+                       vp2_glyphs):
             with self.subTest(module=module.__name__), \
                     contextlib.redirect_stderr(io.StringIO()):
                 try:
@@ -168,7 +170,7 @@ class WindowSmokeTests(unittest.TestCase):
                     app.apps["translate"].title_item, "text"),
             )
             self.assertEqual(
-                ["translate", "voices", "cheats"],
+                ["translate", "voices", "cheats", "glyphs"],
                 [item[0] for item in tools_launcher.NAVIGATION],
             )
             self.assertIn("v" + tools_launcher.app_meta.VERSION,
@@ -207,6 +209,13 @@ class WindowSmokeTests(unittest.TestCase):
                 tools_launcher.cheat_gui.SHORT_NAME,
                 app.apps["cheats"].canvas.itemcget(
                     app.apps["cheats"].title_item, "text"),
+            )
+            app.show("glyphs")
+            self.assertEqual("glyphs", app.current)
+            self.assertEqual(
+                tools_launcher.glyph_gui.SHORT_NAME,
+                app.apps["glyphs"].canvas.itemcget(
+                    app.apps["glyphs"].title_item, "text"),
             )
         finally:
             root.destroy()

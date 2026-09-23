@@ -2,7 +2,7 @@
 
 Tools for _Valkyrie Profile 2: Silmeria_ on PlayStation 2. [Project Showcase](https://trulio2.github.io/Valkyrie-Profile-2-Tools/)
 
-The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases) **ValkyrieProfile2-Tools** application contains three tools:
+The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases) **ValkyrieProfile2-Tools** application contains four tools:
 
 - **Translate** builds a translated copy of the game.
 - **Cheats** writes selected cheats into a copy of the game so they work
@@ -11,6 +11,9 @@ The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases)
 - **Voices** extracts the English or Japanese voices and
   patches identified replacement WAV files into a copy of either release. It
   can also create a Japanese-audio edition of the USA and PAL releases.
+- **Glyphs** lets PCSX2 replace the game's text with high-resolution
+  textures: it patches a copy of the game, extracts every glyph as a PNG,
+  and turns edited glyphs into textures.
 
 ![](images/gui.jpg)
 
@@ -18,7 +21,7 @@ The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases)
 
 | Language | Cutscenes | NPC Dialogues | Menus | Images |
 | -------- | --------- | ------------- | ----- | ------ |
-| pt-BR    | 100%      | 100%          | 99%   | 10%    |
+| pt-BR    | 100%      | 100%          | 99%   | 90%    |
 | sv-SE    | 100%      | 100%          | 100%  | 25%    |
 
 ## Requirements
@@ -113,11 +116,31 @@ Extraction creates `voices/en/` or `voices/jp/`. See the [voice-tool
 guide](docs/voices.md) for the reversible file names, cutscene folders, WAV
 requirements, and legacy dub-kit compatibility.
 
+## Glyph Tool
+
+Open `ValkyrieProfile2-Tools` and select **Glyphs** in the sidebar:
+
+1. **Patch ISO** copies the USA image, or a translated build of it, so each
+   letter is drawn as its own texture, and turns the anti-cheat off.
+2. **Extract Glyphs** writes every glyph the patched image draws as a
+   `glyph-<hash>.png`.
+3. **Create DDS** turns a folder of edited or upscaled glyph PNGs into PCSX2
+   textures.
+
+```bash
+python vp2_glyphs.py patch <image.iso> -o <folder>
+python vp2_glyphs.py extract <patched-image.iso> -o <folder>
+python vp2_glyphs.py dds <glyph-png-folder> -o <folder>
+```
+
+See the [glyph-tool guide](docs/glyphs.md).
+
 ## Documentation
 
 - [Translator guide](docs/translator.md)
 - [Cheat-patcher guide](docs/cheat-patcher.md)
 - [Voice-tool guide](docs/voices.md)
+- [Glyph-tool guide](docs/glyphs.md)
 - [Translation-pack format](docs/translation-format.md)
 - [Drawing new glyphs](docs/authoring-glyphs.md)
 - [Known issues](docs/issues.md)

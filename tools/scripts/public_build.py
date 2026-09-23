@@ -748,6 +748,7 @@ def build_iso(
     images: list[str | os.PathLike[str]] | None = None,
     strict_extents: bool = False,
     only: Iterable[str] | None = None,
+    glyph_textures: str | os.PathLike[str] | None = None,
 ) -> Path:
     source = Path(source_iso).expanduser().resolve()
     if not source.is_file():
@@ -781,6 +782,9 @@ def build_iso(
         runtime_args.append("--no-verify")
     if not strict_extents:
         runtime_args.append("--record-candidate-extents")
+    if glyph_textures:
+        runtime_args += ["--glyph-textures",
+                         os.fspath(Path(glyph_textures).expanduser().resolve())]
     command = runtime_command(runtime_args)
     environment = runtime_environment(glyph_pool)
     process = subprocess.Popen(

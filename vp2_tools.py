@@ -16,10 +16,12 @@ import threading
 import webbrowser
 
 import vp2_cheats
+import vp2_glyphs
 import vp2_translate
 import vp2_voices
 from tools import app_meta, translate_gui, update_check
 from tools.cheat_patcher import gui as cheat_gui
+from tools.glyph_patcher import gui as glyph_gui
 from tools.voice_patcher import gui as voice_gui
 
 
@@ -37,6 +39,7 @@ NAVIGATION = (
     ("translate", "▤", "Translate", translate_gui.App),
     ("voices", "♫", "Voices", voice_gui.App),
     ("cheats", "⚙", "Cheats", cheat_gui.App),
+    ("glyphs", "Aa", "Glyphs", glyph_gui.App),
 )
 
 
@@ -92,7 +95,7 @@ class NavigationItem:
 
 
 class App:
-    """Own the window chrome and host the three existing tool views."""
+    """Own the window chrome and host the tool views."""
 
     def __init__(self, root):
         self.root = root
@@ -315,7 +318,7 @@ def attach_console_for_output():
 
 
 def self_check(stream=None):
-    """Exercise all three payloads plus the shared window runtime."""
+    """Exercise every payload plus the shared window runtime."""
     from tools.scripts.public_release import self_check as translation_check
 
     output = stream or sys.stdout
@@ -323,6 +326,7 @@ def self_check(stream=None):
         ("translation", translation_check),
         ("cheats", vp2_cheats.self_check),
         ("voices", vp2_voices.self_check),
+        ("glyphs", vp2_glyphs.self_check),
     )
     failed = False
     for label, check in checks:
@@ -333,7 +337,7 @@ def self_check(stream=None):
         failed = failed or bool(status)
     for label, module in (
             ("translate", translate_gui), ("cheats", cheat_gui),
-            ("voices", voice_gui)):
+            ("voices", voice_gui), ("glyphs", glyph_gui)):
         if module.TK_IMPORT_ERROR is not None:
             print(f"FAIL  {label} window: {module.TK_IMPORT_ERROR}", file=output)
             failed = True
