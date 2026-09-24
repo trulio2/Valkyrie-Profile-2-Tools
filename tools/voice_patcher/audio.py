@@ -102,6 +102,115 @@ def encode_adpcm(pcm: bytes) -> bytes:
     return bytes(output)
 
 
+def _encode_spu_frame(samples, history1, history2):
+    best = None
+    for predictor, (coefficient0, coefficient1) in enumerate(COEFFICIENTS):
+        source1, source2 = history1, history2
+        residual_min = residual_max = 0
+        for sample in samples:
+            predicted = (
+                coefficient0 * source1 + coefficient1 * source2 + 32
+            ) >> 6
+            residual = sample - predicted
+            residual_min = min(residual_min, residual)
+            residual_max = max(residual_max, residual)
+            source2, source1 = source1, sample
+        right_shift = 0
+        while (right_shift < 12 and
+               residual_max >> right_shift > 0x7FFF >> 12):
+            right_shift += 1
+        while (right_shift < 12 and
+               residual_min >> right_shift < -0x8000 >> 12):
+            right_shift += 1
+        minimum_shift = 12 - right_shift
+        for shift in range(
+                max(0, minimum_shift - 1), min(12, minimum_shift + 1) + 1):
+            decoded1, decoded2 = history1, history2
+            nibbles = []
+            error = 0
+            for sample in samples:
+                predicted = (
+                    coefficient0 * decoded1 + coefficient1 * decoded2 + 32
+                ) >> 6
+                nibble = ((sample - predicted) * (1 << shift) + 0x800) >> 12
+                nibble = max(-8, min(7, nibble))
+                decoded = ((nibble << 12) >> shift) + predicted
+                decoded = max(-32768, min(32767, decoded))
+                error += (decoded - sample) ** 2
+                nibbles.append(nibble & 0x0F)
+                decoded2, decoded1 = decoded1, decoded
+            candidate = (
+                error, predictor, shift, nibbles, decoded1, decoded2
+            )
+            if best is None or error < best[0]:
+                best = candidate
+    _error, predictor, shift, nibbles, history1, history2 = best
+    frame = bytearray(((predictor << 4) | shift, 0))
+    for index in range(0, SAMPLES_PER_FRAME, 2):
+        frame.append(nibbles[index] | (nibbles[index + 1] << 4))
+    return bytes(frame), history1, history2
+
+
+def encode_spu_adpcm(pcm: bytes) -> bytes:
+    sample_count = len(pcm) // 2
+    samples = list(struct.unpack("<%dh" % sample_count, pcm[:sample_count * 2]))
+    if sample_count % SAMPLES_PER_FRAME:
+        samples += [0] * (SAMPLES_PER_FRAME - sample_count % SAMPLES_PER_FRAME)
+    output = bytearray()
+    history1 = history2 = 0
+    for index in range(0, len(samples), SAMPLES_PER_FRAME):
+        frame, history1, history2 = _encode_spu_frame(
+            samples[index:index + SAMPLES_PER_FRAME], history1, history2
+        )
+        output += frame
+    return bytes(output)
+
+
+def encode_adpcm_with_controls(pcm: bytes, controls: bytes) -> bytes:
+    sample_count = len(pcm) // 2
+    samples = list(struct.unpack("<%dh" % sample_count, pcm[:sample_count * 2]))
+    if sample_count % SAMPLES_PER_FRAME:
+        samples += [0] * (SAMPLES_PER_FRAME - sample_count % SAMPLES_PER_FRAME)
+    frame_count = len(samples) // SAMPLES_PER_FRAME
+    if frame_count > len(controls):
+        raise ValueError(
+            "audio needs %d frames but the control template holds %d"
+            % (frame_count, len(controls))
+        )
+    output = bytearray()
+    history1 = history2 = 0
+    for frame_index in range(frame_count):
+        control = controls[frame_index]
+        predictor = control >> 4
+        shift = control & 0x0F
+        if predictor >= len(COEFFICIENTS) or shift > 12:
+            raise ValueError(
+                "unsupported ADPCM control 0x%02x at frame %d"
+                % (control, frame_index)
+            )
+        coefficient0, coefficient1 = COEFFICIENTS[predictor]
+        nibbles = []
+        start = frame_index * SAMPLES_PER_FRAME
+        for sample in samples[start:start + SAMPLES_PER_FRAME]:
+            predicted = (
+                history1 * coefficient0 + history2 * coefficient1
+            ) // 64
+            nibble = int(round(
+                (sample - predicted) / (1 << (12 - shift))
+            ))
+            nibble = max(-8, min(7, nibble))
+            decoded = ((nibble << 12) >> shift) + predicted
+            decoded = max(-32768, min(32767, decoded))
+            nibbles.append(nibble & 0x0F)
+            history2, history1 = history1, decoded
+        output += bytes((control, 0))
+        output += bytes(
+            nibbles[index] | (nibbles[index + 1] << 4)
+            for index in range(0, SAMPLES_PER_FRAME, 2)
+        )
+    return bytes(output)
+
+
 def fit_payload(encoded: bytes, target_length: int, tail_flag: int,
                 allow_truncate=False) -> bytes:
     """Fit a line to its retail allocation, truncating only when requested."""

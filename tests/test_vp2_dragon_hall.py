@@ -16,16 +16,31 @@ from tools.scripts import vp2_container_text as container_text
 from tools.scripts import vp2_dragon_hall as dragon
 
 
+BANK_SIZE = 0x480
+TABLE_START = 0x80
+TEXT_START = 0x200
+
+
 def fixture_resource():
     expanded = bytearray((index * 37) & 0xFF for index in range(4480))
-    for message_id, english, _japanese in dragon.TEXT_FIELDS:
-        size = dragon.FIELD_BY_ID[message_id][2]
-        expanded[message_id:message_id + size] = (
-            container_text.encode_codepage(english).ljust(size, b"\0"))
+    bank = bytearray(BANK_SIZE)
+    bank[:13] = b"mcps2lib 1.50"
+    struct.pack_into("<5I", bank, 0x20, BANK_SIZE, TABLE_START, TEXT_START, 0, 0)
+    for index, (message_id, english, _japanese) in enumerate(dragon.TEXT_FIELDS):
+        relative = message_id - dragon.MESSAGE_ID
+        struct.pack_into("<II", bank, TABLE_START + index * 8,
+                         dragon.TABLE_ID[message_id], relative)
+        encoded = container_text.encode_codepage(english)
+        bank[TEXT_START + relative:TEXT_START + relative + len(encoded)] = encoded
+    expanded[dragon.BANK_OFFSET:dragon.BANK_OFFSET + BANK_SIZE] = bank
     stream = dragon.protect(
         slz_compress.compress(
             expanded, mode=2, target_size=2544, cache_dir=""))
     return b"prefix" + stream + b"suffix"
+
+
+def expanded_of(raw, details):
+    return sle.decompress(raw[details["stream_offset"]:])
 
 
 class DragonHallPromptTests(unittest.TestCase):
@@ -35,24 +50,39 @@ class DragonHallPromptTests(unittest.TestCase):
         self.assertEqual(len(raw), len(rebuilt))
         self.assertEqual(dragon.extract_english(rebuilt), "Choose a stone?")
         self.assertEqual(details["wrapper"], "SLE")
-        self.assertEqual(sle.decompress(
-            rebuilt[details["stream_offset"]:]),
-            sle.decompress(raw[details["stream_offset"]:])[:dragon.PROMPT_OFFSET]
-            + container_text.encode_codepage("Choose a stone?").ljust(
-                dragon.PROMPT_SIZE, b"\0")
-            + sle.decompress(raw[details["stream_offset"]:])[
-                dragon.NEXT_TEXT_OFFSET:])
+        before, after = expanded_of(raw, details), expanded_of(rebuilt, details)
+        bank_end = dragon.BANK_OFFSET + BANK_SIZE
+        self.assertEqual(before[:dragon.BANK_OFFSET], after[:dragon.BANK_OFFSET])
+        self.assertEqual(before[bank_end:], after[bank_end:])
 
-    def test_rejects_text_larger_than_fixed_slot(self):
-        with self.assertRaisesRegex(ValueError, "fixed slot"):
-            dragon.patch_raw(fixture_resource(), "This text is far too long")
-
-    def test_embedded_item_name_can_reuse_its_menu_translation(self):
-        halo = 0xEA3
+    def test_a_name_may_outgrow_its_english_slot(self):
+        halo, painted = 0xEA3, 0xEAE
         rebuilt, details = dragon.patch_raw(
-            fixture_resource(), {halo: "Pedra Halo"})
-        self.assertEqual(dragon.extract_english(rebuilt, halo), "Pedra Halo")
-        self.assertEqual(details["fields"], {halo: "Pedra Halo"})
+            fixture_resource(), {halo: "Pedra da Aureola"})
+        self.assertEqual(details["fields"], {halo: "Pedra da Aureola"})
+        self.assertEqual(dragon.extract_english(rebuilt, painted),
+                         "Painted Cloud Stone")
+        self.assertEqual(dragon.extract_english(rebuilt, 0xEE6),
+                         "Ring of Mylinn")
+
+    def test_unused_names_give_way_only_when_the_bank_is_full(self):
+        def grown(extra):
+            return {message_id: english + " " + "x" * extra
+                    for message_id, english, _japanese in dragon.TEXT_FIELDS
+                    if message_id not in dragon.UNUSED_FIELDS}
+
+        rebuilt, _details = dragon.patch_raw(fixture_resource(), grown(40))
+        self.assertEqual(dragon.extract_english(rebuilt, 0xEF5), "Dragon Orb")
+        stones = grown(55)
+        rebuilt, _details = dragon.patch_raw(fixture_resource(), stones)
+        for message_id in dragon.UNUSED_FIELDS:
+            self.assertEqual(dragon.extract_english(rebuilt, message_id), "")
+        for message_id, text in stones.items():
+            self.assertEqual(dragon.extract_english(rebuilt, message_id), text)
+
+    def test_rejects_names_larger_than_the_bank(self):
+        with self.assertRaisesRegex(ValueError, "do not fit"):
+            dragon.patch_raw(fixture_resource(), "x" * BANK_SIZE)
 
     def test_container_manifest_dispatches_the_custom_record(self):
         class MemoryIso:

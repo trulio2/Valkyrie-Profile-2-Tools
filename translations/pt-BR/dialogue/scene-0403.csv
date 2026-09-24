@@ -23,7 +23,7 @@ nunca perdoarei aquela Donzela de Batalha!",
 mas estou preocupado com o papai... <PART>
 ---
 Por que ele não se mexe?",
-403,3,Adquirido <PART> Experiência dos Especialistas,
+403,3,Adquirido <PART> Experiência do Especialista,
 403,8,Saída,
 403,9,"Sair do Castelo de Dipan?
 (As pedras de selo voltam aos lugares originais.)",
@@ -31,5 +31,5 @@ Por que ele não se mexe?",
 403,11,Não,
 403,12,Castelo de Dipan,
 403,35,,
-403,2754,Soldado,
+403,2754,Soldado de Dipan,
 403,2755,Menino,

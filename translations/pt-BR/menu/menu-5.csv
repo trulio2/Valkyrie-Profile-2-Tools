@@ -48,15 +48,15 @@ Rezo para que o destino esteja ao seu lado.",
 650,9,DES,
 650,10,AGI,
 650,11,,
-650,31,Cong.,
+650,31,Congelar,
 650,47,Classe,
-650,48,Id.,
+650,48,Idade,
 650,49,Gênero,
-650,50,Nas.,
-650,51,Fal.,
-650,52,Tam.,
-650,53,Masc,
-650,54,Fem.,
+650,50,Nascimento,
+650,51,Óbito,
+650,52,Tamanho,
+650,53,Masculino,
+650,54,Feminino,
 650,55,Ver atributos.,
 650,56,Ver equipamento.,
 650,57,Ver habilidades aprendidas.,
@@ -160,7 +160,7 @@ As almas entrelaçadas de Alicia e Silmeria sofrem incontáveis provações como
 Coexistindo dentro de Alicia, Silmeria consegue trazer sua consciência à tona e assumir o controle do corpo, mas sua condição instável a impede de manter esse poder por muito tempo.
  
 Quando controla o corpo, Silmeria pode usar seus poderes de valquíria de materialização e projeção de fótons.",
-650,1959,"O mais poderoso dos mortos-vivos, muitas vezes chamado de Lorde dos Mortos Vivos.
+650,1959,"O mais poderoso dos mortos-vivos, muitas vezes chamado de Senhor dos Mortos Vivos.
  
 Brahms é alvo de Odin em sua busca pelo Orbe do Dragão, uma das Quatro Relíquias. Os dois já travaram, e ainda travam, muitas batalhas.
  
@@ -334,7 +334,7 @@ Com seu conhecimento da região e o controle do abastecimento de água, ela cons
 Quando o exército de Crell Monferaigne soube de sua morte, logo lamentou ter perdido a oportunidade de tomar Kalstad.",
 650,1997,"Um aventureiro dos arredores de Gerabellum.
  
-Culpando os mortos-vivos pela morte dos pais, Falx passou a vida inteira em busca de vingança, tentando derrotar Brahms, o Lorde dos Mortos Vivos.
+Culpando os mortos-vivos pela morte dos pais, Falx passou a vida inteira em busca de vingança, tentando derrotar Brahms, o Senhor dos Mortos Vivos.
  
 Falx não só se destacava com a espada, como também usava seu conhecimento de engenhocas e feitiçaria a seu favor nas batalhas.
  
@@ -671,7 +671,7 @@ diferente.<8082>",
 866,2,Trocar,
 866,4,Restaurar,
 866,6,Cristais mágicos:,
-866,7,Retiradas rest.:,
+866,7,Retiradas restantes:,
 866,8,Mapa geral,
 866,10,"Esta pedra será restaurada.
 Continuar?",

@@ -38,7 +38,7 @@ espero que tenha voltado...",
 105,21,"As ruínas daqui são perigosas, e muitos
 não saem de lá com vida. Coitado dele...",
 105,23,O que você quer de mim?,
-105,22,"O filho dele fez isto <PART> ---- <PART> é um talismã da sorte.
+105,22,"O filho dele fez isto <PART> ---- <PART> é um amuleto da sorte.
 Neste ramo, qualquer dia pode ser o último...",
 105,27,Isto aqui...,
 105,28,"Isto era dele...!
@@ -47,7 +47,7 @@ Onde você encontrou!? <PART>
 ...Ah, então ele se foi mesmo.
 Bem, pelo menos agora tenho certeza. <PART>
 ---
-Vou levar este talismã à família dele.
+Vou levar este amuleto à família dele.
 Aceite isto pelo incômodo...",
 105,35,...? Diga o que quer ou siga seu caminho.,
 105,34,Qual é o seu problema?,
@@ -130,10 +130,10 @@ na nossa vida, nem para a areia.",
 105,7,Sair de Kalstad?,
 105,8,Sim,
 105,9,Não,
-105,26,Adquirido <PART> Talismã,
+105,26,Adquirido <PART> Amuleto,
 105,29,Adquirido <PART> Talismã Infalível,
-105,30,Adquirido <PART> Talismã,
-105,31,Entregar o talismã?,
+105,30,Adquirido <PART> Amuleto,
+105,31,Entregar o amuleto?,
 105,32,Sim,
 105,33,Não,
 105,38,Adquirido <PART> Ovo Dourado,

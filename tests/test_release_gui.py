@@ -110,6 +110,7 @@ class ReleaseSpecTests(unittest.TestCase):
                         "data/vp2_voices.spec"):
                 self.assertNotIn(old, source, "%s: %s" % (path, old))
             self.assertIn(expected_workpath, source, path)
+            self.assertIn("build_tac_encoder.py", source, path)
             self.assertNotIn(
                 "--workpath workspace/internal/build/vp2_release", source,
                 path)
@@ -117,6 +118,7 @@ class ReleaseSpecTests(unittest.TestCase):
     def test_double_click_builds_for_the_window_subsystem(self):
         self.assertIn("console=False", self.spec)
         self.assertNotIn('"tkinter", "_tkinter"', self.spec)
+        self.assertIn("vp2-tac-encode", self.spec)
 
     def test_icon_and_backdrop_are_bundled(self):
         self.assertIn("icon=", self.spec)

@@ -10,6 +10,7 @@ import sys
 import tempfile
 import unittest
 import wave
+import zlib
 from pathlib import Path
 from unittest import mock
 
@@ -101,10 +102,16 @@ def synthetic_streamed_scene(tail_flag, extra_tail_sectors=0,
     struct.pack_into("<III", data, 0x24, 0, 0x10, 0)
     data[0x30:0x30 + len(indexed_marker)] = indexed_marker
     tail = bytearray(0x120)
-    for clip_id in clip_ids:
+    struct.pack_into("<III", tail, 0, 0, 1, 0x20)
+    tail[0x10:0x14] = b"ESP\0"
+    struct.pack_into("<III", tail, 0x1C, 0x20, len(clip_ids), 0xA0)
+    for index, clip_id in enumerate(clip_ids):
+        struct.pack_into("<II", tail, 0x28 + index * 8,
+                         0x4C5 + index, len(tail) - 0x20)
         entry = bytearray(synthetic_unmapped_entry(tail_flag))
         struct.pack_into("<H", entry, 0xA2, clip_id)
         tail.extend(entry)
+    struct.pack_into("<I", tail, 0x18, len(tail) - 0x20)
     tail.extend(bytes(extra_tail_sectors * layout.SECTOR))
     data.extend(tail)
     data.extend(bytes(-len(data) % layout.SECTOR))
@@ -175,7 +182,7 @@ def synthetic_movie_stream():
         b"\x00\x00\x01\xb9"
     )
     clear += bytes(-len(clear) % layout.SECTOR)
-    return movie.xor_bytes(clear, movie.load_xor_pad()), pcm, bytes(tac)
+    return movie.encode_protected_movie(clear), pcm, bytes(tac)
 
 
 def synthetic_disc_movie_stream():
@@ -272,6 +279,207 @@ def write_wav(path, samples):
 
 
 class MovieAudioTests(unittest.TestCase):
+    def test_all_four_1337_movies_share_the_scene_owner(self):
+        self.assertEqual(
+            {14: 1337, 15: 1337, 16: 1337, 18: 1337},
+            {entry: movie.SCENE_RESOURCES[entry]
+             for entry in (14, 15, 16, 18)},
+        )
+
+    def test_movie_sync_rounds_tac_to_whole_frames(self):
+        self.assertEqual(-35, movie.tac_sync_frames(-0.75))
+        self.assertAlmostEqual(
+            -0.7466666667, movie.tac_sync_seconds(-35), places=9
+        )
+        with self.assertRaisesRegex(ValueError, "finite"):
+            movie.tac_sync_frames(float("nan"))
+
+    def test_pcm_sync_preserves_duration_and_uses_signed_direction(self):
+        pcm = struct.pack("<12h", *range(12))
+        frame = 1 / movie.SAMPLE_RATE
+        self.assertEqual(
+            pcm[4:] + bytes(4), movie.shift_pcm(pcm, -frame)
+        )
+        self.assertEqual(
+            bytes(4) + pcm[:-4], movie.shift_pcm(pcm, frame)
+        )
+
+    def test_movie_pcm_layout_round_trips_planar_channel_blocks(self):
+        frames = movie.PCM_CHANNEL_BLOCK_SAMPLES + 3
+        interleaved = struct.pack(
+            "<%dh" % (frames * 2),
+            *(sample for frame in range(frames)
+              for sample in (frame, -frame)),
+        )
+
+        planar = movie.encode_pcm_payload(interleaved)
+
+        first_block = struct.unpack(
+            "<%dh" % movie.PCM_LAYOUT_BLOCK_SAMPLES,
+            planar[:movie.PCM_LAYOUT_BLOCK_SAMPLES * movie.SAMPLE_WIDTH],
+        )
+        self.assertEqual(
+            tuple(range(movie.PCM_CHANNEL_BLOCK_SAMPLES)),
+            first_block[:movie.PCM_CHANNEL_BLOCK_SAMPLES],
+        )
+        self.assertEqual(
+            tuple(-sample for sample in range(movie.PCM_CHANNEL_BLOCK_SAMPLES)),
+            first_block[movie.PCM_CHANNEL_BLOCK_SAMPLES:],
+        )
+        self.assertEqual(interleaved, movie.decode_pcm_payload(planar))
+
+    def test_tac_decoder_writes_and_validates_a_wav(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "track.laac"
+            target = root / "track.wav"
+            decoder = root / "vgmstream-cli.exe"
+            source.write_bytes(b"TAC")
+            decoder.write_bytes(b"decoder")
+
+            def decode(command, **_kwargs):
+                self.assertEqual(
+                    [str(decoder), "-i", "-o", str(target), str(source)],
+                    command,
+                )
+                movie.write_pcm_wav(target, struct.pack("<4h", 1, -1, 2, -2))
+                return mock.Mock(returncode=0, stdout="", stderr="")
+
+            with mock.patch.object(movie.subprocess, "run", side_effect=decode):
+                self.assertTrue(movie.decode_tac_to_wav(
+                    source, target, executable=decoder
+                ))
+            self.assertEqual(
+                struct.pack("<4h", 1, -1, 2, -2),
+                movie.read_pcm_wav(target),
+            )
+
+    def test_tac_decoder_absence_keeps_the_native_stream_available(self):
+        with mock.patch.object(movie, "find_vgmstream_cli", return_value=None):
+            self.assertFalse(movie.decode_tac_to_wav("track.laac", "track.wav"))
+
+    def test_tac_encoder_receives_the_destination_sample_count(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            data = root / "data" / "tac"
+            data.mkdir(parents=True)
+            for name in ("analysis-pair.f32.zlib", "overlap.f32.zlib"):
+                (data / name).write_bytes(zlib.compress(b"matrix"))
+            source = root / "source.wav"
+            # The WAV duration is independent of the destination TAC model.
+            movie.write_pcm_wav(source, struct.pack("<6h", *range(6)))
+            encoder = root / "vp2-tac-encode.exe"
+            encoder.write_bytes(b"encoder")
+            template = bytearray(0x40)
+            struct.pack_into("<I", template, 0x00, 0x20)
+            struct.pack_into("<HH", template, 0x0C, 1, 3)
+            struct.pack_into("<I", template, 0x14, 0x4E000)
+
+            def encode(command, **_kwargs):
+                self.assertEqual("2", command[-1])
+                output = bytearray(template)
+                struct.pack_into("<H", output, 0x0E, 1)
+                Path(command[5]).write_bytes(output)
+                return mock.Mock(returncode=0, stdout="", stderr="")
+
+            with mock.patch.object(movie, "_runtime_root", return_value=root), \
+                    mock.patch.object(movie.subprocess, "run", side_effect=encode):
+                encoded = movie.encode_tac_wav(
+                    source, bytes(template), 0x1000, executable=encoder,
+                    target_samples=2,
+                )
+            self.assertEqual(2, movie.tac_info(encoded).samples)
+
+    def test_tac_encoder_retries_with_fewer_bands_only_for_capacity(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            data = root / "data" / "tac"
+            data.mkdir(parents=True)
+            for name in ("analysis-pair.f32.zlib", "overlap.f32.zlib"):
+                (data / name).write_bytes(zlib.compress(b"matrix"))
+            source = root / "source.wav"
+            movie.write_pcm_wav(source, struct.pack("<4h", 1, -1, 2, -2))
+            encoder = root / "vp2-tac-encode.exe"
+            encoder.write_bytes(b"encoder")
+            template = bytearray(0x40)
+            struct.pack_into("<I", template, 0x00, 0x20)
+            struct.pack_into("<HH", template, 0x0C, 1, 1)
+            struct.pack_into("<I", template, 0x14, 0x4E000)
+            commands = []
+
+            def encode(command, **_kwargs):
+                commands.append(command)
+                if len(commands) < 3:
+                    return mock.Mock(
+                        returncode=9, stdout="",
+                        stderr="encoded TAC exceeds logical template size",
+                    )
+                Path(command[5]).write_bytes(template)
+                return mock.Mock(returncode=0, stdout="", stderr="")
+
+            with mock.patch.object(movie, "_runtime_root", return_value=root), \
+                    mock.patch.object(movie.subprocess, "run", side_effect=encode):
+                movie.encode_tac_wav(
+                    source, bytes(template), 0x1000, executable=encoder,
+                    target_samples=2,
+                )
+            self.assertEqual(
+                ["11", "10", "9"],
+                [command[-3] for command in commands],
+            )
+
+    def test_tac_encoder_reports_when_only_reduced_bands_fit(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            data = root / "data" / "tac"
+            data.mkdir(parents=True)
+            for name in ("analysis-pair.f32.zlib", "overlap.f32.zlib"):
+                (data / name).write_bytes(zlib.compress(b"matrix"))
+            source = root / "source.wav"
+            movie.write_pcm_wav(source, struct.pack("<4h", 1, -1, 2, -2))
+            encoder = root / "vp2-tac-encode.exe"
+            encoder.write_bytes(b"encoder")
+            template = bytearray(0x40)
+            struct.pack_into("<I", template, 0x00, 0x20)
+            struct.pack_into("<HH", template, 0x0C, 1, 1)
+            struct.pack_into("<I", template, 0x14, 0x4E000)
+            commands, said = [], []
+
+            def encode(command, **_kwargs):
+                commands.append(command)
+                if command[-3] != "7":
+                    return mock.Mock(
+                        returncode=9, stdout="",
+                        stderr="encoded TAC exceeds logical template size",
+                    )
+                Path(command[5]).write_bytes(template)
+                return mock.Mock(returncode=0, stdout="", stderr="")
+
+            with mock.patch.object(movie, "_runtime_root", return_value=root),                     mock.patch.object(movie.subprocess, "run", side_effect=encode):
+                movie.encode_tac_wav(
+                    source, bytes(template), 0x1000, executable=encoder,
+                    target_samples=2, progress=said.append,
+                )
+            self.assertEqual(
+                ["11", "10", "9", "8", "7"],
+                [command[-3] for command in commands],
+            )
+            self.assertEqual(1, len(said))
+            self.assertIn("7 active bands", said[0])
+
+    def test_protected_movie_transform_matches_disc_header_and_round_trips(self):
+        stored_header = bytes.fromhex("77522267")
+        self.assertEqual(
+            b"\x00\x00\x01\xba",
+            movie.decode_protected_movie(stored_header),
+        )
+        clear = bytes(range(251)) * 3
+        stored = movie.encode_protected_movie(clear)
+        self.assertNotEqual(clear, stored)
+        self.assertEqual(clear, movie.decode_protected_movie(stored))
+        with self.assertRaisesRegex(ValueError, "multiple of 8"):
+            movie.decode_protected_movie(stored, start=1)
+
     def test_demuxes_japanese_leading_disc_pes_packet(self):
         tac = bytearray(0x40)
         struct.pack_into("<I", tac, 0x00, 0x20)
@@ -313,7 +521,7 @@ class MovieAudioTests(unittest.TestCase):
 
     def test_demuxes_pcm_and_tac_from_concatenated_programs(self):
         stored, pcm, tac = synthetic_movie_stream()
-        clear = movie.xor_bytes(stored, movie.load_xor_pad())
+        clear = movie.decode_protected_movie(stored)
         tracks = movie.parse_audio_tracks(clear)
 
         self.assertEqual(
@@ -330,7 +538,7 @@ class MovieAudioTests(unittest.TestCase):
 
     def test_pcm_replacement_only_changes_audio_spans(self):
         stored, _pcm, _tac = synthetic_movie_stream()
-        clear = movie.xor_bytes(stored, movie.load_xor_pad())
+        clear = movie.decode_protected_movie(stored)
         track = movie.parse_audio_tracks(clear)[0]
         replacement = struct.pack("<4h", 100, -100, 200, -200)
         rebuilt = movie.replace_pcm_track(clear, track, replacement)
@@ -352,7 +560,38 @@ class MovieAudioTests(unittest.TestCase):
                 clear, track, bytes(track.capacity + movie.PCM_FRAME_BYTES)
             )
 
-    def test_extracts_movie_candidates_but_refuses_replacement(self):
+    def test_tac_replacement_validates_duration_and_packet_capacity(self):
+        stored, _pcm, tac = synthetic_movie_stream()
+        clear = movie.decode_protected_movie(stored)
+        track = movie.parse_audio_tracks(clear)[1]
+        replacement = bytearray(tac)
+        replacement[0x30] = 0x5A
+
+        rebuilt = movie.replace_tac_track(clear, track, bytes(replacement))
+
+        checked = movie.parse_audio_tracks(rebuilt)[1]
+        self.assertEqual(bytes(replacement), checked.data)
+        wrong_duration = bytearray(replacement)
+        struct.pack_into("<H", wrong_duration, 0x0E, 100)
+        with self.assertRaisesRegex(ValueError, "101 samples.*100"):
+            movie.replace_tac_track(clear, track, bytes(wrong_duration))
+        with self.assertRaisesRegex(ValueError, "packet slots"):
+            movie.replace_tac_track(
+                clear, track, bytes(replacement) + bytes(track.capacity)
+            )
+
+    def test_tac_encoder_template_uses_the_target_duration(self):
+        target = bytearray(0x40)
+        struct.pack_into("<I", target, 0x00, 0x20)
+        struct.pack_into("<HH", target, 0x0C, 10, 700)
+        struct.pack_into("<I", target, 0x14, 0x4E000)
+
+        self.assertEqual(
+            movie.tac_info(target).samples,
+            movie.tac_target_samples(bytes(target)),
+        )
+
+    def test_extracts_and_transactionally_replaces_pcm_movie_audio(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             source = root / "usa.iso"
@@ -362,9 +601,21 @@ class MovieAudioTests(unittest.TestCase):
                 MOVIE_ENTRY: (MOVIE_OFFSET, stored),
             })
             source_before = source.read_bytes()
+
+            def decode(_source, target, _executable=None):
+                movie.write_pcm_wav(
+                    target, struct.pack("<8h", 20, -20, 30, -30,
+                                        40, -40, 50, -50)
+                )
+                return True
+
             with mock.patch.object(build, "VOICE_BANKS", ()), \
                     mock.patch.object(build, "load_bank_map", return_value={}), \
-                    mock.patch.object(build, "load_unmapped_map", return_value={}):
+                    mock.patch.object(build, "load_unmapped_map", return_value={}), \
+                    mock.patch.object(movie, "find_vgmstream_cli",
+                                      return_value=Path("vgmstream-cli")), \
+                    mock.patch.object(movie, "decode_tac_to_wav",
+                                      side_effect=decode):
                 result = build.extract_voices(source, root / "voices")
             pcm_path = (
                 result.output / "0010" /
@@ -372,10 +623,11 @@ class MovieAudioTests(unittest.TestCase):
             )
             tac_path = (
                 result.output / "0010" /
-                "fmv-0011-001.laac"
+                "fmv-0011-001.wav"
             )
             self.assertTrue(pcm_path.is_file())
             self.assertTrue(tac_path.is_file())
+            self.assertFalse(tac_path.with_suffix(".laac").exists())
             self.assertEqual(2, result.movie_tracks)
             with (result.output / "manifest.csv").open(
                     encoding="utf-8", newline="") as manifest:
@@ -391,13 +643,178 @@ class MovieAudioTests(unittest.TestCase):
             )
             replacement = struct.pack("<4h", 20, -20, 30, -30)
             movie.write_pcm_wav(pcm_path, replacement)
+            tac_path.unlink()
             with mock.patch.object(build, "VOICE_BANKS", ()), \
                     mock.patch.object(build, "load_unmapped_map", return_value={}):
-                with self.assertRaisesRegex(
-                        ValueError, "replacement is disabled"):
-                    build.patch_iso(source, result.output, output=output)
+                patched = build.patch_iso(
+                    source, result.output, output=output
+                )
             self.assertEqual(source_before, source.read_bytes())
-            self.assertFalse(output.exists())
+            self.assertTrue(output.is_file())
+            self.assertEqual(1, len(patched.replacements))
+            self.assertEqual("fmv", patched.replacements[0].kind)
+            with output.open("rb") as candidate:
+                total, table = layout.read_index(candidate)
+                _offset, patched_stored = build._read_entry(
+                    candidate, table, total, MOVIE_ENTRY
+                )
+            original_clear = movie.decode_protected_movie(stored)
+            patched_clear = movie.decode_protected_movie(patched_stored)
+            patched_tracks = movie.parse_audio_tracks(patched_clear)
+            self.assertEqual(
+                movie.encode_pcm_payload(replacement) +
+                bytes(patched_tracks[0].capacity - len(replacement)),
+                patched_tracks[0].data,
+            )
+            changed = {
+                offset
+                for span in patched_tracks[0].spans
+                for offset in range(span.offset, span.offset + span.length)
+            }
+            self.assertTrue(all(
+                before == after or offset in changed
+                for offset, (before, after) in enumerate(
+                    zip(original_clear, patched_clear)
+                )
+            ))
+            self.assertEqual(
+                movie.parse_audio_tracks(original_clear)[1].data,
+                patched_tracks[1].data,
+            )
+
+    def test_extraction_decodes_tac_to_wav_when_vgmstream_is_available(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            stored, _pcm, _tac = synthetic_movie_stream()
+            synthetic_iso(source, scenes={
+                MOVIE_ENTRY: (MOVIE_OFFSET, stored),
+            })
+
+            def decode(_source, target, _executable=None):
+                movie.write_pcm_wav(
+                    target, struct.pack("<8h", 20, -20, 30, -30,
+                                        40, -40, 50, -50)
+                )
+                return True
+
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_bank_map", return_value={}), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}), \
+                    mock.patch.object(movie, "find_vgmstream_cli",
+                                      return_value=Path("vgmstream-cli")), \
+                    mock.patch.object(movie, "decode_tac_to_wav",
+                                      side_effect=decode):
+                result = build.extract_voices(source, root / "voices")
+
+            folder = result.output / "0010"
+            self.assertTrue((folder / "fmv-0011-001.wav").is_file())
+            self.assertFalse((folder / "fmv-0011-001.laac").exists())
+            with (result.output / "manifest.csv").open(
+                    encoding="utf-8", newline="") as manifest:
+                row = next(row for row in csv.DictReader(manifest)
+                           if row["kind"] == "fmv-tac")
+            self.assertEqual("0010/fmv-0011-001.wav", row["relative_path"])
+            self.assertNotEqual("0", row["peak"])
+
+    def test_extraction_fails_cleanly_when_tac_cannot_be_decoded(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            stored, _pcm, _tac = synthetic_movie_stream()
+            synthetic_iso(source, scenes={
+                MOVIE_ENTRY: (MOVIE_OFFSET, stored),
+            })
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_bank_map", return_value={}), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}), \
+                    mock.patch.object(movie, "find_vgmstream_cli",
+                                      return_value=None), \
+                    mock.patch.object(movie, "decode_tac_to_wav",
+                                      return_value=False):
+                with self.assertRaisesRegex(ValueError, "requires vgmstream"):
+                    build.extract_voices(source, root / "voices")
+            self.assertFalse((root / "voices" / "en").exists())
+            self.assertFalse((root / "voices" / "en.partial").exists())
+
+    def test_encodes_a_standalone_tac_movie_wav_from_destination_metadata(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            output = root / "patched.iso"
+            stored, _pcm, _tac = synthetic_movie_stream()
+            synthetic_iso(source, scenes={
+                MOVIE_ENTRY: (MOVIE_OFFSET, stored),
+            })
+            voices = root / "voices"
+            voices.mkdir()
+            movie.write_pcm_wav(
+                voices / "fmv-0011-001.wav",
+                struct.pack("<4h", 20, -20, 30, -30),
+            )
+            replacement = bytearray(_tac)
+            replacement[0x30] = 0x5A
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}), \
+                    mock.patch.object(movie, "encode_tac_wav",
+                                      return_value=bytes(replacement)) as encode:
+                result = build.patch_iso(
+                    source, voices, output=output,
+                    movie_sync={MOVIE_ENTRY: -0.75},
+                )
+            self.assertEqual(1, len(result.replacements))
+            encode.assert_called_once()
+            self.assertEqual(_tac, encode.call_args.args[1])
+            self.assertEqual(-0.75, encode.call_args.args[3])
+            self.assertTrue(output.exists())
+
+    def test_encoded_tac_rejects_a_requested_sync(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            stored, _pcm, tac = synthetic_movie_stream()
+            synthetic_iso(source, scenes={MOVIE_ENTRY: (MOVIE_OFFSET, stored)})
+            voices = root / "voices"
+            voices.mkdir()
+            (voices / "fmv-0011-001.laac").write_bytes(tac)
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}):
+                with self.assertRaisesRegex(ValueError, "already encoded"):
+                    build.patch_iso(
+                        source, voices, root / "patched.iso",
+                        movie_sync={MOVIE_ENTRY: -0.75},
+                    )
+
+    def test_transactionally_replaces_encoded_tac_movie_audio(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            output = root / "patched.iso"
+            stored, _pcm, tac = synthetic_movie_stream()
+            synthetic_iso(source, scenes={
+                MOVIE_ENTRY: (MOVIE_OFFSET, stored),
+            })
+            voices = root / "voices"
+            voices.mkdir()
+            replacement = bytearray(tac)
+            replacement[0x30] = 0x5A
+            (voices / "fmv-0011-001.laac").write_bytes(replacement)
+
+            with mock.patch.object(build, "VOICE_BANKS", ()), \
+                    mock.patch.object(build, "load_unmapped_map", return_value={}):
+                result = build.patch_iso(source, voices, output=output)
+
+            self.assertEqual(1, len(result.replacements))
+            self.assertEqual("fmv", result.replacements[0].kind)
+            with output.open("rb") as candidate:
+                total, table = layout.read_index(candidate)
+                _offset, patched_stored = build._read_entry(
+                    candidate, table, total, MOVIE_ENTRY
+                )
+            patched_tracks = movie.parse_audio_tracks(
+                movie.decode_protected_movie(patched_stored)
+            )
+            self.assertEqual(bytes(replacement), patched_tracks[1].data)
 
 
 class LayoutTests(unittest.TestCase):
@@ -591,6 +1008,25 @@ class ExtractionTests(unittest.TestCase):
                 result = build.extract_voices(source, root / "voices")
             self.assertEqual(root / "voices" / "jp", result.output)
 
+    def test_1337_bank_lines_are_kept_under_unused(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "usa.iso"
+            synthetic_iso(source)
+            owner = layout.BankOwner(BANK, 1337, 10, 1)
+            with mock.patch.object(build, "VOICE_BANKS", (BANK,)), \
+                    mock.patch.object(build, "load_bank_map",
+                                      return_value={BANK: owner}), \
+                    mock.patch.object(build, "load_unmapped_map",
+                                      return_value={}):
+                result = build.extract_voices(source, root / "voices")
+            wav = result.output / "1337" / "unused" / "1483-000-8028.wav"
+            self.assertTrue(wav.is_file())
+            self.assertFalse((result.output / "1337" /
+                              "1483-000-8028.wav").exists())
+            self.assertTrue((result.output / "1337" / "unused" /
+                             "voice-map.csv").is_file())
+
     def test_unverified_bank_stays_under_alternate_takes(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -720,10 +1156,20 @@ class ExtractionTests(unittest.TestCase):
                     mock.patch.object(build, "load_bank_map",
                                       return_value={}), \
                     mock.patch.object(build, "load_unmapped_map",
-                                      return_value={}):
+                                      return_value={}), \
+                    mock.patch.object(
+                        build, "load_alicia_field_aliases",
+                        return_value={
+                            (FIELD_ENTRY, 0, 0, 0x0A80, 0): {
+                                (FIELD_ENTRY, 0, 0, 0x0A80, 0): 64,
+                            },
+                        },
+                    ):
                 result = build.extract_voices(source, root / "voices")
-            self.assertTrue((result.output / "field" /
+            self.assertTrue((result.output / "alicia" /
                              "field-0024-00-000-0a80-0.wav").is_file())
+            self.assertFalse((result.output / "field" /
+                              "field-0024-00-000-0a80-0.wav").exists())
             self.assertTrue((result.output / "field" /
                              "field-0024-01-000-0a83-0.wav").is_file())
             self.assertTrue((result.output / "lezard" /
@@ -757,6 +1203,200 @@ class ExtractionTests(unittest.TestCase):
 
 
 class PatchingTests(unittest.TestCase):
+    def test_spu_encoder_uses_a_distinct_hardware_state_search(self):
+        pcm = struct.pack(
+            "<56h", *([0, 1200, -900, 700, -400, 200, -100] * 8)
+        )
+        encoded = audio.encode_spu_adpcm(pcm)
+        self.assertEqual(32, len(encoded))
+        self.assertNotEqual(audio.encode_adpcm(pcm), encoded)
+        self.assertTrue(any(encoded))
+
+    def test_fixed_control_encoder_preserves_supplied_controls(self):
+        pcm = struct.pack(
+            "<56h", *([0, 1200, -900, 700, -400, 200, -100] * 8)
+        )
+        encoded = audio.encode_adpcm_with_controls(pcm, bytes((0x0C, 0x24)))
+        self.assertEqual(32, len(encoded))
+        self.assertEqual((0x0C, 0x24), (encoded[0], encoded[16]))
+        self.assertGreater(audio.statistics(audio.decode_adpcm(encoded))[1], 0)
+
+    def test_fixed_control_encoder_rejects_short_template(self):
+        with self.assertRaisesRegex(ValueError, "control template holds 1"):
+            audio.encode_adpcm_with_controls(b"\0\0" * 56, bytes((0x0C,)))
+
+    def test_v1_scope_selects_cutscenes_through_1389_and_lezard_only(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            names = {
+                "0009/1483-000-8001.wav",
+                "0010/1483-000-8002.wav",
+                "1389/1483-000-8003.wav",
+                "1390/1483-000-8004.wav",
+                "alicia/field-0869-00-007-0a80-0.wav",
+                "lezard/lezard-1011-00-000-0a89-0.wav",
+                "battle/battle-2138-000-0b00-0.wav",
+            }
+            for name in names:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.touch()
+            found = build.discover_replacements(root, scope="v1")
+            self.assertEqual(
+                {
+                    root / "0010/1483-000-8002.wav",
+                    root / "1389/1483-000-8003.wav",
+                    root / "alicia/field-0869-00-007-0a80-0.wav",
+                    root / "lezard/lezard-1011-00-000-0a89-0.wav",
+                },
+                set(found.values()),
+            )
+
+    def test_rebuilds_complete_lezard_tail_to_coherent_japanese_geometry(self):
+        original = synthetic_streamed_scene(
+            tail_flag=7, clip_ids=(0x0A89, 0x0A9C)
+        )
+        encoded = audio.encode_adpcm(b"\0\0" * 140)
+        replacement0 = build.Replacement(
+            path=Path("lezard.wav"), kind="lezard", entry=TAIL_ENTRY,
+            sub=0, sample=0, zone=0, clip_id=0x0A89, slot_bytes=128,
+        )
+        replacement1 = build.Replacement(
+            path=Path("lezard2.wav"), kind="lezard", entry=TAIL_ENTRY,
+            sub=1, sample=0, zone=0, clip_id=0x0A9C, slot_bytes=64,
+        )
+        capacities = {(TAIL_ENTRY, 0, 0): {
+            "clip_id": "0a89", "zone": "0",
+            "jp_payload_bytes": "128", "jp_group_bytes": "2048",
+            "jp_header_patch": "90:80",
+            "jp_flag_patch": "41:01;51:07",
+            "jp_terminal_patch": (
+                "51:07;52:77;53:77;54:77;55:77;56:77;57:77;58:77;"
+                "59:77;5a:77;5b:77;5c:77;5d:77;5e:77;5f:77"
+            ),
+            "jp_trailer_patch": "0:4c;1:49;2:50;3:20",
+        }, (TAIL_ENTRY, 1, 0): {
+            "clip_id": "0a9c", "zone": "0",
+            "jp_payload_bytes": "64", "jp_group_bytes": "2048",
+            "jp_header_patch": "", "jp_flag_patch": "31:07",
+            "jp_terminal_patch": "31:07",
+            "jp_trailer_patch": "0:4c;1:49;2:50;3:20",
+        }}
+        rebuilt = build._rebuild_lezard_entry(
+            original, TAIL_ENTRY,
+            {
+                0: (encoded, Path("lezard.wav"), replacement0),
+                1: (audio.SILENCE_FRAME * 2, Path("lezard2.wav"),
+                    replacement1),
+            }, capacities,
+        )
+        groups = build._streamed_audio_groups(rebuilt)[1]
+        self.assertEqual(128, groups[0][2][0].payload_length)
+        self.assertEqual(64, groups[1][2][0].payload_length)
+        first_position, _payload, first_clips = groups[0]
+        first_payload = (
+            first_position + first_clips[0].payload_offset
+        )
+        self.assertEqual(
+            bytes(audio.FRAME),
+            rebuilt[first_payload:first_payload + audio.FRAME],
+        )
+        self.assertEqual(
+            bytes(audio.FRAME * 2),
+            rebuilt[first_payload + 96:first_payload + 128],
+        )
+        self.assertEqual(
+            bytes((0, 7)) + bytes((0x77,)) * 14,
+            rebuilt[first_payload + 80:first_payload + 96],
+        )
+        first_trailer = (
+            first_position + first_clips[0].payload_offset +
+            first_clips[0].payload_length
+        )
+        self.assertEqual(b"LIP ", rebuilt[first_trailer:first_trailer + 4])
+        self.assertEqual(len(original), len(rebuilt))
+        tail = build._streamed_audio_groups(rebuilt)[0]
+        directory = tail + 0x20
+        for index, (position, _payload, _clips) in enumerate(groups):
+            self.assertEqual(
+                position - directory,
+                struct.unpack_from("<I", rebuilt, directory + 12 + index * 8)[0],
+            )
+        last_position, _payload, last_clips = groups[-1]
+        closing = rebuilt.find(
+            b"LIP ", last_position + last_clips[0].payload_offset +
+            last_clips[0].payload_length)
+        self.assertEqual(
+            closing - directory,
+            struct.unpack_from("<I", rebuilt, tail + 0x18)[0],
+        )
+
+    def test_lezard_rebuild_refuses_a_directory_that_misses_its_groups(self):
+        original = bytearray(synthetic_streamed_scene(
+            tail_flag=7, clip_ids=(0x0A89, 0x0A9C)
+        ))
+        tail = build._streamed_audio_groups(bytes(original))[0]
+        struct.pack_into("<I", original, tail + 0x20 + 12, 0x40)
+        capacities = {(TAIL_ENTRY, index, 0): {
+            "clip_id": clip_id, "zone": "0",
+            "jp_payload_bytes": "64", "jp_group_bytes": "2048",
+            "jp_header_patch": "", "jp_flag_patch": "", "jp_terminal_patch": "",
+            "jp_trailer_patch": "0:4c;1:49;2:50;3:20",
+        } for index, clip_id in enumerate(("0a89", "0a9c"))}
+        replacement = build.Replacement(
+            path=Path("lezard.wav"), kind="lezard", entry=TAIL_ENTRY,
+            sub=0, sample=0, zone=0, clip_id=0x0A89, slot_bytes=64,
+        )
+        with self.assertRaisesRegex(ValueError, "does not point at its group"):
+            build._rebuild_lezard_entry(
+                bytes(original), TAIL_ENTRY,
+                {index: (audio.SILENCE_FRAME * 4, Path("lezard.wav"),
+                         replacement) for index in (0, 1)},
+                capacities,
+            )
+
+    def test_rejects_partial_lezard_tail_for_japanese_geometry(self):
+        original = synthetic_streamed_scene(
+            tail_flag=7, clip_ids=(0x0A89, 0x0A9C)
+        )
+        replacement = build.Replacement(
+            path=Path("lezard.wav"), kind="lezard", entry=TAIL_ENTRY,
+            sub=0, sample=0, zone=0, clip_id=0x0A89, slot_bytes=128,
+        )
+        with self.assertRaisesRegex(ValueError, "needs all 2 WAVs"):
+            build._rebuild_lezard_entry(
+                original, TAIL_ENTRY,
+                {0: (audio.SILENCE_FRAME * 5, Path("lezard.wav"),
+                     replacement)},
+                {},
+            )
+
+    def test_rebuilds_a_cutscene_bank_to_cached_larger_geometry(self):
+        original = synthetic_bank()
+        encoded = audio.encode_adpcm(b"\0\0" * 140)
+        capacities = {(BANK, 0): {
+            "clip_id": "%04x" % CLIP_ID,
+            "max_payload_bytes": "128",
+            "max_subfile_bytes": "4096",
+            "max_header_patch": "50:80",
+            "max_flag_patch": "61:01;71:07",
+        }}
+        rebuilt = build._rebuild_voice_bank(
+            original,
+            {0: (encoded, Path("replacement.wav"), CLIP_ID, BANK)},
+            capacities,
+        )
+        clip = layout.parse_bank(rebuilt)[0]
+        self.assertEqual(128, clip.payload_length)
+        self.assertEqual(4096, clip.sub_length)
+        self.assertEqual(len(original) + layout.SECTOR, len(rebuilt))
+        payload = rebuilt[
+            clip.sub_offset + clip.payload_offset:
+            clip.sub_offset + clip.payload_offset + clip.payload_length
+        ]
+        self.assertEqual(1, payload[0x61])
+        self.assertEqual(7, payload[0x71])
+
     def test_replaces_only_the_payload_and_preserves_iso_geometry(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -768,7 +1408,14 @@ class PatchingTests(unittest.TestCase):
             replacement = voices / "1483-000-8028.wav"
             write_wav(replacement, [1200, -1200] * 28)
             before = source.read_bytes()
-            result = build.patch_iso(source, voices, output)
+            capacities = {(TAIL_ENTRY, 0, 0): {
+                "usa_payload_bytes": "64", "max_payload_bytes": "64",
+                "jp_controls": "0c" * 4,
+            }}
+            with mock.patch.object(
+                    build, "load_lezard_capacity_csv",
+                    return_value=capacities):
+                result = build.patch_iso(source, voices, output)
             after = output.read_bytes()
             clip = layout.parse_bank(synthetic_bank())[0]
             start = BANK_OFFSET + clip.sub_offset + clip.payload_offset
@@ -887,6 +1534,48 @@ class PatchingTests(unittest.TestCase):
                 {replacement.kind for replacement in result.replacements},
             )
 
+    def test_expanded_cutscene_keeps_later_battle_write_resource_relative(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "source.iso"
+            output = root / "output.iso"
+            voices = root / "voices"
+            voices.mkdir()
+            synthetic_iso(source, battle=True)
+            write_wav(voices / "1483-000-8028.wav", [500, -500] * 70)
+            write_wav(
+                voices / "battle-2138-000-0b00-0.wav", [650, -650] * 14
+            )
+            capacities = {(BANK, 0): {
+                "clip_id": "%04x" % CLIP_ID,
+                "usa_payload_bytes": "64",
+                "max_payload_bytes": "128",
+                "max_subfile_bytes": "4096",
+                "max_header_patch": "50:80",
+                "max_flag_patch": "61:01;71:07",
+            }}
+            with mock.patch.object(
+                    build, "load_capacity_csv", return_value=capacities):
+                result = build.patch_iso(source, voices, output)
+            with output.open("rb") as candidate:
+                total, table = layout.read_index(candidate)
+                self.assertEqual(
+                    BATTLE_OFFSET + layout.SECTOR,
+                    table[BATTLE_ENTRY] * layout.SECTOR,
+                )
+                _offset, stored = build._read_entry(
+                    candidate, table, total, BATTLE_ENTRY
+                )
+            clear, _signature = layout.decode_battle_entry(stored)
+            clip = layout.parse_standalone(clear)[0]
+            self.assertEqual(7, clear[
+                clip.payload_offset + clip.payload_length - 15
+            ])
+            self.assertEqual(
+                {"cutscene", "battle"},
+                {replacement.kind for replacement in result.replacements},
+            )
+
     def test_replaces_field_sample_in_place(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -913,6 +1602,53 @@ class PatchingTests(unittest.TestCase):
             self.assertEqual(before[end:], after[end:])
             self.assertEqual("field", result.replacements[0].kind)
 
+    def test_canonical_alicia_wav_rebuilds_every_area_copy(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / "source.iso"
+            output = root / "output.iso"
+            voices = root / "voices"
+            voices.mkdir()
+            field = synthetic_indexed_audio_scene(tail_flag=7)
+            alias_entry = FIELD_ENTRY + 1
+            alias_offset = FIELD_OFFSET + len(field)
+            synthetic_iso(source, scenes={
+                FIELD_ENTRY: (FIELD_OFFSET, field),
+                alias_entry: (alias_offset, field),
+            })
+            replacement = voices / "field-0024-00-000-0a80-0.wav"
+            write_wav(replacement, [900, -900] * 70)
+            aliases = {
+                (FIELD_ENTRY, 0, 0, 0x0A80, 0): {
+                    (FIELD_ENTRY, 0, 0, 0x0A80, 0): 128,
+                    (alias_entry, 0, 0, 0x0A80, 0): 128,
+                },
+            }
+            rebuilt_entries = {}
+
+            def capture(_source, _output, overrides, writes=(), progress=None):
+                rebuilt_entries.update(overrides)
+
+            with mock.patch.object(
+                    build, "load_alicia_field_aliases",
+                    return_value=aliases), mock.patch.object(
+                    build, "_repack_resource_overrides",
+                    side_effect=capture):
+                result = build.patch_iso(source, voices, output)
+            self.assertEqual(2, len(result.replacements))
+            payloads = []
+            for entry in (FIELD_ENTRY, alias_entry):
+                group = build._indexed_audio_groups(
+                    rebuilt_entries[entry]
+                )[0][4]
+                clip = layout.parse_standalone(group)[0]
+                self.assertEqual(128, clip.payload_length)
+                payloads.append(group[
+                    clip.payload_offset:
+                    clip.payload_offset + clip.payload_length
+                ])
+            self.assertEqual(payloads[0], payloads[1])
+
     def test_replaces_lezard_sample_in_place(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -930,10 +1666,18 @@ class PatchingTests(unittest.TestCase):
                 voices / "lezard-1011-00-000-0a89-0.wav", [700, -700] * 14
             )
             before = source.read_bytes()
-            result = build.patch_iso(source, voices, output)
-            after = output.read_bytes()
             position, _payload, clips = build._streamed_audio_groups(tower)[1][0]
             clip = clips[0]
+            capacities = {(TAIL_ENTRY, 0, 0): {
+                "usa_payload_bytes": str(clip.payload_length),
+                "max_payload_bytes": str(clip.payload_length),
+                "jp_controls": "0c" * 4,
+            }}
+            with mock.patch.object(
+                    build, "load_lezard_capacity_csv",
+                    return_value=capacities):
+                result = build.patch_iso(source, voices, output)
+            after = output.read_bytes()
             start = TAIL_OFFSET + position + clip.payload_offset
             end = start + clip.payload_length
             self.assertEqual(before[:start], after[:start])

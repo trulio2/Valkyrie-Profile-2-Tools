@@ -3,7 +3,7 @@
 
 """Shared identity for the unified VP2 tools application."""
 
-VERSION = "0.7.1"
+VERSION = "0.8.0"
 PROJECT_NAME = "Valkyrie Profile 2 Silmeria Tools"
 PROJECT_URL = "https://github.com/trulio2/Valkyrie-Profile-2-Tools"
 WINDOW_TITLE = "Valkyrie Profile 2 Tools"

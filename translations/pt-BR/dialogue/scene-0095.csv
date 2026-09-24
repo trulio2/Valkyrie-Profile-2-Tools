@@ -3,7 +3,7 @@ resource,message_id,translated,notes
 dopassa por eles. <PART>
 ---
 Até alguns anos atrás, havia outra guilda, mas as baixas acabaram com eles.",
-95,4,A outra guilda fechou mais ou menos na época em que eles encontraram ovos de monstro na Mina Turgen.,
+95,4,A outra guilda fechou mais ou menos na época em que eles encontraram ovos de monstro na Mina de Turgen.,
 95,5,Qual é toda essa confusão lá fora? Eles fecharam os portões do castelo de repente!,
 95,6,Villnore é um ótimo lugar para fazer compras! Você não vai encontrar uma cidade melhor para isso!,
 95,7,"Me venda qualquer coisa que você não usa.  
@@ -51,7 +51,7 @@ Com esse tipo de poder na sua arma, não há nada a temer!",
 95,30,"<Ponta Afiada>
  <PART> Cavaleiro Lagarto <PART> : Arma
  <PART> Armadura Viva <PART> : Arma",
-95,29,"<Ruby Básico>
+95,29,"<Núcleo Rubi>
  <PART> Joia Vermelha <PART> : Tesouro
  <PART> Joia Negra <PART> : Tesouro",
 95,28,"<Semente Tóxica>
@@ -62,9 +62,9 @@ Com esse tipo de poder na sua arma, não há nada a temer!",
 95,21,<Anotações do Lojista>,
 95,22,Chifre de Besouro,
 95,23,Pétala de Flor Branca,
-95,24,Escalas de Andorinha Sem Carga,
+95,24,Escamas de Andorinha,
 95,25,Ponta de Lança Afiada,
-95,26,Ruby Básico,
+95,26,Núcleo Rubi,
 95,27,Semente Tóxica,
 95,150,,
 95,2890,Habitante,

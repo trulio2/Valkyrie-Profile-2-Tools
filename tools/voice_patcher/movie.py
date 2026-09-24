@@ -1,26 +1,46 @@
 # SPDX-FileCopyrightText: 2026 Valkyrie Profile 2 Translation Tools contributors
 # SPDX-License-Identifier: GPL-3.0-only
-"""Audio tracks inside VP2's XOR-protected MPEG program streams."""
+"""Audio tracks inside VP2's protected MPEG program streams."""
 
 from __future__ import annotations
 
+from array import array
 from dataclasses import dataclass
 from pathlib import Path
+import os
 import re
+import shutil
 import struct
+import subprocess
+import sys
+import tempfile
 import wave
+import zlib
 
-from ..scripts.paths import DATA_DIR
-
-
-PAD_BYTES = 2048
-XOR_CHUNK = 4 * 1024 * 1024
+MOVIE_WORD_BYTES = 8
+MOVIE_BLOCK_BYTES = 64
+MOVIE_STATE_MASK = 0x1F
+MOVIE_WORD_MASK = (1 << 64) - 1
+MOVIE_KEYS = (
+    0x84DFEFF0DD23524E,
+    0x0A3A59BA1F2723B3,
+    0xF2044E20DDAB1AAB,
+    0x192EDBB7946026BF,
+    0x93C21E3A70122574,
+    0xB1C25EB6795DF4A1,
+    0x84D9E6C51A667F25,
+    0x0A25597A06E9E7B3,
+)
 PCM_CODEC = 0
 TAC_CODEC = 1
 SAMPLE_RATE = 48000
 CHANNELS = 2
 SAMPLE_WIDTH = 2
 PCM_FRAME_BYTES = CHANNELS * SAMPLE_WIDTH
+PCM_CHANNEL_BLOCK_SAMPLES = 1024
+TAC_FRAME_SAMPLES = 1024
+TAC_FRAME_SECONDS = TAC_FRAME_SAMPLES / SAMPLE_RATE
+PCM_LAYOUT_BLOCK_SAMPLES = CHANNELS * PCM_CHANNEL_BLOCK_SAMPLES
 PRIVATE_PREFIX = b"\xff\x90\x00"
 DISC_UNIT = 0x1000
 DISC_AUDIO_MARKER_OFFSET = 0x16
@@ -31,9 +51,16 @@ DISC_AUDIO_MARKER = b"\x00\xde"
 DISC_WRAPPER = b"\x00\x00\x91\x00"
 DISC_PES_STREAM = 0xCE
 DISC_PES_WRAPPER = b"\x01\x91\x00"
-SCENE_RESOURCES = {11: 10, 14: 1337, 20: 1323}
+SCENE_RESOURCES = {
+    11: 10,
+    14: 1337,
+    15: 1337,
+    16: 1337,
+    18: 1337,
+    20: 1323,
+}
 MOVIE_NAME = re.compile(
-    r"^fmv-(?P<entry>\d{4})-(?P<movie>\d{3})\.wav$",
+    r"^fmv-(?P<entry>\d{4})-(?P<movie>\d{3})\.(?:wav|laac)$",
     re.IGNORECASE,
 )
 
@@ -62,42 +89,54 @@ class TacInfo:
     stream_size: int
 
 
-def load_xor_pad(path=None) -> bytes:
-    """Load the region-invariant 2048-byte movie XOR pad."""
-    path = Path(path or DATA_DIR / "fmv-xor-pad.txt")
-    try:
-        lines = path.read_text(encoding="ascii").splitlines()
-    except OSError as exc:
-        raise ValueError("cannot read FMV XOR pad %s: %s" % (path, exc)) from exc
-    values = re.findall(
-        r"\b[0-9a-fA-F]{2}\b",
-        "\n".join(line for line in lines if not line.lstrip().startswith("#")),
-    )
-    pad = bytes(int(value, 16) for value in values)
-    if len(pad) != PAD_BYTES:
-        raise ValueError(
-            "FMV XOR pad must contain %d bytes (found %d)"
-            % (PAD_BYTES, len(pad))
+def _transform_protected_movie(data: bytes, start: int, decode: bool) -> bytes:
+    """Apply the reversible EE movie transform to 8-byte-aligned data."""
+    if start < 0 or start % MOVIE_WORD_BYTES:
+        raise ValueError("protected movie offset must be a non-negative multiple of 8")
+    complete = len(data) // MOVIE_WORD_BYTES * MOVIE_WORD_BYTES
+    words = array("Q")
+    words.frombytes(data[:complete])
+    if sys.byteorder != "little":
+        words.byteswap()
+    first_word = start // MOVIE_WORD_BYTES
+    for index, word in enumerate(words):
+        absolute_word = first_word + index
+        key = MOVIE_KEYS[absolute_word % len(MOVIE_KEYS)]
+        adjustment = 57 + (
+            ((absolute_word * MOVIE_WORD_BYTES) // MOVIE_BLOCK_BYTES) &
+            MOVIE_STATE_MASK
         )
-    return pad
-
-
-def xor_bytes(data: bytes, pad: bytes, start=0) -> bytes:
-    """Apply the repeating movie XOR pad without a per-byte Python loop."""
-    if len(pad) != PAD_BYTES:
-        raise ValueError("FMV XOR pad must be exactly %d bytes" % PAD_BYTES)
-    output = bytearray(len(data))
-    for offset in range(0, len(data), XOR_CHUNK):
-        chunk = data[offset:offset + XOR_CHUNK]
-        phase = (start + offset) % len(pad)
-        rotated = pad[phase:] + pad[:phase]
-        key = (rotated * ((len(chunk) + len(pad) - 1) // len(pad)))[
-            :len(chunk)
-        ]
-        output[offset:offset + len(chunk)] = (
-            int.from_bytes(chunk, "little") ^ int.from_bytes(key, "little")
-        ).to_bytes(len(chunk), "little")
+        if decode:
+            transformed = ((word ^ key) - adjustment) & MOVIE_WORD_MASK
+        else:
+            transformed = ((word + adjustment) & MOVIE_WORD_MASK) ^ key
+        words[index] = transformed
+    if sys.byteorder != "little":
+        words.byteswap()
+    output = bytearray(words.tobytes())
+    if complete < len(data):
+        absolute_word = first_word + len(words)
+        word = int.from_bytes(data[complete:], "little")
+        key = MOVIE_KEYS[absolute_word % len(MOVIE_KEYS)]
+        adjustment = 57 + ((absolute_word // 8) & MOVIE_STATE_MASK)
+        if decode:
+            transformed = ((word ^ key) - adjustment) & MOVIE_WORD_MASK
+        else:
+            transformed = ((word + adjustment) & MOVIE_WORD_MASK) ^ key
+        output.extend(transformed.to_bytes(MOVIE_WORD_BYTES, "little")[
+            :len(data) - complete
+        ])
     return bytes(output)
+
+
+def decode_protected_movie(data: bytes, start=0) -> bytes:
+    """Decode bytes using the transform run by VP2's EE movie player."""
+    return _transform_protected_movie(data, start, True)
+
+
+def encode_protected_movie(data: bytes, start=0) -> bytes:
+    """Encode clear movie bytes for storage in a protected VP2 entry."""
+    return _transform_protected_movie(data, start, False)
 
 
 def _packet_end(data, offset):
@@ -229,6 +268,107 @@ def replace_pcm_track(clear: bytes, track: AudioTrack, pcm: bytes) -> bytes:
     return bytes(rebuilt)
 
 
+def replace_tac_track(clear: bytes, track: AudioTrack, tac: bytes) -> bytes:
+    """Replace one encoded TAC soundtrack without changing packet geometry."""
+    if track.codec != TAC_CODEC:
+        raise ValueError("PCM movie audio cannot be replaced from TAC")
+    source_info = tac_info(track.data)
+    replacement_info = tac_info(tac)
+    if replacement_info is None:
+        raise ValueError("replacement is not a complete TAC stream")
+    if source_info is None:
+        raise ValueError("target movie track is not a complete TAC stream")
+    if replacement_info.samples != source_info.samples:
+        raise ValueError(
+            "replacement TAC has %d samples but the target has %d"
+            % (replacement_info.samples, source_info.samples)
+        )
+    if len(tac) > track.capacity:
+        raise ValueError(
+            "movie TAC needs %d bytes but its packet slots hold %d"
+            % (len(tac), track.capacity)
+        )
+    fitted = tac + b"\xff" * (track.capacity - len(tac))
+    rebuilt = bytearray(clear)
+    consumed = 0
+    for span in track.spans:
+        rebuilt[span.offset:span.offset + span.length] = fitted[
+            consumed:consumed + span.length
+        ]
+        consumed += span.length
+    return bytes(rebuilt)
+
+
+def tac_target_samples(target: bytes) -> int:
+    """Validate a destination TAC model and return its duration."""
+    target_info = tac_info(target)
+    if target_info is None:
+        raise ValueError("target movie track is not a complete TAC stream")
+    return target_info.samples
+
+
+def _pcm_array(data: bytes) -> array:
+    if len(data) % PCM_FRAME_BYTES:
+        raise ValueError("movie PCM must contain complete stereo frames")
+    samples = array("h")
+    samples.frombytes(data)
+    if sys.byteorder != "little":
+        samples.byteswap()
+    return samples
+
+
+def _pcm_bytes(samples: array) -> bytes:
+    if sys.byteorder != "little":
+        samples.byteswap()
+    return samples.tobytes()
+
+
+def decode_pcm_payload(data: bytes) -> bytes:
+    """Convert VP2's 1024-sample planar stereo blocks to WAV interleaving."""
+    source = _pcm_array(data)
+    output = array("h", [0]) * len(source)
+    for start in range(0, len(source), PCM_LAYOUT_BLOCK_SAMPLES):
+        count = min(PCM_LAYOUT_BLOCK_SAMPLES, len(source) - start)
+        frames = count // CHANNELS
+        output[start:start + count:2] = source[start:start + frames]
+        output[start + 1:start + count:2] = source[
+            start + frames:start + count
+        ]
+    return _pcm_bytes(output)
+
+
+def encode_pcm_payload(pcm: bytes) -> bytes:
+    """Convert interleaved WAV PCM to VP2's 1024-sample planar blocks."""
+    source = _pcm_array(pcm)
+    output = array("h", [0]) * len(source)
+    for start in range(0, len(source), PCM_LAYOUT_BLOCK_SAMPLES):
+        count = min(PCM_LAYOUT_BLOCK_SAMPLES, len(source) - start)
+        frames = count // CHANNELS
+        output[start:start + frames] = source[start:start + count:2]
+        output[start + frames:start + count] = source[
+            start + 1:start + count:2
+        ]
+    return _pcm_bytes(output)
+
+
+def shift_pcm(pcm: bytes, seconds) -> bytes:
+    """Shift interleaved PCM while preserving its exact duration."""
+    if len(pcm) % PCM_FRAME_BYTES:
+        raise ValueError("movie PCM must contain complete stereo frames")
+    try:
+        shift = round(float(seconds) * SAMPLE_RATE)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("movie sync must be a number of seconds") from exc
+    frames = len(pcm) // PCM_FRAME_BYTES
+    if not shift:
+        return pcm
+    silence = bytes(min(abs(shift), frames) * PCM_FRAME_BYTES)
+    if shift > 0:
+        return silence + pcm[:max(0, frames - shift) * PCM_FRAME_BYTES]
+    amount = min(-shift, frames)
+    return pcm[amount * PCM_FRAME_BYTES:] + silence
+
+
 def exported_filename(entry, movie, suffix="wav"):
     return "fmv-%04d-%03d.%s" % (entry, movie, suffix)
 
@@ -270,6 +410,179 @@ def write_pcm_wav(path, pcm: bytes) -> None:
         output.setsampwidth(SAMPLE_WIDTH)
         output.setframerate(SAMPLE_RATE)
         output.writeframes(pcm)
+
+
+def find_vgmstream_cli():
+    """Locate the optional TAC decoder in source and packaged runs."""
+    name = "vgmstream-cli.exe" if sys.platform == "win32" else "vgmstream-cli"
+    override = os.environ.get("VP2_VGMSTREAM_CLI")
+    if override:
+        candidate = Path(override).expanduser()
+        if candidate.is_file():
+            return candidate.resolve()
+    root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[2]))
+    bundled = root / "vendor" / "vgmstream" / name
+    if bundled.is_file():
+        return bundled.resolve()
+    found = shutil.which(name)
+    return Path(found).resolve() if found else None
+
+
+def _runtime_root():
+    return Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[2]))
+
+
+def find_tac_encoder():
+    """Locate the optional native TAC encoder in source and packaged runs."""
+    name = "vp2-tac-encode.exe" if sys.platform == "win32" else "vp2-tac-encode"
+    override = os.environ.get("VP2_TAC_ENCODER")
+    if override:
+        candidate = Path(override).expanduser()
+        if candidate.is_file():
+            return candidate.resolve()
+    bundled = _runtime_root() / "vendor" / "tac_encoder" / name
+    if bundled.is_file():
+        return bundled.resolve()
+    found = shutil.which(name)
+    return Path(found).resolve() if found else None
+
+
+def tac_sync_frames(seconds) -> int:
+    """Round a signed user offset to the codec's lossless frame boundary."""
+    try:
+        value = float(seconds)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("movie sync must be a number of seconds") from exc
+    if not (-float("inf") < value < float("inf")):
+        raise ValueError("movie sync must be finite")
+    return round(value * SAMPLE_RATE / TAC_FRAME_SAMPLES)
+
+
+def tac_sync_seconds(frames: int) -> float:
+    return int(frames) * TAC_FRAME_SECONDS
+
+
+TAC_BAND_LADDER = ("11", "10", "9", "8", "7")
+TAC_REDUCED_BANDS = 8
+
+
+def encode_tac_wav(source, template: bytes, capacity: int, sync_seconds=0,
+                   executable=None, target_samples=None,
+                   progress=None) -> bytes:
+    """Encode one stereo WAV using destination TAC metadata and geometry."""
+    source = Path(source)
+    pcm = read_pcm_wav(source)
+    source_info = tac_info(template)
+    if source_info is None:
+        raise ValueError("target movie track is not a complete TAC stream")
+    target_samples = int(
+        source_info.samples if target_samples is None else target_samples
+    )
+    if target_samples <= 0:
+        raise ValueError("target TAC duration must be positive")
+    encoder = Path(executable) if executable else find_tac_encoder()
+    if encoder is None:
+        raise ValueError("the packaged TAC encoder is unavailable")
+    runtime = _runtime_root()
+    compressed = (
+        runtime / "data" / "tac" / "analysis-pair.f32.zlib",
+        runtime / "data" / "tac" / "overlap.f32.zlib",
+    )
+    missing = [str(path) for path in compressed if not path.is_file()]
+    if missing:
+        raise ValueError("TAC encoder data is missing: %s" % ", ".join(missing))
+    sync_frames = tac_sync_frames(sync_seconds)
+    with tempfile.TemporaryDirectory(prefix="vp2-tac-") as temporary:
+        folder = Path(temporary)
+        template_path = folder / "template.laac"
+        analysis_path = folder / "analysis.f32"
+        overlap_path = folder / "overlap.f32"
+        output_path = folder / "output.laac"
+        template_path.write_bytes(template)
+        for source_path, target_path in zip(
+                compressed, (analysis_path, overlap_path)):
+            try:
+                target_path.write_bytes(zlib.decompress(source_path.read_bytes()))
+            except zlib.error as exc:
+                raise ValueError(
+                    "TAC encoder data is corrupt: %s" % source_path.name
+                ) from exc
+        creationflags = (
+            subprocess.CREATE_NO_WINDOW
+            if sys.platform == "win32" and hasattr(subprocess, "CREATE_NO_WINDOW")
+            else 0
+        )
+        result = None
+        for active_bands in TAC_BAND_LADDER:
+            output_path.unlink(missing_ok=True)
+            result = subprocess.run(
+                [
+                    str(encoder), str(template_path), str(source),
+                    str(analysis_path), str(overlap_path), str(output_path),
+                    str(capacity), "99", active_bands, str(sync_frames),
+                    str(target_samples),
+                ],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                creationflags=creationflags,
+            )
+            if not result.returncode and output_path.is_file():
+                break
+            report = result.stderr or result.stdout
+            if not any(marker in report for marker in (
+                    "exceeds logical template size",
+                    "encoded stream needs",
+            )):
+                break
+        if result.returncode or not output_path.is_file():
+            detail = (result.stderr or result.stdout).strip().splitlines()
+            message = detail[-1] if detail else "encoder produced no TAC stream"
+            raise ValueError("TAC encoder could not encode %s: %s" % (
+                source.name, message
+            ))
+        encoded = output_path.read_bytes()
+    if progress and int(active_bands) <= TAC_REDUCED_BANDS:
+        progress(
+            "warning: %s fits only with %s active bands; its audio is "
+            "noticeably softer than the other movies"
+            % (source.name, active_bands)
+        )
+    info = tac_info(encoded)
+    if info is None or info.samples != target_samples:
+        raise ValueError("TAC encoder produced an invalid-duration stream")
+    if len(encoded) > capacity:
+        raise ValueError(
+            "encoded TAC needs %d bytes but its packet slots hold %d"
+            % (len(encoded), capacity)
+        )
+    return encoded
+
+
+def decode_tac_to_wav(source, target, executable=None):
+    """Decode one complete TAC stream; return ``False`` if no CLI exists."""
+    source, target = Path(source), Path(target)
+    decoder = Path(executable) if executable else find_vgmstream_cli()
+    if decoder is None:
+        return False
+    target.unlink(missing_ok=True)
+    creationflags = (
+        subprocess.CREATE_NO_WINDOW
+        if sys.platform == "win32" and hasattr(subprocess, "CREATE_NO_WINDOW")
+        else 0
+    )
+    result = subprocess.run(
+        [str(decoder), "-i", "-o", str(target), str(source)],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        text=True, creationflags=creationflags,
+    )
+    if result.returncode or not target.is_file():
+        detail = (result.stderr or result.stdout).strip().splitlines()
+        message = detail[-1] if detail else "decoder produced no WAV"
+        target.unlink(missing_ok=True)
+        raise ValueError("vgmstream could not decode %s: %s" % (
+            source.name, message
+        ))
+    read_pcm_wav(target)
+    return True
 
 
 def tac_info(data: bytes):

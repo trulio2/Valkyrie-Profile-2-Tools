@@ -76,6 +76,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: bash
         run: |
+          python tools/scripts/build_vgmstream.py
+          python tools/scripts/build_tac_encoder.py
           python -m PyInstaller data/vp2_tools.spec \
             --workpath workspace/internal/build --clean --noconfirm
 

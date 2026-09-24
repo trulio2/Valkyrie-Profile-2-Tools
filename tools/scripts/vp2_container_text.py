@@ -71,13 +71,10 @@ RESOURCE_10_NATIVE_MARKS = {
 }
 
 from .container_archive import (
-    _compress_container, _decode_slz_group, _encode_slz_window,
-    _pack_bare_slz, _pack_inline_slz, _pack_zls_stream, _round_up,
-    _slz_groups, _tighten, container, container_stream_offset,
-    find_container_stream, pack_container_entry, patch_643_literal_probe,
-    patch_slz_literal_source, pk1_section_tag, resource_10_marked_block,
-    rewrite_slz_preserving_groups, trace_slz_origins,
-    unpack_container_entry,
+    _compress_container, _pack_bare_slz, _pack_inline_slz, _pack_zls_stream,
+    _round_up, _tighten, container, container_stream_offset,
+    find_container_stream, pack_container_entry, pk1_section_tag,
+    resource_10_marked_block, unpack_container_entry,
 )
 
 def layout(blob):
@@ -1768,43 +1765,6 @@ def _finish_patch(iso, resource, raw, expected_blob, written, details,
         result.update(patched=bytes(raw), grown_sectors=grown)
     return result
 
-def cmd_probe_643(args):
-    """Build the one-byte, no-recompression resource-643 diagnostic image."""
-    if os.path.exists(args.output_iso) and not args.dry_run \
-            and os.path.abspath(args.iso) != os.path.abspath(args.output_iso):
-        raise ValueError("%s already exists" % args.output_iso)
-    with open(args.iso, "rb") as handle:
-        _, total, table = triace.load_table(handle)
-        original = bytes(read_entry(handle, table, total, 643))
-    rebuilt, details = patch_643_literal_probe(original)
-    if args.dry_run:
-        print("dry run: resource #643 SLZ literal +0x%X; Party -> Tarty "
-              "in messages 6, 15 and 23" % details["slz_byte_offset"])
-        return
-    print("one entry byte changed; no recompression")
-    import shutil
-    if os.path.abspath(args.iso) != os.path.abspath(args.output_iso):
-        shutil.copyfile(args.iso, args.output_iso)
-    with open(args.output_iso, "r+b") as target:
-        _, total, table = triace.load_table(target)
-        allocated = table[total + 643] * triace.SECTOR
-        if len(rebuilt) != allocated:
-            raise ValueError("resource #643 allocation changed")
-        target.seek(table[643] * triace.SECTOR)
-        target.write(rebuilt)
-    with open(args.output_iso, "rb") as target:
-        _, total, table = triace.load_table(target)
-        check = bytes(read_entry(target, table, total, 643))
-    if check != rebuilt:
-        raise ValueError("output ISO resource #643 does not read back exactly")
-    check_again, repeated = patch_643_literal_probe(original)
-    if check_again != check or repeated != details:
-        raise ValueError("resource #643 probe verification is not repeatable")
-    print("resource #643: changed one original SLZ literal byte at entry +0x%X"
-          % details["entry_byte_offset"])
-    print("verified Party -> Tarty in messages 6, 15 and 23; no recompression")
-    print("verified: %s" % args.output_iso)
-
 def _subresource(value):
     """A PK1 row number, or the table tag that names it on any image."""
     try:
@@ -1862,14 +1822,6 @@ def main():
     patch.add_argument("--dry-run", action="store_true",
                        help="rebuild and verify in memory without copying ISO")
     patch.set_defaults(func=cmd_patch)
-    probe = commands.add_parser(
-        "probe-643",
-        help="change Party to Tarty through one original compressed literal")
-    probe.add_argument("iso")
-    probe.add_argument("output_iso")
-    probe.add_argument("--dry-run", action="store_true",
-                       help="verify the one-byte edit without copying an ISO")
-    probe.set_defaults(func=cmd_probe_643)
     args = parser.parse_args()
     try:
         args.func(args)

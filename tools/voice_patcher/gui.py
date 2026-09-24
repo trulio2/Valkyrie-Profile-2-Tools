@@ -18,6 +18,7 @@ from .build import (
     default_japanese_audio_output, default_patch_output, default_voice_root,
     describe_disc, extract_voices, import_japanese_audio, patch_iso,
 )
+from . import movie
 from .layout import (
     JAPAN_BOOT, JAPANESE_AUDIO_TARGET_BOOTS, VOICE_SOURCE_BOOTS,
 )
@@ -317,6 +318,12 @@ class App:
         self.detail_var = StringVar()
         self.log_shown = BooleanVar(value=False)
         self.allow_overlong_var = BooleanVar(value=False)
+        self.v1_scope_var = BooleanVar(value=False)
+        self.movie_sync_vars = {
+            11: StringVar(value="0.0000"),
+            20: StringVar(value="0.0000"),
+            14: StringVar(value="0.0000"),
+        }
         self.locked = []
         self.started_at = None
         self.scale = apply_dpi_scaling(root)
@@ -431,17 +438,49 @@ class App:
         self.output_name = ttk.Label(patch, text="", style="CardMuted.TLabel")
         self.output_name.grid(row=3, column=1, columnspan=2, sticky="w",
                               pady=(5, 8))
+        ttk.Label(
+            patch,
+            text="USA cutscene WAVs can use the larger cached USA/Japanese "
+                 "slot; affected banks are rebuilt automatically.",
+            style="CardMuted.TLabel", wraplength=self._px(690),
+        ).grid(row=4, column=1, columnspan=2, sticky="w", pady=(0, 7))
         self.allow_overlong = self._lock(ttk.Checkbutton(
-            patch, text="Allow overlong WAVs (trim their tails)",
+            patch, text="Allow WAVs beyond available slots (trim their tails)",
             variable=self.allow_overlong_var, style="Chip.TCheckbutton"
         ))
-        self.allow_overlong.grid(row=4, column=1, columnspan=2, sticky="w")
+        self.allow_overlong.grid(row=5, column=1, columnspan=2, sticky="w")
+        self.v1_scope = self._lock(ttk.Checkbutton(
+            patch,
+            text="V1 scope: cutscenes 0010–1389, Alicia and Lezard lines",
+            variable=self.v1_scope_var, style="Chip.TCheckbutton",
+        ))
+        self.v1_scope.grid(row=6, column=1, columnspan=2, sticky="w")
         self.patch_btn = self._lock(ttk.Button(
             patch, text="Patch ISO", style="Accent.TButton",
             command=self._start_patch
         ))
-        self.patch_btn.grid(row=5, column=1, sticky="w", pady=(5, 0))
-        patch.pack(fill="x")
+        self.patch_btn.grid(row=7, column=1, sticky="w", pady=(5, 0))
+        patch.pack(fill="x", pady=(0, 12))
+
+        sync = self._card(patch_tab, "MOVIE WAV SYNC")
+        ttk.Label(
+            sync,
+            text="Seconds · negative starts earlier · TAC values round to "
+                 "21.333 ms frames",
+            style="CardMuted.TLabel",
+        ).grid(row=1, column=0, columnspan=3, sticky="w", pady=(0, 7))
+        for row, (entry, scene) in enumerate(
+                ((11, "0010"), (20, "1323"), (14, "1337")), start=2):
+            ttk.Label(
+                sync, text="Scene %s" % scene, style="Card.TLabel"
+            ).grid(row=row, column=0, sticky="w", padx=(0, 10), pady=2)
+            control = self._lock(ttk.Spinbox(
+                sync, from_=-10.0, to=10.0, increment=movie.TAC_FRAME_SECONDS,
+                textvariable=self.movie_sync_vars[entry], width=12,
+                format="%.4f",
+            ))
+            control.grid(row=row, column=1, sticky="w", pady=2)
+        sync.pack(fill="x")
 
         target = self._card(undub_tab, "TARGET AND JAPANESE DONOR")
         self._path_row(
@@ -487,7 +526,7 @@ class App:
         import_jp.pack(fill="x")
 
         self.tab_cards = {
-            "voice": (disc, extract, patch),
+            "voice": (disc, extract, patch, sync),
             "undub": (target, import_jp),
         }
         self.source_var.trace_add("write", self._sync_output_name)
@@ -782,6 +821,19 @@ class App:
                 "Pick voice files", "Choose the folder containing replacement WAVs."
             )
             return
+        try:
+            movie_sync = {
+                entry: float(variable.get().strip() or "0")
+                for entry, variable in self.movie_sync_vars.items()
+            }
+            movie_sync.update({
+                entry: movie_sync[14] for entry in (15, 16, 18)
+            })
+            for seconds in movie_sync.values():
+                movie.tac_sync_frames(seconds)
+        except ValueError as exc:
+            messagebox.showerror("Movie WAV sync", str(exc))
+            return
         folder = Path(
             self.iso_output_var.get().strip()
             or default_patch_output(source).parent
@@ -806,6 +858,8 @@ class App:
         self._begin(
             "patch", patch_iso, source, voices, output,
             allow_overlong=self.allow_overlong_var.get(),
+            scope="v1" if self.v1_scope_var.get() else "all",
+            movie_sync=movie_sync,
         )
 
     def _start_import(self):

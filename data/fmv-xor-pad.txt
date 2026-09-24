@@ -1,5 +1,5 @@
-# Region-invariant 2048-byte XOR pad for MPEG-2 FMV entries 11-20.
-# plain[i] = stored[i] ^ pad[i %% 2048], i measured from the entry start.
+# Historical modal approximation for MPEG-2 FMV entries 11-20.
+# This is not the exact transform; production uses movie.py's recovered EE routine.
 77 52 23 dd f0 ef df 84 8a 23 27 1f ba 59 3a 0a 91 fa a4 27 a3 4e 0e 0d 87 26 60 94 b7 db 2e 19
 4c 25 12 70 3a 1e c2 93 98 f4 5d 79 b6 5e c2 b1 1c 7f 66 1a c5 e6 d9 84 8a e7 e9 06 7a 59 25 0a
 74 52 23 dd f0 ef df 84 89 23 27 1f ba 59 3a 0a 91 1a ab dd 20 4e 04 f2 85 26 60 94 b7 db 2e 19

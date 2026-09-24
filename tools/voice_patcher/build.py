@@ -13,6 +13,9 @@ import shutil
 import struct
 
 from . import audio, layout, mapping, movie
+from .capacity import (
+    load_alicia_field_aliases, load_capacity_csv, load_lezard_capacity_csv,
+)
 from .layout import (
     JAPAN_BOOT, JAPANESE_AUDIO_TARGET_BOOTS, SUPPORTED_BOOTS,
     VOICE_BANKS, VOICE_SOURCE_BOOTS, entry_span,
@@ -182,6 +185,11 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
         )
     owners = load_bank_map(bank_map)
     unmapped_voices = load_unmapped_map(unmapped_map)
+    alicia_aliases = load_alicia_field_aliases()
+    alicia_canonical = frozenset(alicia_aliases)
+    alicia_targets = frozenset(
+        target for targets in alicia_aliases.values() for target in targets
+    )
     by_entry = {}
     for voice in unmapped_voices.values():
         by_entry.setdefault(voice.entry, {})[voice.sample] = voice
@@ -244,6 +252,8 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                         )
                     if owner.category == "cutscene":
                         folder = partial / str(owner.resource)
+                        if owner.resource == 1337:
+                            folder /= "unused"
                         mapped += 1
                     elif owner.resource is not None:
                         folder = partial / str(owner.resource) / "alternate-takes"
@@ -331,6 +341,8 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                     pcm = audio.decode_adpcm(payload)
                     if voice.resource is not None:
                         folder = partial / str(voice.resource)
+                        if voice.resource == 1337:
+                            folder /= "unused"
                         folder.mkdir(parents=True, exist_ok=True)
                     else:
                         folder = unmapped_folder
@@ -428,6 +440,7 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                        extraction_steps, len(clips))
                 )
             field_folder = partial / "field"
+            alicia_folder = partial / "alicia"
             lezard_folder = partial / "lezard"
             for entry in _scene_audio_entries(handle, table, total):
                 _offset, entry_data = _read_entry(handle, table, total, entry)
@@ -442,8 +455,18 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                                 clip.payload_offset:
                                 clip.payload_offset + clip.payload_length
                             ]
+                            identity = (
+                                entry, group_index, clip.sample_index,
+                                clip.clip_id, clip.zone,
+                            )
+                            if identity in alicia_targets:
+                                if identity not in alicia_canonical:
+                                    continue
+                                folder = alicia_folder
+                            else:
+                                folder = field_folder
                             emit(
-                                "field", field_folder,
+                                "field", folder,
                                 field_filename(entry, group_index, clip),
                                 clip.clip_id, clip.zone,
                                 audio.decode_adpcm(payload),
@@ -473,10 +496,10 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                                     sample=clip.sample_index, sub=group_index,
                                 )
             movie_count = 0
-            xor_pad = movie.load_xor_pad() if protected_entries else None
+            tac_decoder = movie.find_vgmstream_cli()
             for position, entry in enumerate(protected_entries, 1):
                 _offset, stored = _read_entry(handle, table, total, entry)
-                clear = movie.xor_bytes(stored, xor_pad)
+                clear = movie.decode_protected_movie(stored)
                 tracks = movie.parse_audio_tracks(clear)
                 scene_resource = movie.SCENE_RESOURCES.get(entry)
                 folder = (
@@ -490,7 +513,9 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                         target = folder / movie.exported_filename(
                             entry, track.movie
                         )
-                        movie.write_pcm_wav(target, track.data)
+                        movie.write_pcm_wav(
+                            target, movie.decode_pcm_payload(track.data)
+                        )
                         peak, rms, voiced = audio.statistics(track.data)
                         seconds = (
                             len(track.data) // movie.PCM_FRAME_BYTES /
@@ -503,7 +528,7 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                         kind = "fmv-pcm"
                         silent = "yes" if rms == 0 else ""
                     else:
-                        target = folder / movie.exported_filename(
+                        laac_source = folder / movie.exported_filename(
                             entry, track.movie, "laac"
                         )
                         info = movie.tac_info(track.data)
@@ -512,12 +537,28 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
                                 "FMV entry %d track %d does not form a "
                                 "complete TAC stream" % (entry, track.movie)
                             )
-                        target.write_bytes(track.data)
+                        laac_source.write_bytes(track.data)
                         seconds = info.samples / movie.SAMPLE_RATE
                         maximum = seconds
-                        peak = rms = voiced = 0
+                        wav_target = folder / movie.exported_filename(
+                            entry, track.movie
+                        )
+                        try:
+                            decoded = movie.decode_tac_to_wav(
+                                laac_source, wav_target, tac_decoder
+                            )
+                        finally:
+                            laac_source.unlink(missing_ok=True)
+                        if not decoded:
+                            raise ValueError(
+                                "FMV entry %d track %d requires vgmstream "
+                                "for WAV extraction" % (entry, track.movie)
+                            )
+                        target = wav_target
+                        pcm = movie.read_pcm_wav(target)
+                        peak, rms, voiced = audio.statistics(pcm)
                         kind = "fmv-tac"
-                        silent = ""
+                        silent = "yes" if rms == 0 else ""
                     rows.append({
                         "kind": kind,
                         "region": region,
@@ -572,17 +613,23 @@ def extract_voices(source, output=None, progress=None, bank_map=None,
             "Battle files are named battle-<entry>-<sample>-<clip-id>-"
             "<zone>.wav.\n"
             "Field files are named field-<entry>-<group>-<sample>-<clip-id>-"
-            "<zone>.wav, and lezard/ files use the same shape.\n"
+            "<zone>.wav. Alicia's six canonical resource-0024 field calls "
+            "are grouped under alicia/; duplicate area copies are omitted. "
+            "Patching a canonical Alicia WAV updates every mapped area copy. "
+            "Other field calls remain under field/. Lezard files use the "
+            "same identity shape.\n"
             "FMV packet candidates are named fmv-<entry>-<movie> under the "
-            "owning scene folder. Entry 11 is PCM; entries 14 and 20 are TAC. "
-            "These WAV and .laac files are diagnostic only: one protected-"
-            "stream transform remains unresolved, so they are not valid "
-            "playback or replacement sources.\n"
+            "owning scene folder. Entry 11 is PCM; entries 14, 15, 16, 18, "
+            "and 20 are TAC. "
+            "TAC is exported as WAV through the bundled vgmstream decoder; "
+            "intermediate .laac files are not retained.\n"
             "Folders named by number are cutscene resources; unmapped files "
             "with a known scene owner are placed there too. Banks holding an "
             "unverified alternate performance go under that scene's "
             "alternate-takes/ when its owner is known, otherwise under "
-            "unmapped/alternate-takes/.\n"
+            "unmapped/alternate-takes/. Ordinary 1337 bank lines are retained "
+            "for reference under 1337/unused/; its four movie WAVs remain in "
+            "the 1337 root.\n"
             "Each cutscene folder and battle/ contains a generated "
             "voice-map.csv. These maps add speakers, scene coordinates, "
             "deduplicated battle identities, confidence, and evidence without "
@@ -640,19 +687,38 @@ def _old_manifest_identities(manifest):
     return identities
 
 
-def discover_replacements(folder):
+def _in_replacement_scope(path, folder, scope):
+    if scope in (None, "all"):
+        return True
+    if scope != "v1":
+        raise ValueError("unknown replacement scope: %s" % scope)
+    relative = path.relative_to(folder)
+    top = relative.parts[0].lower()
+    if top in ("alicia", "lezard"):
+        return True
+    return top.isdigit() and 10 <= int(top) <= 1389
+
+
+def discover_replacements(folder, scope="all"):
     """Identify exported and legacy dub-kit WAVs below *folder*."""
     folder = Path(folder).expanduser().resolve()
     if not folder.is_dir():
         raise ValueError("voice folder does not exist: %s" % folder)
-    wavs = sorted(path for path in folder.rglob("*")
-                  if path.is_file() and path.suffix.lower() == ".wav")
+    wavs = sorted(
+        path for path in folder.rglob("*")
+        if (path.is_file() and path.suffix.lower() in (".wav", ".laac")
+            and _in_replacement_scope(path, folder, scope))
+    )
     if not wavs:
-        raise ValueError("voice folder contains no WAV files: %s" % folder)
+        raise ValueError("voice folder contains no WAV or TAC files: %s" % folder)
     legacy = _old_manifest_identities(_find_manifest(folder))
     found = {}
     unknown = []
     for path in wavs:
+        if (path.suffix.lower() == ".laac" and
+                path.with_suffix(".wav").is_file()):
+            # Prefer the editable decoded WAV over its adjacent archival TAC.
+            continue
         identity = parse_exported_filename(path)
         if identity is None:
             identity = parse_unmapped_filename(path)
@@ -1155,8 +1221,9 @@ def _write_resource(target, target_lba, sectors, data):
     return hashlib.sha256(data).digest()
 
 
-def import_japanese_audio(base, japan, output=None, progress=None):
-    """Build a Japanese-audio variant of a supported USA or PAL ISO."""
+def import_japanese_audio(base, japan, output=None, progress=None,
+                          resource_filter=None):
+    """Build a Japanese-audio variant, optionally limited to resources."""
     say = progress or (lambda _message: None)
     base, _base_region, _base_boot = _validated_source(
         base, JAPANESE_AUDIO_TARGET_BOOTS, "Japanese-audio import"
@@ -1217,10 +1284,21 @@ def import_japanese_audio(base, japan, output=None, progress=None):
             )
         hybrids = dict(indexed_hybrids)
         hybrids.update(streamed_hybrids)
-        resources = tuple(sorted(
-            set(VOICE_BANKS) | standalone | set(battle) | set(protected) |
-            set(hybrids)
-        ))
+        if resource_filter is None:
+            resources = tuple(sorted(
+                set(VOICE_BANKS) | standalone | set(battle) | set(protected) |
+                set(hybrids)
+            ))
+        else:
+            resources = tuple(sorted(set(resource_filter)))
+            invalid = set(resources) - (set(VOICE_BANKS) | set(protected))
+            if invalid:
+                raise ValueError(
+                    "selected Japanese audio resources are not voice banks "
+                    "or protected movies: %s"
+                    % ", ".join(map(str, sorted(invalid)))
+                )
+            hybrids = {}
         for entry in resources:
             if not (base_values[total + entry] and
                     donor_values[total + entry]):
@@ -1238,7 +1316,8 @@ def import_japanese_audio(base, japan, output=None, progress=None):
             base_values, donor_values, total, resources, hybrid_sectors
         )
         _rewrite_logical_positions(base_values, rebuilt, total)
-        if (base_values[total + GLOBAL_BATTLE_RESOURCE] and
+        if (resource_filter is None and
+                base_values[total + GLOBAL_BATTLE_RESOURCE] and
                 donor_values[total + GLOBAL_BATTLE_RESOURCE]):
             _offset, base_battle = _read_entry(
                 base_handle, base_values, total, GLOBAL_BATTLE_RESOURCE
@@ -1330,8 +1409,447 @@ def import_japanese_audio(base, japan, output=None, progress=None):
     return ImportResult(output, resources, appended)
 
 
+def import_japanese_cutscene(base, japan, voice_scene, output=None,
+                             progress=None):
+    """Import one mapped cutscene's complete Japanese voice banks."""
+    scene = int(voice_scene)
+    banks = tuple(sorted(
+        owner.bank for owner in load_bank_map().values()
+        if owner.resource == scene and owner.category == "cutscene"
+    ))
+    if not banks:
+        raise ValueError("no mapped voice banks found for cutscene %d" % scene)
+    say = progress or (lambda _message: None)
+    say("select: cutscene %d uses voice bank(s) %s" %
+        (scene, ", ".join(map(str, banks))))
+    return import_japanese_audio(
+        base, japan, output=output, progress=progress,
+        resource_filter=banks,
+    )
+
+
+def _metadata_patch(value):
+    if not value:
+        return ()
+    return tuple(
+        (int(item.split(":", 1)[0], 16),
+         int(item.split(":", 1)[1], 16))
+        for item in value.split(";")
+    )
+
+
+def _rebuild_voice_bank(data, replacements, capacities):
+    """Rebuild one USA bank using cached max-region slot geometry."""
+    clips = {clip.sub_index: clip for clip in parse_bank(data)}
+    count = struct.unpack_from("<I", data, 0)[0]
+    first = min(clip.sub_offset for clip in clips.values())
+    if first % layout.SECTOR:
+        raise ValueError("voice-bank first subfile is not sector-aligned")
+    header = bytearray(data[:first])
+    subfiles = []
+    cursor = first
+    expected = {}
+    for sub_index in range(count):
+        position = 4 + sub_index * 4
+        start_sector, sector_count = struct.unpack_from("<HH", data, position)
+        if not sector_count:
+            struct.pack_into("<HH", header, position, 0, 0)
+            continue
+        clip = clips[sub_index]
+        original = data[
+            clip.sub_offset:clip.sub_offset + clip.sub_length
+        ]
+        replacement = replacements.get(sub_index)
+        if replacement is None:
+            rebuilt = original
+        else:
+            encoded, path, clip_id, bank = replacement
+            row = capacities.get((bank, sub_index))
+            if row is None:
+                raise ValueError(
+                    "no cached max capacity for bank %d subfile %d"
+                    % (bank, sub_index)
+                )
+            if int(row["clip_id"], 16) != clip_id:
+                raise ValueError(
+                    "cached clip identity mismatch for %s" % path.name
+                )
+            target = int(row["max_payload_bytes"])
+            if len(encoded) > target:
+                raise ValueError(
+                    "%s needs %d encoded bytes but the USA/Japanese maximum "
+                    "is %d" % (path.name, len(encoded), target)
+                )
+            prefix = bytearray(original[:clip.payload_offset])
+            for offset, value in _metadata_patch(row["max_header_patch"]):
+                if offset >= len(prefix):
+                    raise ValueError("cached voice-header patch is out of range")
+                prefix[offset] = value
+            fitted = bytearray(audio.fit_payload(encoded, target, 0))
+            for offset, value in _metadata_patch(row["max_flag_patch"]):
+                if offset >= len(fitted):
+                    raise ValueError("cached voice-flag patch is out of range")
+                fitted[offset] = value
+            subfile_bytes = int(row["max_subfile_bytes"])
+            rebuilt = bytes(prefix) + bytes(fitted)
+            if len(rebuilt) > subfile_bytes:
+                raise ValueError(
+                    "%s rebuilt subfile exceeds its cached allocation"
+                    % path.name
+                )
+            rebuilt += bytes(subfile_bytes - len(rebuilt))
+            expected[sub_index] = target
+        if len(rebuilt) % layout.SECTOR:
+            raise ValueError("rebuilt voice subfile is not sector-aligned")
+        struct.pack_into(
+            "<HH", header, position,
+            cursor // layout.SECTOR, len(rebuilt) // layout.SECTOR,
+        )
+        subfiles.append(rebuilt)
+        cursor += len(rebuilt)
+    rebuilt = bytes(header) + b"".join(subfiles)
+    checked = {clip.sub_index: clip for clip in parse_bank(rebuilt)}
+    for sub_index, target in expected.items():
+        if checked[sub_index].payload_length != target:
+            raise ValueError(
+                "rebuilt bank subfile %d failed capacity read-back" % sub_index
+            )
+    return rebuilt
+
+
+def _rebuild_standalone_group(data, replacements):
+    """Reflow selected samples in one indexed standalone SEQW."""
+    clips = parse_standalone(data)
+    wav_offset = struct.unpack_from("<I", data, 4)[0]
+    header_length, table_length = struct.unpack_from(
+        "<II", data, wav_offset + 8
+    )
+    payload_offset = clips[0].payload_offset
+    old_payload_length = struct.unpack_from("<I", data, wav_offset + 0x10)[0]
+    start_fields = []
+    position = wav_offset + 0x20
+    table_end = position + table_length
+    while position < table_end:
+        record_length = struct.unpack_from("<H", data, position)[0]
+        cursor = position + 4
+        while (cursor + 0x14 <= position + record_length and
+               struct.unpack_from("<I", data, cursor)[0] == 0x14):
+            start_fields.append(cursor + 0x10)
+            cursor += 0x14
+        position += record_length
+    if len(start_fields) != len(clips):
+        raise ValueError("standalone sample table changed unexpectedly")
+
+    prefix = bytearray(data[:payload_offset])
+    payloads = []
+    starts = []
+    cursor = 0
+    expected = {}
+    for clip in clips:
+        starts.append(cursor)
+        replacement = replacements.get(clip.sample_index)
+        if replacement is None:
+            payload = data[
+                clip.payload_offset:clip.payload_offset + clip.payload_length
+            ]
+        else:
+            encoded, target, path = replacement
+            if len(encoded) > target:
+                raise ValueError(
+                    "%s needs %d encoded bytes but the USA/Japanese maximum "
+                    "is %d" % (path.name, len(encoded), target)
+                )
+            payload = audio.fit_payload(encoded, target, clip.tail_flag)
+            expected[clip.sample_index] = target
+        payloads.append(payload)
+        cursor += len(payload)
+    for field, start in zip(start_fields, starts):
+        struct.pack_into("<I", prefix, field, start)
+    payload_length = sum(map(len, payloads))
+    if payload_length < 0x40:
+        raise ValueError("rebuilt standalone payload is too short")
+    struct.pack_into("<I", prefix, 0x14, payload_length - 0x40)
+    struct.pack_into("<I", prefix, wav_offset + 4,
+                     header_length + payload_length)
+    struct.pack_into("<I", prefix, wav_offset + 0x10, payload_length)
+    struct.pack_into("<I", prefix, wav_offset + 0x14, payload_length - 0x40)
+    suffix = data[payload_offset + old_payload_length:]
+    rebuilt = bytes(prefix) + b"".join(payloads) + suffix
+    checked = {clip.sample_index: clip for clip in parse_standalone(rebuilt)}
+    if tuple((clip.clip_id, clip.zone) for clip in checked.values()) != tuple(
+            (clip.clip_id, clip.zone) for clip in clips):
+        raise ValueError("rebuilt standalone identities changed")
+    for sample, target in expected.items():
+        if checked[sample].payload_length != target:
+            raise ValueError("rebuilt standalone sample failed read-back")
+    return rebuilt
+
+
+def _rebuild_alicia_field_entry(data, replacements):
+    """Rebuild indexed rows holding replicated Alicia field calls."""
+    groups = _indexed_audio_groups(data)
+    payloads = {}
+    for group_index in sorted({key[0] for key in replacements}):
+        group_replacements = {
+            sample: value
+            for (group, sample), value in replacements.items()
+            if group == group_index
+        }
+        payloads[group_index] = _rebuild_standalone_group(
+            groups[group_index][4], group_replacements
+        )
+    growth = sum(
+        max(len(payload) - len(groups[index][4]), 0)
+        for index, payload in payloads.items()
+    )
+    rebuilt = data + bytes(growth + layout.SECTOR)
+    for group_index, payload in payloads.items():
+        current = _indexed_audio_groups(rebuilt)
+        group = current[group_index]
+        rebuilt = pk1_archive.repack_pk1_subresource(
+            rebuilt, group[1], payload, target_offset=group[2]
+        )
+    entries = vp2_dcms.parse_pk1(rebuilt)
+    content_end = max(offset + length for _tag, offset, length in entries)
+    rebuilt = rebuilt[:(
+        (content_end + layout.SECTOR - 1) // layout.SECTOR * layout.SECTOR
+    )]
+    checked = _indexed_audio_groups(rebuilt)
+    for group_index, payload in payloads.items():
+        if checked[group_index][4] != payload:
+            raise ValueError("rebuilt Alicia field row failed read-back")
+    return rebuilt
+
+
+ESP_BASE = 0x20
+
+
+def _rewrite_stream_directory(data, tail_start, old_starts, new_starts, end):
+    """Point a streamed tail's ESP directory at its reflowed groups."""
+    if data[tail_start + 0x10:tail_start + 0x14] != b"ESP\0":
+        raise ValueError("streamed tail has no ESP directory")
+    base = tail_start + ESP_BASE
+    count = struct.unpack_from("<I", data, base)[0]
+    if count != len(old_starts) or count != len(new_starts):
+        raise ValueError("ESP directory does not list every streamed group")
+    for index, (old, new) in enumerate(zip(old_starts, new_starts)):
+        field = base + 8 + index * 8 + 4
+        if struct.unpack_from("<I", data, field)[0] != old - base:
+            raise ValueError(
+                "ESP directory entry %d does not point at its group" % index
+            )
+        struct.pack_into("<I", data, field, new - base)
+    struct.pack_into("<I", data, tail_start + 0x18, end - base)
+
+
+def _rebuild_lezard_entry(data, entry, replacements, capacities):
+    """Reflow a complete Lezard tail using coherent Japanese geometry."""
+    found = _streamed_audio_groups(data)
+    if found is None:
+        raise ValueError("Lezard entry %d has no streamed audio" % entry)
+    _tail_start, groups = found
+    required = set(range(len(groups)))
+    supplied = set(replacements)
+    if supplied != required:
+        missing = sorted(required - supplied)
+        raise ValueError(
+            "Lezard entry %d needs all %d WAVs to use Japanese geometry "
+            "(missing group(s): %s)"
+            % (entry, len(groups), ", ".join(map(str, missing)))
+        )
+    pieces = [data[:groups[0][0]]]
+    expected = {}
+    for group_index, (position, _payload, clips) in enumerate(groups):
+        end = (groups[group_index + 1][0]
+               if group_index + 1 < len(groups) else len(data))
+        original = data[position:end]
+        replacement = replacements[group_index]
+        encoded, path, replacement_info = replacement
+        clip = {item.sample_index: item for item in clips}.get(
+            replacement_info.sample
+        )
+        if clip is None:
+            raise ValueError("%s targets a missing Lezard sample" % path.name)
+        row = capacities.get((entry, group_index, clip.sample_index))
+        if row is None:
+            raise ValueError(
+                "no cached Japanese geometry for Lezard entry %d group %d"
+                % (entry, group_index)
+            )
+        if ((int(row["clip_id"], 16), int(row["zone"])) !=
+                (clip.clip_id, clip.zone)):
+            raise ValueError(
+                "cached Lezard identity mismatch for %s" % path.name
+            )
+        target = int(row["jp_payload_bytes"])
+        if len(encoded) > target:
+            raise ValueError(
+                "%s needs %d encoded bytes but the coherent Japanese slot is %d"
+                % (path.name, len(encoded), target)
+            )
+        prefix = bytearray(original[:clip.payload_offset])
+        for offset, value in _metadata_patch(row["jp_header_patch"]):
+            if offset >= len(prefix):
+                raise ValueError("cached Lezard header patch is out of range")
+            prefix[offset] = value
+        if len(encoded) % audio.FRAME:
+            raise ValueError("encoded Lezard audio is not frame-aligned")
+        fitted = bytearray(encoded + bytes(target - len(encoded)))
+        if fitted:
+            fitted[:audio.FRAME] = bytes(audio.FRAME)
+        for offset, value in _metadata_patch(row["jp_flag_patch"]):
+            if offset >= len(fitted):
+                raise ValueError("cached Lezard flag patch is out of range")
+            fitted[offset] = value
+        for offset, value in _metadata_patch(row["jp_terminal_patch"]):
+            if offset >= len(fitted):
+                raise ValueError("cached Lezard terminal patch is out of range")
+            fitted[offset] = value
+        group_bytes = int(row["jp_group_bytes"])
+        trailer_bytes = group_bytes - len(prefix) - len(fitted)
+        if trailer_bytes < 0:
+            raise ValueError("%s exceeds its cached Lezard group" % path.name)
+        trailer = bytearray(trailer_bytes)
+        for offset, value in _metadata_patch(row["jp_trailer_patch"]):
+            if offset >= len(trailer):
+                raise ValueError("cached Lezard trailer patch is out of range")
+            trailer[offset] = value
+        rebuilt = bytes(prefix) + bytes(fitted) + bytes(trailer)
+        if len(rebuilt) > group_bytes:
+            raise ValueError("%s exceeds its cached Lezard group" % path.name)
+        pieces.append(rebuilt + bytes(group_bytes - len(rebuilt)))
+        expected[group_index] = target
+    starts = []
+    cursor = 0
+    for piece in pieces:
+        starts.append(cursor)
+        cursor += len(piece)
+    rebuilt = bytearray(b"".join(pieces))
+    last_clip = groups[-1][2][0]
+    lip = rebuilt.find(
+        b"LIP ",
+        starts[-1] + last_clip.payload_offset + expected[len(groups) - 1],
+    )
+    if lip < 0 or lip % 16:
+        raise ValueError("rebuilt Lezard tail has no closing LIP block")
+    _rewrite_stream_directory(
+        rebuilt, _tail_start, [position for position, _p, _c in groups],
+        starts[1:], lip + struct.unpack_from("<I", rebuilt, lip + 4)[0]
+    )
+    rebuilt = bytes(rebuilt) + bytes(-len(rebuilt) % layout.SECTOR)
+    checked = _streamed_audio_groups(rebuilt)
+    if checked is None or len(checked[1]) != len(groups):
+        raise ValueError("rebuilt Lezard resource failed structural read-back")
+    for group_index, target in expected.items():
+        clips = checked[1][group_index][2]
+        clip = {item.sample_index: item for item in clips}.get(
+            replacements[group_index][2].sample
+        )
+        if clip is None or clip.payload_length != target:
+            raise ValueError(
+                "rebuilt Lezard group %d failed capacity read-back"
+                % group_index
+            )
+    return rebuilt
+
+
+def _repack_resource_overrides(base, output, overrides, writes=(),
+                               progress=None):
+    """Repack the target archive with selected complete resource payloads."""
+    say = progress or (lambda _message: None)
+    base = Path(base).expanduser().resolve()
+    output = Path(output).expanduser().resolve()
+    partial = output.with_name(output.name + ".partial")
+    if output.exists():
+        raise ValueError("output already exists; refusing to overwrite: %s" % output)
+    if partial.exists():
+        raise ValueError("partial output already exists; remove it first: %s" % partial)
+    overrides = {int(entry): bytes(data) for entry, data in overrides.items()}
+    writes = tuple(writes)
+    write_entries = {entry for entry, _relative, _data, _items in writes}
+    for entry, data in overrides.items():
+        if not data or len(data) % layout.SECTOR:
+            raise ValueError(
+                "rebuilt resource %d is not sector-aligned" % entry
+            )
+    with base.open("rb") as base_handle:
+        seed, index_offset, total, values = vp2_iso_space.read_index(base_handle)
+        sector_overrides = {
+            entry: len(data) // layout.SECTOR
+            for entry, data in overrides.items()
+        }
+        rebuilt, archive_entries, end_lba = _canonical_archive_layout(
+            values, values, total, (), sector_overrides
+        )
+        _rewrite_logical_positions(values, rebuilt, total)
+        image_lba = base.stat().st_size // layout.SECTOR
+        output_lba = max(image_lba, end_lba)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            say("copy: creating a safe target-disc image")
+            _copy_with_progress(base, partial, say)
+            expected = {}
+            with partial.open("r+b") as target:
+                count = len(archive_entries)
+                for position, entry in enumerate(archive_entries, 1):
+                    if entry in overrides:
+                        digest = _write_resource(
+                            target, rebuilt[entry], rebuilt[total + entry],
+                            overrides[entry],
+                        )
+                    else:
+                        digest = _copy_resource(
+                            base_handle, target, values[entry], rebuilt[entry],
+                            values[total + entry],
+                        )
+                    if entry not in write_entries:
+                        expected[entry] = digest
+                    if position in (1, count) or position % 250 == 0:
+                        say("repack: resource %d (%d/%d)" %
+                            (entry, position, count))
+                target.truncate(output_lba * layout.SECTOR)
+                if vp2_iso_space.read_volume_sectors(target) is not None:
+                    vp2_iso_space.write_volume_sectors(target, output_lba)
+                if output_lba > image_lba:
+                    vp2_iso_space.extend_last_file(target, output_lba)
+                vp2_iso_space.write_index(
+                    target, seed, index_offset, total, rebuilt
+                )
+                for entry, relative, data, _items in writes:
+                    allocation = rebuilt[total + entry] * layout.SECTOR
+                    if relative < 0 or relative + len(data) > allocation:
+                        raise ValueError(
+                            "voice write exceeds rebuilt resource %d" % entry
+                        )
+                    target.seek(rebuilt[entry] * layout.SECTOR + relative)
+                    target.write(data)
+            say("verify: reading rebuilt resources back")
+            with partial.open("rb") as target:
+                _seed, _offset, check_total, check = vp2_iso_space.read_index(target)
+                if check_total != total or check != rebuilt:
+                    raise ValueError("rebuilt voice archive index failed read-back")
+                for entry, digest in expected.items():
+                    target.seek(check[entry] * layout.SECTOR)
+                    data = target.read(check[total + entry] * layout.SECTOR)
+                    if hashlib.sha256(data).digest() != digest:
+                        raise ValueError(
+                            "rebuilt resource %d failed read-back" % entry
+                        )
+                for entry, relative, data, items in writes:
+                    target.seek(check[entry] * layout.SECTOR + relative)
+                    if target.read(len(data)) != data:
+                        raise ValueError(
+                            "%s voice %04x failed rebuilt-resource read-back"
+                            % (items[0].kind, items[0].clip_id)
+                        )
+            partial.replace(output)
+        except Exception:
+            partial.unlink(missing_ok=True)
+            raise
+
+
 def patch_iso(source, voices, output=None, progress=None,
-              allow_overlong=False):
+              allow_overlong=False, movie_sync=None, scope="all"):
     """Copy an ISO, replace selected lines in place, and read them back."""
     say = progress or (lambda _message: None)
     source, region, _boot = _validated_source(
@@ -1346,7 +1864,27 @@ def patch_iso(source, voices, output=None, progress=None,
     partial = output.with_name(output.name + ".partial")
     if partial.exists():
         raise ValueError("partial output already exists; remove it first: %s" % partial)
-    selected = discover_replacements(voices)
+    selected = discover_replacements(voices, scope=scope)
+    alicia_aliases = load_alicia_field_aliases()
+    alicia_target_capacities = {}
+    for canonical, targets in alicia_aliases.items():
+        canonical_identity = ("field",) + canonical
+        path = selected.get(canonical_identity)
+        if path is None:
+            continue
+        for target, maximum in targets.items():
+            target_identity = ("field",) + target
+            selected[target_identity] = path
+            alicia_target_capacities[target_identity] = maximum
+    capacities = load_capacity_csv() if region == "en" else {}
+    lezard_capacities = load_lezard_capacity_csv() if region == "en" else {}
+    normalized_sync = {}
+    for entry, seconds in (movie_sync or {}).items():
+        value = float(seconds)
+        movie.tac_sync_frames(value)
+        if value != 0.0:
+            normalized_sync[int(entry)] = value
+    movie_sync = normalized_sync
     pending = []
     with source.open("rb") as handle:
         total, table = read_index(handle)
@@ -1354,6 +1892,7 @@ def patch_iso(source, voices, output=None, progress=None,
         entries = {}
         battle_entries = {}
         scene_entries = {}
+        movie_entries = {}
         allowed_unmapped = {
             (voice.entry, voice.sample, voice.clip_id, voice.zone)
             for voice in load_unmapped_map().values()
@@ -1368,11 +1907,91 @@ def patch_iso(source, voices, output=None, progress=None,
 
         for identity, path in sorted(selected.items(), key=identity_order):
             if identity[0] == "fmv":
-                raise ValueError(
-                    "%s targets movie audio; replacement is disabled until "
-                    "the protected-stream payload transform is recovered"
-                    % path.name
+                _kind, entry, movie_index = identity
+                if entry not in movie_entries:
+                    entry_offset, stored = _read_entry(
+                        handle, table, total, entry
+                    )
+                    clear = movie.decode_protected_movie(stored)
+                    movie_entries[entry] = {
+                        "offset": entry_offset,
+                        "stored_length": len(stored),
+                        "clear": clear,
+                        "tracks": {
+                            track.movie: track
+                            for track in movie.parse_audio_tracks(clear)
+                        },
+                        "replacements": [],
+                    }
+                current = movie_entries[entry]
+                track = current["tracks"].get(movie_index)
+                if track is None:
+                    raise ValueError(
+                        "%s targets missing movie track %d in entry %d"
+                        % (path.name, movie_index, entry)
+                    )
+                replacement = Replacement(
+                    path=path, kind="fmv", entry=entry,
+                    sample=movie_index, clip_id=movie_index,
+                    slot_bytes=track.capacity,
                 )
+                if track.codec == movie.PCM_CODEC:
+                    if path.suffix.lower() != ".wav":
+                        raise ValueError(
+                            "%s targets PCM movie audio and must be WAV"
+                            % path.name
+                        )
+                    pcm = movie.read_pcm_wav(path)
+                    if entry in movie_sync:
+                        pcm = movie.shift_pcm(pcm, movie_sync[entry])
+                    pcm = movie.encode_pcm_payload(pcm)
+                    rebuilt = movie.replace_pcm_track(
+                        current["clear"], track, pcm
+                    )
+                else:
+                    if path.suffix.lower() == ".wav":
+                        frames = movie.tac_sync_frames(movie_sync.get(entry, 0))
+                        say(
+                            "encode: movie entry %d track %d sync %+.4fs (%+d frame(s))"
+                            % (entry, movie_index,
+                               movie.tac_sync_seconds(frames), frames)
+                        )
+                        template = track.data
+                        target_samples = movie.tac_target_samples(template)
+                        encoded = movie.encode_tac_wav(
+                            path, template, track.capacity,
+                            movie_sync.get(entry, 0),
+                            target_samples=target_samples,
+                            progress=say,
+                        )
+                    elif path.suffix.lower() == ".laac":
+                        if entry in movie_sync:
+                            raise ValueError(
+                                "%s is already encoded; movie sync applies "
+                                "only when patching its WAV" % path.name
+                            )
+                        encoded = path.read_bytes()
+                    else:
+                        raise ValueError(
+                            "%s targets TAC movie audio; provide WAV or .laac"
+                            % path.name
+                        )
+                    rebuilt = movie.replace_tac_track(
+                        current["clear"], track, encoded
+                    )
+                if rebuilt == current["clear"]:
+                    say(
+                        "skip unchanged: movie entry %d track %d"
+                        % (entry, movie_index)
+                    )
+                    continue
+                current["clear"] = rebuilt
+                current["replacements"].append(replacement)
+                say(
+                    "prepare: movie entry %d track %d <- %s"
+                    % (entry, movie_index, path.name)
+                )
+                continue
             if identity[0] == "battle":
                 _kind, entry, sample_index, clip_id, zone = identity
                 if entry not in battle_entries:
@@ -1428,6 +2047,10 @@ def patch_iso(source, voices, output=None, progress=None,
                         "data": entry_data,
                         "indexed": _indexed_audio_groups(entry_data),
                         "streamed": found[1] if found else (),
+                        "field_encoded": {},
+                        "field_replacements": [],
+                        "lezard_encoded": {},
+                        "lezard_replacements": [],
                     }
                 current = scene_entries[entry]
                 if kind == "field":
@@ -1436,9 +2059,7 @@ def patch_iso(source, voices, output=None, progress=None,
                             "%s targets missing indexed group %d in "
                             "entry %d" % (path.name, group_index, entry)
                         )
-                    absolute = current["offset"] + current["indexed"][
-                        group_index
-                    ][2]
+                    relative = current["indexed"][group_index][2]
                     clips = parse_standalone(
                         current["indexed"][group_index][4]
                     )
@@ -1448,9 +2069,7 @@ def patch_iso(source, voices, output=None, progress=None,
                             "%s targets missing lezard group %d in entry %d"
                             % (path.name, group_index, entry)
                         )
-                    absolute = current["offset"] + current["streamed"][
-                        group_index
-                    ][0]
+                    relative = current["streamed"][group_index][0]
                     clips = current["streamed"][group_index][2]
                 clip = {item.sample_index: item for item in clips}.get(
                     sample_index
@@ -1467,10 +2086,9 @@ def patch_iso(source, voices, output=None, progress=None,
                         % (path.name, clip_id, zone, kind, entry, group_index,
                            sample_index, clip.clip_id, clip.zone)
                     )
-                absolute += clip.payload_offset
+                relative += clip.payload_offset
                 original_payload = current["data"][
-                    absolute - current["offset"]:
-                    absolute - current["offset"] + clip.payload_length
+                    relative:relative + clip.payload_length
                 ]
                 replacement = Replacement(
                     path=path, kind=kind, entry=entry, sub=group_index,
@@ -1480,6 +2098,89 @@ def patch_iso(source, voices, output=None, progress=None,
                 label = "%s entry %d group %d sample %d" % (
                     kind, entry, group_index, sample_index
                 )
+                if kind == "field" and identity in alicia_target_capacities:
+                    maximum_bytes = alicia_target_capacities[identity]
+                    replacement = replace(
+                        replacement, slot_bytes=maximum_bytes
+                    )
+                    pcm = audio.read_wav(path)
+                    encoded = audio.encode_adpcm(pcm)
+                    if len(encoded) > maximum_bytes:
+                        if not allow_overlong:
+                            duration = len(pcm) // 2 / audio.SAMPLE_RATE
+                            seconds = (
+                                maximum_bytes // audio.FRAME
+                                * audio.SAMPLES_PER_FRAME / audio.SAMPLE_RATE
+                            )
+                            raise ValueError(
+                                "%s is %.3fs but its available game slot "
+                                "maximum is %.3fs: encoded audio needs %d "
+                                "bytes but the slot holds %d"
+                                % (path.name, duration, seconds, len(encoded),
+                                   maximum_bytes)
+                            )
+                        encoded = encoded[:maximum_bytes]
+                        replacement = replace(replacement, truncated=True)
+                        say(
+                            "warning: %s exceeds the USA/Japanese maximum "
+                            "and will be trimmed" % path.name
+                        )
+                    current["field_encoded"][(group_index, sample_index)] = (
+                        encoded, maximum_bytes, path, replacement
+                    )
+                    current["field_replacements"].append(replacement)
+                    say("prepare: %s <- %s" % (label, path.name))
+                    continue
+                if kind == "lezard":
+                    row = lezard_capacities.get(
+                        (entry, group_index, sample_index)
+                    )
+                    if (row is not None and
+                            int(row["usa_payload_bytes"]) !=
+                            clip.payload_length):
+                        row = None
+                    maximum_bytes = (
+                        int(row["max_payload_bytes"])
+                        if row is not None else clip.payload_length
+                    )
+                    replacement = replace(
+                        replacement, slot_bytes=maximum_bytes
+                    )
+                    pcm = audio.read_wav(path)
+                    if row is None or not row.get("jp_controls"):
+                        raise ValueError(
+                            "no cached Japanese control template for %s"
+                            % path.name
+                        )
+                    encoded = audio.encode_adpcm_with_controls(
+                        pcm, bytes.fromhex(row["jp_controls"])
+                    )
+                    if len(encoded) > maximum_bytes:
+                        if not allow_overlong:
+                            duration = len(pcm) // 2 / audio.SAMPLE_RATE
+                            seconds = (
+                                maximum_bytes // audio.FRAME
+                                * audio.SAMPLES_PER_FRAME / audio.SAMPLE_RATE
+                            )
+                            raise ValueError(
+                                "%s is %.3fs but its available game slot "
+                                "maximum is %.3fs: encoded audio needs %d "
+                                "bytes but the slot holds %d"
+                                % (path.name, duration, seconds, len(encoded),
+                                   maximum_bytes)
+                            )
+                        encoded = encoded[:maximum_bytes]
+                        replacement = replace(replacement, truncated=True)
+                        say(
+                            "warning: %s exceeds the USA/Japanese maximum "
+                            "and will be trimmed" % path.name
+                        )
+                    current["lezard_encoded"][group_index] = (
+                        encoded, path, replacement
+                    )
+                    current["lezard_replacements"].append(replacement)
+                    say("prepare: %s <- %s" % (label, path.name))
+                    continue
             elif len(identity) == 3:
                 bank, sub_index, clip_id = identity
                 if bank not in VOICE_BANKS:
@@ -1490,10 +2191,19 @@ def patch_iso(source, voices, output=None, progress=None,
                     bank_offset, bank_data = _read_bank(
                         handle, table, total, bank
                     )
-                    banks[bank] = (bank_offset, {
-                        item.sub_index: item for item in parse_bank(bank_data)
-                    })
-                bank_offset, clips = banks[bank]
+                    banks[bank] = {
+                        "offset": bank_offset,
+                        "data": bank_data,
+                        "clips": {
+                            item.sub_index: item
+                            for item in parse_bank(bank_data)
+                        },
+                        "encoded": {},
+                        "replacements": [],
+                    }
+                current_bank = banks[bank]
+                bank_offset = current_bank["offset"]
+                clips = current_bank["clips"]
                 clip = clips.get(sub_index)
                 if clip is None:
                     raise ValueError(
@@ -1508,11 +2218,50 @@ def patch_iso(source, voices, output=None, progress=None,
                 absolute = (
                     bank_offset + clip.sub_offset + clip.payload_offset
                 )
+                capacity = capacities.get((bank, sub_index))
+                if (capacity is not None and
+                        int(capacity["usa_payload_bytes"]) !=
+                        clip.payload_length):
+                    capacity = None
                 replacement = Replacement(
                     path=path, kind="cutscene", bank=bank, sub=sub_index,
-                    clip_id=clip_id, slot_bytes=clip.payload_length,
+                    clip_id=clip_id,
+                    slot_bytes=(int(capacity["max_payload_bytes"])
+                                if capacity is not None
+                                else clip.payload_length),
                 )
                 label = "bank %d subfile %d" % (bank, sub_index)
+                pcm = audio.read_wav(path)
+                encoded = audio.encode_adpcm(pcm)
+                maximum = replacement.slot_bytes
+                if len(encoded) > maximum:
+                    if not allow_overlong:
+                        duration = len(pcm) // 2 / audio.SAMPLE_RATE
+                        seconds = (
+                            maximum // audio.FRAME
+                            * audio.SAMPLES_PER_FRAME / audio.SAMPLE_RATE
+                        )
+                        raise ValueError(
+                            "%s is %.3fs but its available game slot maximum "
+                            "is %.3fs: encoded audio needs %d bytes but the "
+                            "slot holds %d"
+                            % (path.name, duration, seconds,
+                               len(encoded), maximum)
+                        )
+                    encoded = encoded[:maximum]
+                    replacement = replace(replacement, truncated=True)
+                    say(
+                        "warning: %s exceeds the USA/Japanese maximum and "
+                        "will be trimmed to %.3fs"
+                        % (path.name, maximum // audio.FRAME
+                           * audio.SAMPLES_PER_FRAME / audio.SAMPLE_RATE)
+                    )
+                current_bank["encoded"][sub_index] = (
+                    encoded, path, clip_id, bank
+                )
+                current_bank["replacements"].append(replacement)
+                say("prepare: %s <- %s" % (label, path.name))
+                continue
             elif len(identity) == 4:
                 entry, sample_index, clip_id, zone = identity
                 if identity not in allowed_unmapped:
@@ -1541,7 +2290,7 @@ def patch_iso(source, voices, output=None, progress=None,
                         % (path.name, clip_id, zone, entry, sample_index,
                            clip.clip_id, clip.zone)
                     )
-                absolute = entry_offset + clip.payload_offset
+                relative = clip.payload_offset
                 original_payload = entry_data[
                     clip.payload_offset:
                     clip.payload_offset + clip.payload_length
@@ -1585,37 +2334,233 @@ def patch_iso(source, voices, output=None, progress=None,
                 current["clear"][start:start + clip.payload_length] = fitted
                 current["replacements"].append(replacement)
             else:
-                pending.append((absolute, fitted, (replacement,)))
+                pending.append((
+                    replacement.entry, relative, fitted, (replacement,)
+                ))
             say("prepare: %s <- %s" % (label, path.name))
             if truncated:
                 say("warning: %s is overlong and will be trimmed to %.3fs" % (
                     path.name, maximum
                 ))
+        bank_expanded = any(
+            len(encoded[0]) > current["clips"][sub].payload_length
+            for current in banks.values()
+            for sub, encoded in current["encoded"].items()
+        )
+        lezard_expanded_entries = {
+            entry for entry, current in scene_entries.items()
+            if any(
+                len(encoded[0]) > current["streamed"][group][2][0].payload_length
+                for group, encoded in current["lezard_encoded"].items()
+            )
+        }
+        for entry in sorted(lezard_expanded_entries):
+            current = scene_entries[entry]
+            required = set(range(len(current["streamed"])))
+            supplied = set(current["lezard_encoded"])
+            if supplied != required:
+                missing = sorted(required - supplied)
+                raise ValueError(
+                    "Lezard entry %d has a WAV longer than its USA slot; "
+                    "all %d Lezard WAVs are required to switch to coherent "
+                    "Japanese geometry (missing group(s): %s)"
+                    % (entry, len(required), ", ".join(map(str, missing)))
+                )
+            updated_replacements = {}
+            for group_index in sorted(required):
+                encoded, path, replacement = current["lezard_encoded"][
+                    group_index
+                ]
+                clip = current["streamed"][group_index][2][0]
+                row = lezard_capacities.get(
+                    (entry, group_index, clip.sample_index)
+                )
+                if row is None:
+                    raise ValueError(
+                        "no cached Japanese geometry for Lezard entry %d "
+                        "group %d" % (entry, group_index)
+                    )
+                target = int(row["jp_payload_bytes"])
+                if len(encoded) > target:
+                    if not allow_overlong:
+                        raise ValueError(
+                            "%s needs %d encoded bytes but the coherent "
+                            "Japanese slot holds %d"
+                            % (path.name, len(encoded), target)
+                        )
+                    encoded = encoded[:target]
+                    replacement = replace(replacement, truncated=True)
+                    say(
+                        "warning: %s exceeds the coherent Japanese slot "
+                        "and will be trimmed" % path.name
+                    )
+                replacement = replace(replacement, slot_bytes=target)
+                current["lezard_encoded"][group_index] = (
+                    encoded, path, replacement
+                )
+                updated_replacements[path] = replacement
+            current["lezard_replacements"] = [
+                updated_replacements.get(item.path, item)
+                for item in current["lezard_replacements"]
+            ]
+        field_expanded_entries = {
+            entry for entry, current in scene_entries.items()
+            if any(
+                len(encoded[0]) > {
+                    clip.sample_index: clip
+                    for clip in parse_standalone(
+                        current["indexed"][group][4]
+                    )
+                }[sample].payload_length
+                for (group, sample), encoded
+                in current["field_encoded"].items()
+            )
+        }
+        expanded = (
+            bank_expanded or bool(lezard_expanded_entries) or
+            bool(field_expanded_entries)
+        )
+        overrides = {}
+        if bank_expanded:
+            overrides.update({
+                bank: _rebuild_voice_bank(
+                    current["data"], current["encoded"], capacities
+                )
+                for bank, current in banks.items()
+            })
+        else:
+            for bank, current in banks.items():
+                for sub_index, encoded_item in current["encoded"].items():
+                    encoded, path, _clip_id, _bank = encoded_item
+                    clip = current["clips"][sub_index]
+                    fitted = audio.fit_payload(
+                        encoded, clip.payload_length, clip.tail_flag,
+                        allow_truncate=allow_overlong,
+                    )
+                    replacement = next(
+                        item for item in current["replacements"]
+                        if item.sub == sub_index
+                    )
+                    pending.append((
+                        bank, clip.sub_offset + clip.payload_offset,
+                        fitted, (replacement,),
+                    ))
+        for entry, current in scene_entries.items():
+            if entry in field_expanded_entries:
+                overrides[entry] = _rebuild_alicia_field_entry(
+                    current["data"], {
+                        key: (value[0], value[1], value[2])
+                        for key, value in current["field_encoded"].items()
+                    },
+                )
+            else:
+                for (group_index, sample_index), encoded_item in (
+                        current["field_encoded"].items()):
+                    encoded, _maximum, _path, replacement = encoded_item
+                    group = current["indexed"][group_index]
+                    clip = {item.sample_index: item for item in parse_standalone(
+                        group[4]
+                    )}[sample_index]
+                    fitted = bytearray(audio.fit_payload(
+                        encoded, clip.payload_length, clip.tail_flag
+                    ))
+                    relative = group[2] + clip.payload_offset
+                    original = current["data"]
+                    for offset in range(0, len(fitted), audio.FRAME):
+                        fitted[offset + 1] = original[relative + offset + 1]
+                    pending.append((
+                        entry, relative, bytes(fitted), (replacement,)
+                    ))
+            if entry in lezard_expanded_entries:
+                overrides[entry] = _rebuild_lezard_entry(
+                    current["data"], entry,
+                    current["lezard_encoded"], lezard_capacities,
+                )
+                continue
+            for group_index, encoded_item in current["lezard_encoded"].items():
+                encoded, _path, replacement = encoded_item
+                _position, _payload, clips = current["streamed"][group_index]
+                clip = {item.sample_index: item for item in clips}[
+                    replacement.sample
+                ]
+                fitted = bytearray(audio.fit_payload(
+                    encoded, clip.payload_length, clip.tail_flag
+                ))
+                original = current["data"]
+                relative = current["streamed"][group_index][0] + clip.payload_offset
+                for offset in range(0, len(fitted), audio.FRAME):
+                    fitted[offset + 1] = original[relative + offset + 1]
+                pending.append((
+                    entry, relative, bytes(fitted), (replacement,)
+                ))
         for current in battle_entries.values():
+            if not current["replacements"]:
+                continue
             stored = encode_battle_entry(
                 bytes(current["clear"]), current["signature"]
             )
             pending.append((
-                current["offset"], stored,
+                current["replacements"][0].entry, 0, stored,
                 tuple(current["replacements"]),
             ))
+        for current in movie_entries.values():
+            if not current["replacements"]:
+                continue
+            stored = movie.encode_protected_movie(current["clear"])
+            if len(stored) != current["stored_length"]:
+                raise ValueError("movie replacement changed its entry size")
+            pending.append((
+                current["replacements"][0].entry, 0, stored,
+                tuple(current["replacements"]),
+            ))
+        if expanded:
+            replacements = tuple(
+                replacement
+                for current in banks.values()
+                for replacement in current["replacements"]
+            ) + tuple(
+                replacement
+                for entry, current in scene_entries.items()
+                if entry in field_expanded_entries
+                for replacement in current["field_replacements"]
+            ) + tuple(
+                replacement
+                for entry, current in scene_entries.items()
+                if entry in lezard_expanded_entries
+                for replacement in current["lezard_replacements"]
+            ) + tuple(
+                replacement
+                for _entry, _relative, _payload, items in pending
+                for replacement in items
+            )
+            _repack_resource_overrides(
+                source, output, overrides, writes=pending, progress=say
+            )
+            say("wrote %s" % output)
+            return PatchResult(
+                output=output, region=region, replacements=replacements
+            )
     output.parent.mkdir(parents=True, exist_ok=True)
     try:
         say("copy: 0%")
         _copy_with_progress(source, partial, say)
-        replacement_count = sum(len(item[2]) for item in pending)
+        replacement_count = sum(len(item[3]) for item in pending)
         say("write: applying %d voice replacement(s)" % replacement_count)
         with partial.open("r+b") as candidate:
-            for offset, payload, _replacements in pending:
-                candidate.seek(offset)
+            for entry, relative, payload, _replacements in pending:
+                offset, allocation = entry_span(table, total, entry)
+                if relative + len(payload) > allocation:
+                    raise ValueError("voice write exceeds resource %d" % entry)
+                candidate.seek(offset + relative)
                 candidate.write(payload)
             candidate.flush()
             os.fsync(candidate.fileno())
         say("verify: reading every replaced slot back from disk")
         with partial.open("rb") as candidate:
             total, table = read_index(candidate)
-            for offset, payload, replacements in pending:
-                candidate.seek(offset)
+            for entry, relative, payload, replacements in pending:
+                offset, _allocation = entry_span(table, total, entry)
+                candidate.seek(offset + relative)
                 if candidate.read(len(payload)) != payload:
                     raise ValueError(
                         "%s voice %04x did not read back byte-for-byte"
@@ -1632,7 +2577,7 @@ def patch_iso(source, voices, output=None, progress=None,
         output=output, region=region,
         replacements=tuple(
             replacement
-            for _offset, _payload, replacements in pending
+            for _entry, _relative, _payload, replacements in pending
             for replacement in replacements
         ),
     )

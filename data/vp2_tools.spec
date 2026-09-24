@@ -47,13 +47,26 @@ datas = [(os.fspath(source), os.path.dirname(name) or ".")
          for source, name in members]
 datas += [(os.fspath(ROOT / name), os.path.dirname(name)) for name in ARTWORK
           if (ROOT / name).is_file()]
+VGMSTREAM = ROOT / "vendor" / "vgmstream" / (
+    "vgmstream-cli.exe" if sys.platform == "win32" else "vgmstream-cli"
+)
+VGMSTREAM_LICENSE = ROOT / "vendor" / "vgmstream" / "COPYING"
+binaries = ([(os.fspath(VGMSTREAM), "vendor/vgmstream")]
+            if VGMSTREAM.is_file() else [])
+if VGMSTREAM_LICENSE.is_file():
+    datas.append((os.fspath(VGMSTREAM_LICENSE), "vendor/vgmstream"))
+TAC_ENCODER = ROOT / "vendor" / "tac_encoder" / (
+    "vp2-tac-encode.exe" if sys.platform == "win32" else "vp2-tac-encode"
+)
+if TAC_ENCODER.is_file():
+    binaries.append((os.fspath(TAC_ENCODER), "vendor/tac_encoder"))
 print("payload: %d file(s), %.1f MB"
       % (len(members), sum(s.stat().st_size for s, _ in members) / 1e6))
 
 a = Analysis(
     [os.fspath(ROOT / "vp2_tools.py")],
     pathex=[os.fspath(ROOT)],
-    binaries=[],
+    binaries=binaries,
     datas=datas,
     hiddenimports=[],
     hookspath=[],

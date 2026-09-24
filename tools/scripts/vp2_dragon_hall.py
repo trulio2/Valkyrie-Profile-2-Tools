@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import struct
 
 from . import sle
@@ -15,12 +17,11 @@ from . import vp2_container_text as container_text
 RESOURCES = (328, 330, 338, 340, 342, 346, 348, 354, 372, 382, 388)
 MESSAGE_ID = 0xE80
 PROMPT_OFFSET = MESSAGE_ID
-PROMPT_SIZE = 20
 ORIGINAL_EN = "Insert which stone?"
 ORIGINAL_JP = "どの石をはめますか？"
 JP_PROMPT = bytes(range(0x65, 0x6F)) + b"\0"
-NEXT_TEXT_OFFSET = PROMPT_OFFSET + PROMPT_SIZE
-NEXT_EN = "Sunlight Stone"
+STREAM_SIZE = 4480
+BANK_OFFSET = 0xC80
 TEXT_FIELDS = (
     (0xE80, "Insert which stone?", "どの石をはめますか？"),
     (0xE94, "Sunlight Stone", "陽光の石"),
@@ -37,6 +38,10 @@ TEXT_FIELDS = (
     (0xF3E, "Azure Sealpouch", "藍の封陣器"),
     (0xF4E, "Eclipse Stone", "日食の石"),
 )
+UNUSED_FIELDS = frozenset((0xEE6, 0xEF5, 0xF00, 0xF20, 0xF2F, 0xF3E))
+TABLE_ID = {message_id: index + 1
+            for index, (message_id, _english, _japanese)
+            in enumerate(TEXT_FIELDS)}
 FIELD_BY_ID = {
     message_id: (english, japanese,
                  (TEXT_FIELDS[index + 1][0] - message_id
@@ -84,32 +89,38 @@ def _sle_candidates(raw: bytes):
         yield offset, end, stored_size, raw[offset:end], expanded
 
 
+def _bank(expanded):
+    if expanded[BANK_OFFSET:BANK_OFFSET + 8] != b"mcps2lib":
+        raise ValueError("SPDDragonHall.bin text bank was not found")
+    size = struct.unpack_from("<I", expanded, BANK_OFFSET + 0x20)[0]
+    return bytes(expanded[BANK_OFFSET:BANK_OFFSET + size])
+
+
 def _english_stream(raw: bytes):
     for candidate in _sle_candidates(raw):
         expanded = candidate[4]
-        if (len(expanded) == 4480 and all(
-                b"\0" in expanded[message_id:message_id + size]
-                for message_id, (_english, _japanese, size)
-                in FIELD_BY_ID.items())):
+        if (len(expanded) == STREAM_SIZE
+                and expanded[BANK_OFFSET:BANK_OFFSET + 8] == b"mcps2lib"):
             return candidate
     raise ValueError("SPDDragonHall.bin prompt stream was not found")
 
 
-def extract_english(raw: bytes, message_id=MESSAGE_ID, *, accent_tokens=None) -> str:
+def _read_field(bank, message_id, accent_tokens=None):
     try:
-        _english, _japanese, size = FIELD_BY_ID[message_id]
+        table_id = TABLE_ID[message_id]
     except KeyError as exc:
         raise ValueError(f"unknown Dragon Hall text field {message_id}") from exc
-    expanded = _english_stream(raw)[4]
-    text, consumed = container_text.render_codepage(
-        expanded,
-        {"text_start": 0, "text_end": message_id + size},
-        message_id,
-        accent_tokens=accent_tokens,
-    )
-    if consumed > size:
-        raise ValueError(f"Dragon Hall text field {message_id} overruns its slot")
-    return text
+    meta = container_text.layout(bank)
+    offset = dict(container_text.entries(bank, meta)).get(table_id)
+    if offset is None:
+        raise ValueError(f"Dragon Hall text field {message_id} is not indexed")
+    return container_text.render_codepage(
+        bank, meta, offset, accent_tokens=accent_tokens)[0]
+
+
+def extract_english(raw: bytes, message_id=MESSAGE_ID, *, accent_tokens=None) -> str:
+    return _read_field(_bank(_english_stream(raw)[4]), message_id,
+                       accent_tokens=accent_tokens)
 
 
 def extract_japanese(raw: bytes) -> str:
@@ -127,6 +138,8 @@ def source_rows(resource: int, raw: bytes, japanese_raw: bytes | None = None):
         extract_japanese(japanese_raw)
     rows = []
     for message_id, expected, japanese in TEXT_FIELDS:
+        if message_id in UNUSED_FIELDS:
+            continue
         english = extract_english(raw, message_id)
         if english != expected:
             raise ValueError(
@@ -152,39 +165,54 @@ def source_row(resource: int, raw: bytes, japanese_raw: bytes | None = None):
     return source_rows(resource, raw, japanese_raw)[0]
 
 
-def patch_raw(raw: bytes, translations, *, accent_tokens=None):
+def _repack(bank, resource, translations, accent_tokens):
+    rows = {str(TABLE_ID[message_id]): {"translated": text}
+            for message_id, text in translations.items()}
+    with contextlib.redirect_stdout(io.StringIO()):
+        rebuilt, written = container_text.rebuild_codepage_records(
+            bank, resource, rows, accent_tokens=accent_tokens,
+            keep_region=True)
+    if written != len(rows):
+        return None
+    return bytes(rebuilt)
+
+
+def patch_raw(raw: bytes, translations, *, accent_tokens=None, resource=0):
     if isinstance(translations, str):
         translations = {MESSAGE_ID: translations}
     else:
         translations = {int(key): value for key, value in translations.items()}
     offset, end, stored_size, stream, expanded = _english_stream(raw)
-    rebuilt = bytearray(expanded)
-    expected = {}
-    for message_id, translated in translations.items():
-        try:
-            original, _japanese, size = FIELD_BY_ID[message_id]
-        except KeyError as exc:
-            raise ValueError(f"unknown Dragon Hall text field {message_id}") from exc
-        before = extract_english(raw, message_id, accent_tokens=accent_tokens)
+    bank = _bank(expanded)
+    for message_id in translations:
+        original = FIELD_BY_ID.get(message_id, (None,))[0]
+        if original is None:
+            raise ValueError(f"unknown Dragon Hall text field {message_id}")
+        before = _read_field(bank, message_id, accent_tokens=accent_tokens)
         if before != original:
             raise ValueError(f"expected {original!r}, found {before!r}")
-        encoded = container_text.encode_codepage(
-            translated, label=f"Dragon Hall text {message_id}",
-            accent_tokens=accent_tokens)
-        if len(encoded) > size:
-            raise ValueError(
-                "Dragon Hall text %d uses %d encoded bytes; its fixed slot "
-                "holds %d including the terminator" %
-                (message_id, len(encoded), size))
-        rebuilt[message_id:message_id + size] = encoded.ljust(size, b"\0")
-        expected[message_id] = container_text.codepage_semantic_text(
-            translated, accent_tokens=accent_tokens)
+    rebuilt_bank = _repack(bank, resource, translations, accent_tokens)
+    if rebuilt_bank is None:
+        spare = {message_id: "" for message_id in UNUSED_FIELDS}
+        spare.update(translations)
+        rebuilt_bank = _repack(bank, resource, spare, accent_tokens)
+    if rebuilt_bank is None:
+        raise ValueError(
+            "Dragon Hall names do not fit the %d-byte text bank"
+            % (len(bank) - container_text.layout(bank)["text_start"]))
+    rebuilt = bytearray(expanded)
+    rebuilt[BANK_OFFSET:BANK_OFFSET + len(bank)] = rebuilt_bank
     compressed = slz_compress.compress(
         rebuilt, mode=stream[3], target_size=stored_size, cache_dir="")
     protected = protect(compressed)
     if len(protected) != len(stream):
         raise AssertionError("exact-size Dragon Hall recompression changed the stream")
     output = raw[:offset] + protected + raw[end:]
+    expected = {
+        message_id: container_text.codepage_semantic_text(
+            translated, accent_tokens=accent_tokens)
+        for message_id, translated in translations.items()
+    }
     readback = {
         message_id: extract_english(
             output, message_id, accent_tokens=accent_tokens)
@@ -206,10 +234,12 @@ def patch_resource_in_memory(iso, resource: int, supplied, *, accent_tokens=None
     extra = sorted(set(supplied) - known)
     if extra:
         raise ValueError(f"resource {resource}: unexpected Dragon Hall rows {extra}")
+    supplied = {key: row for key, row in supplied.items()
+                if int(key) not in UNUSED_FIELDS}
     original = bytes(iso.read_entry(resource))
     rebuilt, details = patch_raw(
         original,
         {int(key): row["translated"] for key, row in supplied.items()},
-        accent_tokens=accent_tokens)
+        accent_tokens=accent_tokens, resource=resource)
     iso.write_entry(resource, rebuilt)
     return {"written": len(supplied), "details": details, "font_patch": None}

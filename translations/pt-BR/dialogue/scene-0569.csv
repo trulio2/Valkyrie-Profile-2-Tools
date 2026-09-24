@@ -1,11 +1,10 @@
 resource,message_id,translated,notes
-569,18,"Adquiriu outra bolsa de selo.
+569,18,"Adquiriu outra bolsa-selo.
 Você agora pode carregar até quatro pedras de selo.",
-569,16,"Uma <PART> bolsa de selo <PART> aumenta o número de
+569,16,"Uma <PART> bolsa-selo <PART> aumenta o número de
 pedras de selo que você pode carregar.
-Você agora pode carregar até duas pedras de selo.
-",
-569,17,"Adquiriu outra bolsa de selo.
+Você agora pode carregar até duas pedras de selo.",
+569,17,"Adquiriu outra bolsa-selo.
 Você agora pode carregar até três pedras de selo.",
 569,19,Floresta Antiga,
 569,30,Adquirido <PART> Elmo de Ferro,

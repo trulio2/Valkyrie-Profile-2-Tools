@@ -32,4 +32,6 @@ __pycache__/
 # PyInstaller
 /dist/
 /build/
+vendor/vgmstream/
+vendor/tac_encoder/
 *.spec.bak

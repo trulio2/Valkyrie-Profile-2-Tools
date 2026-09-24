@@ -16,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
-    binutils ca-certificates curl tcl8.6 tk8.6 \
+    binutils build-essential ca-certificates cmake curl git tcl8.6 tk8.6 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp/actions-python
@@ -32,7 +32,9 @@ RUN python -m pip install "pyinstaller==${PYINSTALLER_VERSION}"
 WORKDIR /src
 COPY . .
 
-RUN python -m unittest discover -s tests -q \
+RUN python tools/scripts/build_vgmstream.py \
+    && python tools/scripts/build_tac_encoder.py \
+    && python -m unittest discover -s tests -q \
     && for pack in translations/[!_]*/; do \
     python vp2_translate.py check-pack "$pack"; \
     done \
