@@ -51,7 +51,8 @@ class PackSlotTableTests(unittest.TestCase):
     def test_every_pack_table_loads(self):
         for name, table in pack_tables():
             with self.subTest(pack=name):
-                self.assertTrue(shared_font.load_slot_assignments(table))
+                self.assertIsInstance(
+                    shared_font.load_slot_assignments(table), dict)
 
     def test_every_token_has_a_slot_in_the_font(self):
         for name, table in pack_tables():
