@@ -19,10 +19,11 @@ The [downloadable](https://github.com/trulio2/Valkyrie-Profile-2-Tools/releases)
 
 ## Status
 
-| Language | Cutscenes | NPC Dialogues | Menus | Images | Revision |
-| -------- | --------- | ------------- | ----- | ------ | -------- |
-| pt-BR    | 100%      | 100%          | 100%  | 100%   | 10%      |
-| sv-SE    | 100%      | 100%          | 100%  | 25%    | 0%       |
+| Language      | Cutscenes | NPC Dialogues | Menus | Images | Revision |
+| ------------- | --------- | ------------- | ----- | ------ | -------- |
+| pt-BR         | 100%      | 100%          | 100%  | 100%   | 10%      |
+| sv-SE         | 100%      | 100%          | 100%  | 25%    | 0%       |
+| en-US (undub) | 100%      | 1%            | 1%    | 0%     | 0%       |
 
 ## Requirements
 
