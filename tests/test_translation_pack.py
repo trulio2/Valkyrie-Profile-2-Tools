@@ -11,6 +11,7 @@ from tools.scripts.translation_pack import (
     MISC_FIELDS,
     PACK_FIELDS,
     PackError,
+    _expanded_targets,
     load_misc,
     load_pack,
     source_hash,
@@ -125,6 +126,38 @@ class TranslationPackTests(unittest.TestCase):
             }])
             with self.assertRaisesRegex(PackError, "does not match"):
                 load_pack(pack)
+
+    def test_speaker_name_column_is_optional_and_carried(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            pack = Path(temporary)
+            write_manifest(pack)
+            fields = [*PACK_FIELDS, "speaker_name"]
+            write_csv(pack / "dialogue" / "scene-0089.csv", fields, [
+                {"resource": "89", "message_id": "12", "translated": "Hi",
+                 "notes": "", "speaker_name": "Aventureira"},
+                {"resource": "89", "message_id": "70", "translated": "Aventureiro",
+                 "notes": "", "speaker_name": ""},
+            ])
+            rows = load_pack(pack)
+            self.assertEqual(
+                "Aventureira", rows[("scene", "89", "12", "")]["speaker_name"])
+            expanded = _expanded_targets(rows, {})
+            self.assertEqual(
+                "Aventureira",
+                expanded[("scene", "89", "12", "")]["speaker_name"])
+            self.assertEqual("Hi",
+                             expanded[("scene", "89", "12", "")]["translated"])
+
+    def test_blank_speaker_name_stays_absent(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            pack = Path(temporary)
+            write_manifest(pack)
+            write_csv(pack / "dialogue" / "scene-0089.csv", PACK_FIELDS, [
+                {"resource": "89", "message_id": "12", "translated": "Hi",
+                 "notes": ""},
+            ])
+            rows = load_pack(pack)
+            self.assertEqual("", rows[("scene", "89", "12", "")]["speaker_name"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -452,14 +452,20 @@ def compile_build_workspace(
                 (records / "containers").glob("*.csv")):
             fields, rows = _read_csv(source)
             translated_count = 0
+            used_speaker_names = False
             for record in rows:
                 key = _record_key(record)
                 value = exact.get(key)
                 if value is None:
                     continue
-                record["translated"] = value
+                record["translated"] = value["translated"]
+                if value["speaker_name"]:
+                    record["speaker_name"] = value["speaker_name"]
+                    used_speaker_names = True
                 matched.add(key)
                 translated_count += 1
+            if used_speaker_names and "speaker_name" not in fields:
+                fields.append("speaker_name")
             if translated_count or source.name in profile_sheets:
                 _write_csv(sheets / source.name, fields, rows)
 
@@ -516,7 +522,7 @@ def compile_build_workspace(
                     raise PackError(
                         f"resource {resource}: multiple chapter translations")
                 key, value = chapter_matches[0]
-                manifest["chapter_title"] = value
+                manifest["chapter_title"] = value["translated"]
                 manifest["chapter_title_message"] = key[2]
                 matched_chapters.add(key)
             manifest_rows.append(manifest)

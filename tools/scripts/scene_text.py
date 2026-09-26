@@ -647,6 +647,7 @@ def read_scene_rows(path, resource=None, *, primary_lookup=None,
             "resource_index": str(index),
             "message_id": row["message_id"],
             "translated": row["translated"],
+            "speaker_name": row.get("speaker_name") or "",
             "audio_id": row.get("audio_id") or "r%04d-m%04d" % (
                 index, int(row["message_id"])),
         })

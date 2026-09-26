@@ -251,7 +251,8 @@ def load_pack(
         fields, records = _read_csv(path)
         validated_fields = [
             field for field in fields
-            if not (ignore_reference_columns and field in REFERENCE_FIELDS)
+            if field != "speaker_name"
+            and not (ignore_reference_columns and field in REFERENCE_FIELDS)
         ]
         forbidden = SOURCE_FIELDS.intersection(
             field.lower() for field in validated_fields)
@@ -273,6 +274,7 @@ def load_pack(
                 "message_id": key[2],
                 "message_index": key[3],
                 "translated": row.get("translated") or "",
+                "speaker_name": row.get("speaker_name") or "",
                 "notes": row.get("notes") or "",
             }
     return rows
@@ -301,16 +303,19 @@ def _menu_units(menu_layout: str | os.PathLike[str]) -> dict[tuple[str, ...], li
 def _expanded_targets(
     translations: dict[tuple[str, ...], dict[str, str]],
     menu_units: dict[tuple[str, ...], list[tuple[str, ...]]],
-) -> dict[tuple[str, ...], str]:
+) -> dict[tuple[str, ...], dict[str, str]]:
     expanded = {}
     for key, row in translations.items():
         targets = menu_units.get(key, (key,)) if key[0] == "menu" else (key,)
         for target in targets:
             value = row["translated"]
             previous = expanded.get(target)
-            if previous is not None and previous != value:
+            if previous is not None and previous["translated"] != value:
                 raise PackError(f"conflicting translations for {target!r}")
-            expanded[target] = value
+            expanded[target] = {
+                "translated": value,
+                "speaker_name": row.get("speaker_name") or "",
+            }
     return expanded
 
 

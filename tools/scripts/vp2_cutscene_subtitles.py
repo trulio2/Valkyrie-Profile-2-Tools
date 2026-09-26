@@ -86,6 +86,62 @@ def runtime_displayed_message_ids(raw, expanded, metadata, known=None):
     return displayed_message_ids(raw, known) | area_banner_message_ids(
         expanded, metadata, known)
 
+SPEAKER_OPCODE = bytes((0xE0, 0x01, 0x8C, 0x00))
+SPEAKER_ID_AT = 16
+SPEAKER_TAIL_AT = 12
+SPEAKER_TAIL = struct.pack("<f", 1.0)
+SPEAKER_AFTER_DISPLAY = 12
+
+def _ecs_body(raw):
+    body = None
+    for tag, offset, length in dcms.parse_pk1(raw):
+        if tag == "ECS":
+            body = raw[offset:offset + length]
+    return body
+
+def _display_instructions(plain):
+    found, start = [], 0
+    while True:
+        at = plain.find(DISPLAY_OPCODE, start)
+        if at < 0:
+            break
+        start = at + 1
+        if at + DISPLAY_TAIL_AT + 4 > len(plain):
+            continue
+        if plain[at + DISPLAY_TAIL_AT:at + DISPLAY_TAIL_AT + 4] != DISPLAY_TAIL:
+            continue
+        found.append((at, struct.unpack_from("<I", plain, at + DISPLAY_ID_AT)[0]))
+    return found
+
+def _speaker_instructions(plain):
+    found, start = [], 0
+    while True:
+        at = plain.find(SPEAKER_OPCODE, start)
+        if at < 0:
+            break
+        start = at + 1
+        if at + SPEAKER_ID_AT + 4 > len(plain):
+            continue
+        if plain[at + SPEAKER_TAIL_AT:at + SPEAKER_TAIL_AT + 4] != SPEAKER_TAIL:
+            continue
+        found.append(
+            (at, struct.unpack_from("<I", plain, at + SPEAKER_ID_AT)[0]))
+    return found
+
+def ecs_speakers(raw):
+    body = _ecs_body(raw)
+    if body is None:
+        return []
+    plain = slz.decompress(body) if body[:3] == b"SLZ" else body
+    return _speaker_instructions(plain)
+
+def ecs_display_ids(raw):
+    body = _ecs_body(raw)
+    if body is None:
+        return []
+    plain = slz.decompress(body) if body[:3] == b"SLZ" else body
+    return _display_instructions(plain)
+
 class FileIso:
     """Adapter that lets file-mode helpers share the iso duck type."""
 
@@ -525,6 +581,150 @@ from .scene_text import (
     verification_glyph_advances, visible_text_tokens,
 )
 
+def _name_frame(record, metadata, alphabet):
+    for start, end, tokens in parse_record(record, metadata):
+        rendered, _matched, _unknown = render_tokens(tokens, metadata, alphabet)
+        if clean_text(rendered).strip():
+            stop = record.find(b"\0", end)
+            return record[:start], record[end:stop if stop >= 0 else len(record)]
+    return b"\x88\x80\x08", b"\x89\x80"
+
+def _record_text(record, metadata, alphabet):
+    best = ""
+    for _start, _end, tokens in parse_record(record, metadata):
+        rendered, _matched, _unknown = render_tokens(tokens, metadata, alphabet)
+        visible = clean_text(rendered).strip()
+        if len(visible) > len(best):
+            best = visible
+    return best
+
+def apply_speaker_names(resource_index, expanded, metadata, alphabet, layout,
+                        rows, ecs_plain):
+    wanted = {}
+    for row in rows:
+        name = (row.get("speaker_name") or "").strip()
+        if name:
+            wanted[int(row["message_id"], 0)] = name
+    if not wanted:
+        return 0
+    rows_by_id = {int(row["message_id"], 0): row for row in rows}
+    instructions = dict(_speaker_instructions(bytes(ecs_plain)))
+    display_speaker = {}
+    for offset, message_id in _display_instructions(bytes(ecs_plain)):
+        at = offset + SPEAKER_AFTER_DISPLAY
+        if at in instructions:
+            display_speaker.setdefault(message_id, at)
+    missing = sorted(set(wanted) - set(display_speaker))
+    if missing:
+        raise ValueError(
+            "speaker_name is set on message(s) the event script has no "
+            "speaker instruction for: %s" % ", ".join(map(str, missing)))
+
+    pointers, next_offset = message_pointers(expanded, metadata)
+    table_start, text_start = metadata["table_start"], metadata["text_start"]
+    by_id = {message_id: offset for _i, message_id, offset in pointers}
+
+    def record_bytes(offset):
+        return bytes(expanded[text_start + offset:text_start + next_offset[offset]])
+
+    def default_text(name_id):
+        row = rows_by_id.get(name_id)
+        if row is not None and (row.get("translated") or "").strip():
+            return row["translated"].strip()
+        offset = by_id.get(name_id)
+        if offset is None:
+            return ""
+        return _record_text(record_bytes(offset), metadata, alphabet)
+
+    char_tokens = codepage_char_tokens()
+
+    gaps = []
+    for offset in sorted(next_offset):
+        extent = next_offset[offset]
+        record = bytes(expanded[text_start + offset:text_start + extent])
+        stop = record.find(b"\0")
+        content = offset + (stop + 1 if stop >= 0 else len(record))
+        if extent > content:
+            gaps.append([content, extent - content])
+    gaps.sort(key=lambda item: item[1])
+
+    def allocate(size):
+        for gap in gaps:
+            if gap[1] >= size:
+                start = gap[0]
+                gap[0] += size
+                gap[1] -= size
+                return start
+        raise ValueError(
+            "resource #%d: no room for a speaker-name variant (%d bytes); "
+            "the largest free record gap is %d"
+            % (resource_index, size,
+               max((gap[1] for gap in gaps), default=0)))
+
+    slots = (metadata["text_start"] - table_start) // 8
+    term = None
+    for slot in range(slots):
+        if struct.unpack_from("<II", expanded, table_start + slot * 8) == (0, 0):
+            term = slot
+            break
+    if term is None or term + 1 >= slots:
+        raise ValueError("no free message-table slot for a speaker name")
+    count = struct.unpack_from("<I", expanded, 0x54)[0]
+    if count != term:
+        raise ValueError(
+            "unexpected message count %d at 0x54; the table holds %d entries"
+            % (count, term))
+
+    final, minted = {}, {}
+    for message_id in sorted(wanted):
+        name_id = instructions[display_speaker[message_id]]
+        if wanted[message_id] == default_text(name_id):
+            final[message_id] = name_id
+    appended = 0
+    next_id = (max(by_id) + 1) if by_id else 1
+    for message_id in sorted(wanted):
+        if message_id in final:
+            continue
+        desired = wanted[message_id]
+        if desired not in minted:
+            name_id = instructions[display_speaker[message_id]]
+            prefix, suffix = (_name_frame(
+                record_bytes(by_id[name_id]), metadata, alphabet)
+                if name_id in by_id else (b"\x88\x80\x08", b"\x89\x80"))
+            body = pack_tokens(visible_text_tokens(
+                desired, alphabet, layout["glyph_base"], codepage=True,
+                char_tokens=char_tokens))
+            if body.endswith(b"\0"):
+                body = body[:-1]
+            record = prefix + body + suffix + b"\0"
+            at = allocate(len(record))
+            expanded[text_start + at:text_start + at + len(record)] = record
+            struct.pack_into("<II", expanded, table_start + term * 8,
+                             next_id, at)
+            struct.pack_into("<II", expanded, table_start + (term + 1) * 8, 0, 0)
+            minted[desired] = next_id
+            term += 1
+            next_id += 1
+            appended += 1
+        final[message_id] = minted[desired]
+    struct.pack_into("<I", expanded, 0x54, term)
+
+    for message_id, rec_id in final.items():
+        struct.pack_into("<I", ecs_plain,
+                         display_speaker[message_id] + SPEAKER_ID_AT, rec_id)
+    return appended
+
+def _splice_ecs(patched, new_ecs, alignment):
+    for tag, offset, length in dcms.parse_pk1(patched):
+        if tag == "ECS":
+            if len(new_ecs) <= length:
+                out = bytearray(patched)
+                out[offset:offset + length] = new_ecs.ljust(length, b"\0")
+                return bytes(out)
+            return repack_pk1_subresource(patched, "ECS", new_ecs,
+                                          alignment=alignment)
+    raise ValueError("no ECS subresource to write the speaker names into")
+
 def _title_slot_cost(data):
     """How small a candidate title-glyph placement makes the DCMS."""
     return len(slz_compress.compress(data, mode=2, optimal=False))
@@ -826,6 +1026,28 @@ def patch_resource_bytes(raw, resource_index, args, rows, iso,
             chapter_title_patched = CHAPTER_TITLE_TEXT
         replacements.setdefault(record_offset, []).append((
             relative, len(old_title), new_title, old_title))
+    speaker_ecs = None
+    if scene_sheet and any((row.get("speaker_name") or "").strip()
+                           for row in rows):
+        body = _ecs_body(raw)
+        if body is None:
+            raise ValueError(
+                "scene sheet sets speaker_name but resource #%d has no ECS"
+                % resource_index)
+        plain = slz.decompress(body) if body[:3] == b"SLZ" else body
+        ecs_plain = bytearray(plain)
+        appended = apply_speaker_names(
+            resource_index, expanded, metadata, alphabet, layout, rows,
+            ecs_plain)
+        if appended:
+            if body[:3] == b"SLZ":
+                new_ecs = slz_compress.compress(
+                    bytes(ecs_plain), mode=2,
+                    optimal=not getattr(args, "_fast_compress", False))
+            else:
+                new_ecs = bytes(ecs_plain)
+            speaker_ecs = new_ecs
+            print("speaker names: %d variant record(s) added" % appended)
     rebuild_event_text(expanded, metadata, replacements,
                        grow=bool(args.full_font))
     dump_path = os.environ.get("VP2_DUMP_DCMS")
@@ -879,6 +1101,8 @@ def patch_resource_bytes(raw, resource_index, args, rows, iso,
                     announce=lambda message: print(message, flush=True))
                 print("growing the archive by %d sector(s); the streamed tail "
                       "moves with it" % grown_sectors)
+    if speaker_ecs is not None:
+        patched = _splice_ecs(patched, speaker_ecs, args.pk1_align)
     return {
         "patched": patched,
         "rendered": rendered,

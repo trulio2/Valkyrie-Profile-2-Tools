@@ -87,6 +87,7 @@ def collect_shared_font_characters(rows, primary_lookup=None):
             for line in _read_sheet_with_dedupe(
                     sheet, primary_lookup=primary_lookup):
                 chars.update(line.get('translated') or '')
+                chars.update(line.get('speaker_name') or '')
         except (OSError, csv.Error):
             continue
     return chars & set(shared_font.SHARED_EXTENSION_TOKENS)
