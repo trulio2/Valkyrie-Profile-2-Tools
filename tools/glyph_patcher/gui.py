@@ -304,18 +304,31 @@ class App:
     def _pick_patch_source(self):
         path = self._pick_iso(self.patch_source_var,
                               "Select a USA Valkyrie Profile 2 ISO")
-        if not path:
+        if not path or self.runner.busy:
             return
-        try:
-            state = build.disc_state(path)
-        except (OSError, ValueError) as exc:
+        self.status_var.set("Checking the ISO…")
+        self.detail_var.set(str(path))
+        self.progress.configure(mode="indeterminate")
+        self.progress.start(12)
+        self._set_busy(True)
+        self.runner.start("check", build.disc_state, path)
+
+    def _finish_check(self, state, error):
+        self.progress.stop()
+        self.progress.configure(mode="determinate", value=0)
+        self._set_busy(False)
+        if error is not None:
             self.status_var.set("Could not read the ISO.")
-            self.detail_var.set(str(exc))
+            self.detail_var.set(str(error))
             return
         self.status_var.set("Glyph textures: %s · anti-cheat: %s" % (
             "already on" if state.glyph_textures else "off",
             "already off" if state.anti_cheat_off else "on"))
-        self.detail_var.set("%.2f GB" % (Path(path).stat().st_size / (1 << 30)))
+        try:
+            size = Path(self.patch_source_var.get()).stat().st_size
+        except OSError:
+            return
+        self.detail_var.set("%.2f GB" % (size / (1 << 30)))
 
     def _pick_export_source(self):
         self._pick_iso(self.export_source_var,
@@ -438,6 +451,9 @@ class App:
                 else "%dm %02ds" % divmod(seconds, 60))
 
     def _on_done(self, kind, result, error):
+        if kind == "check":
+            self._finish_check(result, error)
+            return
         self._set_busy(False)
         title = kind[0].upper() + kind[1:]
         if error is not None:

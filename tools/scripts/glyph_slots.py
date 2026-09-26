@@ -76,6 +76,11 @@ def patch_overlay(output):
     return bytes(patched)
 
 
+def is_rewritten(resource):
+    _offset, output = glyph_range.resident_overlay(resource)
+    return patch_overlay(output) == output
+
+
 def patch_resource(resource):
     """``resource`` with the rewrite in; unchanged if already there."""
     offset, output = glyph_range.resident_overlay(resource)

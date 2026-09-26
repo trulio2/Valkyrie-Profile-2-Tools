@@ -91,7 +91,7 @@ def disc_state(path):
 
         draw = resource(glyph_slots.RESOURCE)
         overlay = battle_overlay.read(resource(overlay_edits.RESOURCE))
-        glyphs = (glyph_slots.patch_resource(draw) == draw
+        glyphs = (glyph_slots.is_rewritten(draw)
                   and not overlay_edits.edit_output(
                       overlay.output, glyph_slots.battle_edits())[1])
         anti_cheat = all(
