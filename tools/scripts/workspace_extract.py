@@ -55,7 +55,22 @@ CONTAINER_CLASSES = frozenset({
 REFERENCE_IMAGES = "reference-images.csv"
 REFERENCE_IMAGE_DIR = "images"
 _REFERENCE_IMAGE_NAME = re.compile(
-    r"^fis-(\d+)-.+-([0-9A-F]+)\.png$", re.IGNORECASE)
+    r"^fis-(?P<resource>\d+)-(?P<route>.+)-(?P<offset>[0-9A-F]+)\.png$",
+    re.IGNORECASE)
+_REFERENCE_IMAGE_WRAPPERS = re.compile(
+    r"^(?:(?:unprotected|decrypted)-)+", re.IGNORECASE)
+_REFERENCE_IMAGE_STREAM = re.compile(
+    r"slz-0x[0-9A-F]+", re.IGNORECASE)
+
+
+def _reference_image_address(name: str) -> tuple[str, int]:
+    """Return the stable route and item offset encoded by a pack name."""
+    match = _REFERENCE_IMAGE_NAME.fullmatch(name)
+    if match is None:
+        raise ValueError(f"invalid FIS pack name: {name}")
+    route = _REFERENCE_IMAGE_WRAPPERS.sub("", match.group("route"))
+    route = _REFERENCE_IMAGE_STREAM.sub("slz", route).casefold()
+    return route, int(match.group("offset"), 16)
 
 
 def _entry_type(raw: bytes, allocated: int) -> str:
@@ -337,10 +352,19 @@ def _export_reference_images(
         for resource, names in sorted(wanted.items()):
             raw = bytes(dcms.read_entry(handle, table, total, resource))
             found: dict[str, bytes] = {}
+            by_address: dict[tuple[str, int], dict[str, bytes]] = {}
             for route, blob, _write in fis_images.views(raw, resource):
                 for at, item in fis_images.items_in(blob):
-                    found.setdefault(
-                        fis_images.pack_name(resource, route, at), item)
+                    name = fis_images.pack_name(resource, route, at)
+                    found.setdefault(name, item)
+                    by_address.setdefault(
+                        _reference_image_address(name), {})[name] = item
+            for name in names:
+                if name in found:
+                    continue
+                candidates = by_address.get(_reference_image_address(name), {})
+                if len(candidates) == 1:
+                    found[name] = next(iter(candidates.values()))
             missing = [name for name in names if name not in found]
             if missing:
                 raise PackError(

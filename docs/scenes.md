@@ -407,13 +407,15 @@ Water Mirror => 1313
 
 ### Cutscenes with duped lines
 
+1361 message ids 1646 to 1648 are never used, the correct scene for these lines is 1311
+
 1283 message ids 1609 to 1623 are never used, the correct scene for these lines is 1337
 
 1299 message ids 1 and 2 are never used, the correct scene for these lines is 1337
 
 1307 message ids 1527 to 1530 are never used, the correct scene for these lines is 1337
 
-1337 messsage ids 1351 to 1367 are never used, the correct scene for these lines is 1323.
+1337 message ids 1351 to 1367 are never used, the correct scene for these lines is 1323.
 
 ### Cutscenes without speaker
 

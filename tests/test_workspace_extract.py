@@ -243,6 +243,74 @@ class WorkspaceExtractTests(unittest.TestCase):
             self.assertEqual(b"item", rendered[0][0])
             self.assertEqual("fis-0024-slz-0x0-0.png", rendered[0][1].name)
 
+    def test_reference_image_export_follows_a_relocated_stream(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            usa = root / "usa.iso"
+            usa.touch()
+            rendered = []
+            items = {
+                b"sheet stream": [(0, b"sheet")],
+                b"banner stream": [(0x98C80, b"banner")],
+                b"nested item": [(0, b"other")],
+            }
+            with (
+                mock.patch.object(
+                    workspace_extract.triace, "load_table",
+                    return_value=("VP2", 1, [])),
+                mock.patch.object(
+                    workspace_extract.dcms, "read_entry", return_value=b"raw"),
+                mock.patch.object(
+                    workspace_extract.fis_images, "views", return_value=[
+                        ("slz@0x180", b"sheet stream", None),
+                        ("slz@0x380", b"banner stream", None),
+                        ("slz@0x380/item2", b"nested item", None),
+                    ]),
+                mock.patch.object(
+                    workspace_extract.fis_images, "items_in",
+                    side_effect=lambda blob: items[blob]),
+                mock.patch.object(
+                    workspace_extract.fis_images, "render",
+                    side_effect=lambda item, path: rendered.append(
+                        (item, path))),
+            ):
+                names = [
+                    "fis-0024-unprotected-slz-0x100-0.png",
+                    "fis-0024-unprotected-slz-0x300-98C80.png",
+                ]
+                count = _export_reference_images(
+                    usa, {24: names}, root / "images")
+            self.assertEqual(2, count)
+            self.assertEqual(b"sheet", rendered[0][0])
+            self.assertEqual(names[0], rendered[0][1].name)
+            self.assertEqual(b"banner", rendered[1][0])
+            self.assertEqual(names[1], rendered[1][1].name)
+
+    def test_reference_image_export_refuses_an_ambiguous_relocation(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            usa = root / "usa.iso"
+            usa.touch()
+            with (
+                mock.patch.object(
+                    workspace_extract.triace, "load_table",
+                    return_value=("VP2", 1, [])),
+                mock.patch.object(
+                    workspace_extract.dcms, "read_entry", return_value=b"raw"),
+                mock.patch.object(
+                    workspace_extract.fis_images, "views", return_value=[
+                        ("slz@0x100", b"first", None),
+                        ("slz@0x200", b"second", None),
+                    ]),
+                mock.patch.object(
+                    workspace_extract.fis_images, "items_in",
+                    side_effect=lambda blob: [(0, blob)]),
+            ):
+                name = "fis-0024-unprotected-slz-0x300-0.png"
+                with self.assertRaisesRegex(PackError, name):
+                    _export_reference_images(
+                        usa, {24: [name]}, root / "images")
+
     def test_reference_image_export_names_what_the_disc_lacks(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

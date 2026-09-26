@@ -3,7 +3,6 @@ resource,message_id,translated,notes
 1379,2741,Tjäna mig eller dö här <PART> ---- <PART> välj själv.,
 1379,2742,Du <PART> dö för mig!,
 1379,2743,Du <PART> bli min tjänare.,
-1379,2744,...Skojar bara!,
 1379,2746,"ROLLISTA
  <PART> Hunden Alicia ... Kobold
  <PART> Hunden Silmeria ... Kobold
@@ -18,5 +17,6 @@ resource,message_id,translated,notes
  <PART> Regissören ... Kobold
  <PART> ...och du
  <PART> Slut",
+1379,2744,...Skojar bara!,
 1379,2745,Erhöll <PART> Småkryp,
 1379,2749,Hunden Lezard,

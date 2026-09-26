@@ -3,3 +3,19 @@ resource,voice_banks,message_ids,evidence
 1337,1541-1542,1567 1570 1568 1571 1569 1583 1582 1581 1580 1579 1572 1573 1574 1575,USA voice clips matched to subtitle text; bank 1541 slots 5-7 are background ritual speech without subtitle rows
 1337,1520,1 2 7 4 21 22 28 24 8 9 10 11 12 13 14 15 16 17 25 19 26,USA voice clips matched to subtitle text
 1337,1559,1255 1256 1257 1258 1259 1260 1261 1262 1263 1264 1265 1266 1267 1273 1268 1274 1276 1271,USA voice clips matched to subtitle text
+1345,,2740 2741 2742 2743 2744 2745 2746 2747 2748 2749 2755 2753 2750 2756 2751 2752 2754,Manual in-game playback order (Seraphic Gate has no voice lines)
+1339,,2740 2747 2749 2748 2742 2743 2744 2750 2753 2752 2751 2741 2745 2746 2754 2755,Manual in-game playback order (Seraphic Gate has no voice lines)
+1341,,2754 2749 2750 2740 2741 2742 2743 2744 2751 2752 2745 2746 2755 2747 2748 2753 2756,Manual in-game playback order (Seraphic Gate has no voice lines)
+1343,,2740 2745 2746 2741 2742 2743 2749 2744 2747 2748 2750,Manual in-game playback order (Seraphic Gate has no voice lines)
+1347,,1 2 3 4 5 12 6 7 8 9 10 11 2752 2755 2754 2753,Manual in-game playback order (Seraphic Gate has no voice lines)
+1359,,2190 2192 2191 2185 2186 2187 2188 2189,Manual in-game playback order (Seraphic Gate has no voice lines)
+1361,,1643 1644 1645,Manual in-game playback order (Seraphic Gate has no voice lines)
+1311,,2737 2738 2739,Manual in-game playback order; 1361 copies are not drawn
+1363,,2740 2741 2742 2743 2744 2745 2746 2747 2748,Manual in-game playback order (Seraphic Gate has no voice lines)
+1365,,2740 2741 2743 2742,Manual in-game playback order (Seraphic Gate has no voice lines)
+1367,,2740 2741 2742 2743 2744 2745 2746 2747 2749 2750 2752 2753 2748 2751 2754 2755,Manual in-game playback order (Seraphic Gate has no voice lines)
+1369,,2741 2740 2743 2742 2752 2744 2745 2746 2748 2747 2749 2750 2751 2753 2754 2755,Manual in-game playback order (Seraphic Gate has no voice lines)
+1371,,2745 2740 2741 2743 2744 2746 2747,Manual in-game playback order (Seraphic Gate has no voice lines)
+1375,,2748 2740 2749 2741 2742 2743 2744 2745 2746 2747 2750,Manual in-game playback order (Seraphic Gate has no voice lines)
+1377,,2740 2741 2742 2743 2744 2745 2746 2747 2748 2749 2750,Manual in-game playback order (Seraphic Gate has no voice lines)
+1379,,2740 2741 2742 2743 2746 2744,Manual in-game playback order (Seraphic Gate has no voice lines)

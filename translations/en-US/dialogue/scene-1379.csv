@@ -3,7 +3,6 @@ resource,message_id,translated,notes
 1379,2741,,
 1379,2742,,
 1379,2743,,
-1379,2744,,
 1379,2746,"CAST
  <PART> Dog Alicia ... Kobold
  <PART> Dog Silmeria ... Kobold
@@ -18,5 +17,6 @@ resource,message_id,translated,notes
  <PART> Director ... Kobold
  <PART> ...and you
  <PART> The End",
+1379,2744,,
 1379,2745,,
 1379,2749,,

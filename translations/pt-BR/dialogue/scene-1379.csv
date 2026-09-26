@@ -3,7 +3,6 @@ resource,message_id,translated,notes
 1379,2741,Se juntar a mim ou morrer aqui a escolha é sua.,
 1379,2742,Seu durão <PART> prepare-se para morrer!,
 1379,2743,Queridinha <PART> seja minha escrava.,
-1379,2744,...Brincadeirinha!,
 1379,2746,"ELENCO
  <PART> Cão Alicia ... Kobold
  <PART> Cão Silmeria ... Kobold
@@ -18,5 +17,6 @@ resource,message_id,translated,notes
  <PART> Diretor ... Kobold
  <PART> ...e você
  <PART> Fim",
+1379,2744,...Brincadeirinha!,
 1379,2745,Adquirido <PART> Mosquitinhos,
 1379,2749,Cão Lezard,
