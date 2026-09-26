@@ -1,6 +1,5 @@
 resource,message_id,translated,notes
-1211,1,"Um...
-Hey...",
+1211,1,,
 1211,33,...What is it?,
 1211,3,...You say it first.,
 1211,28,"...Fine, I'll say it first.",
@@ -8,8 +7,7 @@ Hey...",
 1211,5,...Aren't you surprised?,
 1211,6,I was thinking of saying the same thing.,
 1211,7,...I see.,
-1211,31,"But how?
-But by what means?",
+1211,31,,
 1211,8,"I will go to the top of Yggdrasil.
 There I will gain all wisdom and become a god.",
 1211,9,"You know it, right? It's the tree that is
