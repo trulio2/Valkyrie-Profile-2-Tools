@@ -23,6 +23,8 @@ def fragment_target(*args, **kwargs):
 
 SUBTITLE_MAX_WIDTH = 435
 
+NPC_DIALOGUE_MAX_WIDTH = 459
+
 SUBTITLE_MAX_LINES = 3
 
 NPC_DIALOGUE_DISPLAY_TYPE = 0
@@ -38,6 +40,12 @@ def dialogue_max_lines(display_types):
     return (NPC_DIALOGUE_MAX_LINES
             if set(display_types or ()) == {NPC_DIALOGUE_DISPLAY_TYPE}
             else SUBTITLE_MAX_LINES)
+
+
+def dialogue_max_width(max_lines):
+    return (NPC_DIALOGUE_MAX_WIDTH
+            if max_lines == NPC_DIALOGUE_MAX_LINES
+            else SUBTITLE_MAX_WIDTH)
 
 
 def record_owns_authored_layout(runs, max_lines):
@@ -61,8 +69,7 @@ def glyph_advances(expanded, metric_start, alphabet):
 
 def wrap_to_width(text, advances, limit=SUBTITLE_MAX_WIDTH,
                   max_lines=SUBTITLE_MAX_LINES, label=None,
-                  auto_paginate=False, soft_breaks=""):
-    """Break ``text`` into the fewest lines that fit, then even them out."""
+                  auto_paginate=False, soft_breaks="", even=True):
     fallback = advances.get(".", 8)
     measure = lambda part: sum(advances.get(c, fallback) for c in part)
 
@@ -111,6 +118,12 @@ def wrap_to_width(text, advances, limit=SUBTITLE_MAX_WIDTH,
         raise ValueError(
             "%s needs %d lines at %d px; the subtitle box holds %d. Shorten it."
             % (label or repr(text[:40]), len(lines), limit, max_lines))
+    if not even:
+        if auto_paginate and len(lines) > max_lines:
+            pages = ["\n".join(lines[index:index + max_lines])
+                     for index in range(0, len(lines), max_lines)]
+            return NPC_PAGE_SEPARATOR.join(pages)
+        return "\n".join(lines)
     breakable = text
     for marker in soft_breaks:
         breakable = breakable.replace(marker, " ")
@@ -130,19 +143,17 @@ def wrap_to_width(text, advances, limit=SUBTITLE_MAX_WIDTH,
 
 def wrap_between_breaks(text, advances, limit=SUBTITLE_MAX_WIDTH,
                         max_lines=SUBTITLE_MAX_LINES, label=None,
-                        auto_paginate=False, soft_breaks=""):
-    """Wrap each stretch between the breaks the text already carries."""
+                        auto_paginate=False, soft_breaks="", even=True):
     segments = text.split("\n")
     wrapped = []
     for segment in segments:
         if not segment.strip():
-            # A leading empty segment is the junction break itself, not a
-            # blank line to fill.
             wrapped.append(segment)
             continue
         wrapped.append(wrap_to_width(
             segment, advances, limit, max_lines, label,
-            auto_paginate=auto_paginate, soft_breaks=soft_breaks))
+            auto_paginate=auto_paginate, soft_breaks=soft_breaks,
+            even=even))
     joined = "\n".join(wrapped)
     page_lines = [0]
     for line in joined.split("\n"):
@@ -151,17 +162,38 @@ def wrap_between_breaks(text, advances, limit=SUBTITLE_MAX_WIDTH,
         elif line.strip():
             page_lines[-1] += 1
     needed = max(page_lines, default=0)
+    if needed > max_lines and auto_paginate:
+        return _paginate_rows(joined.split("\n"), max_lines)
     if needed > max_lines:
         raise ValueError(
             "%s needs %d lines at %d px; the subtitle box holds %d. Shorten "
             "it." % (label or repr(text[:40]), needed, limit, max_lines))
     return joined
 
-def soften_dialogue_breaks(text):
-    """Turn inherited interior line wrapping back into ordinary spaces.
 
-    A break marked ``<BR>`` is the translator's own and is kept.
-    """
+def _paginate_rows(rows, max_lines):
+    control = "<%04X>" % TEXT_RUN_END
+    page_break = PAGE_BREAK_TEXT.strip()
+    out, page_rows = [], 0
+    for row in rows:
+        if row.strip() == page_break:
+            out.append(row)
+            page_rows = 0
+            continue
+        if row.strip():
+            if page_rows >= max_lines:
+                for index in range(len(out) - 1, -1, -1):
+                    if out[index].strip():
+                        out[index] += control
+                        break
+                out.append(page_break)
+                page_rows = 1
+            else:
+                page_rows += 1
+        out.append(row)
+    return "\n".join(out)
+
+def soften_dialogue_breaks(text):
     softened = []
     for index, character in enumerate(text):
         if character != "\n":
@@ -183,8 +215,10 @@ def wrap_translation(text, source_tokens, advances=None,
                      max_lines=SUBTITLE_MAX_LINES, auto_paginate=False):
     if advances is not None:
         return wrap_between_breaks(
-            soften_dialogue_breaks(text), advances, max_lines=max_lines,
-            auto_paginate=auto_paginate)
+            soften_dialogue_breaks(text), advances,
+            limit=dialogue_max_width(max_lines),
+            max_lines=max_lines, auto_paginate=auto_paginate,
+            even=(max_lines != NPC_DIALOGUE_MAX_LINES))
     text = apply_hard_breaks(text)
     if "\n" in text:
         return text
@@ -209,9 +243,11 @@ def wrap_structured_translations(parts, advances,
     logical = soften_dialogue_breaks(
         STRUCTURED_RUN_BOUNDARY.join(parts))
     wrapped = wrap_between_breaks(
-        logical, measured, max_lines=max_lines,
+        logical, measured, limit=dialogue_max_width(max_lines),
+        max_lines=max_lines,
         auto_paginate=(max_lines == NPC_DIALOGUE_MAX_LINES),
-        soft_breaks=STRUCTURED_RUN_BOUNDARY)
+        soft_breaks=STRUCTURED_RUN_BOUNDARY,
+        even=(max_lines != NPC_DIALOGUE_MAX_LINES))
     result = wrapped.split(STRUCTURED_RUN_BOUNDARY)
     if len(result) != len(parts):
         raise AssertionError("structured dialogue lost a run boundary")

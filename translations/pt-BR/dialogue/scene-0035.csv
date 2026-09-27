@@ -1,12 +1,13 @@
 resource,message_id,translated,notes
 35,3,"Cadê os piratas? Vim ver eles!
 Será que já foram embora?",
-35,4,"Nenhuma partida até que seja totalmente seguro <PART> ---- <PART>
+35,4,"Nenhuma partida até que seja totalmente seguro <PART> ---- <PART><BR>
 não quero ser afundado logo na saída do porto. <PART>
 ---
 Seria bom se o Rei Barbarossa de
 Dipan fizesse algo a respeito.",
-35,5,"Inacreditável. Eu naveguei em Solde por muito tempo, mas nunca tinha sido afundado por piratas até agora!",
+35,5,"Inacreditável. Eu naveguei em Solde por muito tempo,
+mas nunca tinha sido afundado por piratas até agora!",
 35,6,"Ei, ouviu falar dos piratas?
 Primeira vez que aparecem por aqui! <PART>
 ---

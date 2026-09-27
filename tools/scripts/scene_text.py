@@ -13,9 +13,10 @@ from .scene_fonts import (
     glyph_bitmap, remap_punctuation_to_period,
 )
 from .scene_layout import (
-    NPC_DIALOGUE_MAX_LINES, SUBTITLE_MAX_WIDTH,
+    NPC_DIALOGUE_MAX_LINES,
     break_overflowing_run_junction, dialogue_max_lines,
-    materialize_blank_line, preserve_input_icon_spacing,
+    dialogue_max_width, materialize_blank_line,
+    preserve_input_icon_spacing,
     preserve_source_run_edges, preserve_translated_run_spacing,
     record_owns_authored_layout, wrap_structured_translations,
     wrap_translation,
@@ -888,7 +889,8 @@ def run_replacements(expanded, metadata, alphabet, glyph_base, rows,
                         target, _run[4], advances, max_lines=max_lines,
                         auto_paginate=auto_paginate)
                     wrapped = break_overflowing_run_junction(
-                        "".join(wrapped_runs), wrapped, box)
+                        "".join(wrapped_runs), wrapped, box,
+                        limit=dialogue_max_width(max_lines))
                 wrapped_runs.append(wrapped)
 
         for index, (((start, end, visible, source_text, source_tokens),
@@ -943,15 +945,17 @@ def run_replacements(expanded, metadata, alphabet, glyph_base, rows,
             raise ValueError(
                 "message %d needs %d lines; its dialogue box holds %d. "
                 "Shorten it." % (message_id, needed_lines, max_lines))
-        overrun = max((sum(box.get(c, box.get(".", 8)) for c in line)
+        overrun = max((sum(box.get(c, box.get(".", 8))
+                           for c in CONTROL_SPELLING.sub("", line))
                        for line in combined.split("\n")), default=0)
-        if (len(runs) > 1 and overrun > SUBTITLE_MAX_WIDTH
+        box_width = dialogue_max_width(max_lines)
+        if (len(runs) > 1 and overrun > box_width
                 and not codepage_layout):
             raise ValueError(
                 "message %d draws %d px across %d runs; the box holds %d. "
                 "Put a line break in the translation where the sentence wants "
                 "one: %r" % (message_id, overrun, len(runs),
-                             SUBTITLE_MAX_WIDTH, combined[:60]))
+                             box_width, combined[:60]))
         if edits:
             replacements.setdefault(record_offset, []).extend(edits)
         rendered.append((row["audio_id"], message_id,

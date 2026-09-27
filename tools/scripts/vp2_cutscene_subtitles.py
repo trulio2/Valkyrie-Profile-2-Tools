@@ -547,10 +547,12 @@ def discover_generated_glyphs(*args, **kwargs):
 _sync_scene_font_data()
 
 from .scene_layout import (
-    NPC_DIALOGUE_DISPLAY_TYPE, NPC_DIALOGUE_MAX_LINES, NPC_PAGE_SEPARATOR,
+    NPC_DIALOGUE_DISPLAY_TYPE, NPC_DIALOGUE_MAX_LINES,
+    NPC_DIALOGUE_MAX_WIDTH, NPC_PAGE_SEPARATOR,
     STRUCTURED_RUN_BOUNDARY, SUBTITLE_MAX_LINES, SUBTITLE_MAX_WIDTH,
     TEXT_RUN_END, _record_gap_tokens, break_overflowing_run_junction,
-    dialogue_max_lines, glyph_advances, materialize_blank_line,
+    dialogue_max_lines, dialogue_max_width, glyph_advances,
+    materialize_blank_line,
     preserve_input_icon_spacing, preserve_source_run_edges,
     record_owns_authored_layout, soften_dialogue_breaks,
     verification_dialogue_layout,
