@@ -64,7 +64,8 @@ def _row_for(path, resource):
     """One row of a build profile or a compiled manifest, by resource."""
     with io.open(path, encoding="utf-8-sig", newline="") as handle:
         for row in csv.DictReader(handle):
-            if (row.get("kind") or "").strip() in ("chapter-label", "misc"):
+            if (row.get("kind") or "").strip() in ("chapter-label", "misc",
+                                                   "option"):
                 continue
             if int(row["resource"], 0) == resource:
                 return row

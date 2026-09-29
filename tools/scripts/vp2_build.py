@@ -178,8 +178,11 @@ def battle_overlay_edits(rows):
     return edits
 
 
-def apply_battle_overlay_edits(iso, rows):
-    edits = battle_overlay_edits(rows) + glyph_slots.battle_edits()
+def apply_battle_overlay_edits(iso, rows, *, anti_cheat_on=True,
+                               glyph_draw_on=True):
+    edits = battle_overlay_edits(rows)
+    if glyph_draw_on:
+        edits += glyph_slots.battle_edits()
     label = battle_target_label(rows)
     checks = []
 
@@ -187,12 +190,14 @@ def apply_battle_overlay_edits(iso, rows):
         checks.extend(anti_cheat.battle_edits(output))
         return checks
 
-    result = overlay_edits.apply_to_iso(iso, edits, turn_off_checks)
+    result = overlay_edits.apply_to_iso(
+        iso, edits, turn_off_checks if anti_cheat_on else None)
     statuses = battle_status.translations(_battle_misc(rows))
     glyphs = battle_label_font.required_characters(statuses.values())
     font = battle_label_font.patch_resource_in_memory(iso, glyphs)
-    print("anti-cheat: battle overlay "
-          + ("turned off" if checks else "already off"))
+    if anti_cheat_on:
+        print("anti-cheat: battle overlay "
+              + ("turned off" if checks else "already off"))
     if glyphs:
         print("battle labels: installed %s in appended font slots (%d byte(s) "
               "changed)" % (" ".join(glyphs), font["changed_bytes"]))
@@ -395,6 +400,16 @@ def main():
                              'the gate proves the writers against a checkout, '
                              'and re-running it per row roughly doubles the '
                              'work for a user rebuilding tested data.')
+    parser.add_argument('--no-item-order', action='store_true',
+                        help='Do not re-sort the resident item names.')
+    parser.add_argument('--no-sealstone-order', action='store_true',
+                        help='Do not re-sort the resident Sealstone names.')
+    parser.add_argument('--no-anti-cheat', action='store_true',
+                        help='Do not turn the game\'s integrity checks off '
+                             'outside the battle overlay.')
+    parser.add_argument('--no-glyph-draw', action='store_true',
+                        help='Do not rewrite the resident glyph draw to one '
+                             'texture per glyph.')
     parser.add_argument('--glyph-textures', metavar='DIR',
                         help='Also write a PCSX2 replacement pack for '
                              'every glyph the built image draws.')
@@ -598,12 +613,19 @@ def main():
             sys.exit(1)
         try:
             with iso_buffer.IsoFile(str(output_iso)) as merged:
-                apply_item_name_sort(merged, rows, primary_lookup)
-                apply_sealstone_name_sort(merged, rows, primary_lookup)
+                if not args.no_item_order:
+                    apply_item_name_sort(merged, rows, primary_lookup)
+                if not args.no_sealstone_order:
+                    apply_sealstone_name_sort(merged, rows, primary_lookup)
                 apply_staff_roll_headings(merged)
-                apply_battle_overlay_edits(merged, rows)
-                apply_anti_cheat(merged)
-                apply_glyph_slots(merged)
+                apply_battle_overlay_edits(
+                    merged, rows,
+                    anti_cheat_on=not args.no_anti_cheat,
+                    glyph_draw_on=not args.no_glyph_draw)
+                if not args.no_anti_cheat:
+                    apply_anti_cheat(merged)
+                if not args.no_glyph_draw:
+                    apply_glyph_slots(merged)
                 merged.commit()
         except Exception as exc:
             print(f"final resident-data or overlay edits failed: {exc}",
@@ -794,12 +816,19 @@ def main():
         print(f"{step} ok ({elapsed:.1f}s){suffix}")
 
     try:
-        apply_item_name_sort(iso, rows, primary_lookup)
-        apply_sealstone_name_sort(iso, rows, primary_lookup)
+        if not args.no_item_order:
+            apply_item_name_sort(iso, rows, primary_lookup)
+        if not args.no_sealstone_order:
+            apply_sealstone_name_sort(iso, rows, primary_lookup)
         apply_staff_roll_headings(iso)
-        apply_battle_overlay_edits(iso, rows)
-        apply_anti_cheat(iso)
-        apply_glyph_slots(iso)
+        apply_battle_overlay_edits(
+            iso, rows,
+            anti_cheat_on=not args.no_anti_cheat,
+            glyph_draw_on=not args.no_glyph_draw)
+        if not args.no_anti_cheat:
+            apply_anti_cheat(iso)
+        if not args.no_glyph_draw:
+            apply_glyph_slots(iso)
     except Exception as exc:
         _fail(f"final resident-data or overlay edits failed: {exc}")
 

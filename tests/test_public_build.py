@@ -434,6 +434,14 @@ class PackFileRowTests(unittest.TestCase):
         self.assertEqual("Sikta", compiled["battle_target"])
         self.assertEqual(0, compiled["outside_profile"])
 
+    def test_an_option_row_reaches_build_json_and_not_the_manifest(self):
+        rows = [{"kind": "option", "resource": "1", "sheet": "glyph-draw",
+                 "flags": "", "verify": ""}]
+        compiled, manifest = self.compile(rows)
+        self.assertNotIn("glyph-draw", compiled["disabled_options"])
+        self.assertIn("item-order", compiled["disabled_options"])
+        self.assertEqual(["scene"], [row["kind"] for row in manifest])
+
     def test_a_battle_name_alone_carries_misc_into_the_manifest(self):
         rows = [{"kind": "misc", "resource": "1781",
                  "sheet": "misc.csv", "flags": "", "verify": ""}]
@@ -657,10 +665,84 @@ class ChildOutputTests(unittest.TestCase):
         self.assertEqual("caf\u00e9 \ufffd\n", stream.getvalue())
 
 
+class BuildOptionTests(unittest.TestCase):
+    """The end-of-build passes a profile turns on."""
+
+    def _profile(self, folder, *rows):
+        path = Path(folder) / "build-profile.csv"
+        path.write_text(
+            "kind,resource,sheet,flags,verify\n" + "".join(rows),
+            encoding="utf-8")
+        return path
+
+    def test_every_option_is_off_when_the_profile_names_none(self):
+        import tempfile
+        from tools.scripts import public_build
+        with tempfile.TemporaryDirectory() as folder:
+            path = self._profile(folder, "")
+            rows = public_build._checked_profile(path)
+            disabled = public_build.disabled_options(rows)
+        self.assertEqual(sorted(public_build.BUILD_OPTIONS), sorted(disabled))
+
+    def test_a_row_turns_its_option_on_and_leaves_the_rest_off(self):
+        import tempfile
+        from tools.scripts import public_build
+        with tempfile.TemporaryDirectory() as folder:
+            path = self._profile(
+                folder,
+                "option,1,item-order,,\n"
+                "option,2,anti-cheat,,\n")
+            rows = public_build._checked_profile(path)
+            disabled = public_build.disabled_options(rows)
+        self.assertNotIn("item-order", disabled)
+        self.assertNotIn("anti-cheat", disabled)
+        self.assertEqual(
+            sorted(set(public_build.BUILD_OPTIONS) - {"item-order", "anti-cheat"}),
+            sorted(disabled))
+
+    def test_an_unknown_option_name_is_refused(self):
+        import tempfile
+        from tools.scripts import public_build
+        from tools.scripts.translation_pack import PackError
+        with tempfile.TemporaryDirectory() as folder:
+            path = self._profile(folder, "option,1,not-a-toggle,,\n")
+            with self.assertRaisesRegex(PackError, "unknown build option"):
+                public_build._checked_profile(path)
+
+    def test_a_duplicate_option_is_refused(self):
+        import tempfile
+        from tools.scripts import public_build
+        from tools.scripts.translation_pack import PackError
+        with tempfile.TemporaryDirectory() as folder:
+            path = self._profile(
+                folder,
+                "option,1,glyph-draw,,\n"
+                "option,2,glyph-draw,,\n")
+            with self.assertRaisesRegex(PackError, "duplicate option"):
+                public_build._checked_profile(path)
+
+    def test_an_option_is_a_selectable_entry_with_its_own_id(self):
+        import tempfile
+        from tools.scripts import public_build
+        with tempfile.TemporaryDirectory() as folder:
+            path = self._profile(
+                folder,
+                "option,1,item-order,,\n"
+                "option,2,glyph-draw,,\n")
+            entries = public_build.profile_entries(
+                folder, profile=path)
+        by_id = {entry["id"]: entry for entry in entries}
+        self.assertEqual("option: item-order",
+                         by_id["option-item-order"]["label"])
+        self.assertEqual("", by_id["option-item-order"]["resource"])
+        self.assertEqual({"option-item-order", "option-glyph-draw"},
+                         set(by_id))
+
+
 class CandidateExtentWiringTests(unittest.TestCase):
     """The runtime could record an unmeasured ceiling; nothing asked it to."""
 
-    def _runtime_args(self, **keywords):
+    def _runtime_args(self, disabled_options=(), **keywords):
         from unittest import mock
         from tools.scripts import public_build
         seen = []
@@ -670,7 +752,8 @@ class CandidateExtentWiringTests(unittest.TestCase):
             raise RuntimeError("far enough")
 
         compiled = {"locale": "pt-BR", "manifest": "m.csv",
-                    "sheets": "sheets", "slots": None}
+                    "sheets": "sheets", "slots": None,
+                    "disabled_options": list(disabled_options)}
         with mock.patch.object(public_build, "workspace_is_ready",
                                return_value=True), \
                 mock.patch.object(
@@ -692,6 +775,13 @@ class CandidateExtentWiringTests(unittest.TestCase):
 
     def test_an_ordinary_build_asks_the_runtime_to_record_candidates(self):
         self.assertIn("--record-candidate-extents", self._runtime_args())
+
+    def test_a_disabled_option_reaches_the_runtime(self):
+        self.assertIn("--no-glyph-draw",
+                      self._runtime_args(disabled_options=["glyph-draw"]))
+
+    def test_an_untouched_option_is_not_passed(self):
+        self.assertNotIn("--no-glyph-draw", self._runtime_args())
 
     def test_strict_extents_asks_it_to_refuse_instead(self):
         self.assertNotIn("--record-candidate-extents",

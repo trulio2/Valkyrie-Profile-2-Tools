@@ -483,11 +483,13 @@ class ResourcePicker:
     def _matches(self, entry, needle):
         if not needle:
             return True
-        return (needle in entry["label"]
-                or needle in entry["id"]
-                or needle.lstrip("0") == entry["resource"]
-                or needle in "%s-%04d" % (entry["kind"],
-                                          int(entry["resource"])))
+        if needle in entry["label"] or needle in entry["id"]:
+            return True
+        resource = entry["resource"]
+        if not resource.isdigit():
+            return False
+        return (needle.lstrip("0") == resource
+                or needle in "%s-%04d" % (entry["kind"], int(resource)))
 
     def _refresh(self, keep_view=False):
         needle = self.filter_var.get().strip().lower()

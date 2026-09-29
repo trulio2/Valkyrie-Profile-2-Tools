@@ -59,14 +59,19 @@ MENU_LAYOUT = PROJECT_ROOT / "data" / "menu-layout.csv"
 WORKSPACE = WORKSPACE_DIR
 TRANSLATIONS = PROJECT_ROOT / "translations"
 
-#: Profile rows that name a pack file instead of a generated sheet: the
-#: file, and the resources the row may name.
 PACK_FILE_ROWS = {
     "chapter-label": (PACK_CHAPTERS, frozenset(chapter_label.CARRIERS)),
     "misc": (PACK_MISC, frozenset({overlay_edits.RESOURCE})),
 }
-PROFILE_KINDS = ("scene", "container", "fontless", "image",
+PROFILE_KINDS = ("scene", "container", "fontless", "image", "option",
                  *PACK_FILE_ROWS)
+
+BUILD_OPTIONS = {
+    "item-order": "--no-item-order",
+    "sealstone-order": "--no-sealstone-order",
+    "anti-cheat": "--no-anti-cheat",
+    "glyph-draw": "--no-glyph-draw",
+}
 
 COMPILE_FORMAT = 1
 COMPILE_STAMP = "compiled.json"
@@ -247,11 +252,24 @@ def _profile_rows(path: Path) -> list[dict[str, str]]:
 def _checked_profile(path: Path) -> list[dict[str, str]]:
     rows = _profile_rows(path)
     seen: set[tuple[str, str]] = set()
+    seen_options: set[str] = set()
     for line, row in enumerate(rows, 2):
         where = f"{path}:{line}"
         kind = (row.get("kind") or "").strip()
         if kind not in PROFILE_KINDS:
             raise PackError(f"{where}: unknown kind {kind!r}")
+        if kind == "option":
+            row["kind"] = kind
+            name = (row.get("sheet") or "").strip()
+            if name not in BUILD_OPTIONS:
+                raise PackError(
+                    f"{where}: unknown build option {name!r} "
+                    f"(known: {', '.join(BUILD_OPTIONS)})")
+            if name in seen_options:
+                raise PackError(f"{where}: duplicate option {name!r}")
+            seen_options.add(name)
+            row["option"] = name
+            continue
         try:
             resource = str(int((row.get("resource") or "").strip(), 0))
         except ValueError as exc:
@@ -276,7 +294,7 @@ def _checked_profile(path: Path) -> list[dict[str, str]]:
 
 
 def check_pack_profile(pack: str | os.PathLike[str]) -> int:
-    """Validate one pack's build profile and its named assets; count rows."""
+    """Validate one pack's profile and its assets; count resource rows."""
     pack_path = resolve_pack(pack)
     profile_path = pack_path / PACK_PROFILE
     rows = _checked_profile(profile_path)
@@ -301,16 +319,29 @@ def check_pack_profile(pack: str | os.PathLike[str]) -> int:
             if not path.is_file():
                 raise PackError(
                     f"{where}: required pack file {path} is not there")
-    return len(rows)
+    return sum(1 for row in rows if row["kind"] != "option")
+
+
+def disabled_options(rows: list[dict[str, str]]) -> list[str]:
+    """The end-of-build passes a profile leaves off; a row lists its own."""
+    listed = {row["option"] for row in rows if row.get("kind") == "option"}
+    return [name for name in BUILD_OPTIONS if name not in listed]
 
 
 def entry_id(row: dict[str, str]) -> str:
     kind = (row.get("kind") or "").strip()
+    if kind == "option":
+        return "option-" + (row.get("option")
+                            or (row.get("sheet") or "").strip())
     return f"{kind}-{int((row.get('resource') or '').strip(), 0)}"
 
 
 def entry_label(row: dict[str, str]) -> str:
-    return "misc" if (row.get("kind") or "").strip() == "misc" \
+    kind = (row.get("kind") or "").strip()
+    if kind == "option":
+        return "option: " + (row.get("option")
+                             or (row.get("sheet") or "").strip())
+    return "misc" if kind == "misc" \
         else entry_id(row)
 
 
@@ -323,11 +354,17 @@ def profile_entries(
     path = (Path(profile).expanduser().resolve() if profile is not None
             else pack_path / PACK_PROFILE)
     rows = _checked_profile(path)
-    entries = [{"id": entry_id(row), "label": entry_label(row),
-                "kind": (row.get("kind") or "").strip(),
-                "resource": str(int((row.get("resource") or "").strip(), 0))}
-               for row in rows]
-    entries.sort(key=lambda entry: (entry["kind"], int(entry["resource"])))
+    entries = []
+    for row in rows:
+        kind = (row.get("kind") or "").strip()
+        entries.append({
+            "id": entry_id(row),
+            "label": entry_label(row),
+            "kind": kind,
+            "resource": ("" if kind == "option"
+                         else str(int((row.get("resource") or "").strip(), 0))),
+        })
+    entries.sort(key=lambda entry: (entry["kind"], entry["resource"]))
     return entries
 
 
@@ -429,8 +466,9 @@ def compile_build_workspace(
     matched: set[tuple[str, str, str, str]] = set()
     matched_chapters: set[tuple[str, str, str, str]] = set()
     try:
-        profile_rows = _select_profile_rows(
-            _checked_profile(profile_path), only, profile_path)
+        checked = _checked_profile(profile_path)
+        selected = _select_profile_rows(checked, only, profile_path)
+        profile_rows = [row for row in selected if row["kind"] != "option"]
         text_rows = [row for row in profile_rows
                      if row["kind"] not in ("image", *PACK_FILE_ROWS)]
         listed = {kind: [row for row in profile_rows if row["kind"] == kind]
@@ -583,6 +621,7 @@ def compile_build_workspace(
             "resources": len(manifest_rows),
             "exact_translations": len(matched),
             "outside_profile": ignored,
+            "disabled_options": disabled_options(selected),
         }
         (staging / "build.json").write_text(
             json.dumps(metadata, indent=2, sort_keys=True) + "\n",
@@ -786,6 +825,8 @@ def build_iso(
                          os.fspath(compiled["slots"])]
     if no_verify:
         runtime_args.append("--no-verify")
+    for name in compiled.get("disabled_options", ()):
+        runtime_args.append(BUILD_OPTIONS[name])
     if not strict_extents:
         runtime_args.append("--record-candidate-extents")
     if glyph_textures:

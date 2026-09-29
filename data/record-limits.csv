@@ -25,9 +25,3 @@
 1147,scene-content,1335424,candidate,"What is under test: whether resource #1147 runs with scope=scene-content content ending at 1335424, 128 bytes past its pristine outer allocation of 1335296. Recorded by a build, not by a play-test, and the table had nothing further. Nobody has seen this screen at this extent: play it, then change kind to verified if it holds or lower this row if it does not."
 1167,scene-content,1665176,verified,"The real limit is unknown, but it's not much past this value."
 1337,scene-content,16384,limit,measured cap: content past this point stops the game.
-1197,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
-1221,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
-1283,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
-1287,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
-1301,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
-1315,streamed-neighbours,0,verified,allowed to rewrite a neighbour; played and confirmed.
