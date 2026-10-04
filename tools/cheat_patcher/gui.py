@@ -354,7 +354,7 @@ class App:
         self.cheat_vars = {
             cheat.name: BooleanVar(value=cheat.name == ANTI_CHEAT)
                            for cheat in CHEATS}
-        self.corrupt_save_var = BooleanVar(value=True)
+        self.corrupt_save_var = BooleanVar(value=False)
         self.cheat_boxes = {}
         self.status_var = StringVar(
             value="Choose a clean USA disc image, then pick your cheats.")

@@ -7,6 +7,8 @@ import tempfile
 import unittest
 import zlib
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -147,6 +149,24 @@ class LayoutTest(unittest.TestCase):
 
     def test_scene_list(self):
         self.assertTrue(build.scene_resources())
+
+
+class PatchIsoTest(unittest.TestCase):
+    def _run(self, corrupt_save):
+        state = build.DiscState(glyph_textures=False, anti_cheat_off=False)
+        result = SimpleNamespace(output=Path("out") / "game-glyphs.iso")
+        with mock.patch.object(build, "disc_state", return_value=state), \
+                mock.patch.object(build.cheat_build, "build_iso",
+                                  return_value=result) as called:
+            build.patch_iso("game.iso", "out", progress=lambda _: None,
+                            corrupt_save=corrupt_save)
+        return called.call_args.kwargs
+
+    def test_corrupt_save_defaults_on(self):
+        self.assertTrue(self._run(True)["corrupt_save"])
+
+    def test_corrupt_save_can_be_left_out(self):
+        self.assertFalse(self._run(False)["corrupt_save"])
 
 
 if __name__ == "__main__":

@@ -582,7 +582,7 @@ class App:
         self.picks_resources = picks_resources()
         self.only = None
         self.only_var = StringVar(value="All resources")
-        self.corrupt_save_var = BooleanVar(value=True)
+        self.corrupt_save_var = BooleanVar(value=False)
         self.verify_var = BooleanVar(value=False)
         self.log_shown = BooleanVar(value=False)
         ready, note = workspace_summary()

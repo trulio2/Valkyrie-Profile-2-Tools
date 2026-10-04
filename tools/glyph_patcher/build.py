@@ -109,7 +109,7 @@ def patched_iso_path(source, output_dir):
     return Path(output_dir) / (Path(source).stem + "-glyphs.iso")
 
 
-def patch_iso(source, output_dir, progress=print):
+def patch_iso(source, output_dir, progress=print, corrupt_save=True):
     source = Path(source)
     state = disc_state(source)
     if state.glyph_textures and state.anti_cheat_off:
@@ -119,10 +119,12 @@ def patch_iso(source, output_dir, progress=print):
                                      else "turning on"))
     progress("anti-cheat: %s" % ("already off" if state.anti_cheat_off
                                  else "turning off"))
+    progress("corrupt-save: %s" % ("on" if corrupt_save else "off"))
     output = patched_iso_path(source, output_dir)
     result = cheat_build.build_iso(
         source, output, [ANTI_CHEAT], progress=progress,
-        extra_patchers=(("glyph-textures", GLYPH_DRAW),))
+        extra_patchers=(("glyph-textures", GLYPH_DRAW),),
+        corrupt_save=corrupt_save)
     return Result(result.output, 1)
 
 

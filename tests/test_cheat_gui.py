@@ -256,7 +256,7 @@ class WindowTests(unittest.TestCase):
         self.assertNotIn(catalog.ANTI_CHEAT, self.app.selected_cheats())
 
     def test_corrupt_save_box_follows_the_anti_cheat_box(self):
-        self.assertTrue(self.app.corrupt_save_var.get())
+        self.assertFalse(self.app.corrupt_save_var.get())
         self.assertEqual("grid", self.app.corrupt_save_box.winfo_manager())
         self.app.cheat_vars[catalog.ANTI_CHEAT].set(False)
         self.assertEqual("", self.app.corrupt_save_box.winfo_manager())

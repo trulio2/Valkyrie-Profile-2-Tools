@@ -47,6 +47,7 @@ class App:
         default = str(output_root())
         self.patch_source_var = StringVar()
         self.patch_output_var = StringVar(value=default)
+        self.corrupt_save_var = BooleanVar(value=False)
         self.export_source_var = StringVar()
         self.export_output_var = StringVar(value=default)
         self.masters_var = StringVar()
@@ -138,10 +139,21 @@ class App:
                            "Where should the patched ISO be written?"),
                        "Change…")
         self.patch_note = self._note(patch, 3)
+        self.corrupt_save_chk = self._lock(ttk.Checkbutton(
+            patch, text="Enable corrupt-save", style="Chip.TCheckbutton",
+            variable=self.corrupt_save_var))
+        self.corrupt_save_chk.grid(row=4, column=0, columnspan=3, sticky="w",
+                                   pady=(2, 0))
+        self.corrupt_save_note = ttk.Label(
+            patch, text="Off for an OPL build; on keeps the corrupted-save "
+                        "and memory-card recovery words.",
+            style="CardMuted.TLabel", wraplength=self._px(700), justify="left")
+        self.corrupt_save_note.grid(row=5, column=1, columnspan=2, sticky="w",
+                                    pady=(2, 8))
         self.patch_btn = self._lock(ttk.Button(
             patch, text="Patch ISO", style="Accent.TButton",
             command=self._start_patch))
-        self.patch_btn.grid(row=4, column=1, sticky="w")
+        self.patch_btn.grid(row=6, column=1, sticky="w")
         patch.pack(fill="x")
 
         export = self._card(export_tab, "EXTRACT GLYPHS")
@@ -381,7 +393,8 @@ class App:
                 return
         self.status_var.set("Patching the ISO…")
         self.detail_var.set(str(output))
-        self._begin("patch", build.patch_iso, source, folder)
+        self._begin("patch", build.patch_iso, source, folder,
+                    corrupt_save=self.corrupt_save_var.get())
 
     def _start_export(self):
         if self.runner.busy:
