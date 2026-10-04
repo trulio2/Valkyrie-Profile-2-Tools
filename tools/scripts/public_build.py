@@ -793,6 +793,7 @@ def build_iso(
     images: list[str | os.PathLike[str]] | None = None,
     strict_extents: bool = False,
     only: Iterable[str] | None = None,
+    corrupt_save: bool = True,
     glyph_textures: str | os.PathLike[str] | None = None,
 ) -> Path:
     source = Path(source_iso).expanduser().resolve()
@@ -827,6 +828,8 @@ def build_iso(
         runtime_args.append("--no-verify")
     for name in compiled.get("disabled_options", ()):
         runtime_args.append(BUILD_OPTIONS[name])
+    if not corrupt_save:
+        runtime_args.append("--no-corrupt-save")
     if not strict_extents:
         runtime_args.append("--record-candidate-extents")
     if glyph_textures:

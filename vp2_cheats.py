@@ -49,6 +49,11 @@ def parse_args(argv=None):
         choices=tuple(PATCHERS),
         help="patch to apply; repeat to select multiple (default: all)",
     )
+    parser.add_argument(
+        "--no-corrupt-save", action="store_true",
+        help="leave the corrupted-save and memory-card recovery words out, "
+             "for a disc that will run on OPL",
+    )
     return parser.parse_args(argv)
 
 
@@ -96,7 +101,8 @@ def main(argv=None):
     print("Validating and recompressing: %s..." % ", ".join(selected))
     try:
         result = build_iso(args.source, output, selected=selected,
-                           progress=print)
+                           progress=print,
+                           corrupt_save=not args.no_corrupt_save)
     except (OSError, ValueError) as error:
         print("error: %s" % error, file=sys.stderr)
         return 1

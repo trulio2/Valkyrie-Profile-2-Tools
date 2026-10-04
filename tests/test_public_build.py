@@ -305,6 +305,18 @@ class PartialProfileTests(unittest.TestCase):
         self.assertIn("container-31", ids)
         self.assertIn("fontless-31", ids)
 
+    def test_the_corrupt_save_box_needs_the_option_and_the_selection(self):
+        from tools import translate_gui
+        entries = self.entries()
+        self.assertTrue(translate_gui.anti_cheat_enabled(entries, None))
+        self.assertTrue(translate_gui.anti_cheat_enabled(
+            entries, {"option-anti-cheat", "scene-1195"}))
+        self.assertFalse(translate_gui.anti_cheat_enabled(
+            entries, {"scene-1195"}))
+        self.assertFalse(translate_gui.anti_cheat_enabled(
+            [entry for entry in entries
+             if entry["id"] != "option-anti-cheat"], None))
+
     def test_every_row_has_its_own_id(self):
         entries = self.entries()
         self.assertEqual(len(entries), len({e["id"] for e in entries}))
@@ -787,6 +799,13 @@ class CandidateExtentWiringTests(unittest.TestCase):
         self.assertNotIn("--record-candidate-extents",
                          self._runtime_args(strict_extents=True))
 
+    def test_an_ordinary_build_keeps_the_recovery_words(self):
+        self.assertNotIn("--no-corrupt-save", self._runtime_args())
+
+    def test_disabling_recovery_reaches_the_runtime(self):
+        self.assertIn("--no-corrupt-save",
+                      self._runtime_args(corrupt_save=False))
+
     def test_the_command_line_exposes_the_strict_option(self):
         """A release build needs the refusal the default gives up."""
         import vp2_translate
@@ -800,4 +819,13 @@ class CandidateExtentWiringTests(unittest.TestCase):
         import inspect
         import vp2_translate
         self.assertIn("strict_extents=args.strict_extents",
+                      inspect.getsource(vp2_translate.main))
+
+    def test_the_command_line_exposes_the_corrupt_save_option(self):
+        import inspect
+        import vp2_translate
+        self.assertTrue(vp2_translate._parser().parse_args(
+            ["build", "disc.iso", "pt-BR", "--no-corrupt-save"]
+        ).no_corrupt_save)
+        self.assertIn("corrupt_save=not args.no_corrupt_save",
                       inspect.getsource(vp2_translate.main))

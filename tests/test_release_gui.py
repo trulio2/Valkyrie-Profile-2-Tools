@@ -502,6 +502,37 @@ class WindowTests(unittest.TestCase):
         self.assertEqual(ROOT / "translations" / "sv-SE", pack)
         self.assertEqual("disc.sv-SE.iso", Path(keywords["output"]).name)
 
+    def test_the_corrupt_save_box_follows_the_profile_and_picker(self):
+        self.app.pack_var.set(self._label_for("pt-BR"))
+        self.app.only = None
+        self.app._sync_corrupt_save()
+        self.assertEqual("grid", self.app.corrupt_save_chk.winfo_manager())
+        self.app.only = {"scene-1195"}
+        self.app._sync_corrupt_save()
+        self.assertEqual("", self.app.corrupt_save_chk.winfo_manager())
+        self.app.only = {"option-anti-cheat", "scene-1195"}
+        self.app._sync_corrupt_save()
+        self.assertEqual("grid", self.app.corrupt_save_chk.winfo_manager())
+
+    def test_the_build_carries_the_corrupt_save_choice(self):
+        import tempfile
+        from unittest import mock
+        started = []
+        with tempfile.TemporaryDirectory() as folder:
+            self.app.output_var.set(folder)
+            self.app.corrupt_save_var.set(False)
+            image = Path(folder) / "disc.iso"
+            with mock.patch.object(launcher.App, "_validated_usa",
+                                   return_value=image), \
+                    mock.patch.object(launcher, "workspace_summary",
+                                      return_value=(True, "ready")), \
+                    mock.patch.object(self.app, "_set_busy"), \
+                    mock.patch.object(self.app.runner, "start",
+                                      side_effect=lambda *a, **k:
+                                          started.append((a, k))):
+                self.app._start_build()
+        self.assertFalse(started[0][1]["corrupt_save"])
+
     def test_a_running_job_takes_every_control_away(self):
         self.assertTrue(self.app.locked)
         for widget, _idle in self.app.locked:
@@ -529,10 +560,11 @@ class WindowTests(unittest.TestCase):
         for name, widget in (("language", self.app.language_combo),
                              ("resources", self.app.only_btn),
                              ("build", self.app.build_btn),
-                             ("verify", self.app.verify_chk)):
+                             ("verify", self.app.verify_chk),
+                             ("corrupt-save", self.app.corrupt_save_chk)):
             with self.subTest(control=name):
                 self.assertIn(str(widget), locked)
-        self.assertEqual(10, len(self.app.locked))
+        self.assertEqual(11, len(self.app.locked))
 
     def test_verification_is_off_until_asked_for(self):
         """The slow read-back pass is opt-in, so a build finishes sooner."""

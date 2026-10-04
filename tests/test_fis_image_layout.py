@@ -111,5 +111,24 @@ class FisImageLayoutTests(unittest.TestCase):
                          fis_images._dtt_geometry(record, 0))
 
 
+class ChainLinkTests(unittest.TestCase):
+    def test_rewriting_a_chained_stream_keeps_its_link(self):
+        child = bytes(range(256)) * 4
+        packed = bytearray(fis_images.slz_compress.compress(child, mode=2))
+        following = fis_images.slz_compress.compress(b"\xAB" * 64, mode=2)
+        gap = 0x40
+        link = len(packed) + gap
+        struct.pack_into("<I", packed, 12, link)
+        blob = bytes(packed) + b"\0" * gap + following
+        edited = child[:-1] + bytes([child[-1] ^ 0xFF])
+
+        out = fis_images._rewrite(blob, "slz@0x0", edited)
+
+        self.assertEqual(link, struct.unpack_from("<I", out, 12)[0])
+        self.assertEqual(following, out[link:link + len(following)])
+        self.assertEqual(0, struct.unpack_from(
+            "<I", fis_images.slz_compress.compress(edited, mode=2), 12)[0])
+
+
 if __name__ == "__main__":
     unittest.main()

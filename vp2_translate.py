@@ -73,6 +73,11 @@ def _parser() -> argparse.ArgumentParser:
         "--glyph-textures", metavar="DIR",
         help="also write high-resolution text textures for PCSX2 here",
     )
+    build.add_argument(
+        "--no-corrupt-save", action="store_true",
+        help="leave the corrupted-save and memory-card recovery words out, "
+             "for a build that will run on OPL",
+    )
     return parser
 
 
@@ -119,6 +124,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.usa_image, args.language, workspace=args.workspace,
                 output=args.output, no_verify=args.no_verify,
                 strict_extents=args.strict_extents,
+                corrupt_save=not args.no_corrupt_save,
                 glyph_textures=args.glyph_textures,
             )
             print(f"built {output}")

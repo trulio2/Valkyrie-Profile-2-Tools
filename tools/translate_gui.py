@@ -42,6 +42,13 @@ else:
     TK_IMPORT_ERROR = None
 
 NOTHING_PICKED = object()
+ANTI_CHEAT_OPTION = "option-anti-cheat"
+
+
+def anti_cheat_enabled(entries, only):
+    if not any(entry["id"] == ANTI_CHEAT_OPTION for entry in entries):
+        return False
+    return only is None or ANTI_CHEAT_OPTION in only
 
 APP_NAME = "Valkyrie Profile 2 Translation Builder"
 SHORT_NAME = "VP2 Translation Builder"
@@ -575,6 +582,7 @@ class App:
         self.picks_resources = picks_resources()
         self.only = None
         self.only_var = StringVar(value="All resources")
+        self.corrupt_save_var = BooleanVar(value=True)
         self.verify_var = BooleanVar(value=False)
         self.log_shown = BooleanVar(value=False)
         ready, note = workspace_summary()
@@ -606,6 +614,7 @@ class App:
         self.runner = TaskRunner(root, self._on_line, self._on_done)
         if not self.embedded:
             root.protocol("WM_DELETE_WINDOW", self._on_close)
+        self._sync_corrupt_save()
 
     def _px(self, value):
         return int(value * self.scale)
@@ -722,7 +731,8 @@ class App:
             self.language_combo.grid(row=1, column=1, sticky="ew",
                                      padx=(0, 10))
             self.language_combo.bind(
-                "<<ComboboxSelected>>", lambda _event: self._reset_only())
+                "<<ComboboxSelected>>",
+                lambda _event: (self._reset_only(), self._sync_corrupt_save()))
             self.only_btn = self._lockable(ttk.Button(
                 card, textvariable=self.only_var,
                 command=self._pick_resources))
@@ -742,6 +752,17 @@ class App:
             style="Ok.TLabel" if self.workspace_ready else "Warn.TLabel")
         self.workspace_label.grid(row=3, column=0, columnspan=3, sticky="w",
                                   pady=(10, 0))
+        self.corrupt_save_chk = self._lockable(ttk.Checkbutton(
+            card, text="Enable corrupt-save", style="Chip.TCheckbutton",
+            variable=self.corrupt_save_var))
+        self.corrupt_save_chk.grid(row=4, column=0, columnspan=3, sticky="w",
+                                   pady=(10, 0))
+        self.corrupt_save_note = ttk.Label(
+            card, text="Off for an OPL build; on keeps the corrupted-save "
+                       "and memory-card recovery words.",
+            style="CardMuted.TLabel")
+        self.corrupt_save_note.grid(row=5, column=0, columnspan=3, sticky="w",
+                                    pady=(2, 0))
         return card
 
     def _bottom(self, item, fallback):
@@ -836,6 +857,24 @@ class App:
         self.only_var.set("All resources" if self.only is None
                           else f"{len(self.only)} of {total}")
 
+    def _anti_cheat_enabled(self):
+        pack = self.pack_by_label.get(self.pack_var.get())
+        if pack is None:
+            return False
+        try:
+            entries = profile_entries(pack.path)
+        except Exception:
+            return False
+        return anti_cheat_enabled(entries, self.only)
+
+    def _sync_corrupt_save(self):
+        if self._anti_cheat_enabled():
+            self.corrupt_save_chk.grid()
+            self.corrupt_save_note.grid()
+        else:
+            self.corrupt_save_chk.grid_remove()
+            self.corrupt_save_note.grid_remove()
+
     def _pick_resources(self):
         pack = self.pack_by_label.get(self.pack_var.get())
         if pack is None:
@@ -851,6 +890,7 @@ class App:
             return
         self.only = picker.result
         self._show_only()
+        self._sync_corrupt_save()
 
     def _validated_usa(self):
         raw = self.usa_var.get().strip()
@@ -922,7 +962,8 @@ class App:
         self.runner.start("build", build_iso, usa, pack.path,
                           workspace=DEFAULT_WORKSPACE, output=output,
                           no_verify=not self.verify_var.get(), images=images,
-                          only=self.only)
+                          only=self.only,
+                          corrupt_save=self.corrupt_save_var.get())
 
     def _lockable(self, widget):
         """Register a control that a running job takes away."""
@@ -1066,5 +1107,4 @@ class App:
                 __import__("subprocess").Popen(["xdg-open", str(path)])
         except OSError as exc:
             messagebox.showerror("Could not open folder", str(exc))
-
 

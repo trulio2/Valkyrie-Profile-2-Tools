@@ -179,15 +179,17 @@ def battle_overlay_edits(rows):
 
 
 def apply_battle_overlay_edits(iso, rows, *, anti_cheat_on=True,
-                               glyph_draw_on=True):
+                               glyph_draw_on=True, corrupt_save=True):
     edits = battle_overlay_edits(rows)
     if glyph_draw_on:
         edits += glyph_slots.battle_edits()
     label = battle_target_label(rows)
     checks = []
+    patches = (anti_cheat.ALL_BATTLE_PATCHES if corrupt_save
+               else anti_cheat.BATTLE_PATCHES)
 
     def turn_off_checks(output):
-        checks.extend(anti_cheat.battle_edits(output))
+        checks.extend(anti_cheat.battle_edits(output, patches))
         return checks
 
     result = overlay_edits.apply_to_iso(
@@ -221,9 +223,9 @@ def apply_battle_overlay_edits(iso, rows, *, anti_cheat_on=True,
     return result
 
 
-def apply_anti_cheat(iso):
+def apply_anti_cheat(iso, corrupt_save=True):
     """Turn the game's integrity checks off outside the battle overlay."""
-    changed = anti_cheat.apply_to_iso(iso)
+    changed = anti_cheat.apply_to_iso(iso, corrupt_save)
     print("anti-cheat: " + ("turned off in " + ", ".join(changed)
                             if changed else "already off everywhere else"))
 
@@ -407,6 +409,10 @@ def main():
     parser.add_argument('--no-anti-cheat', action='store_true',
                         help='Do not turn the game\'s integrity checks off '
                              'outside the battle overlay.')
+    parser.add_argument('--no-corrupt-save', action='store_true',
+                        help='Do not write the corrupted-save or memory-card '
+                             'recovery words. A translated disc for OPL uses '
+                             'this.')
     parser.add_argument('--no-glyph-draw', action='store_true',
                         help='Do not rewrite the resident glyph draw to one '
                              'texture per glyph.')
@@ -621,9 +627,11 @@ def main():
                 apply_battle_overlay_edits(
                     merged, rows,
                     anti_cheat_on=not args.no_anti_cheat,
-                    glyph_draw_on=not args.no_glyph_draw)
+                    glyph_draw_on=not args.no_glyph_draw,
+                    corrupt_save=not args.no_corrupt_save)
                 if not args.no_anti_cheat:
-                    apply_anti_cheat(merged)
+                    apply_anti_cheat(
+                        merged, corrupt_save=not args.no_corrupt_save)
                 if not args.no_glyph_draw:
                     apply_glyph_slots(merged)
                 merged.commit()
@@ -824,9 +832,10 @@ def main():
         apply_battle_overlay_edits(
             iso, rows,
             anti_cheat_on=not args.no_anti_cheat,
-            glyph_draw_on=not args.no_glyph_draw)
+            glyph_draw_on=not args.no_glyph_draw,
+            corrupt_save=not args.no_corrupt_save)
         if not args.no_anti_cheat:
-            apply_anti_cheat(iso)
+            apply_anti_cheat(iso, corrupt_save=not args.no_corrupt_save)
         if not args.no_glyph_draw:
             apply_glyph_slots(iso)
     except Exception as exc:

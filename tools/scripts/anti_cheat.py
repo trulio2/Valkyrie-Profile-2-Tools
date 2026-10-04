@@ -279,42 +279,36 @@ def _check_battle_guard(output):
         )
 
 
-def patch_battle_resource(resource):
-    """Patch the battle checksum and corrupted-save branches in resource 1781."""
+def patch_battle_resource(resource, patches=BATTLE_PATCHES):
+    """Patch the selected anti-cheat words in resource 1781."""
     resource = bytes(resource)
     overlay = battle_overlay.read(resource)
     _validate_base(overlay.output, BATTLE_ADDRESS, "battle overlay")
     _check_battle_guard(overlay.output)
-    if is_patched(overlay.output, BATTLE_ADDRESS, ALL_BATTLE_PATCHES,
-                  "battle overlay"):
+    if is_patched(overlay.output, BATTLE_ADDRESS, patches, "battle overlay"):
         return _unchanged(resource, "battle overlay")
-    patched_output = _patch_words(overlay.output, BATTLE_ADDRESS,
-                                  ALL_BATTLE_PATCHES)
+    patched_output = _patch_words(overlay.output, BATTLE_ADDRESS, patches)
     rebuilt, new_stored_size = battle_overlay.replace(resource, patched_output)
     new_overlay = battle_overlay.read(rebuilt)
-    _verify_output(overlay.output, new_overlay.output, BATTLE_ADDRESS,
-                   ALL_BATTLE_PATCHES, "battle overlay")
+    _verify_output(overlay.output, new_overlay.output, BATTLE_ADDRESS, patches,
+                   "battle overlay")
     return ComponentPatch(
-        rebuilt, len(resource), "battle overlay", len(ALL_BATTLE_PATCHES),
+        rebuilt, len(resource), "battle overlay", len(patches),
         overlay.stored_size, new_stored_size
     )
 
 
-def battle_edits(output):
-    """The battle overlay's anti-cheat words as edits, for one recompression.
-
-    Empty when the overlay already has them; refused when it has some.
-    """
+def battle_edits(output, patches=BATTLE_PATCHES):
     _validate_base(output, BATTLE_ADDRESS, "battle overlay")
     _check_battle_guard(output)
-    if is_patched(output, BATTLE_ADDRESS, ALL_BATTLE_PATCHES, "battle overlay"):
+    if is_patched(output, BATTLE_ADDRESS, patches, "battle overlay"):
         return []
     return [
         overlay_edits.Edit(
             patch.address - BATTLE_ADDRESS, overlay_edits.word(patch.original),
             overlay_edits.word(patch.patched),
             "anti-cheat at 0x%08X" % patch.address)
-        for patch in ALL_BATTLE_PATCHES
+        for patch in patches
     ]
 
 
@@ -383,16 +377,13 @@ class _ImageReader:
         return data
 
 
-def apply_to_iso(iso):
-    """Turn the checks off in an open build image, outside the battle overlay.
-
-    The battle overlay's words go through ``battle_edits`` with the rest of
-    that overlay's edits.  Returns the labels this call changed.
-    """
+def apply_to_iso(iso, corrupt_save=True):
     changed = []
-    for resource, patch in ((MAIN_RESOURCE, patch_main_resource),
-                            (SAVE_RESOURCE, patch_save_resource),
-                            (MEMORY_CARD_RESOURCE, patch_memory_card_resource)):
+    patchers = [(MAIN_RESOURCE, patch_main_resource),
+                (SAVE_RESOURCE, patch_save_resource)]
+    if corrupt_save:
+        patchers.append((MEMORY_CARD_RESOURCE, patch_memory_card_resource))
+    for resource, patch in patchers:
         original = iso.read_entry(resource)
         details = patch(original)
         if details.change_count:

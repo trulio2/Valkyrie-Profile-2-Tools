@@ -354,6 +354,7 @@ class App:
         self.cheat_vars = {
             cheat.name: BooleanVar(value=cheat.name == ANTI_CHEAT)
                            for cheat in CHEATS}
+        self.corrupt_save_var = BooleanVar(value=True)
         self.cheat_boxes = {}
         self.status_var = StringVar(
             value="Choose a clean USA disc image, then pick your cheats.")
@@ -550,12 +551,26 @@ class App:
                 padx=(self._px(24), 0),
                 pady=(0, self._px(9) if index < len(CHEATS) - 1 else 0))
             self.cheat_summaries.append(summary)
+        self.corrupt_save_box = self._lockable(ttk.Checkbutton(
+            self.cheat_content, text="Enable corrupt-save",
+            style="Cheat.TCheckbutton", variable=self.corrupt_save_var))
+        self.corrupt_save_box.grid(row=len(CHEATS) * 2, column=0, sticky="w",
+                                   pady=(self._px(10), 0))
+        self.corrupt_save_note = ttk.Label(
+            self.cheat_content,
+            text="Writes the corrupted-save and memory-card recovery words. "
+                 "Turn it off for an OPL build, which is what freezes after "
+                 "a battle.",
+            style="CardMuted.TLabel", wraplength=self._px(720),
+            justify="left")
+        self.corrupt_save_note.grid(row=len(CHEATS) * 2 + 1, column=0,
+                                    sticky="w", padx=(self._px(24), 0))
         self.dependency_label = ttk.Label(
             self.cheat_content, text="", style="Warn.TLabel",
             wraplength=self._px(720),
             justify="left")
-        self.dependency_label.grid(row=len(CHEATS) * 2, column=0, sticky="w",
-                                   pady=(self._px(10), 0))
+        self.dependency_label.grid(row=len(CHEATS) * 2 + 2, column=0,
+                                   sticky="w", pady=(self._px(10), 0))
         self.cheat_content.bind("<Configure>", self._sync_cheat_scrollregion)
         self.cheat_canvas.bind("<Configure>", self._resize_cheat_content)
         return card
@@ -569,7 +584,8 @@ class App:
         width = max(1, event.width)
         self.cheat_canvas.itemconfigure(self.cheat_window, width=width)
         wrap = max(self._px(280), width - self._px(24))
-        for label in (*self.cheat_summaries, self.dependency_label):
+        for label in (*self.cheat_summaries, self.corrupt_save_note,
+                      self.dependency_label):
             label.configure(wraplength=wrap)
 
     def _sync_output_name(self, *_args):
@@ -600,6 +616,12 @@ class App:
                   if any(variable.get() for variable in self.cheat_vars.values())
                   else "Enable all cheats")
         )
+        if anti.get():
+            self.corrupt_save_box.grid()
+            self.corrupt_save_note.grid()
+        else:
+            self.corrupt_save_box.grid_remove()
+            self.corrupt_save_note.grid_remove()
         if not self.runner.busy if hasattr(self, "runner") else True:
             self._set_anti_cheat_state(DISABLED if needed else NORMAL)
 
@@ -765,7 +787,8 @@ class App:
         for name in selected:
             self._append_log("  %s\n" % name)
         self.runner.start("patch", build_iso, source, output,
-                          selected=selected, progress=print)
+                          selected=selected, progress=print,
+                          corrupt_save=self.corrupt_save_var.get())
 
     def _set_busy(self, busy):
         for widget, idle in self.locked:

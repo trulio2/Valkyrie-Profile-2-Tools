@@ -4,6 +4,7 @@ from pathlib import Path
 import struct
 import tempfile
 import unittest
+from unittest import mock
 
 from tools.cheat_patcher import (
     battle_overlay, direct_overlay, elf, iso9660, menu_overlay, sle, slz3,
@@ -71,6 +72,8 @@ from tools.cheat_patcher.cheats.restore_all_sealstones import (
 from tools.cheat_patcher.build import build_iso
 from tools.cheat_patcher.cheats.disable_anti_cheat import (
     ALL_BATTLE_PATCHES,
+    BATTLE_PATCHES,
+    CORRUPTED_SAVE_PATCHES,
     CRC_COMPENSATION_OFFSET,
     EXECUTABLE_ADDRESS,
     EXECUTABLE_ORIGINAL,
@@ -382,7 +385,7 @@ class DisableAntiCheatTests(unittest.TestCase):
         old = battle_overlay.read(resource).output
         patched = patch_battle_resource(resource).data
         new = battle_overlay.read(patched).output
-        _assert_patches(self, old, new, 0x0036D900, ALL_BATTLE_PATCHES)
+        _assert_patches(self, old, new, 0x0036D900, BATTLE_PATCHES)
         self.assertEqual(marker, patched[second:second + len(marker)])
 
         executable, target = make_executable()
@@ -450,10 +453,25 @@ class AlreadyDisabledTests(unittest.TestCase):
         resource, _, _ = make_battle_resource()
         output = battle_overlay.read(resource).output
         edits = anti_cheat.battle_edits(output)
-        self.assertEqual(len(ALL_BATTLE_PATCHES), len(edits))
+        self.assertEqual(len(BATTLE_PATCHES), len(edits))
         patched, _ = overlay_edits.edit_output(output, edits)
-        _assert_patches(self, output, patched, 0x0036D900, ALL_BATTLE_PATCHES)
+        _assert_patches(self, output, patched, 0x0036D900, BATTLE_PATCHES)
         self.assertEqual([], anti_cheat.battle_edits(patched))
+
+    def test_the_recovery_words_are_opt_in(self):
+        resource, _, _ = make_battle_resource()
+        default = battle_overlay.read(patch_battle_resource(resource).data).output
+        for patch in BATTLE_PATCHES:
+            self.assertEqual(patch.patched, struct.unpack_from(
+                "<I", default, patch.address - 0x0036D900)[0])
+        for patch in CORRUPTED_SAVE_PATCHES:
+            self.assertEqual(patch.original, struct.unpack_from(
+                "<I", default, patch.address - 0x0036D900)[0])
+        opted = battle_overlay.read(patch_battle_resource(
+            resource, ALL_BATTLE_PATCHES).data).output
+        for patch in ALL_BATTLE_PATCHES:
+            self.assertEqual(patch.patched, struct.unpack_from(
+                "<I", opted, patch.address - 0x0036D900)[0])
 
 
 class CompleteBuildTests(unittest.TestCase):
@@ -588,6 +606,56 @@ class CompleteBuildTests(unittest.TestCase):
                 ),
             )
             self.assertEqual(len(executable), len(patched_executable))
+
+
+class PatcherSelectionTests(unittest.TestCase):
+    def test_runtime_recovery_choice_controls_the_memory_card_patch(self):
+        from tools.scripts import anti_cheat
+
+        iso = mock.Mock()
+        iso.read_entry.return_value = b""
+        iso.read_at.return_value = b""
+        unchanged = anti_cheat.ComponentPatch(b"", 0, "unchanged", 0)
+        extent = mock.Mock(offset=0, size=0)
+        with mock.patch.object(anti_cheat, "patch_main_resource",
+                               return_value=unchanged), \
+                mock.patch.object(anti_cheat, "patch_save_resource",
+                                  return_value=unchanged), \
+                mock.patch.object(anti_cheat, "patch_memory_card_resource",
+                                  return_value=unchanged) as memory_card, \
+                mock.patch.object(anti_cheat, "patch_executable",
+                                  return_value=unchanged), \
+                mock.patch.object(anti_cheat.iso9660, "locate_file",
+                                  return_value=extent):
+            anti_cheat.apply_to_iso(iso, corrupt_save=False)
+            memory_card.assert_not_called()
+            anti_cheat.apply_to_iso(iso, corrupt_save=True)
+            memory_card.assert_called_once_with(b"")
+
+    def test_corrupt_save_folds_into_the_anti_cheat_patch(self):
+        from tools.cheat_patcher import build as cheat_build
+        enabled = dict(cheat_build._patchers_for(
+            ("disable-anti-cheat",), (), True))["disable-anti-cheat"]
+        disabled = dict(cheat_build._patchers_for(
+            ("disable-anti-cheat",), (), False))["disable-anti-cheat"]
+        self.assertIn(3, dict(enabled.RESOURCE_PATCHERS))
+        self.assertNotIn(3, dict(disabled.RESOURCE_PATCHERS))
+
+    def test_the_folded_patcher_keeps_the_recovery_words(self):
+        from tools.cheat_patcher import build as cheat_build
+        from tools.cheat_patcher.cheats import disable_anti_cheat as anti
+        resource, _, _ = make_battle_resource()
+        folded = dict(cheat_build._anti_cheat_patcher(
+            anti, True).RESOURCE_PATCHERS)[1781]
+        output = battle_overlay.read(folded(resource).data).output
+        for patch in ALL_BATTLE_PATCHES:
+            self.assertEqual(patch.patched, struct.unpack_from(
+                "<I", output, patch.address - 0x0036D900)[0])
+        plain = battle_overlay.read(
+            anti.patch_battle_resource(resource).data).output
+        for patch in CORRUPTED_SAVE_PATCHES:
+            self.assertEqual(patch.original, struct.unpack_from(
+                "<I", plain, patch.address - 0x0036D900)[0])
 
 
 if __name__ == "__main__":

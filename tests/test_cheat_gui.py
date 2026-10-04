@@ -80,6 +80,14 @@ class CatalogTests(unittest.TestCase):
             build.call_args.kwargs["selected"]
         )
 
+    def test_cli_can_leave_the_recovery_words_out(self):
+        result = SimpleNamespace(patches=(), output=Path("patched.iso"))
+        with mock.patch.object(vp2_cheats, "build_iso",
+                               return_value=result) as build:
+            self.assertEqual(0, vp2_cheats.main([
+                "clean.iso", "--output", "patched.iso", "--no-corrupt-save"]))
+        self.assertFalse(build.call_args.kwargs["corrupt_save"])
+
 
 class DiscGuardTests(unittest.TestCase):
     @staticmethod
@@ -246,6 +254,25 @@ class WindowTests(unittest.TestCase):
                          str(self.app.cheat_boxes[catalog.ANTI_CHEAT].cget("state")))
         self.app.cheat_vars[catalog.ANTI_CHEAT].set(False)
         self.assertNotIn(catalog.ANTI_CHEAT, self.app.selected_cheats())
+
+    def test_corrupt_save_box_follows_the_anti_cheat_box(self):
+        self.assertTrue(self.app.corrupt_save_var.get())
+        self.assertEqual("grid", self.app.corrupt_save_box.winfo_manager())
+        self.app.cheat_vars[catalog.ANTI_CHEAT].set(False)
+        self.assertEqual("", self.app.corrupt_save_box.winfo_manager())
+        self.app.cheat_vars[catalog.ANTI_CHEAT].set(True)
+        self.assertEqual("grid", self.app.corrupt_save_box.winfo_manager())
+
+    def test_the_patch_carries_the_corrupt_save_choice(self):
+        with tempfile.TemporaryDirectory() as folder:
+            source = DiscGuardTests._disc(folder, "SLUS_214.52")
+            self.app.source_var.set(str(source))
+            self.app.output_var.set(folder)
+            self.app.corrupt_save_var.set(False)
+            with mock.patch.object(self.app, "_set_busy"), \
+                    mock.patch.object(self.app.runner, "start") as start:
+                self.app._start_patch()
+        self.assertFalse(start.call_args.kwargs["corrupt_save"])
 
     def test_a_running_patch_takes_every_control_away(self):
         self.assertTrue(self.app.locked)

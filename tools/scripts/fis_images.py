@@ -608,17 +608,30 @@ def _put_slz(blob, at, packed, grow=False):
     return bytes(out)
 
 
+def _keep_chain(blob, at, packed):
+    if blob[at:at + 3] != b"SLZ" or len(packed) < 16:
+        return packed
+    link = struct.unpack_from("<I", blob, at + 12)[0]
+    if not link:
+        return packed
+    packed = bytearray(packed)
+    struct.pack_into("<I", packed, 12, link)
+    return bytes(packed)
+
+
 def _rewrite(blob, label, child, grow=False):
     """Put a modified *child* back into the blob it was unwrapped from."""
     if label.startswith("slz@"):
         at = int(label.split("@")[1], 16)
-        return _put_slz(blob, at, slz_compress.compress(bytes(child), mode=2),
-                        grow)
+        packed = _keep_chain(blob, at,
+                             slz_compress.compress(bytes(child), mode=2))
+        return _put_slz(blob, at, packed, grow)
     if label.startswith("item") and label.endswith(".slz"):
         index = int(label[4:-4])
         parsed = package_archive.layout(bytes(blob))
         start, end = parsed.offsets[index:index + 2]
-        packed = slz_compress.compress(bytes(child), mode=2)
+        packed = _keep_chain(blob, start,
+                             slz_compress.compress(bytes(child), mode=2))
         if len(packed) > end - start:
             raise FisError("the rebuilt package item does not fit")
         out = bytearray(blob)

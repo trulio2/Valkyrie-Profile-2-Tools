@@ -5,6 +5,7 @@
 from dataclasses import dataclass
 import os
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Optional
 
 from . import iso9660, triace
@@ -56,6 +57,25 @@ PATCHERS = {
     "no-limit-sealstone-withdrawals": no_limit_sealstone_withdrawals,
     "all-items-99": all_items_99,
 }
+
+
+def _anti_cheat_patcher(patcher, corrupt_save):
+    battle = patcher.BATTLE_RESOURCE
+    memory_card = patcher.MEMORY_CARD_RESOURCE
+    resources = tuple(
+        (number, patch) for number, patch in patcher.RESOURCE_PATCHERS
+        if number != battle and (corrupt_save or number != memory_card)
+    )
+    battle_patcher = patcher.patch_battle_resource
+    if corrupt_save:
+        battle_patcher = lambda resource: patcher.patch_battle_resource(
+            resource, patcher.ALL_BATTLE_PATCHES)
+    resources += ((battle, battle_patcher),)
+    return SimpleNamespace(
+        RESOURCE_PATCHERS=resources,
+        ISO_FILE_PATCHERS=patcher.ISO_FILE_PATCHERS,
+        combine_details=patcher.combine_details,
+    )
 
 
 @dataclass(frozen=True)
@@ -127,8 +147,18 @@ def _copy_with_progress(source, target, say):
                 last = percent
 
 
+def _patchers_for(selected, extra_patchers, corrupt_save):
+    patchers = _selected_patchers(selected) + list(extra_patchers)
+    return [
+        ((name, _anti_cheat_patcher(patcher, corrupt_save))
+         if name == "disable-anti-cheat"
+         else (name, patcher))
+        for name, patcher in patchers
+    ]
+
+
 def build_iso(source, output=None, selected=None, progress=None,
-              extra_patchers=()):
+              extra_patchers=(), corrupt_save=True):
     say = progress if progress is not None else (lambda message: None)
     source = Path(source).expanduser().resolve()
     output = (Path(output).expanduser().resolve()
@@ -148,8 +178,8 @@ def build_iso(source, output=None, selected=None, progress=None,
     pending = []
     with source.open("rb") as source_handle:
         source_index = triace.read_index(source_handle)
-        for name, patcher in (_selected_patchers(selected)
-                              + list(extra_patchers)):
+        for name, patcher in _patchers_for(selected, extra_patchers,
+                                           corrupt_save):
             say("patch: reading and rebuilding %s" % name)
             resource_details = []
             file_details = []
