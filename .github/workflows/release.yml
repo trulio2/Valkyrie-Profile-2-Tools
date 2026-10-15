@@ -26,6 +26,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11.16'
+      - name: Release tag matches application version
+        if: github.ref_type == 'tag'
+        run: python -m tools.scripts.release_version "$GITHUB_REF_NAME"
       - name: Regression suite
         run: python -m unittest discover -s tests -q
       - name: Language packs are well formed

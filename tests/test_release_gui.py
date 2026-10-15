@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT))
 import vp2_tools as tools_launcher  # noqa: E402
 from tools import translate_gui as launcher  # noqa: E402
 from tools.scripts import public_build  # noqa: E402
+from tools.scripts import release_version  # noqa: E402
 
 
 class LauncherLogicTests(unittest.TestCase):
@@ -161,8 +162,9 @@ class ReleaseSpecTests(unittest.TestCase):
         self.assertIn("vp2-tac-encode", self.spec)
 
     def test_windows_executable_has_matching_version_metadata(self):
-        version_path = ROOT / "data" / "windows-version.txt"
-        version = version_path.read_text(encoding="utf-8")
+        import tempfile
+
+        version = release_version.windows_version_text()
         parts = tuple(
             int(piece)
             for piece in tools_launcher.app_meta.VERSION.split("."))
@@ -172,8 +174,29 @@ class ReleaseSpecTests(unittest.TestCase):
         self.assertIn(
             "StringStruct('ProductVersion', "
             f"'{tools_launcher.app_meta.VERSION}')", version)
+        self.assertIn(
+            f"StringStruct('FileVersion', "
+            f"'{'.'.join(str(number) for number in numeric)}')", version)
+        self.assertFalse((ROOT / "data" / "windows-version.txt").exists())
+        with tempfile.TemporaryDirectory() as folder:
+            generated = release_version.write_windows_version(
+                Path(folder) / "windows-version.txt")
+            self.assertEqual(version, generated.read_text(encoding="utf-8"))
         self.assertIn("WINDOWS_VERSION", self.spec)
-        self.assertIn("version=(os.fspath(WINDOWS_VERSION)", self.spec)
+        self.assertIn("write_windows_version(WINDOWS_VERSION)", self.spec)
+        self.assertIn("version=os.fspath(WINDOWS_VERSION)", self.spec)
+
+    def test_release_tag_must_match_the_application_version(self):
+        workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(
+            encoding="utf-8")
+        expected = "v" + tools_launcher.app_meta.VERSION
+        self.assertIsNone(release_version.verify_release_tag(expected))
+        with self.assertRaisesRegex(ValueError, "does not match"):
+            release_version.verify_release_tag("v0.0.0")
+        self.assertIn("Release tag matches application version", workflow)
+        self.assertIn(
+            'python -m tools.scripts.release_version "$GITHUB_REF_NAME"',
+            workflow)
 
     def test_windows_release_is_a_folder_and_linux_stays_a_single_file(self):
         workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(

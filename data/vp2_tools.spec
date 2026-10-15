@@ -36,10 +36,14 @@ ROOT = Path(SPECPATH).parent
 # before it reaches the first line that matters.
 sys.path.insert(0, os.fspath(ROOT))
 from tools.scripts.public_release import payload_members          # noqa: E402
+from tools.scripts.release_version import write_windows_version   # noqa: E402
 
 APP_NAME = "ValkyrieProfile2-Tools"
 WINDOWS_ONE_FOLDER = sys.platform == "win32"
-WINDOWS_VERSION = ROOT / "data" / "windows-version.txt"
+WINDOWS_VERSION = None
+if WINDOWS_ONE_FOLDER:
+    WINDOWS_VERSION = Path(workpath) / "windows-version.txt"
+    write_windows_version(WINDOWS_VERSION)
 ICON = ROOT / "images" / "vp2_release.ico"
 ARTWORK = (
     "images/vp2_release.ico",
@@ -116,8 +120,7 @@ exe = EXE(
     name=APP_NAME,
     exclude_binaries=WINDOWS_ONE_FOLDER,
     icon=os.fspath(ICON) if ICON.is_file() else None,
-    version=(os.fspath(WINDOWS_VERSION)
-             if WINDOWS_ONE_FOLDER else None),
+    version=os.fspath(WINDOWS_VERSION) if WINDOWS_VERSION else None,
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
