@@ -50,6 +50,10 @@ def parse_args(argv=None):
         help="patch to apply; repeat to select multiple (default: all)",
     )
     parser.add_argument(
+        "--web-bundle", metavar="DIR",
+        help="write the Python and cheat list the project page runs, then "
+             "exit")
+    parser.add_argument(
         "--no-corrupt-save", action="store_true",
         help="leave the corrupted-save and memory-card recovery words out, "
              "for a disc that will run on OPL",
@@ -93,6 +97,11 @@ def main(argv=None):
     args = parse_args(argv)
     if args.self_check:
         return self_check()
+    if args.web_bundle:
+        from tools.cheat_patcher import web
+        bundle, count = web.write_bundle(args.web_bundle)
+        print("wrote %s (%d module(s))" % (bundle, count))
+        return 0
     if args.source is None:
         print("error: give a source ISO (use --help for usage)", file=sys.stderr)
         return 2

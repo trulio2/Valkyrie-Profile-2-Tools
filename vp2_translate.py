@@ -8,8 +8,9 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
-from tools.scripts.paths import WORKSPACE_DIR
+from tools.scripts.paths import BUILD_DIR, WORKSPACE_DIR
 from tools.scripts.public_build import (
     build_iso, check_pack_profile, resolve_pack,
 )
@@ -18,6 +19,7 @@ from tools.scripts.workspace_extract import generate_workspace
 
 
 DEFAULT_WORKSPACE = str(WORKSPACE_DIR)
+DEFAULT_WEB_PATCH = str(BUILD_DIR / "web-patch")
 DEFAULT_LANGUAGE = "pt-BR"
 
 
@@ -78,7 +80,72 @@ def _parser() -> argparse.ArgumentParser:
         help="leave the corrupted-save and memory-card recovery words out, "
              "for a build that will run on OPL",
     )
+
+    web = commands.add_parser(
+        "web-patch",
+        help="build the translation and make the patch the project page "
+             "applies")
+    web.add_argument(
+        "language", nargs="?", default=DEFAULT_LANGUAGE, metavar="LANGUAGE",
+        help="a locale under translations/, or a pack path "
+             "(default: %(default)s)",
+    )
+    web.add_argument(
+        "--source", action="append", required=True, metavar="[NAME=]IMAGE",
+        help="a USA image players may start from; repeat for each one",
+    )
+    web.add_argument(
+        "--workspace", default=DEFAULT_WORKSPACE,
+        help="the workspace `generate` made (default: %(default)s)",
+    )
+    web.add_argument(
+        "--output", default=DEFAULT_WEB_PATCH,
+        help="folder that holds one patch per language (default: %(default)s)",
+    )
     return parser
+
+
+def make_web_patch(args: argparse.Namespace) -> None:
+    from tools import web_patch
+    from tools.app_meta import VERSION
+    from tools.scripts.public_build import profile_entries
+
+    try:
+        sources = web_patch.parse_sources(args.source)
+    except web_patch.PatchError as exc:
+        raise PackError(str(exc)) from exc
+    pack = resolve_pack(args.language)
+    ids = {entry["id"] for entry in profile_entries(pack)}
+    offered = [name for name, option in (("glyph-draw", "option-glyph-draw"),
+                                         ("corrupt-save", "option-anti-cheat"))
+               if option in ids]
+    scratch = Path(BUILD_DIR) / "web-patch-build.iso"
+
+    def build(source, options):
+        disabled = [] if options.get("glyph-draw", True) else ["glyph-draw"]
+        return build_iso(
+            source, pack, workspace=args.workspace, output=scratch,
+            corrupt_save=options.get("corrupt-save", False),
+            disabled=disabled)
+
+    try:
+        locale, label = web_patch.pack_identity(pack)
+        root = Path(args.output).expanduser()
+        manifest = web_patch.make_patch(
+            sources, root / locale, locale, build=build, offered=offered,
+            label=label, version=VERSION)
+        web_patch.write_index(root)
+        archive = web_patch.write_release_zip(root, locale)
+    except (OSError, web_patch.PatchError) as exc:
+        raise PackError(str(exc)) from exc
+    finally:
+        scratch.unlink(missing_ok=True)
+    for source in manifest["sources"]:
+        download = sum(part["packedSize"] for part in source["parts"])
+        print(f"{source['name']}: {len(source['variants'])} variant(s), "
+              f"{download / 1e6:.1f} MB to download")
+    print(f"web patch {root / locale}")
+    print(f"release asset {archive}")
 
 
 def run_internal_build(arguments: list[str]) -> int:
@@ -128,6 +195,8 @@ def main(argv: list[str] | None = None) -> int:
                 glyph_textures=args.glyph_textures,
             )
             print(f"built {output}")
+        elif args.command == "web-patch":
+            make_web_patch(args)
         else:
             pack = resolve_pack(args.language)
             rows = load_pack(pack)

@@ -2,13 +2,14 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """Apply the supported ISO patches in one copy-and-verify transaction."""
 
+import contextlib
 from dataclasses import dataclass
 import os
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Optional
 
-from . import iso9660, triace
+from . import deferral, iso9660, triace
 from .cheats import (
     add_characters,
     all_items_99,
@@ -92,6 +93,15 @@ class BuildResult:
     patches: tuple
 
 
+@dataclass(frozen=True)
+class Plan:
+    index: object
+    resources: dict
+    files: dict
+    writes: tuple
+    patches: tuple
+
+
 def default_output_path(source):
     """Where a patched image goes when the caller does not say."""
     from ..scripts.paths import output_root
@@ -157,6 +167,134 @@ def _patchers_for(selected, extra_patchers, corrupt_save):
     ]
 
 
+def plan_patches(source, selected=None, progress=None, extra_patchers=(),
+                 corrupt_save=True):
+    say = progress if progress is not None else (lambda message: None)
+    patchers = _patchers_for(selected, extra_patchers, corrupt_save)
+    touches = [resource for _, patcher in patchers
+               for resource, _ in _resource_patchers(patcher)]
+    shared = {resource for resource in touches if touches.count(resource) > 1}
+    opened = (contextlib.nullcontext(source) if hasattr(source, "read")
+              else Path(source).open("rb"))
+    with opened as source_handle:
+        with deferral.Session() as session:
+            plan = _plan(source_handle, patchers, say, session, shared)
+        unfinished = session.unfinished()
+        if unfinished:
+            with deferral.Session() as session:
+                plan = _plan(source_handle, patchers, (lambda message: None),
+                             session, shared - unfinished)
+            if session.unfinished():
+                raise ValueError("a deferred stream was never compressed")
+    return plan
+
+
+def _plan(source_handle, patchers, say, session, batched):
+    resource_states = {}
+    file_states = {}
+    pending = []
+    last = {}
+    for position, resource in enumerate(
+            resource for _, patcher in patchers
+            for resource, _ in _resource_patchers(patcher)):
+        last[resource] = position
+    position = -1
+    source_index = triace.read_index(source_handle)
+    for name, patcher in patchers:
+        say("patch: reading and rebuilding %s" % name)
+        resource_details = []
+        file_details = []
+        touched_resources = []
+        for resource, patch_resource in _resource_patchers(patcher):
+            position += 1
+            if resource not in resource_states:
+                iso_offset, allocation = source_index.extent(resource)
+                original = triace.read_resource(
+                    source_handle, source_index, resource
+                )
+                resource_states[resource] = {
+                    "offset": iso_offset,
+                    "allocation": allocation,
+                    "original": original,
+                    "current": original,
+                }
+            state = resource_states[resource]
+            session.begin(resource, resource in batched
+                          and position != last[resource])
+            try:
+                details = patch_resource(state["current"])
+            finally:
+                session.end()
+            if (details.allocation_size != state["allocation"] or
+                    len(details.data) != state["allocation"]):
+                raise ValueError(
+                    "resource %d allocation changed unexpectedly" % resource
+                )
+            state["current"] = details.data
+            resource_details.append(details)
+            touched_resources.append(resource)
+
+        for path, patch_file in getattr(patcher, "ISO_FILE_PATCHERS", ()):
+            key = path.upper()
+            if key not in file_states:
+                extent, original = _read_iso_file(source_handle, path)
+                source_handle.seek(extent.offset + extent.size)
+                slack = source_handle.read(
+                    extent.allocation_size - extent.size
+                )
+                if (len(slack) != extent.allocation_size - extent.size or
+                        any(slack)):
+                    raise ValueError(
+                        "ISO9660 file has nonzero or truncated allocation "
+                        "slack: %s" % path
+                    )
+                file_states[key] = {
+                    "path": path,
+                    "extent": extent,
+                    "original": original,
+                    "current": original,
+                }
+            state = file_states[key]
+            details = patch_file(state["current"])
+            if (details.allocation_size != len(details.data) or
+                    not len(state["current"]) <= len(details.data)
+                    <= state["extent"].allocation_size):
+                raise ValueError(
+                    "ISO9660 file exceeded its fixed allocation: %s" % path
+                )
+            state["current"] = details.data
+            file_details.append(details)
+
+        if hasattr(patcher, "combine_details"):
+            details = patcher.combine_details(
+                resource_details, file_details
+            )
+        else:
+            details = resource_details[0]
+        resource = (touched_resources[0]
+                    if len(touched_resources) == 1 and not file_details
+                    else None)
+        iso_offset = (resource_states[resource]["offset"]
+                      if resource is not None else None)
+        pending.append((name, resource, iso_offset, details))
+
+    writes = [(state["offset"], state["current"])
+              for state in resource_states.values()]
+    for state in file_states.values():
+        writes.append((state["extent"].offset, state["current"]))
+        if len(state["current"]) != state["extent"].size:
+            writes.extend(iso9660.file_size_writes(
+                state["extent"], len(state["current"])))
+    return Plan(
+        index=source_index,
+        resources=resource_states,
+        files=file_states,
+        writes=tuple(sorted(writes)),
+        patches=tuple(AppliedPatch(name, resource, iso_offset, details)
+                      for name, resource, iso_offset, details in pending),
+    )
+
+
 def build_iso(source, output=None, selected=None, progress=None,
               extra_patchers=(), corrupt_save=True):
     say = progress if progress is not None else (lambda message: None)
@@ -173,110 +311,25 @@ def build_iso(source, output=None, selected=None, progress=None,
     if partial.exists():
         raise ValueError("partial output already exists; remove it first: %s" % partial)
 
-    resource_states = {}
-    file_states = {}
-    pending = []
-    with source.open("rb") as source_handle:
-        source_index = triace.read_index(source_handle)
-        for name, patcher in _patchers_for(selected, extra_patchers,
-                                           corrupt_save):
-            say("patch: reading and rebuilding %s" % name)
-            resource_details = []
-            file_details = []
-            touched_resources = []
-            for resource, patch_resource in _resource_patchers(patcher):
-                if resource not in resource_states:
-                    iso_offset, allocation = source_index.extent(resource)
-                    original = triace.read_resource(
-                        source_handle, source_index, resource
-                    )
-                    resource_states[resource] = {
-                        "offset": iso_offset,
-                        "allocation": allocation,
-                        "original": original,
-                        "current": original,
-                    }
-                state = resource_states[resource]
-                details = patch_resource(state["current"])
-                if (details.allocation_size != state["allocation"] or
-                        len(details.data) != state["allocation"]):
-                    raise ValueError(
-                        "resource %d allocation changed unexpectedly" % resource
-                    )
-                state["current"] = details.data
-                resource_details.append(details)
-                touched_resources.append(resource)
-
-            for path, patch_file in getattr(patcher, "ISO_FILE_PATCHERS", ()):
-                key = path.upper()
-                if key not in file_states:
-                    extent, original = _read_iso_file(source_handle, path)
-                    source_handle.seek(extent.offset + extent.size)
-                    slack = source_handle.read(
-                        extent.allocation_size - extent.size
-                    )
-                    if (len(slack) != extent.allocation_size - extent.size or
-                            any(slack)):
-                        raise ValueError(
-                            "ISO9660 file has nonzero or truncated allocation "
-                            "slack: %s" % path
-                        )
-                    file_states[key] = {
-                        "path": path,
-                        "extent": extent,
-                        "original": original,
-                        "current": original,
-                    }
-                state = file_states[key]
-                details = patch_file(state["current"])
-                if (details.allocation_size != len(details.data) or
-                        not len(state["current"]) <= len(details.data)
-                        <= state["extent"].allocation_size):
-                    raise ValueError(
-                        "ISO9660 file exceeded its fixed allocation: %s" % path
-                    )
-                state["current"] = details.data
-                file_details.append(details)
-
-            if hasattr(patcher, "combine_details"):
-                details = patcher.combine_details(
-                    resource_details, file_details
-                )
-            else:
-                details = resource_details[0]
-            resource = (touched_resources[0]
-                        if len(touched_resources) == 1 and not file_details
-                        else None)
-            iso_offset = (resource_states[resource]["offset"]
-                          if resource is not None else None)
-            pending.append((name, resource, iso_offset, details))
-
+    plan = plan_patches(source, selected, say, extra_patchers, corrupt_save)
     output.parent.mkdir(parents=True, exist_ok=True)
     try:
         say("copy: 0%")
         _copy_with_progress(source, partial, say)
-        say("write: applying %d patch(es)" % len(pending))
+        say("write: applying %d patch(es)" % len(plan.patches))
         with partial.open("r+b") as candidate_handle:
-            for state in resource_states.values():
-                candidate_handle.seek(state["offset"])
-                candidate_handle.write(state["current"])
-            for state in file_states.values():
-                candidate_handle.seek(state["extent"].offset)
-                candidate_handle.write(state["current"])
-                if len(state["current"]) != state["extent"].size:
-                    iso9660.write_file_size(
-                        candidate_handle, state["extent"],
-                        len(state["current"])
-                    )
+            for offset, data in plan.writes:
+                candidate_handle.seek(offset)
+                candidate_handle.write(data)
             candidate_handle.flush()
             os.fsync(candidate_handle.fileno())
 
         say("verify: reading every patched region back from disk")
         with partial.open("rb") as candidate_handle:
             candidate_index = triace.read_index(candidate_handle)
-            if candidate_index != source_index:
+            if candidate_index != plan.index:
                 raise ValueError("ISO resource index changed during patching")
-            for resource, state in resource_states.items():
+            for resource, state in plan.resources.items():
                 candidate = triace.read_resource(
                     candidate_handle, candidate_index, resource
                 )
@@ -285,7 +338,7 @@ def build_iso(source, output=None, selected=None, progress=None,
                         "resource %d did not read back byte-for-byte"
                         % resource
                     )
-            for state in file_states.values():
+            for state in plan.files.values():
                 extent, candidate = _read_iso_file(
                     candidate_handle, state["path"]
                 )
@@ -311,8 +364,4 @@ def build_iso(source, output=None, selected=None, progress=None,
         partial.unlink(missing_ok=True)
         raise
 
-    applied = tuple(
-        AppliedPatch(name, resource, iso_offset, details)
-        for name, resource, iso_offset, details in pending
-    )
-    return BuildResult(output=output, patches=applied)
+    return BuildResult(output=output, patches=plan.patches)

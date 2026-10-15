@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import collections
 import dataclasses
 import struct
 
@@ -10,8 +11,6 @@ MASK32 = 0xFFFFFFFF
 OFFSET_MASK = 0x7FFFFFFF
 PROTECTED_OFFSET = 0x80000000
 
-# The loader applies this format key to the first fourteen stored bytes
-# before it opens the protected package header.
 HEADER_XOR = bytes.fromhex("EB A8 52 A6 FD FD 6F 6F 3D 3D F3 F3 F3 F3")
 
 
@@ -179,14 +178,25 @@ def _transform(data, current, *, encode):
     return bytes(output)
 
 
+_DECODED = collections.OrderedDict()
+_DECODED_ENTRIES = 4
+
+
 def decode_entry(raw):
     """Return ``(clear_entry, layout)`` for one protected entry."""
     raw = bytes(raw)
+    found = _DECODED.get(raw)
+    if found is not None:
+        _DECODED.move_to_end(raw)
+        return found
     parsed = layout(raw)
     clear = bytearray(raw)
     start, end = parsed.payload_start, parsed.payload_end
     clear[start:end] = _transform(raw[start:end], parsed, encode=False)
-    return bytes(clear), parsed
+    _DECODED[raw] = found = (bytes(clear), parsed)
+    while len(_DECODED) > _DECODED_ENTRIES:
+        _DECODED.popitem(last=False)
+    return found
 
 
 def encode_entry(original, clear, parsed):

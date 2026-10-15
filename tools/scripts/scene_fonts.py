@@ -541,6 +541,15 @@ def lowest_character_slots(alphabet):
     return slots
 
 
+def order_assignment(assignment, order):
+    pinned = {character: assignment[character]
+              for character in (" ",) if character in assignment}
+    slots = iter(sorted(slot for character, slot in assignment.items()
+                        if character not in pinned))
+    return {character: pinned[character] if character in pinned
+            else next(slots) for character in order}
+
+
 def plan_full_font(expanded, layout, alphabet, metadata, translated,
                    iso, protected=(), use_vacated=False,
                    replaced=None, keep=None, assignment_order=None,
@@ -549,8 +558,6 @@ def plan_full_font(expanded, layout, alphabet, metadata, translated,
     pointers, next_offset = message_pointers(expanded, metadata)
     base, count = metadata["glyph_base"], metadata["glyph_count"]
 
-    # what each message will finally say: a translation if there is one, else
-    # the characters it already shows
     frequency = {}
     for text in translated.values():
         for character in text:
@@ -626,8 +633,7 @@ def plan_full_font(expanded, layout, alphabet, metadata, translated,
     if assignment_order is not None:
         if set(assignment_order) != set(needed):
             raise ValueError("font assignment order does not match its glyphs")
-        slots = sorted(assignment.values())
-        assignment = dict(zip(assignment_order, slots))
+        assignment = order_assignment(assignment, assignment_order)
 
     remap = {}
     for old_slot, character in alphabet.items():

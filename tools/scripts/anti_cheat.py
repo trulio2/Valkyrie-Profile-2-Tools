@@ -87,6 +87,9 @@ CORRUPTED_SAVE_PATCHES = (
 
 ALL_BATTLE_PATCHES = BATTLE_PATCHES + CORRUPTED_SAVE_PATCHES
 
+# A disc can have the first group patched and the second retail.
+BATTLE_GROUPS = (BATTLE_PATCHES, CORRUPTED_SAVE_PATCHES)
+
 
 @dataclass(frozen=True)
 class ComponentPatch:
@@ -136,13 +139,35 @@ def is_patched(output, base, patches, label):
     if all(value == patch.patched for value, patch in zip(observed, patches)):
         return True
     for value, patch in zip(observed, patches):
-        if value != patch.original:
+        if value not in (patch.original, patch.patched):
             raise ValueError(
                 "%s validation failed at EE 0x%08X; expected 0x%08X or "
                 "0x%08X, found 0x%08X"
                 % (label, patch.address, patch.original, patch.patched, value)
             )
+    changed = [patch for value, patch in zip(observed, patches)
+               if value == patch.patched]
+    if changed:
+        raise ValueError(
+            "%s is partly patched: %d of %d anti-cheat words are already "
+            "changed, starting at EE 0x%08X"
+            % (label, len(changed), len(patches), changed[0].address)
+        )
     return False
+
+
+def _battle_groups(patches):
+    patches = tuple(patches)
+    return BATTLE_GROUPS if patches == ALL_BATTLE_PATCHES else (patches,)
+
+
+def _pending_battle(output, patches):
+    """The battle words still retail, group by group."""
+    return tuple(
+        patch for group in _battle_groups(patches)
+        if not is_patched(output, BATTLE_ADDRESS, group, "battle overlay")
+        for patch in group
+    )
 
 
 def _patch_words(output, base, patches):
@@ -285,15 +310,16 @@ def patch_battle_resource(resource, patches=BATTLE_PATCHES):
     overlay = battle_overlay.read(resource)
     _validate_base(overlay.output, BATTLE_ADDRESS, "battle overlay")
     _check_battle_guard(overlay.output)
-    if is_patched(overlay.output, BATTLE_ADDRESS, patches, "battle overlay"):
+    pending = _pending_battle(overlay.output, patches)
+    if not pending:
         return _unchanged(resource, "battle overlay")
-    patched_output = _patch_words(overlay.output, BATTLE_ADDRESS, patches)
+    patched_output = _patch_words(overlay.output, BATTLE_ADDRESS, pending)
     rebuilt, new_stored_size = battle_overlay.replace(resource, patched_output)
     new_overlay = battle_overlay.read(rebuilt)
-    _verify_output(overlay.output, new_overlay.output, BATTLE_ADDRESS, patches,
+    _verify_output(overlay.output, new_overlay.output, BATTLE_ADDRESS, pending,
                    "battle overlay")
     return ComponentPatch(
-        rebuilt, len(resource), "battle overlay", len(patches),
+        rebuilt, len(resource), "battle overlay", len(pending),
         overlay.stored_size, new_stored_size
     )
 
@@ -301,14 +327,12 @@ def patch_battle_resource(resource, patches=BATTLE_PATCHES):
 def battle_edits(output, patches=BATTLE_PATCHES):
     _validate_base(output, BATTLE_ADDRESS, "battle overlay")
     _check_battle_guard(output)
-    if is_patched(output, BATTLE_ADDRESS, patches, "battle overlay"):
-        return []
     return [
         overlay_edits.Edit(
             patch.address - BATTLE_ADDRESS, overlay_edits.word(patch.original),
             overlay_edits.word(patch.patched),
             "anti-cheat at 0x%08X" % patch.address)
-        for patch in patches
+        for patch in _pending_battle(output, patches)
     ]
 
 

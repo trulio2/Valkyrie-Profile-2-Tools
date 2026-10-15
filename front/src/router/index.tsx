@@ -5,6 +5,7 @@ import {
   ErrorPage,
   Home,
   Changelog,
+  Glyphs,
   Translation,
   Cheats,
   Voices,
@@ -30,6 +31,14 @@ export const router = createHashRouter([
         element: (
           <LazyPage>
             <Translation />
+          </LazyPage>
+        )
+      },
+      {
+        path: 'glyphs',
+        element: (
+          <LazyPage>
+            <Glyphs />
           </LazyPage>
         )
       },

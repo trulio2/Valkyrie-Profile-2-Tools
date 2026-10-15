@@ -445,8 +445,41 @@ class AlreadyDisabledTests(unittest.TestCase):
         _plant(output, base, SAVE_PATCHES)
         first = SAVE_PATCHES[0]
         struct.pack_into("<I", output, first.address - base, first.patched)
-        with self.assertRaisesRegex(ValueError, "validation failed"):
+        with self.assertRaisesRegex(ValueError, "partly patched: 1 of 5"):
             anti_cheat.is_patched(output, base, SAVE_PATCHES, "save overlay")
+
+    def test_a_foreign_word_is_named(self):
+        from tools.scripts import anti_cheat
+        base = 0x00495500
+        output = bytearray(0x8000)
+        _plant(output, base, SAVE_PATCHES)
+        first = SAVE_PATCHES[0]
+        struct.pack_into("<I", output, first.address - base, 0x12345678)
+        with self.assertRaisesRegex(ValueError, "found 0x12345678"):
+            anti_cheat.is_patched(output, base, SAVE_PATCHES, "save overlay")
+
+    def test_recovery_words_are_added_to_a_disc_built_without_them(self):
+        from tools.scripts import anti_cheat
+        resource, _, _ = make_battle_resource()
+        without = patch_battle_resource(resource).data
+        added = patch_battle_resource(without, ALL_BATTLE_PATCHES)
+        self.assertEqual(len(CORRUPTED_SAVE_PATCHES), added.change_count)
+        output = battle_overlay.read(added.data).output
+        for patch in ALL_BATTLE_PATCHES:
+            self.assertEqual(patch.patched, struct.unpack_from(
+                "<I", output, patch.address - 0x0036D900)[0])
+        edits = anti_cheat.battle_edits(
+            battle_overlay.read(without).output, ALL_BATTLE_PATCHES)
+        self.assertEqual([patch.address - 0x0036D900
+                          for patch in CORRUPTED_SAVE_PATCHES],
+                         [edit.offset for edit in edits])
+
+    def test_a_disc_with_recovery_words_keeps_them(self):
+        resource, _, _ = make_battle_resource()
+        full = patch_battle_resource(resource, ALL_BATTLE_PATCHES).data
+        self.assertEqual(0, patch_battle_resource(full).change_count)
+        self.assertEqual(0, patch_battle_resource(
+            full, ALL_BATTLE_PATCHES).change_count)
 
     def test_battle_edits_follow_the_overlay(self):
         from tools.scripts import anti_cheat, overlay_edits
@@ -475,6 +508,33 @@ class AlreadyDisabledTests(unittest.TestCase):
 
 
 class CompleteBuildTests(unittest.TestCase):
+    def test_a_plan_is_exactly_what_the_build_writes(self):
+        from tools.cheat_patcher.build import plan_patches
+        save_resource, _, _ = make_save_resource()
+        battle_resource, _, _ = make_battle_resource()
+        executable, _ = make_executable()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "clean.iso"
+            output = root / "patched.iso"
+            write_synthetic_iso(source, {
+                3: make_resource_3(),
+                22: make_main_resource(),
+                652: save_resource,
+                1781: battle_resource,
+            })
+            install_iso_file(source, "SLUS_214.52", executable)
+            selected = ["disable-anti-cheat", "stop-removing-characters"]
+
+            plan = plan_patches(source, selected)
+            build_iso(source, output, selected)
+
+            image = bytearray(source.read_bytes())
+            for offset, data in plan.writes:
+                image[offset:offset + len(data)] = data
+            self.assertEqual(bytes(image), output.read_bytes())
+            self.assertEqual(selected, [item.name for item in plan.patches])
+
     def test_all_twenty_one_patches_compose_in_one_iso(self):
         save_resource, _, _ = make_save_resource()
         battle_resource, _, _ = make_battle_resource()

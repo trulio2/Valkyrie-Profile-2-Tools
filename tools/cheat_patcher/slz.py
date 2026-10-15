@@ -2,14 +2,42 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """Self-contained tri-Ace SLZ decompressor."""
 
+import collections
 import struct
+
+from . import deferral
 
 
 HEADER_SIZE = 0x10
+MEMO_BYTES = 128 << 20
+
+_memo = collections.OrderedDict()
+_memo_bytes = 0
 
 
 def decompress(data, mode=None, out_size=None):
     """Decompress an SLZ stream or a headerless SLZ body."""
+    global _memo_bytes
+    session = deferral.current()
+    if session is not None:
+        deferred = session.output_for(data)
+        if deferred is not None:
+            return deferred
+    key = (bytes(data), mode, out_size)
+    found = _memo.get(key)
+    if found is not None:
+        _memo.move_to_end(key)
+        return found
+    result = _decompress(data, mode, out_size)
+    _memo[key] = result
+    _memo_bytes += len(key[0]) + len(result)
+    while _memo_bytes > MEMO_BYTES and len(_memo) > 1:
+        (old, _, _), value = _memo.popitem(last=False)
+        _memo_bytes -= len(old) + len(value)
+    return result
+
+
+def _decompress(data, mode=None, out_size=None):
     source = memoryview(data)
     position = 0
     if len(source) >= HEADER_SIZE and source[:3] == b"SLZ":

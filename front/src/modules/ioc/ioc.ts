@@ -5,8 +5,12 @@ import {
   ChangelogService,
   CheatsRepository,
   CheatsService,
+  GlyphsRepository,
+  GlyphsService,
   HomeRepository,
   HomeService,
+  PatchRepository,
+  PatchService,
   TranslationRepository,
   TranslationService,
   VoicesRepository,
@@ -16,7 +20,9 @@ import {
   type IAboutRepository,
   type IChangelogRepository,
   type ICheatsRepository,
+  type IGlyphsRepository,
   type IHomeRepository,
+  type IPatchRepository,
   type ITranslationRepository,
   type IVoicesRepository,
   REPOSITORIES,
@@ -49,9 +55,19 @@ class IoC {
           this.getOrCreateInstance<ICheatsRepository>(REPOSITORIES.CHEATS)
         )
         break
+      case SERVICES.GLYPHS:
+        newInstance = new GlyphsService(
+          this.getOrCreateInstance<IGlyphsRepository>(REPOSITORIES.GLYPHS)
+        )
+        break
       case SERVICES.HOME:
         newInstance = new HomeService(
           this.getOrCreateInstance<IHomeRepository>(REPOSITORIES.HOME)
+        )
+        break
+      case SERVICES.PATCH:
+        newInstance = new PatchService(
+          this.getOrCreateInstance<IPatchRepository>(REPOSITORIES.PATCH)
         )
         break
       case SERVICES.TRANSLATION:
@@ -76,8 +92,14 @@ class IoC {
       case REPOSITORIES.CHEATS:
         newInstance = new CheatsRepository()
         break
+      case REPOSITORIES.GLYPHS:
+        newInstance = new GlyphsRepository()
+        break
       case REPOSITORIES.HOME:
         newInstance = new HomeRepository()
+        break
+      case REPOSITORIES.PATCH:
+        newInstance = new PatchRepository()
         break
       case REPOSITORIES.TRANSLATION:
         newInstance = new TranslationRepository()

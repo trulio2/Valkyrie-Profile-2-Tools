@@ -40,6 +40,27 @@ jobs:
       - name: Build project
         run: yarn build
 
+      - name: Add the cheat patcher the page runs
+        working-directory: .
+        run: python3 vp2_cheats.py --web-bundle front/dist/cheats
+
+      - name: Add the newest published web patch
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p front/dist/patch patch-assets
+          for tag in $(gh release list --limit 20 --json tagName --jq '.[].tagName'); do
+            if gh release download "$tag" --pattern 'web-patch-*.zip' --dir patch-assets; then
+              echo "web patch from $tag"
+              break
+            fi
+          done
+          for archive in patch-assets/*.zip; do
+            [ -e "$archive" ] && unzip -q -o "$archive" -d front/dist/patch
+          done
+          python3 tools/web_patch.py index front/dist/patch
+
       - name: Setup Pages
         uses: actions/configure-pages@v6
 

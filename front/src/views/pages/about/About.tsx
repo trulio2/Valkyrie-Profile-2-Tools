@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import IoC from '@/modules/ioc'
 import { SERVICES, type IAboutService } from '@/types'
 
@@ -38,12 +37,6 @@ export default function About() {
           ))}
         </ul>
       </div>
-
-      <p className="row">
-        <Link to="/" className="btn accent">
-          Back home
-        </Link>
-      </p>
     </section>
   )
 }

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import IoC from '@/modules/ioc'
 import { type IVoicesService, SERVICES } from '@/types'
 
@@ -35,12 +34,6 @@ export default function Voices() {
           ))}
         </ul>
       </div>
-
-      <p className="row">
-        <Link to="/" className="btn accent">
-          Back home
-        </Link>
-      </p>
     </section>
   )
 }

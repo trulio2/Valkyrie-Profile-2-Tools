@@ -14,6 +14,9 @@ except ValueError:
     _MEMO_LIMIT = 256 << 20
 
 
+KNOWN = []
+
+
 def memo_stats():
     """How much the memo holds, for a caller that wants to report it."""
     return {"entries": len(_MEMO), "bytes": _MEMO_BYTES, "limit": _MEMO_LIMIT}
@@ -39,6 +42,10 @@ def _remember(key, plain):
 
 def decompress(data, mode=None, out_size=None):
     """Decompress an SLZ blob, remembering what each blob expands to."""
+    for known in KNOWN:
+        plain = known(data)
+        if plain is not None:
+            return plain
     if not _MEMO_LIMIT:
         return _decompress(data, mode, out_size)
     blob = bytes(data)

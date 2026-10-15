@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import IoC from '@/modules/ioc'
 import { type IChangelogService, SERVICES, tagLabel } from '@/types'
 
@@ -40,12 +39,6 @@ function Changelog() {
           </li>
         ))}
       </ol>
-
-      <p className="row">
-        <Link to="/" className="btn accent">
-          Back home
-        </Link>
-      </p>
     </section>
   )
 }

@@ -4,7 +4,12 @@ import IoC from '@/modules/ioc'
 import { SERVICES, type IHomeService } from '@/types'
 
 const toolLinks = [
-  { to: '/translation', label: 'Translation', hint: 'ISO rewriter + manifest' },
+  {
+    to: '/translation',
+    label: 'Translation',
+    hint: 'translate your ISO in the browser'
+  },
+  { to: '/glyphs', label: 'Glyphs', hint: 'glyph textures for PCSX2' },
   { to: '/cheats', label: 'Cheats', hint: '21 ISO cheats' },
   { to: '/voices', label: 'Voices', hint: '85 voice banks' }
 ]

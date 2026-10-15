@@ -795,6 +795,7 @@ def build_iso(
     only: Iterable[str] | None = None,
     corrupt_save: bool = True,
     glyph_textures: str | os.PathLike[str] | None = None,
+    disabled: Iterable[str] = (),
 ) -> Path:
     source = Path(source_iso).expanduser().resolve()
     if not source.is_file():
@@ -826,8 +827,12 @@ def build_iso(
                          os.fspath(compiled["slots"])]
     if no_verify:
         runtime_args.append("--no-verify")
-    for name in compiled.get("disabled_options", ()):
-        runtime_args.append(BUILD_OPTIONS[name])
+    unknown = set(disabled) - set(BUILD_OPTIONS)
+    if unknown:
+        raise PackError("unknown build option(s): " + ", ".join(sorted(unknown)))
+    for name in BUILD_OPTIONS:
+        if name in compiled.get("disabled_options", ()) or name in disabled:
+            runtime_args.append(BUILD_OPTIONS[name])
     if not corrupt_save:
         runtime_args.append("--no-corrupt-save")
     if not strict_extents:

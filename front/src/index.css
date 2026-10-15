@@ -85,6 +85,37 @@
   color: var(--accent);
 }
 
+.navbar-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.navbar-run::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: navbar-run-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes navbar-run-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-run::before {
+    animation: none;
+  }
+}
+
 @media (max-width: 1024px) {
   .navbar {
     padding: 10px 16px;
@@ -551,4 +582,109 @@ h1.accent {
   margin-top: 6px;
   font-size: 13px;
   color: var(--text);
+}
+
+.patch-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 20px;
+  margin: 0 0 24px;
+}
+
+.patch-facts dt {
+  color: var(--text-h);
+}
+
+.patch-facts dd {
+  margin: 0;
+}
+
+.patch-drop {
+  display: block;
+  padding: 32px 16px;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-h);
+  text-align: center;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.patch-drop input {
+  display: none;
+}
+
+.patch-drop:hover,
+.patch-drop.drag {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.patch-drop.busy {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.patch-progress {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.patch-status {
+  margin: 12px 0;
+  color: var(--text-h);
+}
+
+.patch-status.error {
+  color: #d03b3b;
+}
+
+.patch-status.success {
+  color: #2e9d5b;
+}
+
+.patch-sources {
+  margin: 4px 0 0;
+  padding-left: 20px;
+}
+
+.patch-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0 8px;
+  padding: 0;
+  border: 0;
+}
+
+.patch-option {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.patch-option input {
+  margin-top: 5px;
+  accent-color: var(--accent);
+}
+
+.patch-option strong {
+  display: block;
+  color: var(--text-h);
+  font-weight: 500;
+}
+
+.patch-option small {
+  display: block;
+  font-size: 15px;
+}
+
+.cheat-actions {
+  margin: 0;
 }

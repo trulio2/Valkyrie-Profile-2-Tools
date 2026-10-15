@@ -5,6 +5,7 @@
 import os
 import struct
 
+from . import deferral
 from ..scripts import slz_cache
 from ..scripts.paths import CACHE_ROOT
 
@@ -119,6 +120,11 @@ def _compress_uncached(source, next_offset, max_chain):
 def compress(source, next_offset=0, max_chain=MAX_CHAIN):
     """Return one complete mode-3 SLZ stream."""
     source = bytes(source)
+    session = deferral.current()
+    if session is not None:
+        placeholder = session.compressed(source, next_offset)
+        if placeholder is not None:
+            return placeholder
     store = slz_cache.resolve(None, _DEFAULT_CACHE_DIR, "VP2_OVERLAY_CACHE")
     if not store:
         return _compress_uncached(source, next_offset, max_chain)

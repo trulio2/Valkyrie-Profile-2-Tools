@@ -52,6 +52,8 @@ python -c "import tkinter; tkinter.Tcl()"
 
 ## Translator
 
+[project page](https://trulio2.github.io/Valkyrie-Profile-2-Tools/#/translation)
+
 Open `ValkyrieProfile2-Tools` and leave the default **Translate** page
 selected. Choose your clean USA image and a language, then choose **Build
 translated ISO**. The first build prepares a local workspace and takes longer;
@@ -80,6 +82,8 @@ the optional Japanese reference, and language-pack usage.
 Options 3 is being used by default. The last step of the translation build patches the "disable-anti-cheat" directly into the iso, so this new generated iso can have any offset changes or cheats enabled, and the anticheat will not trigger. This also means that the translated iso will not freeze/crash even on broken/corrupted save files.
 
 ## Cheat Patcher
+
+[project page](https://trulio2.github.io/Valkyrie-Profile-2-Tools/#/cheats)
 
 Open `ValkyrieProfile2-Tools`, select **Cheats** in the sidebar, choose your
 clean USA image and cheats, then select **Patch ISO**. Only **Disable
@@ -118,6 +122,8 @@ guide](docs/voices.md) for the reversible file names, cutscene folders, WAV
 requirements, and legacy dub-kit compatibility.
 
 ## Glyph Tool
+
+[project page](https://trulio2.github.io/Valkyrie-Profile-2-Tools/#/glyphs)
 
 Open `ValkyrieProfile2-Tools` and select **Glyphs** in the sidebar:
 

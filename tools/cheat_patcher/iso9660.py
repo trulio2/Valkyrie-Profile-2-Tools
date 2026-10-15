@@ -114,14 +114,19 @@ def locate_file(handle, path):
     raise AssertionError("unreachable empty ISO9660 path")
 
 
-def write_file_size(handle, extent, size):
-    """Update both-endian lengths without relocating a file's extent."""
+def file_size_writes(extent, size):
+    """``(offset, bytes)`` that set a file's both-endian lengths in place."""
     if not extent.size <= size <= extent.allocation_size:
         raise ValueError(
             "ISO9660 file length %d exceeds its fixed %d-byte allocation"
             % (size, extent.allocation_size)
         )
-    handle.seek(extent.record_offset + 10)
-    handle.write(struct.pack("<I", size))
-    handle.seek(extent.record_offset + 14)
-    handle.write(struct.pack(">I", size))
+    return ((extent.record_offset + 10, struct.pack("<I", size)),
+            (extent.record_offset + 14, struct.pack(">I", size)))
+
+
+def write_file_size(handle, extent, size):
+    """Update both-endian lengths without relocating a file's extent."""
+    for offset, data in file_size_writes(extent, size):
+        handle.seek(offset)
+        handle.write(data)

@@ -10,7 +10,7 @@ import sys
 
 from tools.glyph_patcher import build
 from tools.scripts import glyph_slots
-from tools.scripts.paths import output_root
+from tools.scripts.paths import BUILD_DIR, output_root
 
 
 def _parser():
@@ -40,7 +40,48 @@ def _parser():
                      help="folder to create the texture folder in")
     dds.add_argument("--replace", action="store_true",
                      help="replace the textures of an earlier run")
+    web = commands.add_parser(
+        "web-patch", help="make the glyph patch the project page applies")
+    web.add_argument(
+        "--source", action="append", required=True, metavar="[NAME=]IMAGE",
+        help="a USA image players may start from; repeat for each one")
+    web.add_argument(
+        "--output", default=str(BUILD_DIR / "web-patch"),
+        help="folder that holds the web patches (default: %(default)s)")
     return parser
+
+
+def web_patch(args):
+    import shutil
+    from pathlib import Path
+
+    from tools import web_patch as patch
+    from tools.app_meta import VERSION
+
+    scratch = Path(BUILD_DIR) / "web-patch-glyphs"
+
+    def make(source, options):
+        target = build.patched_iso_path(source, scratch)
+        target.unlink(missing_ok=True)
+        return build.patch_iso(source, scratch, progress=print,
+                               corrupt_save=options["corrupt-save"]).output
+
+    root = Path(args.output).expanduser()
+    try:
+        manifest = patch.make_patch(
+            patch.parse_sources(args.source), root / patch.GLYPHS, "",
+            build=make, offered=["corrupt-save"], label="Glyph textures",
+            version=VERSION, tool=patch.GLYPHS,
+            output_name="Valkyrie Profile 2 - Silmeria (glyph textures).iso")
+        patch.write_index(root)
+        archive = patch.write_release_zip(root, patch.GLYPHS)
+    finally:
+        shutil.rmtree(scratch, ignore_errors=True)
+    for source in manifest["sources"]:
+        download = sum(part["packedSize"] for part in source["parts"])
+        print("%s: %d variant(s), %.1f MB to download"
+              % (source["name"], len(source["variants"]), download / 1e6))
+    return archive
 
 
 def self_check(stream=None):
@@ -84,6 +125,9 @@ def main(argv=None):
         return 2
     folder = args.output or output_root()
     try:
+        if args.command == "web-patch":
+            print("release asset: %s" % web_patch(args))
+            return 0
         if args.command == "patch":
             result = build.patch_iso(args.source, folder, progress=print)
         elif args.command == "extract":
