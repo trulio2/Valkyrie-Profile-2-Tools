@@ -55,6 +55,46 @@ class LauncherLogicTests(unittest.TestCase):
         self.assertEqual(
             Path("releases/Valkyrie Profile 2.pt-BR.iso"), output)
 
+    def test_optional_tools_and_update_client_are_lazy(self):
+        import subprocess
+
+        names = (
+            "vp2_cheats", "vp2_glyphs", "vp2_translate", "vp2_voices",
+            "tools.cheat_patcher.gui", "tools.glyph_patcher.gui",
+            "tools.voice_patcher.gui", "tools.update_check",
+        )
+        script = (
+            "import sys, vp2_tools; "
+            f"names={names!r}; "
+            "assert not [name for name in names if name in sys.modules]"
+        )
+        result = subprocess.run(
+            [sys.executable, "-c", script], cwd=ROOT,
+            capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+
+    def test_packaged_update_check_waits_for_the_window(self):
+        calls = []
+
+        class Root:
+            def after(self, delay, callback):
+                calls.append((delay, callback))
+                return "timer"
+
+        previous = getattr(sys, "frozen", None)
+        sys.frozen = True
+        callback = object()
+        try:
+            timer = tools_launcher._schedule_update_check(Root(), callback)
+        finally:
+            if previous is None:
+                del sys.frozen
+            else:
+                sys.frozen = previous
+        self.assertEqual("timer", timer)
+        self.assertEqual([(tools_launcher.UPDATE_DELAY_MS, callback)], calls)
+        self.assertGreaterEqual(tools_launcher.UPDATE_DELAY_MS, 15_000)
+
     def test_window_is_centred_and_never_uses_the_withdrawn_sentinel(self):
         class Screen:
             def winfo_screenwidth(self):
@@ -119,6 +159,35 @@ class ReleaseSpecTests(unittest.TestCase):
         self.assertIn("console=False", self.spec)
         self.assertNotIn('"tkinter", "_tkinter"', self.spec)
         self.assertIn("vp2-tac-encode", self.spec)
+
+    def test_windows_executable_has_matching_version_metadata(self):
+        version_path = ROOT / "data" / "windows-version.txt"
+        version = version_path.read_text(encoding="utf-8")
+        parts = tuple(
+            int(piece)
+            for piece in tools_launcher.app_meta.VERSION.split("."))
+        numeric = parts + (0,) * (4 - len(parts))
+        self.assertIn(f"filevers={numeric!r}", version)
+        self.assertIn(f"prodvers={numeric!r}", version)
+        self.assertIn(
+            "StringStruct('ProductVersion', "
+            f"'{tools_launcher.app_meta.VERSION}')", version)
+        self.assertIn("WINDOWS_VERSION", self.spec)
+        self.assertIn("version=(os.fspath(WINDOWS_VERSION)", self.spec)
+
+    def test_windows_release_is_a_folder_and_linux_stays_a_single_file(self):
+        workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(
+            encoding="utf-8")
+        self.assertIn('WINDOWS_ONE_FOLDER = sys.platform == "win32"',
+                      self.spec)
+        self.assertIn("exclude_binaries=WINDOWS_ONE_FOLDER", self.spec)
+        self.assertIn("if WINDOWS_ONE_FOLDER:", self.spec)
+        self.assertIn("bundle = COLLECT(", self.spec)
+        self.assertIn('${binary}/${binary}.exe', workflow)
+        self.assertIn('mv "dist/${binary}" "dist/${name}"', workflow)
+        self.assertIn(
+            '"${bundles[0]}/ValkyrieProfile2-Tools.exe" --self-check',
+            workflow)
 
     def test_icon_and_backdrop_are_bundled(self):
         self.assertIn("icon=", self.spec)
@@ -201,21 +270,21 @@ class WindowSmokeTests(unittest.TestCase):
             app.nav_buttons["voices"].invoke()
             self.assertEqual("voices", app.current)
             self.assertEqual(
-                tools_launcher.voice_gui.SHORT_NAME,
+                tools_launcher.tool_gui("voices").SHORT_NAME,
                 app.apps["voices"].canvas.itemcget(
                     app.apps["voices"].title_item, "text"),
             )
             app.show("cheats")
             self.assertEqual("cheats", app.current)
             self.assertEqual(
-                tools_launcher.cheat_gui.SHORT_NAME,
+                tools_launcher.tool_gui("cheats").SHORT_NAME,
                 app.apps["cheats"].canvas.itemcget(
                     app.apps["cheats"].title_item, "text"),
             )
             app.show("glyphs")
             self.assertEqual("glyphs", app.current)
             self.assertEqual(
-                tools_launcher.glyph_gui.SHORT_NAME,
+                tools_launcher.tool_gui("glyphs").SHORT_NAME,
                 app.apps["glyphs"].canvas.itemcget(
                     app.apps["glyphs"].title_item, "text"),
             )

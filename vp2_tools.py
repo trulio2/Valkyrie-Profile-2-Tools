@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import ctypes
+import importlib
 import io
 import os
 import queue
@@ -15,14 +16,7 @@ import sys
 import threading
 import webbrowser
 
-import vp2_cheats
-import vp2_glyphs
-import vp2_translate
-import vp2_voices
-from tools import app_meta, translate_gui, update_check
-from tools.cheat_patcher import gui as cheat_gui
-from tools.glyph_patcher import gui as glyph_gui
-from tools.voice_patcher import gui as voice_gui
+from tools import app_meta, translate_gui
 
 
 try:
@@ -35,12 +29,31 @@ else:
     TK_IMPORT_ERROR = None
 
 
+UPDATE_DELAY_MS = 15_000
+GUI_MODULES = {
+    "translate": "tools.translate_gui",
+    "voices": "tools.voice_patcher.gui",
+    "cheats": "tools.cheat_patcher.gui",
+    "glyphs": "tools.glyph_patcher.gui",
+}
 NAVIGATION = (
-    ("translate", "▤", "Translate", translate_gui.App),
-    ("voices", "♫", "Voices", voice_gui.App),
-    ("cheats", "⚙", "Cheats", cheat_gui.App),
-    ("glyphs", "Aa", "Glyphs", glyph_gui.App),
+    ("translate", "▤", "Translate"),
+    ("voices", "♫", "Voices"),
+    ("cheats", "⚙", "Cheats"),
+    ("glyphs", "Aa", "Glyphs"),
 )
+
+
+def tool_gui(key):
+    """Import one tool window when the user first opens it."""
+    return importlib.import_module(GUI_MODULES[key])
+
+
+def _schedule_update_check(root, callback):
+    """Let a packaged window settle before its one network request."""
+    if not getattr(sys, "frozen", False):
+        return None
+    return root.after(UPDATE_DELAY_MS, callback)
 
 
 class NavigationItem:
@@ -117,7 +130,8 @@ class App:
         self._build_shell()
         root.protocol("WM_DELETE_WINDOW", self._on_close)
         self.show("translate")
-        self._check_for_updates()
+        self._update_after = _schedule_update_check(
+            self.root, self._check_for_updates)
 
     def _configure_styles(self):
         style = ttk.Style(self.root)
@@ -173,7 +187,7 @@ class App:
             justify="left",
         ).grid(row=0, column=0, sticky="ew", padx=10, pady=(0, 24))
 
-        for row, (key, icon, label, _factory) in enumerate(NAVIGATION, 1):
+        for row, (key, icon, label) in enumerate(NAVIGATION, 1):
             button = NavigationItem(
                 sidebar, icon, label,
                 command=lambda selected=key: self.show(selected),
@@ -215,6 +229,8 @@ class App:
 
     def _check_for_updates(self):
         """Ask GitHub once for a newer release; surface a link if found."""
+        from tools import update_check
+
         if not update_check.is_release_build():
             return
         self._update_queue = queue.Queue()
@@ -248,7 +264,7 @@ class App:
             self.pages[self.current].grid_remove()
             self.nav_buttons[self.current].set_selected(False)
         if key not in self.pages:
-            factory = next(item[3] for item in NAVIGATION if item[0] == key)
+            factory = tool_gui(key).App
             page = ttk.Frame(self.content, style="Card.TFrame")
             page.grid(row=0, column=0, sticky="nsew")
             page.rowconfigure(0, weight=1)
@@ -324,9 +340,9 @@ def self_check(stream=None):
     output = stream or sys.stdout
     checks = (
         ("translation", translation_check),
-        ("cheats", vp2_cheats.self_check),
-        ("voices", vp2_voices.self_check),
-        ("glyphs", vp2_glyphs.self_check),
+        ("cheats", importlib.import_module("vp2_cheats").self_check),
+        ("voices", importlib.import_module("vp2_voices").self_check),
+        ("glyphs", importlib.import_module("vp2_glyphs").self_check),
     )
     failed = False
     for label, check in checks:
@@ -335,9 +351,8 @@ def self_check(stream=None):
         print(f"[{label}]", file=output)
         print(captured.getvalue().rstrip(), file=output)
         failed = failed or bool(status)
-    for label, module in (
-            ("translate", translate_gui), ("cheats", cheat_gui),
-            ("voices", voice_gui), ("glyphs", glyph_gui)):
+    for label in ("translate", "cheats", "voices", "glyphs"):
+        module = tool_gui(label)
         if module.TK_IMPORT_ERROR is not None:
             print(f"FAIL  {label} window: {module.TK_IMPORT_ERROR}", file=output)
             failed = True
@@ -375,7 +390,8 @@ def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv[:1] == ["_runtime-build"]:
         attach_console_for_output()
-        return vp2_translate.run_internal_build(argv[1:])
+        translate_cli = importlib.import_module("vp2_translate")
+        return translate_cli.run_internal_build(argv[1:])
     args = _parser().parse_args(argv)
     if args.self_check:
         attach_console_for_output()

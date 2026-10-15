@@ -86,10 +86,11 @@ jobs:
         shell: bash
         run: |
           binary="ValkyrieProfile2-Tools"
-          ./dist/"${binary}.exe" --self-check
+          ./dist/"${binary}/${binary}.exe" --self-check
           name="${binary}-${{ steps.package.outputs.version }}-${{ matrix.suffix }}"
-          mv "dist/${binary}.exe" "dist/${name}.exe"
-          7z a -tzip "${name}.zip" "./dist/${name}.exe" > /dev/null
+          mv "dist/${binary}" "dist/${name}"
+          cd dist
+          7z a -tzip "../${name}.zip" "./${name}" > /dev/null
 
       - name: Build and package Linux through the release container
         if: runner.os == 'Linux'
@@ -112,11 +113,10 @@ jobs:
           for archive in ../ValkyrieProfile2-*.zip; do
             7z x "$archive" > /dev/null
           done
-          binaries=(./*.exe)
-          test "${#binaries[@]}" -eq 1
-          for binary in "${binaries[@]}"; do
-            "$binary" --self-check
-          done
+          bundles=(./ValkyrieProfile2-Tools-*-windows-x64)
+          test "${#bundles[@]}" -eq 1
+          test -d "${bundles[0]}"
+          "${bundles[0]}/ValkyrieProfile2-Tools.exe" --self-check
 
       - uses: actions/upload-artifact@v4
         with:

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # -*- mode: python ; coding: utf-8 -*-
 
-"""One-file GUI build of all three VP2 tools.
+"""GUI build of all VP2 tools.
 
 What goes in is the runtime plus the source-free tables a build reads: the
 build profile, the structural tables, and every language pack. What stays out
@@ -16,7 +16,11 @@ been added to the payload and should be taken back out.
     pyinstaller data/vp2_tools.spec \
         --workpath workspace/internal/build \
         --clean --noconfirm
-    ./dist/ValkyrieProfile2-Tools --self-check
+    ./dist/ValkyrieProfile2-Tools/ValkyrieProfile2-Tools.exe --self-check
+
+Windows uses a one-folder bundle so launching does not extract and scan the
+whole payload every time. Linux keeps the single executable distributed by
+the release container.
 """
 import os
 import sys
@@ -34,6 +38,8 @@ sys.path.insert(0, os.fspath(ROOT))
 from tools.scripts.public_release import payload_members          # noqa: E402
 
 APP_NAME = "ValkyrieProfile2-Tools"
+WINDOWS_ONE_FOLDER = sys.platform == "win32"
+WINDOWS_VERSION = ROOT / "data" / "windows-version.txt"
 ICON = ROOT / "images" / "vp2_release.ico"
 ARTWORK = (
     "images/vp2_release.ico",
@@ -68,7 +74,13 @@ a = Analysis(
     pathex=[os.fspath(ROOT)],
     binaries=binaries,
     datas=datas,
-    hiddenimports=[],
+    # These tools are loaded when their page, self-check, or frozen build
+    # handoff is first used instead of delaying the initial window.
+    hiddenimports=[
+        "vp2_cheats", "vp2_glyphs", "vp2_translate", "vp2_voices",
+        "tools.cheat_patcher.gui", "tools.glyph_patcher.gui",
+        "tools.voice_patcher.gui",
+    ],
     hookspath=[],
     runtime_hooks=[],
     # Tk is the end-user front end. The numerical and scientific stacks are
@@ -86,24 +98,26 @@ a = Analysis(
     optimize=0,
 )
 
-# The window uses no Tcl time zones or translated Tk message catalogues.
-# In one-file mode every bundled file is extracted and scanned on each start,
-# so omitting these hundreds of unreachable files materially improves launch.
+# The window uses no Tcl time zones or translated Tk message catalogues. They
+# are unnecessary in either layout and especially expensive in one-file mode.
 _before = len(a.datas)
 a.datas = [entry for entry in a.datas
            if not entry[0].replace("\\", "/").startswith(UNUSED_TCL_TREES)]
 print("dropped %d unused Tcl/Tk data file(s)" % (_before - len(a.datas)))
 
 pyz = PYZ(a.pure)
+exe_contents = (([],) if WINDOWS_ONE_FOLDER
+                else (a.binaries, a.datas, []))
 
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.datas,
-    [],
+    *exe_contents,
     name=APP_NAME,
+    exclude_binaries=WINDOWS_ONE_FOLDER,
     icon=os.fspath(ICON) if ICON.is_file() else None,
+    version=(os.fspath(WINDOWS_VERSION)
+             if WINDOWS_ONE_FOLDER else None),
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -121,3 +135,13 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
+
+if WINDOWS_ONE_FOLDER:
+    bundle = COLLECT(
+        exe,
+        a.binaries,
+        a.datas,
+        strip=False,
+        upx=False,
+        name=APP_NAME,
+    )
