@@ -13,6 +13,7 @@ from tools.cheat_patcher.cheats import (
     heavenly_punishment_15_ap,
     no_limit_sealstone_withdrawals,
     restore_all_sealstones,
+    unlocked_items_99,
 )
 from tests.test_cheat_disable_anti_cheat import (
     make_battle_resource,
@@ -128,36 +129,67 @@ class SealstonePatchTests(unittest.TestCase):
             no_limit_sealstone_withdrawals.patch_resource_866(changed)
 
 
+ITEM_CHEATS = (all_items_99, unlocked_items_99)
+
+
 class AllItemsTests(unittest.TestCase):
     def test_changes_only_the_camp_item_hook(self):
-        resource, suffix, span = make_item_resource()
-        old = menu_overlay.read(
-            resource, all_items_99.RESOURCE, all_items_99.OWNER,
-            all_items_99.MODE
-        ).output
-        details = all_items_99.patch_resource(resource)
-        new = menu_overlay.read(
-            details.data, all_items_99.RESOURCE, all_items_99.OWNER,
-            all_items_99.MODE
-        ).output
-        assert_word_changes(
-            self, old, new, 0x00495500, all_items_99.PATCHES
-        )
-        self.assertEqual(suffix, details.data[span:span + len(suffix)])
+        for module in ITEM_CHEATS:
+            with self.subTest(cheat=module.LABEL):
+                resource, suffix, span = make_item_resource()
+                old = menu_overlay.read(
+                    resource, module.RESOURCE, module.OWNER, module.MODE
+                ).output
+                details = module.patch_resource(resource)
+                new = menu_overlay.read(
+                    details.data, module.RESOURCE, module.OWNER, module.MODE
+                ).output
+                assert_word_changes(
+                    self, old, new, 0x00495500, module.PATCHES
+                )
+                self.assertEqual(suffix, details.data[span:span + len(suffix)])
 
     def test_installs_each_pnach_block_without_filling_its_gaps(self):
+        for module in ITEM_CHEATS:
+            with self.subTest(cheat=module.LABEL):
+                executable, _ = make_executable()
+                details = module.patch_executable(executable)
+                for write in module.INJECT_WRITES:
+                    self.assertEqual(
+                        write.words,
+                        words_at(
+                            details.data, write.address, len(write.words)
+                        ),
+                    )
+                self.assertEqual(
+                    (0, 0), words_at(details.data, 0x01FEBCF8, 2)
+                )
+                self.assertEqual(
+                    (0,) * 13, words_at(details.data, 0x01FEBD1C, 13)
+                )
+                self.assertEqual(
+                    elf.pcsx2_crc(executable), details.patched_crc
+                )
+
+    def test_unlocked_items_reads_the_stack_instead_of_forcing_it(self):
         executable, _ = make_executable()
-        details = all_items_99.patch_executable(executable)
-        for write in all_items_99.INJECT_WRITES:
-            self.assertEqual(
-                write.words,
-                words_at(details.data, write.address, len(write.words)),
-            )
-        self.assertEqual((0, 0), words_at(details.data, 0x01FEBCF8, 2))
+        details = unlocked_items_99.patch_executable(executable)
         self.assertEqual(
-            (0,) * 13, words_at(details.data, 0x01FEBD1C, 13)
+            (0x81DB0002, 0x00000000, 0x13600007, 0x00000000),
+            words_at(details.data, 0x01FEBD50, 4),
         )
-        self.assertEqual(elf.pcsx2_crc(executable), details.patched_crc)
+
+    def test_all_items_takes_precedence_over_unlocked_items(self):
+        from tools.cheat_patcher.catalog import required_with
+
+        self.assertEqual(
+            ("all-items-99",),
+            required_with(("all-items-99", "unlocked-items-99")),
+        )
+        self.assertEqual(
+            ("unlocked-items-99",),
+            required_with(("unlocked-items-99",)),
+        )
 
 
 if __name__ == "__main__":

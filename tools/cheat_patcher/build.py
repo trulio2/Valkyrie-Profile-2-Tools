@@ -32,6 +32,7 @@ from .cheats import (
     restore_all_sealstones,
     skill_points_99,
     stop_removing_characters,
+    unlocked_items_99,
 )
 
 
@@ -57,7 +58,12 @@ PATCHERS = {
     "restore-all-sealstones": restore_all_sealstones,
     "no-limit-sealstone-withdrawals": no_limit_sealstone_withdrawals,
     "all-items-99": all_items_99,
+    "unlocked-items-99": unlocked_items_99,
 }
+
+# The item-count cheats share one hook.  Keep the broader one when both are
+# selected, since only one routine can occupy that hook.
+SUPERSEDED_BY = {"unlocked-items-99": "all-items-99"}
 
 
 def _anti_cheat_patcher(patcher, corrupt_save):
@@ -119,7 +125,11 @@ def _selected_patchers(selected):
         raise ValueError("unknown patch: %s" % ", ".join(unknown))
     if not names:
         raise ValueError("select at least one patch")
-    return [(name, PATCHERS[name]) for name in names]
+    chosen = set(names)
+    for name, broader in SUPERSEDED_BY.items():
+        if name in chosen and broader in chosen:
+            chosen.discard(name)
+    return [(name, PATCHERS[name]) for name in names if name in chosen]
 
 
 def _resource_patchers(patcher):

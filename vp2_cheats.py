@@ -27,6 +27,7 @@ from tools.cheat_patcher.cheats import (
     restore_all_sealstones,
     skill_points_99,
     stop_removing_characters,
+    unlocked_items_99,
 )
 from tools.cheat_patcher.build import PATCHERS, build_iso, default_output_path
 from tools.cheat_patcher.catalog import required_with
@@ -106,7 +107,7 @@ def main(argv=None):
         print("error: give a source ISO (use --help for usage)", file=sys.stderr)
         return 2
     output = args.output or default_output_path(args.source)
-    selected = (required_with(args.patch) if args.patch else tuple(PATCHERS))
+    selected = required_with(args.patch or tuple(PATCHERS))
     print("Validating and recompressing: %s..." % ", ".join(selected))
     try:
         result = build_iso(args.source, output, selected=selected,
@@ -268,12 +269,16 @@ def main(argv=None):
                 "resources 866/867"
                 % len(no_limit_sealstone_withdrawals.PATCHES)
             )
-        elif applied.name == "all-items-99":
+        elif applied.name in ("all-items-99", "unlocked-items-99"):
+            module = (unlocked_items_99
+                      if applied.name == "unlocked-items-99"
+                      else all_items_99)
             print(
-                "All Items 99: CampItem hook + %d exact routine words from "
+                "%s: CampItem hook + %d exact routine words from "
                 "EE 0x%08X (PCSX2 CRC preserved: %08X)"
-                % (sum(len(write.words) for write in all_items_99.INJECT_WRITES),
-                   all_items_99.INJECT_ADDRESS,
+                % (module.LABEL,
+                   sum(len(write.words) for write in module.INJECT_WRITES),
+                   module.INJECT_ADDRESS,
                    patch.files[0].patched_crc)
             )
     print("Verified output: %s" % result.output)

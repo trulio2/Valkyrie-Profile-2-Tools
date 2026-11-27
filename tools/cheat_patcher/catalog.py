@@ -8,7 +8,7 @@ Titles and summaries follow the PNACH names. A cheat marked `(!)` needs
 
 from typing import NamedTuple
 
-from .build import PATCHERS
+from .build import PATCHERS, SUPERSEDED_BY
 
 
 class Cheat(NamedTuple):
@@ -154,6 +154,13 @@ CHEATS = (
         "Sets every ordinary item stack to 99 when the Items menu opens.",
         False,
     ),
+    Cheat(
+        "unlocked-items-99",
+        "99 for unlocked items",
+        "Sets owned item stacks to 99 when the Items menu opens. All Items 99 "
+        "takes precedence if both are selected.",
+        False,
+    ),
 )
 
 BY_NAME = {cheat.name: cheat for cheat in CHEATS}
@@ -162,6 +169,11 @@ BY_NAME = {cheat.name: cheat for cheat in CHEATS}
 def required_with(names):
     """The full patch set to build, once dependencies are honoured."""
     chosen = [name for name in BY_NAME if name in set(names)]
+    selected = set(chosen)
+    for name, broader in SUPERSEDED_BY.items():
+        if name in selected and broader in selected:
+            selected.discard(name)
+    chosen = [name for name in chosen if name in selected]
     if any(BY_NAME[name].requires_anti_cheat for name in chosen):
         if ANTI_CHEAT not in chosen:
             chosen.append(ANTI_CHEAT)

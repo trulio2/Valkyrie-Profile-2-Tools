@@ -10,7 +10,7 @@ const toolLinks = [
     hint: 'translate your ISO in the browser'
   },
   { to: '/glyphs', label: 'Glyphs', hint: 'glyph textures for PCSX2' },
-  { to: '/cheats', label: 'Cheats', hint: '21 ISO cheats' },
+  { to: '/cheats', label: 'Cheats', hint: '22 ISO cheats' },
   { to: '/voices', label: 'Voices', hint: '85 voice banks' }
 ]
 

@@ -72,6 +72,10 @@ the complete arguments.
 | `no-limit-sealstone-withdrawals` | No Limit For Sealstone Withdrawals                               | Removes the switching limit; its displayed value may become negative. |
 | `99-skill-points`                | 99 Skill Points                                                  | Gives every character 99 skill points in the Skill menu.              |
 | `all-items-99`                   | All Items 99                                                     | Sets ordinary item stacks to 99 when the Items menu opens.            |
+| `unlocked-items-99`              | 99 for unlocked items                                            | Sets owned item stacks to 99 when the Items menu opens.               |
+
+`All Items 99` and `99 for unlocked items` share one hook; when both are
+selected, `All Items 99` is applied.
 
 ## Anti-cheat dependency
 
