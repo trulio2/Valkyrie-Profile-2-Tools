@@ -70,6 +70,9 @@ patch=1,EE,20431C1C,extended,10000010
 //patch=1,EE,E00200FF,extended,00360948
 //patch=1,EE,20360948,extended,340B0000
 //patch=1,EE,20360AC8,extended,340B0000
+// ---- Full Skip of the function that Wipes the Pointers (Experimental)
+//patch=1,EE,D030CF0C,extended,000020D5
+//patch=1,EE,2030CF0C,extended,34010000
 
 
 // Important Code: Will prevent freezes if you have one of these characters on the active team in the beginning
