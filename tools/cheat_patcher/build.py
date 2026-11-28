@@ -68,10 +68,11 @@ SUPERSEDED_BY = {"unlocked-items-99": "all-items-99"}
 
 def _anti_cheat_patcher(patcher, corrupt_save):
     battle = patcher.BATTLE_RESOURCE
-    memory_card = patcher.MEMORY_CARD_RESOURCE
     resources = tuple(
         (number, patch) for number, patch in patcher.RESOURCE_PATCHERS
-        if number != battle and (corrupt_save or number != memory_card)
+        if number != battle
+        and (corrupt_save
+             or patch is not patcher.patch_memory_card_resource)
     )
     battle_patcher = patcher.patch_battle_resource
     if corrupt_save:

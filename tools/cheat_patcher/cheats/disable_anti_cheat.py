@@ -23,6 +23,8 @@ from ...scripts.anti_cheat import (  # noqa: F401
     MAIN_RESOURCE,
     MEMORY_CARD_PATCHES,
     MEMORY_CARD_RESOURCE,
+    RESIDENT_PATCHES,
+    RESIDENT_RESOURCE,
     RESOURCE_PATCHERS,
     SAVE_PATCHES,
     SAVE_RESOURCE,
@@ -34,5 +36,6 @@ from ...scripts.anti_cheat import (  # noqa: F401
     patch_executable,
     patch_main_resource,
     patch_memory_card_resource,
+    patch_resident_resource,
     patch_save_resource,
 )

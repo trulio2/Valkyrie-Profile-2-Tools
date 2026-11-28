@@ -80,13 +80,16 @@ from tools.cheat_patcher.cheats.disable_anti_cheat import (
     EXECUTABLE_PATCHED,
     MAIN_PATCHES,
     MEMORY_CARD_PATCHES,
+    RESIDENT_PATCHES,
     SAVE_PATCHES,
     patch_battle_resource,
     patch_executable,
     patch_main_resource,
     patch_memory_card_resource,
+    patch_resident_resource,
     patch_save_resource,
 )
+from tools.scripts import glyph_range
 from tools.cheat_patcher.cheats.stop_removing_characters import (
     HOOK_ADDRESS,
     HOOK_ORIGINALS,
@@ -132,6 +135,7 @@ def make_resource_3():
 
     base = 0x001E7E00
     highest = max(ANGEL_ADDRESS,
+                  max(patch.address for patch in RESIDENT_PATCHES),
                   max(address for address, _, _ in HEAVENLY_RESOURCE3_PATCHES),
                   max(address for address, _, _ in ETHER_BYTE_PATCHES))
     second_output = bytearray(highest - base + 0x100)
@@ -139,6 +143,9 @@ def make_resource_3():
     struct.pack_into("<I", second_output, ANGEL_ADDRESS - base, ANGEL_ORIGINAL)
     for address, original, _ in ALL_UNLOCKED_PATCHES + LEVEL_1_PATCHES:
         struct.pack_into("<I", second_output, address - base, original)
+    for patch in RESIDENT_PATCHES:
+        struct.pack_into("<I", second_output, patch.address - base,
+                         patch.original)
     for address, original, _ in HEAVENLY_RESOURCE3_PATCHES:
         struct.pack_into("<I", second_output, address - base, original)
     # This Ether record has unrelated flags in the other three bytes.
@@ -369,6 +376,13 @@ class DisableAntiCheatTests(unittest.TestCase):
         ))[0].output
         _assert_patches(self, old, new, 0x0035EC80, MEMORY_CARD_PATCHES)
 
+        resource = make_resource_3()
+        _offset, old = glyph_range.resident_overlay(resource)
+        _offset, new = glyph_range.resident_overlay(
+            patch_resident_resource(resource).data)
+        _assert_patches(self, old, new, glyph_range.LOAD_ADDRESS,
+                        RESIDENT_PATCHES)
+
         resource = make_main_resource()
         old = next(sle.iter_streams(resource)).output
         new = next(sle.iter_streams(patch_main_resource(resource).data)).output
@@ -427,6 +441,7 @@ class AlreadyDisabledTests(unittest.TestCase):
         executable, _ = make_executable()
         for source, patch in (
                 (make_resource_3(), patch_memory_card_resource),
+                (make_resource_3(), patch_resident_resource),
                 (make_main_resource(), patch_main_resource),
                 (save_resource, patch_save_resource),
                 (battle_resource, patch_battle_resource),
@@ -599,6 +614,11 @@ class CompleteBuildTests(unittest.TestCase):
             self.assertEqual(ANGEL_PATCHED, struct.unpack_from(
                 "<I", streams[1].output, ANGEL_ADDRESS - 0x001E7E00
             )[0])
+            for patch in RESIDENT_PATCHES:
+                self.assertEqual(patch.patched, struct.unpack_from(
+                    "<I", streams[1].output,
+                    patch.address - glyph_range.LOAD_ADDRESS
+                )[0])
 
             main_output = next(sle.iter_streams(main)).output
             self.assertEqual(HOOK_PATCHED, struct.unpack_from(
@@ -682,7 +702,9 @@ class PatcherSelectionTests(unittest.TestCase):
                 mock.patch.object(anti_cheat, "patch_save_resource",
                                   return_value=unchanged), \
                 mock.patch.object(anti_cheat, "patch_memory_card_resource",
-                                  return_value=unchanged) as memory_card, \
+                                   return_value=unchanged) as memory_card, \
+                mock.patch.object(anti_cheat, "patch_resident_resource",
+                                  return_value=unchanged), \
                 mock.patch.object(anti_cheat, "patch_executable",
                                   return_value=unchanged), \
                 mock.patch.object(anti_cheat.iso9660, "locate_file",
@@ -694,12 +716,20 @@ class PatcherSelectionTests(unittest.TestCase):
 
     def test_corrupt_save_folds_into_the_anti_cheat_patch(self):
         from tools.cheat_patcher import build as cheat_build
+        from tools.cheat_patcher.cheats import disable_anti_cheat as anti
         enabled = dict(cheat_build._patchers_for(
             ("disable-anti-cheat",), (), True))["disable-anti-cheat"]
         disabled = dict(cheat_build._patchers_for(
             ("disable-anti-cheat",), (), False))["disable-anti-cheat"]
-        self.assertIn(3, dict(enabled.RESOURCE_PATCHERS))
-        self.assertNotIn(3, dict(disabled.RESOURCE_PATCHERS))
+
+        def resource_3(patcher):
+            return [patch for number, patch in patcher.RESOURCE_PATCHERS
+                    if number == 3]
+
+        self.assertIn(anti.patch_memory_card_resource, resource_3(enabled))
+        self.assertIn(anti.patch_resident_resource, resource_3(enabled))
+        self.assertNotIn(anti.patch_memory_card_resource, resource_3(disabled))
+        self.assertIn(anti.patch_resident_resource, resource_3(disabled))
 
     def test_the_folded_patcher_keeps_the_recovery_words(self):
         from tools.cheat_patcher import build as cheat_build

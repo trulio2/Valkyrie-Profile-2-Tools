@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import struct
 from typing import Optional
 
-from . import overlay_edits, sle
+from . import glyph_range, overlay_edits, sle
 from ..cheat_patcher import battle_overlay, elf, iso9660, main_overlay, slz12
 
 
@@ -46,6 +46,11 @@ MEMORY_CARD_PATCHES = (
     InstructionPatch(0x00360AC8, 0x306B00FF, 0x340B0000),
 )
 
+RESIDENT_RESOURCE = 3
+RESIDENT_PATCHES = (
+    InstructionPatch(0x0030D0F8, 0x0C04CB90, 0x00000000),
+)
+
 SAVE_PATCHES = (
     InstructionPatch(0x0049A2CC, 0x0C126F2C, 0x00000000),
     InstructionPatch(0x0049BF2C, 0x0661FFF4, 0x00000000),
@@ -73,6 +78,8 @@ BATTLE_PATCHES = (
     InstructionPatch(0x003D27FC, 0x14200020, 0x10000020),
     InstructionPatch(0x003D2824, 0x10200016, 0x10000016),
     InstructionPatch(0x003D4930, 0x1040006F, 0x1000006F),
+    InstructionPatch(0x003E2E88, 0x1460002F, 0x00000000),
+    InstructionPatch(0x00410B78, 0x1460006F, 0x00000000),
     InstructionPatch(0x00430B74, 0x1262000A, 0x10000024),
     InstructionPatch(0x00431A64, 0x12820022, 0x10000022),
     InstructionPatch(0x00431C1C, 0x12820010, 0x10000010),
@@ -245,6 +252,26 @@ def patch_memory_card_resource(resource):
     )
 
 
+def patch_resident_resource(resource):
+    """Skip the corrupt-save payload that zeroes the field-object pool."""
+    resource = bytes(resource)
+    offset, output = glyph_range.resident_overlay(resource)
+    base = glyph_range.LOAD_ADDRESS
+    _validate_base(output, base, "resident overlay")
+    if is_patched(output, base, RESIDENT_PATCHES, "resident overlay"):
+        return _unchanged(resource, "resident overlay")
+    patched_output = _patch_words(output, base, RESIDENT_PATCHES)
+    rebuilt = glyph_range.replace_resident(resource, offset, patched_output)
+    new_offset, new_output = glyph_range.resident_overlay(rebuilt)
+    if new_offset != offset:
+        raise ValueError("resident overlay moved")
+    _verify_output(output, new_output, base, RESIDENT_PATCHES,
+                   "resident overlay")
+    return ComponentPatch(
+        rebuilt, len(resource), "resident overlay", len(RESIDENT_PATCHES)
+    )
+
+
 def _save_wrapper(resource):
     if len(resource) < 0x10 or resource[:4] != b"ZLS\0":
         raise ValueError("save overlay does not begin with a ZLS wrapper")
@@ -374,6 +401,7 @@ def patch_executable(data):
 
 RESOURCE_PATCHERS = (
     (MEMORY_CARD_RESOURCE, patch_memory_card_resource),
+    (RESIDENT_RESOURCE, patch_resident_resource),
     (MAIN_RESOURCE, patch_main_resource),
     (SAVE_RESOURCE, patch_save_resource),
     (BATTLE_RESOURCE, patch_battle_resource),
@@ -403,10 +431,11 @@ class _ImageReader:
 
 def apply_to_iso(iso, corrupt_save=True):
     changed = []
-    patchers = [(MAIN_RESOURCE, patch_main_resource),
+    patchers = [(RESIDENT_RESOURCE, patch_resident_resource),
+                (MAIN_RESOURCE, patch_main_resource),
                 (SAVE_RESOURCE, patch_save_resource)]
     if corrupt_save:
-        patchers.append((MEMORY_CARD_RESOURCE, patch_memory_card_resource))
+        patchers.insert(0, (MEMORY_CARD_RESOURCE, patch_memory_card_resource))
     for resource, patch in patchers:
         original = iso.read_entry(resource)
         details = patch(original)

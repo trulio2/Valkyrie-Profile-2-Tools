@@ -28,6 +28,8 @@ patch=1,EE,204237E4,extended,00000000
 patch=1,EE,20423828,extended,10000005
 patch=1,EE,D010D1B8,extended,00000009
 patch=1,EE,2010D1B8,extended,24020000
+patch=1,EE,D030D0F8,extended,0000CB90
+patch=1,EE,2030D0F8,extended,00000000
 // ---- Saving Checksum
 patch=1,EE,E0056F2C,extended,0049A2CC
 patch=1,EE,2049A2CC,extended,00000000
@@ -36,7 +38,7 @@ patch=1,EE,2049BF60,extended,34020001
 patch=1,EE,2049C094,extended,00000000
 patch=1,EE,2049C0C8,extended,34030001
 // ---- In-Battle Checksum
-patch=1,EE,E013102A,extended,00397CAC
+patch=1,EE,E015102A,extended,00397CAC
 patch=1,EE,20397BF8,extended,00000000
 patch=1,EE,20397C0C,extended,1000002E
 patch=1,EE,20397C74,extended,10000010
@@ -53,6 +55,8 @@ patch=1,EE,203D2650,extended,1000008B
 patch=1,EE,203D27FC,extended,10000020
 patch=1,EE,203D2824,extended,10000016
 patch=1,EE,203D4930,extended,1000006F
+patch=1,EE,203E2E88,extended,00000000
+patch=1,EE,20410B78,extended,00000000
 patch=1,EE,20430B74,extended,10000024
 patch=1,EE,20431A64,extended,10000022
 patch=1,EE,20431C1C,extended,10000010
@@ -719,3 +723,68 @@ patch=1,EE,103161B4,extended,00000064
 patch=1,EE,103161B8,extended,00000064
 patch=1,EE,103161BC,extended,00000064
 patch=1,EE,103161C0,extended,00000064
+
+
+[Disable Alicia's shadows]
+patch=1,EE,002b7c68,word,64010000
+
+
+[Disable others' shadows]
+patch=1,EE,00246c24,word,46010030
+patch=1,EE,00246c28,word,450000a1
+
+
+[Disable the bright sky and the blur]
+patch=1,EE,002dbe1c,word,64030000
+
+
+[Disable the sun]
+patch=1,EE,00256158,word,4600a030
+patch=1,EE,0025615c,word,450001a2
+
+
+[Disable the graphics overlay]
+patch=1,EE,00220634,word,64030000
+
+
+[Disable the purple filter in the Lost Forest]
+patch=1,EE,002e0bec,word,64030000
+
+
+[Disable the foliage's shadows in the Lost Forest]
+patch=1,EE,0023e19c,word,64020000
+
+
+[Disable the black borders]
+patch=1,EE,00106d20,word,087facbc
+patch=1,EE,00106d24,word,00000000
+patch=1,EE,01feb2f0,word,8e4200ac
+patch=1,EE,01feb2f4,word,24040002
+patch=1,EE,01feb2f8,word,3c080037
+patch=1,EE,01feb2fc,word,8d09d42c
+patch=1,EE,01feb300,word,3c0a0c10
+patch=1,EE,01feb304,word,354ac2b4
+patch=1,EE,01feb308,word,112a0005
+patch=1,EE,01feb30c,word,0000582d
+patch=1,EE,01feb310,word,3c0b0044
+patch=1,EE,01feb314,word,3c0c2403
+patch=1,EE,01feb318,word,358c0000
+patch=1,EE,01feb31c,word,ad6c29b0
+patch=1,EE,01feb320,word,08041b4a
+patch=1,EE,01feb324,word,00000000
+
+
+[Inf Items]
+patch=1,EE,D05A11F8,extended,00000000
+patch=1,EE,2030D194,extended,00000000
+
+
+[40k Crystals]
+patch=1,EE,E001E140,extended,0036D90C
+patch=1,EE,203D39EC,extended,34109C40
+
+
+[1000000 Exp Per Battle]
+patch=1,EE,E002E140,extended,0036D90C
+patch=1,EE,203D0538,extended,3C02000F
+patch=1,EE,203D0544,extended,34424240
